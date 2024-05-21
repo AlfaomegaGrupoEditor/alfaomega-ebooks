@@ -238,8 +238,8 @@ class Alfaomega_Ebooks {
 
         add_submenu_page(
             'alfaomega_ebooks_admin',
-            esc_html__( 'Manage Alfaomega eBooks', 'alfaomega-ebooks' ),
-            esc_html__( 'Manage eBooks', 'alfaomega-ebooks' ),
+            esc_html__( 'All Alfaomega eBooks', 'alfaomega-ebooks' ),
+            esc_html__( 'All eBooks', 'alfaomega-ebooks' ),
             'install_plugins',
             'edit.php?post_type=alfaomega-ebook',
             null,
@@ -258,10 +258,12 @@ class Alfaomega_Ebooks {
 //        );
 
         // TODO: import new books from the Alfaomega API
+        //  redirect to edit.php?post_type=alfaomega-ebook
+        //  notify the user about the process result
         add_submenu_page(
             'alfaomega_ebooks_admin',
-            esc_html__( 'Import eBooks', 'alfaomega-ebooks' ),
-            esc_html__( 'Import eBooks', 'alfaomega-ebooks' ),
+            esc_html__( 'Import New eBooks', 'alfaomega-ebooks' ),
+            esc_html__( 'Import New', 'alfaomega-ebooks' ),
             'install_plugins',
             'post-new.php?post_type=alfaomega-ebook',
             null,
@@ -276,19 +278,17 @@ class Alfaomega_Ebooks {
      * @access public
      */
     public function render(){
-        echo 'a page menu';
-
-        /*if( ! current_user_can( 'install_plugins' ) ){
+        if( ! current_user_can( 'install_plugins' ) ){
             return;
         }
 
         if( isset( $_GET['settings-updated'] ) ){
-            add_settings_error( 'mv_slider_options', 'mv_slider_message', esc_html__( 'Settings Saved', 'mv-slider' ), 'success' );
+            add_settings_error( 'alfaomega_ebook_options', 'alfaomega_ebook_message', esc_html__( 'Settings Saved', 'alfaomega-ebooks' ), 'success' );
         }
 
-        settings_errors( 'mv_slider_options' );
+        settings_errors( 'alfaomega_ebook_options' );
 
-        require( MV_SLIDER_PATH . 'src/views/settings-page.php' );*/
+        require( MV_SLIDER_PATH . 'src/views/alfaomega_ebook_settings_page.php' );
     }
 
 }
