@@ -119,7 +119,37 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 'alfaomega_ebooks_page4'
             );
 
+            add_settings_field(
+                'alfaomega_ebooks_token',
+                esc_html__('Token Url', 'alfaomega-ebooks'),
+                [$this, 'alfaomega_ebooks_token_callback'],
+                'alfaomega_ebooks_page4',
+                'alfaomega_ebooks_fourth_section'
+            );
 
+            add_settings_field(
+                'alfaomega_ebooks_api',
+                esc_html__('API Server', 'alfaomega-ebooks'),
+                [$this, 'alfaomega_ebooks_api_callback'],
+                'alfaomega_ebooks_page4',
+                'alfaomega_ebooks_fourth_section'
+            );
+
+            add_settings_field(
+                'alfaomega_ebooks_client_id',
+                esc_html__('Client Id', 'alfaomega-ebooks'),
+                [$this, 'alfaomega_ebooks_client_id_callback'],
+                'alfaomega_ebooks_page4',
+                'alfaomega_ebooks_fourth_section'
+            );
+
+            add_settings_field(
+                'alfaomega_ebooks_client_secret',
+                esc_html__('Client Secret', 'alfaomega-ebooks'),
+                [$this, 'alfaomega_ebooks_client_secret_callback'],
+                'alfaomega_ebooks_page4',
+                'alfaomega_ebooks_fourth_section'
+            );
         }
 
         /**
@@ -260,6 +290,86 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 value="<?php echo isset(self::$options['alfaomega_ebooks_panel']) ? esc_attr(self::$options['alfaomega_ebooks_panel']) : ''; ?>"
             >
             <p class="description"> <? esc_html_e("Publisher Panel server URL.", 'alfaomega-ebooks') ?> </p>
+            <?php
+        }
+
+        /**
+         * Render the token field
+         * @return void
+         * @since 1.0.0
+         * @access public
+         */
+        public function alfaomega_ebooks_token_callback(): void
+        {
+            ?>
+            <input
+                type="url"
+                name="alfaomega_ebooks_options[alfaomega_ebooks_token]"
+                id="alfaomega_ebooks_token"
+                size="50"
+                value="<?php echo isset(self::$options['alfaomega_ebooks_token']) ? esc_attr(self::$options['alfaomega_ebooks_token']) : ''; ?>"
+            >
+            <p class="description"> <? esc_html_e("Endpoint to renovate the access token.", 'alfaomega-ebooks') ?> </p>
+            <?php
+        }
+
+        /**
+         * Render the api field
+         * @return void
+         * @since 1.0.0
+         * @access public
+         */
+        public function alfaomega_ebooks_api_callback(): void
+        {
+            ?>
+            <input
+                type="url"
+                name="alfaomega_ebooks_options[alfaomega_ebooks_api]"
+                id="alfaomega_ebooks_api"
+                size="50"
+                value="<?php echo isset(self::$options['alfaomega_ebooks_api']) ? esc_attr(self::$options['alfaomega_ebooks_api']) : ''; ?>"
+            >
+            <p class="description"> <? esc_html_e("API Server URL.", 'alfaomega-ebooks') ?> </p>
+            <?php
+        }
+
+        /**
+         * Render the client_id field
+         * @return void
+         * @since 1.0.0
+         * @access public
+         */
+        public function alfaomega_ebooks_client_id_callback(): void
+        {
+            ?>
+            <input
+                type="text"
+                name="alfaomega_ebooks_options[alfaomega_ebooks_client_id]"
+                id="alfaomega_ebooks_client_id"
+                size="50"
+                value="<?php echo isset(self::$options['alfaomega_ebooks_client_id']) ? esc_attr(self::$options['alfaomega_ebooks_client_id']) : ''; ?>"
+            >
+            <p class="description"> <? esc_html_e("Client Id of the eCommerce account in the Publisher Panel.", 'alfaomega-ebooks') ?> </p>
+            <?php
+        }
+
+        /**
+         * Render the client_secret field
+         * @return void
+         * @since 1.0.0
+         * @access public
+         */
+        public function alfaomega_ebooks_client_secret_callback(): void
+        {
+            ?>
+            <input
+                type="password"
+                name="alfaomega_ebooks_options[alfaomega_ebooks_client_secret]"
+                id="alfaomega_ebooks_client_secret"
+                size="50"
+                value="<?php echo isset(self::$options['alfaomega_ebooks_client_secret']) ? esc_attr(self::$options['alfaomega_ebooks_client_secret']) : ''; ?>"
+            >
+            <p class="description"> <? esc_html_e("Client Secret of the eCommerce account in the Publisher Panel.", 'alfaomega-ebooks') ?> </p>
             <?php
         }
     }
