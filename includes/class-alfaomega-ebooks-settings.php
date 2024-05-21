@@ -11,7 +11,9 @@
 if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
     class Alfaomega_Ebooks_Settings{
 
-        public static $options;
+        public static $generalOptions;
+        public static $platformOptions;
+        public static $apiOptions;
 
         /**
          * Constructor
@@ -21,15 +23,30 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
          */
         public function __construct()
         {
-            self::$options = get_option('alfaomega_ebooks_options');
+            self::$generalOptions = get_option('alfaomega_ebooks_general_options');
+            self::$platformOptions = get_option('alfaomega_ebooks_platform_options');
+            self::$apiOptions = get_option('alfaomega_ebooks_api_options');
+
             add_action( 'admin_init', array( $this, 'admin_init' ) );
         }
 
         public function admin_init(): void
         {
             register_setting(
-                'alfaomega_ebooks_group',
-                'alfaomega_ebooks_options',
+                'alfaomega_ebooks_general_group',
+                'alfaomega_ebooks_general_options',
+                [ $this, 'alfaomega_books_validate']
+            );
+
+            register_setting(
+                'alfaomega_ebooks_platform_group',
+                'alfaomega_ebooks_platform_options',
+                [ $this, 'alfaomega_books_validate']
+            );
+
+            register_setting(
+                'alfaomega_ebooks_api_group',
+                'alfaomega_ebooks_api_options',
                 [ $this, 'alfaomega_books_validate']
             );
 
@@ -153,21 +170,6 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
         }
 
         /**
-         * Render the product_link field
-         * @return void
-         * @since 1.0.0
-         * @access public
-         */
-        public function alfaomega_ebooks_product_link_callback(): void
-        {
-            ?>
-                <span>
-                    <?php esc_html_e( 'Products and eBooks are linked by Digital ISBN, so make sure the Product digital ISBN is set properly.', 'alfaomega-ebooks' ); ?>
-                </span>
-            <?php
-        }
-
-        /**
          * Render the username field
          * @return void
          * @since 1.0.0
@@ -178,10 +180,10 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
             ?>
                 <input
                     type="text"
-                    name="alfaomega_ebooks_options[alfaomega_ebooks_username]"
+                    name="alfaomega_ebooks_general_options[alfaomega_ebooks_username]"
                     id="alfaomega_ebooks_username"
                     size="50"
-                    value="<?php echo isset(self::$options['alfaomega_ebooks_username']) ? esc_attr(self::$options['alfaomega_ebooks_username']) : ''; ?>"
+                    value="<?php echo isset(self::$generalOptions['alfaomega_ebooks_username']) ? esc_attr(self::$generalOptions['alfaomega_ebooks_username']) : ''; ?>"
                 >
                 <p class="description"> <? esc_html_e("User's email authorized to access Alfaomega Ebooks Platform.", 'alfaomega-ebooks') ?> </p>
             <?php
@@ -198,12 +200,12 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
             ?>
             <input
                 type="checkbox"
-                name="alfaomega_ebooks_options[alfaomega_ebooks_active]"
+                name="alfaomega_ebooks_general_options[alfaomega_ebooks_active]"
                 id="alfaomega_ebooks_active"
                 value="1"
                 <?php
-                    if ( isset( self::$options['alfaomega_ebooks_active'])) {
-                        checked( "1", self::$options['alfaomega_ebooks_active'], true);
+                    if ( isset( self::$generalOptions['alfaomega_ebooks_active'])) {
+                        checked( "1", self::$generalOptions['alfaomega_ebooks_active'], true);
                     }
                 ?>
             >
@@ -224,10 +226,10 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
             ?>
             <input
                 type="password"
-                name="alfaomega_ebooks_options[alfaomega_ebooks_password]"
+                name="alfaomega_ebooks_general_options[alfaomega_ebooks_password]"
                 id="alfaomega_ebooks_password"
                 size="50"
-                value="<?php echo isset(self::$options['alfaomega_ebooks_password']) ? esc_attr(self::$options['alfaomega_ebooks_password']) : ''; ?>"
+                value="<?php echo isset(self::$generalOptions['alfaomega_ebooks_password']) ? esc_attr(self::$generalOptions['alfaomega_ebooks_password']) : ''; ?>"
             >
             <p class="description"> <? esc_html_e("User's password authorized to access Alfaomega Ebooks Platform.", 'alfaomega-ebooks') ?> </p>
             <?php
@@ -244,10 +246,10 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
             ?>
             <input
                 type="email"
-                name="alfaomega_ebooks_options[alfaomega_ebooks_notify_to]"
+                name="alfaomega_ebooks_general_options[alfaomega_ebooks_notify_to]"
                 id="alfaomega_ebooks_notify_to"
                 size="50"
-                value="<?php echo isset(self::$options['alfaomega_ebooks_notify_to']) ? esc_attr(self::$options['alfaomega_ebooks_notify_to']) : ''; ?>"
+                value="<?php echo isset(self::$generalOptions['alfaomega_ebooks_notify_to']) ? esc_attr(self::$generalOptions['alfaomega_ebooks_notify_to']) : ''; ?>"
             >
             <p class="description"> <? esc_html_e("Email address to send a copy of every download code set to clients.", 'alfaomega-ebooks') ?> </p>
             <?php
@@ -264,10 +266,10 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
             ?>
             <input
                 type="url"
-                name="alfaomega_ebooks_options[alfaomega_ebooks_reader]"
+                name="alfaomega_ebooks_platform_options[alfaomega_ebooks_reader]"
                 id="alfaomega_ebooks_reader"
                 size="50"
-                value="<?php echo isset(self::$options['alfaomega_ebooks_reader']) ? esc_attr(self::$options['alfaomega_ebooks_reader']) : ''; ?>"
+                value="<?php echo isset(self::$platformOptions['alfaomega_ebooks_reader']) ? esc_attr(self::$platformOptions['alfaomega_ebooks_reader']) : ''; ?>"
             >
             <p class="description"> <? esc_html_e("Reader app URL.", 'alfaomega-ebooks') ?> </p>
             <?php
@@ -284,10 +286,10 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
             ?>
             <input
                 type="url"
-                name="alfaomega_ebooks_options[alfaomega_ebooks_panel]"
+                name="alfaomega_ebooks_platform_options[alfaomega_ebooks_panel]"
                 id="alfaomega_ebooks_panel"
                 size="50"
-                value="<?php echo isset(self::$options['alfaomega_ebooks_panel']) ? esc_attr(self::$options['alfaomega_ebooks_panel']) : ''; ?>"
+                value="<?php echo isset(self::$platformOptions['alfaomega_ebooks_panel']) ? esc_attr(self::$platformOptions['alfaomega_ebooks_panel']) : ''; ?>"
             >
             <p class="description"> <? esc_html_e("Publisher Panel server URL.", 'alfaomega-ebooks') ?> </p>
             <?php
@@ -304,10 +306,10 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
             ?>
             <input
                 type="url"
-                name="alfaomega_ebooks_options[alfaomega_ebooks_token]"
+                name="alfaomega_ebooks_api_options[alfaomega_ebooks_token]"
                 id="alfaomega_ebooks_token"
                 size="50"
-                value="<?php echo isset(self::$options['alfaomega_ebooks_token']) ? esc_attr(self::$options['alfaomega_ebooks_token']) : ''; ?>"
+                value="<?php echo isset(self::$apiOptions['alfaomega_ebooks_token']) ? esc_attr(self::$apiOptions['alfaomega_ebooks_token']) : ''; ?>"
             >
             <p class="description"> <? esc_html_e("Endpoint to renovate the access token.", 'alfaomega-ebooks') ?> </p>
             <?php
@@ -324,10 +326,10 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
             ?>
             <input
                 type="url"
-                name="alfaomega_ebooks_options[alfaomega_ebooks_api]"
+                name="alfaomega_ebooks_api_options[alfaomega_ebooks_api]"
                 id="alfaomega_ebooks_api"
                 size="50"
-                value="<?php echo isset(self::$options['alfaomega_ebooks_api']) ? esc_attr(self::$options['alfaomega_ebooks_api']) : ''; ?>"
+                value="<?php echo isset(self::$apiOptions['alfaomega_ebooks_api']) ? esc_attr(self::$apiOptions['alfaomega_ebooks_api']) : ''; ?>"
             >
             <p class="description"> <? esc_html_e("API Server URL.", 'alfaomega-ebooks') ?> </p>
             <?php
@@ -344,10 +346,10 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
             ?>
             <input
                 type="text"
-                name="alfaomega_ebooks_options[alfaomega_ebooks_client_id]"
+                name="alfaomega_ebooks_api_options[alfaomega_ebooks_client_id]"
                 id="alfaomega_ebooks_client_id"
                 size="50"
-                value="<?php echo isset(self::$options['alfaomega_ebooks_client_id']) ? esc_attr(self::$options['alfaomega_ebooks_client_id']) : ''; ?>"
+                value="<?php echo isset(self::$apiOptions['alfaomega_ebooks_client_id']) ? esc_attr(self::$apiOptions['alfaomega_ebooks_client_id']) : ''; ?>"
             >
             <p class="description"> <? esc_html_e("Client Id of the eCommerce account in the Publisher Panel.", 'alfaomega-ebooks') ?> </p>
             <?php
@@ -364,10 +366,10 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
             ?>
             <input
                 type="password"
-                name="alfaomega_ebooks_options[alfaomega_ebooks_client_secret]"
+                name="alfaomega_ebooks_api_options[alfaomega_ebooks_client_secret]"
                 id="alfaomega_ebooks_client_secret"
                 size="50"
-                value="<?php echo isset(self::$options['alfaomega_ebooks_client_secret']) ? esc_attr(self::$options['alfaomega_ebooks_client_secret']) : ''; ?>"
+                value="<?php echo isset(self::$apiOptions['alfaomega_ebooks_client_secret']) ? esc_attr(self::$apiOptions['alfaomega_ebooks_client_secret']) : ''; ?>"
             >
             <p class="description"> <? esc_html_e("Client Secret of the eCommerce account in the Publisher Panel.", 'alfaomega-ebooks') ?> </p>
             <?php

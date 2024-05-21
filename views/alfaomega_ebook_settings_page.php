@@ -10,16 +10,18 @@
     </h2>
     <form action="options.php" method="post">
         <?php
-            settings_fields( 'alfaomega_ebooks_group' );
             switch ($active_tab) {
                 case 'general_options':
                     //do_settings_sections( 'alfaomega_ebooks_page1' );
+                    settings_fields( 'alfaomega_ebooks_general_group' );
                     do_settings_sections( 'alfaomega_ebooks_page2' );
                     break;
                 case 'platform_options':
+                    settings_fields( 'alfaomega_ebooks_platform_group' );
                     do_settings_sections( 'alfaomega_ebooks_page3' );
                     break;
                 case 'api_options':
+                    settings_fields( 'alfaomega_ebooks_api_group' );
                     do_settings_sections( 'alfaomega_ebooks_page4' );
                     break;
             }
