@@ -172,7 +172,8 @@ class Alfaomega_Ebooks {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
         // Add plugin settings to WooCommerce
-        $this->loader->add_filter( 'woocommerce_get_settings_pages', $plugin_admin, 'alfaomega_ebooks_add_settings' );
+        // @deprecated Using the own plugin settings
+        // $this->loader->add_filter( 'woocommerce_get_settings_pages', $plugin_admin, 'alfaomega_ebooks_add_settings' );
 	}
 
 	/**
