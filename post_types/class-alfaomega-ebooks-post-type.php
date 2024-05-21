@@ -12,7 +12,7 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
         public function __construct(){
             add_action('init', [$this, 'create_post_type']);
             add_action('add_meta_boxes', [$this, 'add_meta_boxes']);
-//            add_action( 'save_post', array( $this, 'save_post' ), 10, 2 );
+            add_action( 'save_post', array( $this, 'save_post' ), 10, 3 );
 //            add_filter( 'manage_mv-slider_posts_columns', array( $this, 'alfaomega_ebook_cpt_columns' ) );
 //            add_action( 'manage_mv-slider_posts_custom_column', array( $this, 'alfaomega_ebook_custom_columns'), 10, 2 );
 //            add_filter( 'manage_edit-mv-slider_sortable_columns', array( $this, 'alfaomega_ebook_sortable_columns' ) );
@@ -131,10 +131,11 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
          */
         public function add_inner_meta_boxes( $post ): void
         {
-//            $meta = get_post_meta( $post->ID );
-//            $link_text = get_post_meta( $post->ID, 'alfaomega_ebook_link_text', true );
-//            $link_url = get_post_meta( $post->ID, 'alfaomega_ebook_link_url', true );
-//            require_once( MV_SLIDER_PATH . 'src/views/mv-slider_metabox.php' );
+            //$meta = get_post_meta( $post->ID );
+            $isbn = get_post_meta( $post->ID, 'alfaomega_ebook_isbn', true );
+            $id = get_post_meta( $post->ID, 'alfaomega_ebook_id', true );
+            $url = get_post_meta( $post->ID, 'alfaomega_ebook_url', true );
+            require_once( ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_metabox.php' );
         }
 
         /**
@@ -144,7 +145,8 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
          * @access public
          * @param int $post_id  Post ID to be saved
          */
-        public function save_post( $post_id ){
+        public function save_post( $post_id ): void
+        {
             // A series of guard clauses to make sure we are saving the right data
             // 1. Check if nonce is set
             if( isset( $_POST['alfaomega_ebook_nonce'] ) ){
@@ -171,19 +173,24 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
             // First, check if the form is sending the right POST action
             if ( isset( $_POST['action'] ) && $_POST['action'] == 'editpost' ) {
                 // Populate an array with the fields we want to save
-                $fields = array(
-                    'alfaomega_ebook_link_text' => array(
-                        'old' => get_post_meta( $post_id, 'alfaomega_ebook_link_text', true ),
-                        'new' => $_POST['alfaomega_ebook_link_text'],
-                        'default' => esc_html__( 'Add some text', 'alfaomega-ebook' ),
-                    ),
-                    'alfaomega_ebook_link_url' => array(
-                        'old' => get_post_meta( $post_id, 'alfaomega_ebook_link_url', true ),
-                        'new' => $_POST['alfaomega_ebook_link_url'],
-                        'default' => '#',
-                    ),
-                );
-            
+                $fields = [
+                    'alfaomega_ebook_isbn' => [
+                        'old'     => get_post_meta($post_id, 'alfaomega_ebook_isbn', true),
+                        'new'     => $_POST['alfaomega_ebook_isbn'],
+                        'default' => '',
+                    ],
+                    'alfaomega_ebook_id'   => [
+                        'old'     => get_post_meta($post_id, 'alfaomega_ebook_id', true),
+                        'new'     => $_POST['alfaomega_ebook_id'],
+                        'default' => '',
+                    ],
+                    'alfaomega_ebook_url'  => [
+                        'old'     => get_post_meta($post_id, 'alfaomega_ebook_url', true),
+                        'new'     => $_POST['alfaomega_ebook_url'],
+                        'default' => '',
+                    ],
+                ];
+
                 // Loop through the array and save the data
                 foreach ( $fields as $field => $data ) {
                     $new_value = sanitize_text_field( $data['new'] );
