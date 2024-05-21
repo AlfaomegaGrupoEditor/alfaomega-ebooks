@@ -80,6 +80,7 @@ class Alfaomega_Ebooks {
 		$this->define_public_hooks();
 
         $Alfaomega_Ebooks_Post_Type = new Alfaomega_Ebooks_Post_Type();
+        add_action( 'admin_menu', array( $this, 'add_menu' ) );
 	}
 
 	/**
@@ -222,5 +223,72 @@ class Alfaomega_Ebooks {
 	public function get_version() {
 		return $this->version;
 	}
+
+    public function add_menu(): void
+    {
+        add_menu_page(
+            esc_html__( 'Alfaomega eBooks Admin', 'alfaomega-ebooks' ),
+            'AO eBooks',
+            'install_plugins',
+            'alfaomega_ebooks_admin',
+            array( $this, 'render' ),
+            'dashicons-book',
+            56
+        );
+
+        add_submenu_page(
+            'alfaomega_ebooks_admin',
+            esc_html__( 'Manage Alfaomega eBooks', 'alfaomega-ebooks' ),
+            esc_html__( 'Manage eBooks', 'alfaomega-ebooks' ),
+            'install_plugins',
+            'edit.php?post_type=alfaomega-ebook',
+            null,
+            null
+        );
+
+        // No allowed
+//        add_submenu_page(
+//            'alfaomega_ebooks_admin',
+//            esc_html__( 'Add New eBook', 'alfaomega-ebooks' ),
+//            esc_html__( 'Add New eBook', 'alfaomega-ebooks' ),
+//            'install_plugins',
+//            'post-new.php?post_type=alfaomega-ebook',
+//            null,
+//            null
+//        );
+
+        // TODO: import new books from the Alfaomega API
+        add_submenu_page(
+            'alfaomega_ebooks_admin',
+            esc_html__( 'Import eBooks', 'alfaomega-ebooks' ),
+            esc_html__( 'Import eBooks', 'alfaomega-ebooks' ),
+            'install_plugins',
+            'post-new.php?post_type=alfaomega-ebook',
+            null,
+            null
+        );
+    }
+
+    /**
+     * Render the settings page
+     * @return void
+     * @since 1.0.0
+     * @access public
+     */
+    public function render(){
+        echo 'a page menu';
+
+        /*if( ! current_user_can( 'install_plugins' ) ){
+            return;
+        }
+
+        if( isset( $_GET['settings-updated'] ) ){
+            add_settings_error( 'mv_slider_options', 'mv_slider_message', esc_html__( 'Settings Saved', 'mv-slider' ), 'success' );
+        }
+
+        settings_errors( 'mv_slider_options' );
+
+        require( MV_SLIDER_PATH . 'src/views/settings-page.php' );*/
+    }
 
 }

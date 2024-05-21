@@ -39,7 +39,7 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
                     'supports'            => ['title', 'editor', 'author', 'thumbnail'],
                     'hierarchical'        => false,
                     'show_ui'             => true,
-                    'show_in_menu'        => true,
+                    'show_in_menu'        => false,
                     'menu_position'       => 56,  // bellow WooCommerce Products
                     'show_in_admin_bar'   => true,
                     'show_in_nav_menus'   => false,
@@ -49,6 +49,11 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
                     'publicly_queryable'  => false,
                     'show_in_rest'        => true,
                     'menu_icon'           => 'dashicons-book',
+                    'capability_type'     => 'post',
+                    'capabilities'        => [
+                        'create_posts' => false, // Removes the ability to add new
+                    ],
+                    'map_meta_cap'        => true,
                     //'register_meta_box_cb'  =>  array( $this, 'add_meta_boxes' )
                 ]
             );
