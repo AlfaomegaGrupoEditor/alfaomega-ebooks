@@ -13,7 +13,7 @@
             settings_fields( 'alfaomega_ebooks_group' );
             switch ($active_tab) {
                 case 'general_options':
-                    do_settings_sections( 'alfaomega_ebooks_page1' );
+                    //do_settings_sections( 'alfaomega_ebooks_page1' );
                     do_settings_sections( 'alfaomega_ebooks_page2' );
                     break;
                 case 'platform_options':

@@ -27,7 +27,11 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
 
         public function admin_init(): void
         {
-            register_setting('alfaomega_ebooks_group', 'alfaomega_ebooks_options', [ $this, 'alfaomega_books_validate']);
+            register_setting(
+                'alfaomega_ebooks_group',
+                'alfaomega_ebooks_options',
+                [ $this, 'alfaomega_books_validate']
+            );
 
             // General tab
             // TODO: General settings to setup the service
@@ -382,6 +386,15 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                     'alfaomega_ebooks_api' => esc_url_raw($value),
                     default => sanitize_text_field($value),
                 };
+                if (empty($value) && !in_array($key, ['alfaomega_ebooks_active'])) {
+                    add_settings_error(
+                        'alfaomega_ebook_options',
+                        'alfaomega_ebook_message',
+                        esc_html__( "The field '$key' can not be left empty", 'alfaomega-ebooks' ),
+                        'error'
+                    );
+                    return [];
+                }
             }
 
             return $new_input;

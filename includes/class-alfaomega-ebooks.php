@@ -290,7 +290,12 @@ class Alfaomega_Ebooks {
         }
 
         if( isset( $_GET['settings-updated'] ) ){
-            add_settings_error( 'alfaomega_ebook_options', 'alfaomega_ebook_message', esc_html__( 'Settings Saved', 'alfaomega-ebooks' ), 'success' );
+            add_settings_error(
+                'alfaomega_ebook_options',
+                'alfaomega_ebook_message',
+                esc_html__( 'Settings Saved', 'alfaomega-ebooks' ),
+                'success'
+            );
         }
 
         settings_errors( 'alfaomega_ebook_options' );
