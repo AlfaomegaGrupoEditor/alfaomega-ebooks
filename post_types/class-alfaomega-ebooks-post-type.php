@@ -10,12 +10,12 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
          * @access public
          */
         public function __construct(){
-            add_action( 'init', array( $this, 'create_post_type' ) );
-//            add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
+            add_action('init', [$this, 'create_post_type']);
+            add_action('add_meta_boxes', [$this, 'add_meta_boxes']);
 //            add_action( 'save_post', array( $this, 'save_post' ), 10, 2 );
-//            add_filter( 'manage_mv-slider_posts_columns', array( $this, 'mv_slider_cpt_columns' ) );
-//            add_action( 'manage_mv-slider_posts_custom_column', array( $this, 'mv_slider_custom_columns'), 10, 2 );
-//            add_filter( 'manage_edit-mv-slider_sortable_columns', array( $this, 'mv_slider_sortable_columns' ) );
+//            add_filter( 'manage_mv-slider_posts_columns', array( $this, 'alfaomega_ebook_cpt_columns' ) );
+//            add_action( 'manage_mv-slider_posts_custom_column', array( $this, 'alfaomega_ebook_custom_columns'), 10, 2 );
+//            add_filter( 'manage_edit-mv-slider_sortable_columns', array( $this, 'alfaomega_ebook_sortable_columns' ) );
         }
 
         /**
@@ -36,7 +36,7 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
                         'singular_name' => esc_html__('AO eBook', 'alfaomega-ebook'),
                     ],
                     'public'              => true,
-                    'supports'            => ['title', 'editor', 'author', 'thumbnail', 'excerpt'],
+                    'supports'            => ['title', 'editor', 'author', 'thumbnail'],
                     'hierarchical'        => false,
                     'show_ui'             => true,
                     'show_in_menu'        => true,
@@ -47,7 +47,7 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
                     'has_archive'         => false,
                     'exclude_from_search' => true,
                     'publicly_queryable'  => false,
-                    'show_in_rest'        => false,
+                    'show_in_rest'        => true,
                     'menu_icon'           => 'dashicons-book',
                     //'register_meta_box_cb'  =>  array( $this, 'add_meta_boxes' )
                 ]
@@ -61,12 +61,12 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
          * @access public
          * @param array $columns  Columns array
          */
-        public function mv_slider_cpt_columns( $columns ){
+        public function alfaomega_ebook_cpt_columns( $columns ){
             $columns = array(
                 'cb' => $columns['cb'],
                 'title' => __( 'Title', 'alfaomega-ebook' ),
-                'mv_slider_link_text' => esc_html__( 'Link Text', 'alfaomega-ebook' ),
-                'mv_slider_link_url' => esc_html__( 'Link URL', 'alfaomega-ebook' ),
+                'alfaomega_ebook_link_text' => esc_html__( 'Link Text', 'alfaomega-ebook' ),
+                'alfaomega_ebook_link_url' => esc_html__( 'Link URL', 'alfaomega-ebook' ),
                 'date' => __( 'Date', 'alfaomega-ebook' ),
             );
             return $columns;
@@ -80,13 +80,13 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
          * @param string $column  Column name
          * @param int $post_id  Post ID
          */
-        public function mv_slider_custom_columns( $column, $post_id ){
+        public function alfaomega_ebook_custom_columns( $column, $post_id ){
             switch( $column ){
-                case 'mv_slider_link_text':
-                    echo esc_html( get_post_meta( $post_id, 'mv_slider_link_text', true ) );
+                case 'alfaomega_ebook_link_text':
+                    echo esc_html( get_post_meta( $post_id, 'alfaomega_ebook_link_text', true ) );
                 break;
-                case 'mv_slider_link_url':
-                    echo esc_url( get_post_meta( $post_id, 'mv_slider_link_url', true ) );
+                case 'alfaomega_ebook_link_url':
+                    echo esc_url( get_post_meta( $post_id, 'alfaomega_ebook_link_url', true ) );
                 break;                
             }
         }
@@ -98,9 +98,9 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
          * @access public
          * @param array $columns  Columns array
          */
-        public function mv_slider_sortable_columns( $columns ){
-            $columns['mv_slider_link_text'] = 'mv_slider_link_text';
-            $columns['mv_slider_link_url'] = 'mv_slider_link_url';
+        public function alfaomega_ebook_sortable_columns( $columns ){
+            $columns['alfaomega_ebook_link_text'] = 'alfaomega_ebook_link_text';
+            $columns['alfaomega_ebook_link_url'] = 'alfaomega_ebook_link_url';
             return $columns;
         }
 
@@ -110,13 +110,14 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
          * @since 1.0.0
          * @access public
          */
-        public function add_meta_boxes(){
+        public function add_meta_boxes() : void
+        {
             add_meta_box(
-                'mv_slider_meta_box',
-                esc_html__( 'Link Options', 'alfaomega-ebook' ),
-                array( $this, 'add_inner_meta_boxes' ),
+                'alfaomega_ebook_meta_box',
+                esc_html__('eBook Information', 'alfaomega-ebook'),
+                [$this, 'add_inner_meta_boxes'],
                 ALFAOMEGA_EBOOKS_POST_TYPE,
-                'normal',
+                'normal', // side
                 'high'
             );
         }
@@ -128,11 +129,12 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
          * @access public
          * @param object $post  Post object to be passed to the view
          */
-        public function add_inner_meta_boxes( $post ){
-            $meta = get_post_meta( $post->ID );
-            $link_text = get_post_meta( $post->ID, 'mv_slider_link_text', true );
-            $link_url = get_post_meta( $post->ID, 'mv_slider_link_url', true );
-            require_once( MV_SLIDER_PATH . 'src/views/mv-slider_metabox.php' );
+        public function add_inner_meta_boxes( $post ): void
+        {
+//            $meta = get_post_meta( $post->ID );
+//            $link_text = get_post_meta( $post->ID, 'alfaomega_ebook_link_text', true );
+//            $link_url = get_post_meta( $post->ID, 'alfaomega_ebook_link_url', true );
+//            require_once( MV_SLIDER_PATH . 'src/views/mv-slider_metabox.php' );
         }
 
         /**
@@ -145,8 +147,8 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
         public function save_post( $post_id ){
             // A series of guard clauses to make sure we are saving the right data
             // 1. Check if nonce is set
-            if( isset( $_POST['mv_slider_nonce'] ) ){
-                if( ! wp_verify_nonce( $_POST['mv_slider_nonce'], 'mv_slider_nonce' ) ){
+            if( isset( $_POST['alfaomega_ebook_nonce'] ) ){
+                if( ! wp_verify_nonce( $_POST['alfaomega_ebook_nonce'], 'alfaomega_ebook_nonce' ) ){
                     return;
                 }
             }
@@ -170,14 +172,14 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
             if ( isset( $_POST['action'] ) && $_POST['action'] == 'editpost' ) {
                 // Populate an array with the fields we want to save
                 $fields = array(
-                    'mv_slider_link_text' => array(
-                        'old' => get_post_meta( $post_id, 'mv_slider_link_text', true ),
-                        'new' => $_POST['mv_slider_link_text'],
+                    'alfaomega_ebook_link_text' => array(
+                        'old' => get_post_meta( $post_id, 'alfaomega_ebook_link_text', true ),
+                        'new' => $_POST['alfaomega_ebook_link_text'],
                         'default' => esc_html__( 'Add some text', 'alfaomega-ebook' ),
                     ),
-                    'mv_slider_link_url' => array(
-                        'old' => get_post_meta( $post_id, 'mv_slider_link_url', true ),
-                        'new' => $_POST['mv_slider_link_url'],
+                    'alfaomega_ebook_link_url' => array(
+                        'old' => get_post_meta( $post_id, 'alfaomega_ebook_link_url', true ),
+                        'new' => $_POST['alfaomega_ebook_link_url'],
                         'default' => '#',
                     ),
                 );
