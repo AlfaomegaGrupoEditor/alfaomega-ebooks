@@ -27,7 +27,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
 
         public function admin_init(): void
         {
-            register_setting('alfaomega_ebooks_group', 'alfaomega_ebooks_options');
+            register_setting('alfaomega_ebooks_group', 'alfaomega_ebooks_options', [ $this, 'alfaomega_books_validate']);
 
             // General tab
             // TODO: General settings to setup the service
@@ -367,6 +367,24 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
             >
             <p class="description"> <? esc_html_e("Client Secret of the eCommerce account in the Publisher Panel.", 'alfaomega-ebooks') ?> </p>
             <?php
+        }
+
+        public function alfaomega_books_validate(array $input): array
+        {
+            $new_input = [];
+            foreach ($input as $key => $value) {
+                $new_input[$key] = match ($key) {
+                    'alfaomega_ebooks_username',
+                    'alfaomega_ebooks_notify_to' => sanitize_email($value),
+                    'alfaomega_ebooks_reader',
+                    'alfaomega_ebooks_panel',
+                    'alfaomega_ebooks_token',
+                    'alfaomega_ebooks_api' => esc_url_raw($value),
+                    default => sanitize_text_field($value),
+                };
+            }
+
+            return $new_input;
         }
     }
 }
