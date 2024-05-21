@@ -13,9 +13,9 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
             add_action('init', [$this, 'create_post_type']);
             add_action('add_meta_boxes', [$this, 'add_meta_boxes']);
             add_action( 'save_post', array( $this, 'save_post' ), 10, 3 );
-//            add_filter( 'manage_mv-slider_posts_columns', array( $this, 'alfaomega_ebook_cpt_columns' ) );
-//            add_action( 'manage_mv-slider_posts_custom_column', array( $this, 'alfaomega_ebook_custom_columns'), 10, 2 );
-//            add_filter( 'manage_edit-mv-slider_sortable_columns', array( $this, 'alfaomega_ebook_sortable_columns' ) );
+            add_filter( 'manage_alfaomega-ebook_posts_columns', [$this, 'alfaomega_ebook_cpt_columns'] );
+            add_action( 'manage_alfaomega-ebook_posts_custom_column', [$this, 'alfaomega_ebook_custom_columns'], 10, 2 );
+            add_filter( 'manage_edit-alfaomega-ebook_sortable_columns', [$this, 'alfaomega_ebook_sortable_columns'] );
         }
 
         /**
@@ -61,15 +61,16 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
          * @access public
          * @param array $columns  Columns array
          */
-        public function alfaomega_ebook_cpt_columns( $columns ){
-            $columns = array(
-                'cb' => $columns['cb'],
-                'title' => __( 'Title', 'alfaomega-ebook' ),
-                'alfaomega_ebook_link_text' => esc_html__( 'Link Text', 'alfaomega-ebook' ),
-                'alfaomega_ebook_link_url' => esc_html__( 'Link URL', 'alfaomega-ebook' ),
-                'date' => __( 'Date', 'alfaomega-ebook' ),
-            );
-            return $columns;
+        public function alfaomega_ebook_cpt_columns($columns): array
+        {
+            return [
+                'cb'                   => $columns['cb'],
+                'title'                => __('Title', 'alfaomega-ebook'),
+                'alfaomega_ebook_isbn' => esc_html__('ISBN Digital', 'alfaomega-ebook'),
+                'alfaomega_ebook_id'   => esc_html__('PDF Id', 'alfaomega-ebook'),
+                'alfaomega_ebook_url'  => esc_html__('HTML Url', 'alfaomega-ebook'),
+                'date'                 => __('Date', 'alfaomega-ebook'),
+            ];
         }
 
         /**
@@ -80,14 +81,18 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
          * @param string $column  Column name
          * @param int $post_id  Post ID
          */
-        public function alfaomega_ebook_custom_columns( $column, $post_id ){
+        public function alfaomega_ebook_custom_columns( $column, $post_id ): void
+        {
             switch( $column ){
-                case 'alfaomega_ebook_link_text':
-                    echo esc_html( get_post_meta( $post_id, 'alfaomega_ebook_link_text', true ) );
+                case 'alfaomega_ebook_isbn':
+                    echo esc_html( get_post_meta( $post_id, 'alfaomega_ebook_isbn', true ) );
                 break;
-                case 'alfaomega_ebook_link_url':
-                    echo esc_url( get_post_meta( $post_id, 'alfaomega_ebook_link_url', true ) );
-                break;                
+                case 'alfaomega_ebook_id':
+                    echo esc_url( get_post_meta( $post_id, 'alfaomega_ebook_id', true ) );
+                break;
+                case 'alfaomega_ebook_url':
+                    echo esc_url( get_post_meta( $post_id, 'alfaomega_ebook_url', true ) );
+                    break;
             }
         }
 
@@ -98,9 +103,11 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
          * @access public
          * @param array $columns  Columns array
          */
-        public function alfaomega_ebook_sortable_columns( $columns ){
-            $columns['alfaomega_ebook_link_text'] = 'alfaomega_ebook_link_text';
-            $columns['alfaomega_ebook_link_url'] = 'alfaomega_ebook_link_url';
+        public function alfaomega_ebook_sortable_columns( $columns ): array
+        {
+            $columns['alfaomega_ebook_isbn'] = 'alfaomega_ebook_isbn';
+            $columns['alfaomega_ebook_id'] = 'alfaomega_ebook_id';
+            $columns['alfaomega_ebook_url'] = 'alfaomega_ebook_url';
             return $columns;
         }
 
