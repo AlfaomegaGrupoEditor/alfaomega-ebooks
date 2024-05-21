@@ -30,21 +30,6 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
             register_setting('alfaomega_ebooks_group', 'alfaomega_ebooks_options');
 
             // General tab
-            /*add_settings_section(
-                'alfaomega_ebooks_main_section',
-                esc_html__( 'How does it work?', 'alfaomega-ebooks' ),
-                null,
-                'alfaomega_ebooks_page1'
-            );*/
-
-            /*add_settings_field(
-                'alfaomega_ebooks_shortcode',
-                esc_html__('Product->eBook', 'alfaomega-ebooks'),
-                [$this, 'alfaomega_ebooks_product_link_callback'],
-                'alfaomega_ebooks_page1',
-                'alfaomega_ebooks_main_section'
-            );*/
-
             // TODO: General settings to setup the service
             add_settings_section(
                 'alfaomega_ebooks_second_section',
@@ -264,7 +249,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
             ?>
             <input
                 type="url"
-                name="alfaomega_ebooks_options[alfaomega_ebooks_readero]"
+                name="alfaomega_ebooks_options[alfaomega_ebooks_reader]"
                 id="alfaomega_ebooks_reader"
                 size="50"
                 value="<?php echo isset(self::$options['alfaomega_ebooks_reader']) ? esc_attr(self::$options['alfaomega_ebooks_reader']) : ''; ?>"
@@ -283,7 +268,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
         {
             ?>
             <input
-                type="email"
+                type="url"
                 name="alfaomega_ebooks_options[alfaomega_ebooks_panel]"
                 id="alfaomega_ebooks_panel"
                 size="50"
