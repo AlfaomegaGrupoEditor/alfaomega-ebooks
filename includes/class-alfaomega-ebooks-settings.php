@@ -43,7 +43,8 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 esc_html__('Active', 'alfaomega-ebooks'),
                 [$this, 'alfaomega_ebooks_active_callback'],
                 'alfaomega_ebooks_page2',
-                'alfaomega_ebooks_second_section'
+                'alfaomega_ebooks_second_section',
+                ['label_for' => 'alfaomega_ebooks_active']
             );
 
             add_settings_field(
@@ -51,7 +52,8 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 esc_html__('Username', 'alfaomega-ebooks'),
                 [$this, 'alfaomega_ebooks_username_callback'],
                 'alfaomega_ebooks_page2',
-                'alfaomega_ebooks_second_section'
+                'alfaomega_ebooks_second_section',
+                ['label_for' => 'alfaomega_ebooks_username']
             );
 
             add_settings_field(
@@ -59,7 +61,8 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 esc_html__('Password', 'alfaomega-ebooks'),
                 [$this, 'alfaomega_ebooks_password_callback'],
                 'alfaomega_ebooks_page2',
-                'alfaomega_ebooks_second_section'
+                'alfaomega_ebooks_second_section',
+                ['label_for' => 'alfaomega_ebooks_password']
             );
 
             add_settings_field(
@@ -67,7 +70,8 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 esc_html__('Notify to', 'alfaomega-ebooks'),
                 [$this, 'alfaomega_ebooks_notify_to_callback'],
                 'alfaomega_ebooks_page2',
-                'alfaomega_ebooks_second_section'
+                'alfaomega_ebooks_second_section',
+                ['label_for' => 'alfaomega_ebooks_notify_to']
             );
 
             // Platform tab
@@ -76,7 +80,8 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 'alfaomega_ebooks_third_section',
                 esc_html__( 'eBooks Platform', 'alfaomega-ebooks' ),
                 null,
-                'alfaomega_ebooks_page3'
+                'alfaomega_ebooks_page3',
+                ['label_for' => 'alfaomega_ebooks_username']
             );
 
             add_settings_field(
@@ -84,7 +89,8 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 esc_html__('Reader App', 'alfaomega-ebooks'),
                 [$this, 'alfaomega_ebooks_reader_callback'],
                 'alfaomega_ebooks_page3',
-                'alfaomega_ebooks_third_section'
+                'alfaomega_ebooks_third_section',
+                ['label_for' => 'alfaomega_ebooks_reader']
             );
 
             add_settings_field(
@@ -92,7 +98,8 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 esc_html__('Panel Server', 'alfaomega-ebooks'),
                 [$this, 'alfaomega_ebooks_panel_callback'],
                 'alfaomega_ebooks_page3',
-                'alfaomega_ebooks_third_section'
+                'alfaomega_ebooks_third_section',
+                ['label_for' => 'alfaomega_ebooks_panel']
             );
 
             // API tab
@@ -109,7 +116,8 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 esc_html__('Token Url', 'alfaomega-ebooks'),
                 [$this, 'alfaomega_ebooks_token_callback'],
                 'alfaomega_ebooks_page4',
-                'alfaomega_ebooks_fourth_section'
+                'alfaomega_ebooks_fourth_section',
+                ['label_for' => 'alfaomega_ebooks_token']
             );
 
             add_settings_field(
@@ -117,7 +125,8 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 esc_html__('API Server', 'alfaomega-ebooks'),
                 [$this, 'alfaomega_ebooks_api_callback'],
                 'alfaomega_ebooks_page4',
-                'alfaomega_ebooks_fourth_section'
+                'alfaomega_ebooks_fourth_section',
+                ['label_for' => 'alfaomega_ebooks_api']
             );
 
             add_settings_field(
@@ -125,7 +134,8 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 esc_html__('Client Id', 'alfaomega-ebooks'),
                 [$this, 'alfaomega_ebooks_client_id_callback'],
                 'alfaomega_ebooks_page4',
-                'alfaomega_ebooks_fourth_section'
+                'alfaomega_ebooks_fourth_section',
+                ['label_for' => 'alfaomega_ebooks_client_id']
             );
 
             add_settings_field(
@@ -133,7 +143,8 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 esc_html__('Client Secret', 'alfaomega-ebooks'),
                 [$this, 'alfaomega_ebooks_client_secret_callback'],
                 'alfaomega_ebooks_page4',
-                'alfaomega_ebooks_fourth_section'
+                'alfaomega_ebooks_fourth_section',
+                ['label_for' => 'alfaomega_ebooks_client_secret']
             );
         }
 
