@@ -80,6 +80,8 @@ class Alfaomega_Ebooks {
 		$this->define_public_hooks();
 
         $Alfaomega_Ebooks_Post_Type = new Alfaomega_Ebooks_Post_Type();
+        $Alfaomega_Ebooks_Settings = new Alfaomega_Ebooks_Settings();
+
         add_action( 'admin_menu', array( $this, 'add_menu' ) );
 	}
 
@@ -128,6 +130,11 @@ class Alfaomega_Ebooks {
          * The class responsible for defining the CPT alfaomega-ebook.
          */
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'post_types/class-alfaomega-ebooks-post-type.php';
+
+        /**
+         * The class responsible for defining the settings page.
+         */
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-settings.php';
 
 		$this->loader = new Alfaomega_Ebooks_Loader();
 
@@ -239,7 +246,7 @@ class Alfaomega_Ebooks {
         add_submenu_page(
             'alfaomega_ebooks_admin',
             esc_html__( 'All Alfaomega eBooks', 'alfaomega-ebooks' ),
-            esc_html__( 'All eBooks', 'alfaomega-ebooks' ),
+            esc_html__( 'All items', 'alfaomega-ebooks' ),
             'install_plugins',
             'edit.php?post_type=alfaomega-ebook',
             null,
@@ -288,7 +295,7 @@ class Alfaomega_Ebooks {
 
         settings_errors( 'alfaomega_ebook_options' );
 
-        require( MV_SLIDER_PATH . 'src/views/alfaomega_ebook_settings_page.php' );
+        require( ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_settings_page.php' );
     }
 
 }

@@ -11,261 +11,175 @@
 if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
     class Alfaomega_Ebooks_Settings{
 
-        /**
-         * Options object
-         * @var MV_Slider_Options
-         */
-        private $options;
+        public static $options;
 
         /**
          * Constructor
-         * @param MV_Slider_Options $options
          * @return void
          * @since 1.0.0
          * @access public
          */
-        public function __construct( MV_Slider_Options $options ){
-            $this->options = $options;
-            $this->register();
+        public function __construct()
+        {
+            self::$options = get_option('alfaomega_ebooks_options');
+            add_action( 'admin_init', array( $this, 'admin_init' ) );
         }
 
-        /**
-         * Register hooks
-         * @return void
-         * @since 1.0.0
-         * @access public
-         */
-        public function register( ){
-            add_action( 'admin_init', array( $this, 'configure' ) );
-            add_action( 'admin_menu', array( $this, 'add_admin_page' ) );
-        }
+        public function admin_init()
+        {
+            register_setting('alfaomega_ebooks_group', 'alfaomega_ebooks_options');
 
-        /**
-         * Add admin page
-         * @return void
-         * @since 1.0.0
-         * @access public
-         */
-        public function add_admin_page(){
-            add_menu_page(
-                esc_html__( 'MV Slider Options', 'mv-slider' ),
-                'MV Slider',
-                'install_plugins',
-                'mv_slider_admin',
-                array( $this, 'render' ),
-                'dashicons-images-alt2'
-            );
-
-            add_submenu_page(
-                'mv_slider_admin',
-                esc_html__( 'Manage Slides', 'mv-slider' ),
-                esc_html__( 'Manage Slides', 'mv-slider' ),
-                'install_plugins',
-                'edit.php?post_type=mv-slider',
-                null,
-                null
-            );
-
-            add_submenu_page(
-                'mv_slider_admin',
-                esc_html__( 'Add New Slide', 'mv-slider' ),
-                esc_html__( 'Add New Slide', 'mv-slider' ),
-                'install_plugins',
-                'post-new.php?post_type=mv-slider',
-                null,
-                null
-            );
-        }
-
-        /**
-         * Register settings and fields
-         * @return void
-         * @since 1.0.0
-         * @access public
-         */
-        public function configure(){
-
-            // List of fields to be registered
-            register_setting( 'mv_slider_options', 'mv_slider_title',
-                [ 'sanitize_callback' => fn( $new_value ) => $this->options->validate_empty( $new_value, 'mv_slider_title' ) ]
-            );
-            register_setting( 'mv_slider_options', 'mv_slider_bullets',
-                [ 'sanitize_callback' => 'sanitize_text_field' ]
-            );
-            register_setting( 'mv_slider_options', 'mv_slider_style',
-                [ 'sanitize_callback' => 'sanitize_text_field' ]
-            );
-
-            // List of sections to be rendered
             add_settings_section(
-                'mv_slider_main_section',
-                esc_html__( 'How does it work?', 'mv-slider' ),
+                'alfaomega_ebooks_main_section',
+                esc_html__( 'How does it work?', 'alfaomega-ebooks' ),
                 null,
-                'mv_slider_page1'
+                'alfaomega_ebooks_page1'
             );
 
             add_settings_section(
-                'mv_slider_second_section',
-                esc_html__( 'Other Plugin Options', 'mv-slider' ),
+                'alfaomega_ebooks_second_section',
+                esc_html__( 'General Configuration', 'alfaomega-ebooks' ),
                 null,
-                'mv_slider_page2'
-            );
-
-            // List of fields to be rendered
-            add_settings_field(
-                'mv_slider_shortcode',
-                esc_html__( 'Shortcode', 'mv-slider' ),
-                array( $this, 'mv_slider_shortcode_callback' ),
-                'mv_slider_page1',
-                'mv_slider_main_section'
+                'alfaomega_ebooks_page2'
             );
 
             add_settings_field(
-                'mv_slider_title',
-                esc_html__( 'Slider Title', 'mv-slider' ),
-                array( $this, 'mv_slider_title_callback' ),
-                'mv_slider_page2',
-                'mv_slider_second_section'
+                'alfaomega_ebooks_shortcode',
+                esc_html__('Product->eBook', 'alfaomega-ebooks'),
+                [$this, 'alfaomega_ebooks_product_link_callback'],
+                'alfaomega_ebooks_page1',
+                'alfaomega_ebooks_main_section'
             );
 
             add_settings_field(
-                'mv_slider_bullets',
-                esc_html__( 'Display Bullets', 'mv-slider' ),
-                array( $this, 'mv_slider_bullets_callback' ),
-                'mv_slider_page2',
-                'mv_slider_second_section'
+                'alfaomega_ebooks_active',
+                esc_html__('Active', 'alfaomega-ebooks'),
+                [$this, 'alfaomega_ebooks_active_callback'],
+                'alfaomega_ebooks_page2',
+                'alfaomega_ebooks_second_section'
             );
 
             add_settings_field(
-                'mv_slider_style',
-                esc_html__( 'Slider Style', 'mv-slider' ),
-                array( $this, 'mv_slider_style_callback' ),
-                'mv_slider_page2',
-                'mv_slider_second_section',
-                array(
-                    'items' => array(
-                        'style-1',
-                        'style-2'
-                    )
-                )
+                'alfaomega_ebooks_username',
+                esc_html__('Username', 'alfaomega-ebooks'),
+                [$this, 'alfaomega_ebooks_username_callback'],
+                'alfaomega_ebooks_page2',
+                'alfaomega_ebooks_second_section'
+            );
 
+            add_settings_field(
+                'alfaomega_ebooks_password',
+                esc_html__('Password', 'alfaomega-ebooks'),
+                [$this, 'alfaomega_ebooks_password_callback'],
+                'alfaomega_ebooks_page2',
+                'alfaomega_ebooks_second_section'
+            );
+
+            add_settings_field(
+                'alfaomega_ebooks_notify_to',
+                esc_html__('Notify to', 'alfaomega-ebooks'),
+                [$this, 'alfaomega_ebooks_notify_to_callback'],
+                'alfaomega_ebooks_page2',
+                'alfaomega_ebooks_second_section'
             );
         }
 
         /**
-         * Render the shortcode field
+         * Render the product_link field
          * @return void
          * @since 1.0.0
          * @access public
          */
-        public function mv_slider_shortcode_callback(){
+        public function alfaomega_ebooks_product_link_callback(): void
+        {
             ?>
-            <span><?php esc_html_e( 'Use the shortcode [mv_slider] to display the slider in any page/post/widget', 'mv-slider' ); ?></span>
+                <span>
+                    <?php esc_html_e( 'A product and an eBook are linked by Digital ISBN, so make sure the Product digital ISBN is set properly.', 'alfaomega-ebooks' ); ?>
+                </span>
             <?php
         }
 
         /**
-         * Render the title field
+         * Render the username field
          * @return void
          * @since 1.0.0
          * @access public
          */
-        public function mv_slider_title_callback(){
+        public function alfaomega_ebooks_username_callback(): void
+        {
+            ?>
+                <input
+                    type="text"
+                    name="alfaomega_ebooks_options[alfaomega_ebooks_username]"
+                    id="alfaomega_ebooks_username"
+                    size="50"
+                    value="<?php echo isset(self::$options['alfaomega_ebooks_username']) ? esc_attr(self::$options['alfaomega_ebooks_username']) : ''; ?>"
+                >
+            <?php
+        }
 
-            $title = '';
-            if( $this->options->has( 'mv_slider_title' ) ){
-                $title = $this->options->get( 'mv_slider_title' );
-            }
-
+        /**
+         * Render the active field
+         * @return void
+         * @since 1.0.0
+         * @access public
+         */
+        public function alfaomega_ebooks_active_callback(): void
+        {
             ?>
             <input
-                type="text"
-                name="mv_slider_title"
-                id="mv_slider_title"
-                value="<?php echo esc_attr( $title ); ?>"
+                type="checkbox"
+                name="alfaomega_ebooks_options[alfaomega_ebooks_active]"
+                id="alfaomega_ebooks_active"
+                value="1"
+                <?php
+                    if ( isset( self::$options['alfaomega_ebooks_active'])) {
+                        checked( "1", self::$options['alfaomega_ebooks_active'], true);
+                    }
+                ?>
+            >
+            <label for="alfaomega_ebooks_active">
+                <? echo esc_html__('Whether to update eBooks link to relative product with the same Digital ISBN.', 'alfaomega-ebooks'); ?>
+            </label>
+            <?php
+        }
+
+        /**
+         * Render the password field
+         * @return void
+         * @since 1.0.0
+         * @access public
+         */
+        public function alfaomega_ebooks_password_callback(): void
+        {
+            ?>
+            <input
+                type="password"
+                name="alfaomega_ebooks_options[alfaomega_ebooks_password]"
+                id="alfaomega_ebooks_password"
+                size="50"
+                value="<?php echo isset(self::$options['alfaomega_ebooks_password']) ? esc_attr(self::$options['alfaomega_ebooks_password']) : ''; ?>"
             >
             <?php
         }
 
         /**
-         * Render the bullets field
+         * Render the notify_to field
          * @return void
          * @since 1.0.0
          * @access public
          */
-        public function mv_slider_bullets_callback(){
-
-            $bullets = '';
-            if( $this->options->has( 'mv_slider_bullets' ) ){
-                $bullets = $this->options->get( 'mv_slider_bullets' );
-            }
-
+        public function alfaomega_ebooks_notify_to_callback(): void
+        {
             ?>
             <input
-                type="checkbox"
-                name="mv_slider_bullets"
-                id="mv_slider_bullets"
-                value="1"
-                <?php
-                checked( "1", $bullets, true );
-                ?>
-            />
-            <label for="mv_slider_bullets"><?php esc_html_e( 'Whether to display bullets or not', 'mv-slider' ); ?></label>
-
+                type="email"
+                name="alfaomega_ebooks_options[alfaomega_ebooks_notify_to]"
+                id="alfaomega_ebooks_notify_to"
+                size="50"
+                value="<?php echo isset(self::$options['alfaomega_ebooks_notify_to']) ? esc_attr(self::$options['alfaomega_ebooks_notify_to']) : ''; ?>"
+            >
             <?php
         }
-
-        /**
-         * Render the style field
-         * @return void
-         * @since 1.0.0
-         * @access public
-         */
-        public function mv_slider_style_callback( $args ){
-
-            $style = '';
-            if( $this->options->has( 'mv_slider_style' ) ){
-                $style = $this->options->get( 'mv_slider_style' );
-            }
-
-            ?>
-            <select
-                id="mv_slider_style"
-                name="mv_slider_style">
-                <?php
-                foreach( $args['items'] as $item ):
-                    ?>
-                    <option value="<?php echo esc_attr( $item ); ?>"
-                        <?php
-                        selected( $item, $style, true );
-                        ?>
-                    >
-                        <?php echo esc_html( ucfirst( str_replace( '-', ' ', $item ) ) ); ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-            <?php
-        }
-
-        /**
-         * Render the settings page
-         * @return void
-         * @since 1.0.0
-         * @access public
-         */
-        public function render(){
-            if( ! current_user_can( 'install_plugins' ) ){
-                return;
-            }
-
-            if( isset( $_GET['settings-updated'] ) ){
-                add_settings_error( 'mv_slider_options', 'mv_slider_message', esc_html__( 'Settings Saved', 'mv-slider' ), 'success' );
-            }
-
-            settings_errors( 'mv_slider_options' );
-
-            require( MV_SLIDER_PATH . 'src/views/settings-page.php' );
-        }
-
     }
 }
