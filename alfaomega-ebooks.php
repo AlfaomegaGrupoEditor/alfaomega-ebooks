@@ -68,7 +68,7 @@ function alfaomega_ebooks_check_requirements() {
  */
 function alfaomega_ebooks_missing_wc_notice() {
     $class = 'notice notice-error';
-    $message = esc_html__( 'AlfaomegaEbooks requires WooCommerce to be installed and active.', 'alfaomega-ebooks' );
+    $message = esc_html__( 'AlfaomegaEbooks requires WooCommerce to be installed and active', 'alfaomega-ebooks' );
 
     printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
 }

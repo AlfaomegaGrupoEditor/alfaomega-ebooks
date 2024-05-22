@@ -392,7 +392,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                     add_settings_error(
                         'alfaomega_ebook_options',
                         'alfaomega_ebook_message',
-                        printf( esc_html__( 'The field %d can not be left empty.', 'alfaomega-ebooks' ), esc_html__($key, 'alfaomega-ebooks') ),
+                        printf( esc_html__( 'The field %d can not be left empty', 'alfaomega-ebooks' ), esc_html__($key, 'alfaomega-ebooks') ),
                         'error'
                     );
                     return [];
