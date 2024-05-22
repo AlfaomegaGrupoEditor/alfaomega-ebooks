@@ -235,8 +235,8 @@ class Alfaomega_Ebooks {
     public function add_menu(): void
     {
         add_menu_page(
-            __( 'Alfaomega eBooks Admin', 'alfaomega-ebooks' ),
-            __('AO eBooks', 'alfaomega-ebooks'),
+            esc_html__( 'Alfaomega eBooks Admin', 'alfaomega-ebooks' ),
+            esc_html__('AO eBooks', 'alfaomega-ebooks'),
             'install_plugins',
             'alfaomega_ebooks_admin',
             array( $this, 'render' ),
@@ -246,8 +246,8 @@ class Alfaomega_Ebooks {
 
         add_submenu_page(
             'alfaomega_ebooks_admin',
-            __( 'All Alfaomega eBooks', 'alfaomega-ebooks' ),
-            __( 'All items', 'alfaomega-ebooks' ),
+            esc_html__( 'All Alfaomega eBooks', 'alfaomega-ebooks' ),
+            esc_html__( 'All items', 'alfaomega-ebooks' ),
             'install_plugins',
             'edit.php?post_type=alfaomega-ebook',
             null,
@@ -257,8 +257,8 @@ class Alfaomega_Ebooks {
         // No allowed
 //        add_submenu_page(
 //            'alfaomega_ebooks_admin',
-//            __( 'Add New eBook', 'alfaomega-ebooks' ),
-//            __( 'Add New eBook', 'alfaomega-ebooks' ),
+//            esc_html__( 'Add New eBook', 'alfaomega-ebooks' ),
+//            esc_html__( 'Add New eBook', 'alfaomega-ebooks' ),
 //            'install_plugins',
 //            'post-new.php?post_type=alfaomega-ebook',
 //            null,
@@ -270,8 +270,8 @@ class Alfaomega_Ebooks {
         //  notify the user about the process result
         add_submenu_page(
             'alfaomega_ebooks_admin',
-            __( 'Import & Update eBooks', 'alfaomega-ebooks' ),
-            __( 'Import & Update', 'alfaomega-ebooks' ),
+            esc_html__( 'Import & Update eBooks', 'alfaomega-ebooks' ),
+            esc_html__( 'Import & Update', 'alfaomega-ebooks' ),
             'install_plugins',
             'post-new.php?post_type=alfaomega-ebook',
             null,
@@ -294,7 +294,7 @@ class Alfaomega_Ebooks {
             add_settings_error(
                 'alfaomega_ebook_options',
                 'alfaomega_ebook_message',
-                __( 'Settings Saved', 'alfaomega-ebooks' ),
+                esc_html__( 'Settings Saved', 'alfaomega-ebooks' ),
                 'success'
             );
         }

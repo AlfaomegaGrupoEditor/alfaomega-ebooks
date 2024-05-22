@@ -5,13 +5,13 @@
     ?>
     <h2 class="nav-tab-wrapper">
         <a href="?page=alfaomega_ebooks_admin&tab=general_options" class="nav-tab <?php echo $active_tab == 'general_options' ? 'nav-tab-active' : ''; ?>">
-            <?php _e( 'General Configuration', 'alfaomega-ebooks' ); ?>
+            <?php esc_html_e( 'General Configuration', 'alfaomega-ebooks' ); ?>
         </a>
         <a href="?page=alfaomega_ebooks_admin&tab=platform_options" class="nav-tab <?php echo $active_tab == 'platform_options' ? 'nav-tab-active' : ''; ?>">
-            <?php _e( 'eBooks Platform', 'alfaomega-ebooks' ); ?>
+            <?php esc_html_e( 'eBooks Platform', 'alfaomega-ebooks' ); ?>
         </a>
         <a href="?page=alfaomega_ebooks_admin&tab=api_options" class="nav-tab <?php echo $active_tab == 'api_options' ? 'nav-tab-active' : ''; ?>">
-            <?php _e( 'API Settings', 'alfaomega-ebooks' ); ?>
+            <?php esc_html_e( 'API Settings', 'alfaomega-ebooks' ); ?>
         </a>
     </h2>
     <form action="options.php" method="post">
@@ -31,7 +31,7 @@
                     do_settings_sections( 'alfaomega_ebooks_page4' );
                     break;
             }
-            submit_button( __( 'Save Settings', 'alfaomega-ebooks' ) );
+            submit_button( esc_html__( 'Save Settings', 'alfaomega-ebooks' ) );
         ?>
     </form>
 </div>

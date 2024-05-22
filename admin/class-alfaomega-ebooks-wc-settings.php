@@ -28,7 +28,7 @@ if ( ! class_exists( 'AlfaomegaEbooks_WC_Settings' ) ) {
         public function __construct() {
             parent::__construct();
             $this->id    = 'alfaomega-ebooks';
-            $this->label = __( 'Alfaomega Ebooks', 'alfaomega-ebooks' );
+            $this->label = esc_html__( 'Alfaomega Ebooks', 'alfaomega-ebooks' );
 
             // Define all hooks instead of inheriting from parent                    
             add_filter( 'woocommerce_settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
@@ -46,9 +46,9 @@ if ( ! class_exists( 'AlfaomegaEbooks_WC_Settings' ) ) {
          */
         public function get_sections() {
             $sections = array(
-                '' => __( 'Settings', 'alfaomega-ebooks' ),
-                'log' => __( 'Log', 'alfaomega-ebooks' ),
-                'results' => __( 'Sync Results', 'alfaomega-ebooks' )
+                '' => esc_html__( 'Settings', 'alfaomega-ebooks' ),
+                'log' => esc_html__( 'Log', 'alfaomega-ebooks' ),
+                'results' => esc_html__( 'Sync Results', 'alfaomega-ebooks' )
             );
 
             return apply_filters( 'woocommerce_get_sections_' . $this->id, $sections );
