@@ -210,7 +210,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 ?>
             >
             <label for="alfaomega_ebooks_active">
-                <? esc_html_e('Whether to update eBooks link to relative product with the same Digital ISBN.', 'alfaomega-ebooks'); ?>
+                <? esc_html_e('Whether to update eBooks link to relative product with the same Digital ISBN', 'alfaomega-ebooks'); ?>
             </label>
             <?php
         }
