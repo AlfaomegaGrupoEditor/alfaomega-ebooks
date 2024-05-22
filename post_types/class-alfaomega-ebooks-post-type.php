@@ -29,11 +29,11 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
             register_post_type(
                 ALFAOMEGA_EBOOKS_POST_TYPE,
                 [
-                    'label'               => esc_html__('AO eBook', 'alfaomega-ebook'),
-                    'description'         => esc_html__('Alfaomega eBooks', 'alfaomega-ebook'),
+                    'label'               => __('AO eBook', 'alfaomega-ebook'),
+                    'description'         => __('Alfaomega eBooks', 'alfaomega-ebook'),
                     'labels'              => [
-                        'name'          => esc_html__('AO eBooks', 'alfaomega-ebook'),
-                        'singular_name' => esc_html__('AO eBook', 'alfaomega-ebook'),
+                        'name'          => __('AO eBooks', 'alfaomega-ebook'),
+                        'singular_name' => __('AO eBook', 'alfaomega-ebook'),
                     ],
                     'public'              => true,
                     'supports'            => ['title', 'editor', 'author', 'thumbnail'],
@@ -71,9 +71,9 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
             return [
                 'cb'                   => $columns['cb'],
                 'title'                => __('Title', 'alfaomega-ebook'),
-                'alfaomega_ebook_isbn' => esc_html__('ISBN Digital', 'alfaomega-ebook'),
-                'alfaomega_ebook_id'   => esc_html__('PDF Id', 'alfaomega-ebook'),
-                'alfaomega_ebook_url'  => esc_html__('HTML Url', 'alfaomega-ebook'),
+                'alfaomega_ebook_isbn' => __('ISBN Digital', 'alfaomega-ebook'),
+                'alfaomega_ebook_id'   => __('PDF Id', 'alfaomega-ebook'),
+                'alfaomega_ebook_url'  => __('HTML Url', 'alfaomega-ebook'),
                 'date'                 => __('Date', 'alfaomega-ebook'),
             ];
         }
@@ -126,7 +126,7 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
         {
             add_meta_box(
                 'alfaomega_ebook_meta_box',
-                esc_html__('eBook Information', 'alfaomega-ebook'),
+                __('eBook Information', 'alfaomega-ebook'),
                 [$this, 'add_inner_meta_boxes'],
                 ALFAOMEGA_EBOOKS_POST_TYPE,
                 'normal', // side

@@ -37,7 +37,7 @@ class Alfaomega_Ebooks_i18n {
 		load_plugin_textdomain(
 			'alfaomega-ebooks',
 			false,
-			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
+			dirname( plugin_basename( __FILE__ ) ) . '/languages/'
 		);
 
 	}

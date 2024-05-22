@@ -3,7 +3,7 @@
     <tr>
         <th>
             <label for="alfaomega_ebook_isbn">
-                <?php esc_html_e( 'ISBN Digital', 'alfaomega-ebook' ); ?>
+                <?php _e( 'ISBN Digital', 'alfaomega-ebook' ); ?>
             </label>
         </th>
         <td>
@@ -19,7 +19,9 @@
     </tr>
     <tr>
         <th>
-            <label for="alfaomega_ebook_id"><?php esc_html_e( 'PDF Id', 'alfaomega-ebook' ); ?></label>
+            <label for="alfaomega_ebook_id">
+                <?php _e( 'PDF Id', 'alfaomega-ebook' ); ?>
+            </label>
         </th>
         <td>
             <input
@@ -34,7 +36,9 @@
     </tr>
     <tr>
         <th>
-            <label for="alfaomega_ebook_url"><?php esc_html_e( 'HTML Url', 'alfaomega-ebook' ); ?></label>
+            <label for="alfaomega_ebook_url">
+                <?php _e( 'HTML Url', 'alfaomega-ebook' ); ?>
+            </label>
         </th>
         <td>
             <input
