@@ -11,7 +11,7 @@ msgstr ""
 "Livan Rodriguez "
 "<livan2r@gmail.com>\n"
 "POT-Creation-Date: "
-"2024-05-22 15:38-0400\n"
+"2024-05-22 15:44-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Livan "
 "Rodriguez <livan2r@gmail."
@@ -147,7 +147,8 @@ msgid "Reader"
 msgstr ""
 
 #: admin/partials/alfaomega-ebooks-settings-main.php:58
-msgid " Reader app URL"
+#: includes/class-alfaomega-ebooks-settings.php:274
+msgid "Reader app URL"
 msgstr ""
 
 #: admin/partials/alfaomega-ebooks-settings-main.php:63
@@ -155,8 +156,7 @@ msgid "Panel"
 msgstr ""
 
 #: admin/partials/alfaomega-ebooks-settings-main.php:65
-msgid ""
-" Publisher Panel URL"
+msgid "Publisher Panel URL"
 msgstr ""
 
 #: admin/partials/alfaomega-ebooks-settings-main.php:79
@@ -168,7 +168,7 @@ msgstr ""
 
 #: admin/partials/alfaomega-ebooks-settings-main.php:82
 msgid ""
-" Alfaomega API "
+"Alfaomega API "
 "configuration"
 msgstr ""
 
@@ -177,9 +177,10 @@ msgid "Token URL"
 msgstr ""
 
 #: admin/partials/alfaomega-ebooks-settings-main.php:88
+#: includes/class-alfaomega-ebooks-settings.php:314
 msgid ""
-" Endpoint to renovate "
-"the access token"
+"Endpoint to renovate the "
+"access token"
 msgstr ""
 
 #: admin/partials/alfaomega-ebooks-settings-main.php:93
@@ -188,7 +189,8 @@ msgid "API Server"
 msgstr ""
 
 #: admin/partials/alfaomega-ebooks-settings-main.php:95
-msgid " API Server URL"
+#: includes/class-alfaomega-ebooks-settings.php:334
+msgid "API Server URL"
 msgstr ""
 
 #: admin/partials/alfaomega-ebooks-settings-main.php:100
@@ -233,24 +235,10 @@ msgid ""
 "ISBN"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks-settings.php:274
-msgid "Reader app URL"
-msgstr ""
-
 #: includes/class-alfaomega-ebooks-settings.php:294
 msgid ""
 "Publisher Panel server "
 "URL"
-msgstr ""
-
-#: includes/class-alfaomega-ebooks-settings.php:314
-msgid ""
-"Endpoint to renovate the "
-"access token"
-msgstr ""
-
-#: includes/class-alfaomega-ebooks-settings.php:334
-msgid "API Server URL"
 msgstr ""
 
 #: includes/class-alfaomega-ebooks-settings.php:354
