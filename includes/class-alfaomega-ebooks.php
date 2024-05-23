@@ -235,13 +235,23 @@ class Alfaomega_Ebooks {
     public function add_menu(): void
     {
         add_menu_page(
-            esc_html__( 'Alfaomega eBooks Admin', 'alfaomega-ebooks' ),
+            'Alfaomega eBooks Admin ' . ALFAOMEGA_EBOOKS_VERSION,
             esc_html__('AO eBooks', 'alfaomega-ebooks'),
             'install_plugins',
             'alfaomega_ebooks_admin',
-            array( $this, 'render' ),
+            array( $this, 'renderHome' ),
             'dashicons-book',
             56
+        );
+
+        add_submenu_page(
+            'alfaomega_ebooks_admin',
+            esc_html__( 'Settings', 'alfaomega-ebooks' ),
+            esc_html__( 'Settings', 'alfaomega-ebooks' ),
+            'install_plugins',
+            'alfaomega_ebooks_settings',
+            array( $this, 'renderSettings' ),
+            null
         );
 
         add_submenu_page(
@@ -285,7 +295,8 @@ class Alfaomega_Ebooks {
      * @since 1.0.0
      * @access public
      */
-    public function render(){
+    public function renderSettings(): void
+    {
         if( ! current_user_can( 'install_plugins' ) ){
             return;
         }
@@ -302,6 +313,11 @@ class Alfaomega_Ebooks {
         settings_errors( 'alfaomega_ebook_options' );
 
         require( ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_settings_page.php' );
+    }
+
+    public function renderHome(): void
+    {
+        require( ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_home_page.php' );
     }
 
 }
