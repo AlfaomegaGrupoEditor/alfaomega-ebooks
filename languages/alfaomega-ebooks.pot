@@ -11,7 +11,7 @@ msgstr ""
 "Livan Rodriguez "
 "<livan2r@gmail.com>\n"
 "POT-Creation-Date: "
-"2024-05-22 15:44-0400\n"
+"2024-05-23 10:28-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Livan "
 "Rodriguez <livan2r@gmail."
@@ -203,7 +203,7 @@ msgstr ""
 msgid "Client Secret"
 msgstr ""
 
-#: alfaomega-ebooks.php:71
+#: alfaomega-ebooks.php:76
 msgid ""
 "AlfaomegaEbooks requires "
 "WooCommerce to be "
@@ -303,29 +303,29 @@ msgstr ""
 msgid "Alfaomega eBooks"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-post-type.php:73
+#: post_types/class-alfaomega-ebooks-post-type.php:77
 msgid "Title"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-post-type.php:74
+#: post_types/class-alfaomega-ebooks-post-type.php:78
 msgid "Digital ISBN"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-post-type.php:75
+#: post_types/class-alfaomega-ebooks-post-type.php:79
 #: views/alfaomega_ebook_metabox.php:23
 msgid "PDF Id"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-post-type.php:76
+#: post_types/class-alfaomega-ebooks-post-type.php:80
 #: views/alfaomega_ebook_metabox.php:40
 msgid "HTML Url"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-post-type.php:77
+#: post_types/class-alfaomega-ebooks-post-type.php:81
 msgid "Date"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-post-type.php:129
+#: post_types/class-alfaomega-ebooks-post-type.php:133
 msgid "eBook Information"
 msgstr ""
 

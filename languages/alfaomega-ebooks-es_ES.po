@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank WordPress Pot v1.0.0\n"
 "Report-Msgid-Bugs-To: Livan Rodriguez <livan2r@gmail.com>\n"
-"POT-Creation-Date: 2024-05-22 21:33-0400\n"
+"POT-Creation-Date: 2024-05-23 10:28-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: B&B Computer Services Corp. <livan2r@gmail.com>\n"
@@ -162,7 +162,7 @@ msgstr "Id del Cliente"
 msgid "Client Secret"
 msgstr "Clave secreta del Cliente"
 
-#: alfaomega-ebooks.php:71
+#: alfaomega-ebooks.php:76
 msgid "AlfaomegaEbooks requires WooCommerce to be installed and active"
 msgstr ""
 "AlfaoemgaEbooks require que el complemento WooCommerce este instalado y "
@@ -248,29 +248,29 @@ msgstr "AO eBook"
 msgid "Alfaomega eBooks"
 msgstr "Alfaomega eBooks"
 
-#: post_types/class-alfaomega-ebooks-post-type.php:73
+#: post_types/class-alfaomega-ebooks-post-type.php:77
 msgid "Title"
 msgstr "Título"
 
-#: post_types/class-alfaomega-ebooks-post-type.php:74
+#: post_types/class-alfaomega-ebooks-post-type.php:78
 msgid "Digital ISBN"
 msgstr "ISBN Digital"
 
-#: post_types/class-alfaomega-ebooks-post-type.php:75
+#: post_types/class-alfaomega-ebooks-post-type.php:79
 #: views/alfaomega_ebook_metabox.php:23
 msgid "PDF Id"
 msgstr "ID del PDF"
 
-#: post_types/class-alfaomega-ebooks-post-type.php:76
+#: post_types/class-alfaomega-ebooks-post-type.php:80
 #: views/alfaomega_ebook_metabox.php:40
 msgid "HTML Url"
 msgstr "URL del libro HTML"
 
-#: post_types/class-alfaomega-ebooks-post-type.php:77
+#: post_types/class-alfaomega-ebooks-post-type.php:81
 msgid "Date"
 msgstr "Fecha"
 
-#: post_types/class-alfaomega-ebooks-post-type.php:129
+#: post_types/class-alfaomega-ebooks-post-type.php:133
 msgid "eBook Information"
 msgstr "Información del eBook"
 
