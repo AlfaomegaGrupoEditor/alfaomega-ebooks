@@ -44,13 +44,15 @@
 				},
 				error: function(error) {
 					$('.alfaomega_ebooksLoading').remove();
-					showError();
+					showError(error?.responseJSON?.error ? error?.responseJSON?.error : '');
 				},
 				success: function(response) {
 					$('.alfaomega_ebooksLoading').remove();
 
 					if ('success' === response.status) {
-						showInfo();
+						showInfo(response.message);
+					} else {
+						showError(response.error);
 					}
 				},
 

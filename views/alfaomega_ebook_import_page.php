@@ -13,13 +13,14 @@
               id="alfaomega_ebooks_import_ebooks"
               class="alfaomega_ebooksCol-9"
         >
-            <input type="hidden" name="action" value="alfaomega_ebooks_import_ebooks" />
+            <input type="hidden" name="action" value="alfaomega_ebooks_form" />
+            <input type="hidden" name="endpoint" value="import_ebooks" />
             <input type="hidden" name="alfaomega_ebook_nonce" value="<?=wp_create_nonce('alfaomega_ebook_nonce')?>" />
 
             <input class="alfaomega_ebooks-btn btnFade alfaomega_ebooks-btnBlueGreen alfaomega_ebooks_import_ebooks"
                    type="submit"
                    name="alfaomega_ebooks_import_ebooks"
-                   value="<?php esc_html_e("Import eBooks", 'alfaoemga-ebooks') ?>"
+                   value="<?php esc_html_e("Import eBooks", 'alfaomega-ebooks') ?>"
             >
         </form>
 

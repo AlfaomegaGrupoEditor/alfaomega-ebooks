@@ -169,7 +169,8 @@ class Alfaomega_Ebooks {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function define_admin_hooks() {
+	private function define_admin_hooks()
+    {
 
 		$plugin_admin = new Alfaomega_Ebooks_Admin( $this->get_plugin_name(), $this->get_version() );
 
@@ -178,8 +179,8 @@ class Alfaomega_Ebooks {
         $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'localize_script_variables' );
 
         $controller = new Alfaomega_Ebooks_Controller();
-        $this->loader->add_action( 'admin_post_nopriv_contact_form', $controller, 'process' );
-        $this->loader->add_action( 'admin_post_contact_form', $controller,'process' );
+        $this->loader->add_action( 'admin_post_nopriv_alfaomega_ebooks_form', $controller, 'process' );
+        $this->loader->add_action( 'admin_post_alfaomega_ebooks_form', $controller,'process' );
 
         // Add plugin settings to WooCommerce
         // @deprecated Using the own plugin settings

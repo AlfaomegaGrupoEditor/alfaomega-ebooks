@@ -13,41 +13,37 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
 
         protected array $request = [];
 
-        /**
-         * Constructor
-         * @return void
-         * @since 1.0.0
-         * @access public
-         */
         public function process(): void
         {
             try {
+                $this->request = $_POST;
                 header('Content-Type: application/json; charset=utf-8');
 
-                if( isset( $_POST['alfaomega_ebook_nonce'] ) ){
-                    if( ! wp_verify_nonce( $_POST['alfaomega_ebook_nonce'], 'alfaomega_ebook_nonce' ) ){
+                if( isset( $this->request['alfaomega_ebook_nonce'] ) ){
+                    if( ! wp_verify_nonce( $this->request['alfaomega_ebook_nonce'], 'alfaomega_ebook_nonce' ) ){
                         throw new Exception(esc_html__('Access denied', 'alfaomega-ebooks'), 403);
                     }
                 } else {
                     throw new Exception(esc_html__('Access denied', 'alfaomega-ebooks'), 403);
                 }
 
-                if( ! current_user_can( 'edit_post') ){
+                if( ! current_user_can( 'install_plugins') ){
                     throw new Exception(esc_html__('Access denied', 'alfaomega-ebooks'), 403);
                 }
 
-                $this->request = explode("/", substr(@$_SERVER['PATH_INFO'], 1));
-                if (empty($this->request['action']) || !method_exists($this, $this->request['action'])) {
+                if (empty($this->request['endpoint']) || !method_exists($this, $this->request['endpoint'])) {
                     throw new Exception(esc_html__('Bad request', 'alfaomega-ebooks'), 400);
                 }
 
+                $response = $this->{$this->request['endpoint']}();
                 echo json_encode([
-                    'status' => 'fail',
-                    'error'  => $this->{$this->request['action']}(),
+                    'status'  => 'success',
+                    'message' => $response['message'],
+                    'data'    => $response['data'],
                 ]);
 
             } catch (\Exception $exception) {
-                http_response_code($exception->getCode() || 400);
+                status_header($exception->getCode());
                 echo json_encode([
                     'status' => 'fail',
                     'error'  => $exception->getMessage(),
@@ -61,13 +57,23 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
          * @since 1.0.0
          * @access public
          */
-        public function alfaomega_ebooks_import_ebooks(): array
+        public function import_ebooks(): array
         {
+            $imported = rand(0, 2);
+
+            // TODO pull ebooks from panel
+            //  add the ebook to wp
+            //  link the ebook to products with the same isbn
+
+            $message = $imported > 0
+                ? str_replace('%s', $imported, esc_html__("Imported %s new ebooks successfully!", 'alfaomega-ebooks'))
+                : esc_html__('No new eBooks to import', 'alfaomega-ebooks');
+
             return [
-                'status' => 'success',
                 'data' => [
-                    'key' => 'value'
-                ]
+                    'imported' => $imported
+                ],
+                'message' => $message
             ];
         }
     }
