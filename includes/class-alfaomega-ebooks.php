@@ -146,6 +146,11 @@ class Alfaomega_Ebooks {
          */
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-service.php';
 
+        /**
+         * The class responsible for processing the plugin logic.
+         */
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-api.php';
+
 		$this->loader = new Alfaomega_Ebooks_Loader();
 
 	}
