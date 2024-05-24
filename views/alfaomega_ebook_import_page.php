@@ -9,9 +9,12 @@
     <div class="alfaomega_ebooks-pagebody">
         <div class="alfaomega_ebooks-success-msg" style="display: none;"></div>
         <div class="alfaomega_ebooks-error-msg" style="display: none;"></div>
-        <form method="post" id="alfaomega_ebooks_import_ebooks" class="alfaomega_ebooksCol-9">
+        <form method="post"
+              id="alfaomega_ebooks_import_ebooks"
+              class="alfaomega_ebooksCol-9"
+        >
             <input type="hidden" name="action" value="alfaomega_ebooks_import_ebooks" />
-            <input type="hidden" name="nonce" value="<?=wp_create_nonce('wpdcg-ajax-nonce')?>" />
+            <input type="hidden" name="alfaomega_ebook_nonce" value="<?=wp_create_nonce('alfaomega_ebook_nonce')?>" />
 
             <input class="alfaomega_ebooks-btn btnFade alfaomega_ebooks-btnBlueGreen alfaomega_ebooks_import_ebooks"
                    type="submit"

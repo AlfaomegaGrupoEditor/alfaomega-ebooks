@@ -13,6 +13,7 @@ Here is a short description of the plugin.  This should be no more than 150 char
 ##  References
 https://medium.com/@paulmiller3000/how-to-extend-woocommerce-with-the-wordpress-plugin-boilerplate-adac178b5a9b
 https://github.com/paulmiller3000/wordpress-plugin-boilerplate-woocommerce?tab=readme-ov-file
+https://www.sitepoint.com/handling-post-requests-the-wordpress-way/
 
 ##  Description
 

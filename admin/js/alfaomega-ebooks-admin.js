@@ -33,16 +33,17 @@
 		$('#alfaomega_ebooks_import_ebooks').submit(function(event) {
 			event.preventDefault();
 			$.ajax({
-				url: 'https://reqres.in/api/users?page=2',
-				type: 'get',
+				url: php_vars.admin_post_url,
+				type: 'POST',
 				dataType: 'JSON',
-				//data: {action: n, nonce: wp_dummy_content_generator_backend_ajax_object.nonce},
+				data: $(this).serialize(),
 				beforeSend: function() {
 					$('#wpfooter')
 						.append('<div class="alfaomega_ebooksLoading">Loading&#8230;</div>')
 						.show();
 				},
 				error: function(error) {
+					$('.alfaomega_ebooksLoading').remove();
 					showError();
 				},
 				success: function(response) {

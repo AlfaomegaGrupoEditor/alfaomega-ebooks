@@ -136,6 +136,11 @@ class Alfaomega_Ebooks {
          */
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-settings.php';
 
+        /**
+         * The class responsible for processing the request.
+         */
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-controller.php';
+
 		$this->loader = new Alfaomega_Ebooks_Loader();
 
 	}
@@ -170,6 +175,11 @@ class Alfaomega_Ebooks {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+        $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'localize_script_variables' );
+
+        $controller = new Alfaomega_Ebooks_Controller();
+        $this->loader->add_action( 'admin_post_nopriv_contact_form', $controller, 'process' );
+        $this->loader->add_action( 'admin_post_contact_form', $controller,'process' );
 
         // Add plugin settings to WooCommerce
         // @deprecated Using the own plugin settings

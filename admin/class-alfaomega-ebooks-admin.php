@@ -112,4 +112,12 @@ class Alfaomega_Ebooks_Admin {
         return $settings;
     }
 
+    function localize_script_variables(): void
+    {
+        wp_localize_script( $this->plugin_name, 'php_vars', [
+            'my_variable' => "Hello, World!",
+            'admin_post_url' => esc_url(admin_url('admin-post.php'))
+        ]);
+    }
+
 }
