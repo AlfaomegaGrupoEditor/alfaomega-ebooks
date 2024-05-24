@@ -314,7 +314,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
         {
             ?>
             <input
-                type="url"
+                type="text"
                 name="alfaomega_ebooks_platform_options[alfaomega_ebooks_client]"
                 id="alfaomega_ebooks_client"
                 size="50"
