@@ -123,6 +123,15 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 ['label_for' => 'alfaomega_ebooks_panel']
             );
 
+            add_settings_field(
+                'alfaomega_ebooks_client',
+                esc_html__('Panel Client', 'alfaomega-ebooks'),
+                [$this, 'alfaomega_ebooks_client_callback'],
+                'alfaomega_ebooks_page3',
+                'alfaomega_ebooks_third_section',
+                ['label_for' => 'alfaomega_ebooks_client']
+            );
+
             // API tab
             // TODO Alfaomega API configuration.
             add_settings_section(
@@ -292,6 +301,26 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 value="<?php echo isset(self::$platformOptions['alfaomega_ebooks_panel']) ? esc_attr(self::$platformOptions['alfaomega_ebooks_panel']) : ''; ?>"
             >
             <p class="description"> <? esc_html_e("Publisher Panel server URL", 'alfaomega-ebooks') ?> </p>
+            <?php
+        }
+
+        /**
+         * Render the client field
+         * @return void
+         * @since 1.0.0
+         * @access public
+         */
+        public function alfaomega_ebooks_client_callback(): void
+        {
+            ?>
+            <input
+                type="url"
+                name="alfaomega_ebooks_platform_options[alfaomega_ebooks_client]"
+                id="alfaomega_ebooks_client"
+                size="50"
+                value="<?php echo isset(self::$platformOptions['alfaomega_ebooks_client']) ? esc_attr(self::$platformOptions['alfaomega_ebooks_client']) : ''; ?>"
+            >
+            <p class="description"> <? esc_html_e("Publisher Client", 'alfaomega-ebooks') ?> </p>
             <?php
         }
 

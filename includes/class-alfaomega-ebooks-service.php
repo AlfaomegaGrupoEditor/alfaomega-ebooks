@@ -11,6 +11,17 @@
 if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
     class Alfaomega_Ebooks_Service{
 
+        protected array $settings = [];
+
+        public function __construct()
+        {
+            $this->settings = array_merge(
+                (array) get_option('alfaomega_ebooks_general_options'),
+                (array) get_option('alfaomega_ebooks_platform_options'),
+                (array) get_option('alfaomega_ebooks_api_options')
+            );
+        }
+
         public function importEbooks(): array
         {
             // pull from panel all new ebooks
