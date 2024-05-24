@@ -85,6 +85,14 @@ table#alfaomega_ebooksListPostsTbl thead tr th, table#alfaomega_ebooksListProduc
     background: #00ae68
 }
 
+.alfaomega_ebooks-btnBlueGreenAnchor {
+    display: inline-block;
+    background: #00ae68;
+    text-decoration: none;
+    min-width: 80px;
+    text-align: center;
+}
+
 .alfaomega_ebooks-btnLightBlue {
     background: #5dc8cd
 }
@@ -110,6 +118,11 @@ a.alfaomega_ebooks-btn.alfaomega_ebooks-btnRed:hover {
 
 .btnFade.alfaomega_ebooks-btnBlueGreen:hover {
     background: #21825b
+}
+
+.btnFade.alfaomega_ebooks-btnBlueGreenAnchor:hover {
+    background: #21825b;
+    color: white;
 }
 
 .btnFade.alfaomega_ebooks-btnLightBlue:hover {

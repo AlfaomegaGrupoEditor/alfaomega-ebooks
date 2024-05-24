@@ -30,7 +30,7 @@
 	 */
 
 	$(function() {
-		$('#alfaomega_ebooks_import_ebooks').submit(function(event) {
+		$('#alfaomega_ebooks_form').submit(function(event) {
 			event.preventDefault();
 			$.ajax({
 				url: php_vars.admin_post_url,

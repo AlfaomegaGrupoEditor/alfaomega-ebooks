@@ -12,6 +12,11 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
     class Alfaomega_Ebooks_Controller{
 
         protected array $request = [];
+        protected Alfaomega_Ebooks_Service $service;
+
+        public function __construct() {
+            $this->service = new Alfaomega_Ebooks_Service();
+        }
 
         public function process(): void
         {
@@ -51,29 +56,45 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
             }
         }
 
-        /**
-         * Render the username field
-         * @return void
-         * @since 1.0.0
-         * @access public
-         */
         public function import_ebooks(): array
         {
-            $imported = rand(0, 2);
+            $response = $this->service->importEbooks();
 
-            // TODO pull ebooks from panel
-            //  add the ebook to wp
-            //  link the ebook to products with the same isbn
-
-            $message = $imported > 0
-                ? str_replace('%s', $imported, esc_html__("Imported %s new ebooks successfully!", 'alfaomega-ebooks'))
+            $message = $response['imported'] > 0
+                ? str_replace('%s', $response['imported'], esc_html__("Imported %s new ebooks successfully!", 'alfaomega-ebooks'))
                 : esc_html__('No new eBooks to import', 'alfaomega-ebooks');
 
             return [
-                'data' => [
-                    'imported' => $imported
-                ],
-                'message' => $message
+                'data'    => $response,
+                'message' => $message,
+            ];
+        }
+
+        public function refresh_ebooks(): array
+        {
+            $response = $this->service->refreshEbooks();
+
+            $message = $response['refreshed'] > 0
+                ? str_replace('%s', $response['refreshed'], esc_html__("Refreshed %s ebooks successfully!", 'alfaomega-ebooks'))
+                : esc_html__('No eBooks found to refresh', 'alfaomega-ebooks');
+
+            return [
+                'data'    => $response,
+                'message' => $message,
+            ];
+        }
+
+        public function link_products(): array
+        {
+            $response = $this->service->linkProducts();
+
+            $message = $response['linked'] > 0
+                ? str_replace('%s', $response['linked'], esc_html__("Linked %s products successfully!", 'alfaomega-ebooks'))
+                : esc_html__('No products found to link', 'alfaomega-ebooks');
+
+            return [
+                'data'    => $response,
+                'message' => $message,
             ];
         }
     }
