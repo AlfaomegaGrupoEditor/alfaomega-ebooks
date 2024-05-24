@@ -29,4 +29,48 @@
 	 * practising this, we should strive to set a better example in our own work.
 	 */
 
+	$(function() {
+		$('#alfaomega_ebooks_import_ebooks').submit(function(event) {
+			event.preventDefault();
+			$.ajax({
+				url: 'https://reqres.in/api/users?page=2',
+				type: 'get',
+				dataType: 'JSON',
+				//data: {action: n, nonce: wp_dummy_content_generator_backend_ajax_object.nonce},
+				beforeSend: function() {
+					$('#wpfooter')
+						.append('<div class="alfaomega_ebooksLoading">Loading&#8230;</div>')
+						.show();
+				},
+				error: function(error) {
+					showError();
+				},
+				success: function(response) {
+					$('.alfaomega_ebooksLoading').remove();
+
+					if ('success' === response.status) {
+						showInfo();
+					}
+				},
+
+			});
+		});
+	});
+
+	function showError( msg = 'Something went wrong. Please try again') {
+		$('.alfaomega_ebooks-error-msg')
+			.html(msg)
+			.fadeIn('fast')
+			.delay(5000)
+			.fadeOut('slow');
+	}
+
+	function showInfo( msg = 'Good Jod!!') {
+		$('.alfaomega_ebooks-success-msg')
+			.html(msg)
+			.fadeIn('fast')
+			.delay(5000)
+			.fadeOut('slow');
+	}
+
 })( jQuery );
