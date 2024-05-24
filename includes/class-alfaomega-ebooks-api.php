@@ -10,7 +10,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
         public function __construct(array $settings)
         {
             $this->settings = $settings;
-            $this->token_filename = plugin_dir_path( __FILE__ ) . '/token.txt';
+            $this->token_filename = ALFAOMEGA_SECURITY_PATH . '/token.txt';
         }
 
         private function getAuthFromFile()
@@ -27,33 +27,38 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
 
         public function authenticate()
         {
-            $data = [
+            // FIXME
+            /*$response = wp_remote_post($this->getTokenUrl(), [
+                'headers' => ['content-type' => 'application/json'],
+                'body'    => [
+                    "client_id"     => $this->getClientId(),
+                    "client_secret" => $this->getSecret(),
+                    "grant_type"    => "password",
+                    "username"      => $this->getUsername(),
+                    "password"      => $this->getPassword(),
+                    "scope"         => "",
+                ],
+            ]);
+            if ( is_wp_error( $response ) ||  $response['code'] !== 200) {
+                $body = json_decode($response['body'], true);
+                if (!empty($body['error'])) {
+                    throw new \Exception(esc_html__('Authentication error', 'alfaomega-ebooks') . "- " . $body['error']);
+                }
+
+                throw new \Exception(esc_html__('Authentication error', 'alfaomega-ebooks'));
+            }*/
+
+            $response = $this->curlPost($this->getTokenUrl(), [
                 "client_id"     => $this->getClientId(),
                 "client_secret" => $this->getSecret(),
                 "grant_type"    => "password",
                 "username"      => $this->getUsername(),
                 "password"      => $this->getPassword(),
-                "scope"         => ""
-            ];
+                "scope"         => "",
+            ]);
 
-            $args = [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                ],
-                'body'    => $data,
-            ];
-
-            $response = wp_remote_post( $this->getTokenUrl(), $args );
-            if ( is_wp_error( $response ) ) {
-                throw new \Exception(esc_html__('Authentication error', 'alfaomega-ebooks'));
-            }
-
-            $body = json_decode($response['body'], true);
-            if (!empty($body['error'])) {
-                throw new \Exception(esc_html__('Authentication error', 'alfaomega-ebooks') . "- " . $body['error']);
-            }
-            $this->saveAuthToFile(json_encode($response['body']));
-            return $body['token'];
+            $this->saveAuthToFile($response);
+            return $response;
         }
 
         public function getAuth()
@@ -163,6 +168,22 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
 
         public function getUserTokenString($data)
         {
+        }
+
+        protected function curlPost($url, $payload): string
+        {
+            try {
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_POST, TRUE);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+
+                return curl_exec($ch);
+            } catch (\Exception $exception) {
+                throw new \Exception(esc_html__('Request error', 'alfaomega-ebooks') . "- " . $exception->getMessage());
+            }
         }
     }
 }
