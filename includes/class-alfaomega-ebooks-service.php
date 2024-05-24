@@ -31,9 +31,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
         public function importEbooks(): array
         {
-            $newBooks = $this->api->get('all_books');
-            var_dump($newBooks);
-            die();
+            $newBooks = $this->api->get('/all_books');
 
             // pull from panel all new ebooks
             // add each new ebook

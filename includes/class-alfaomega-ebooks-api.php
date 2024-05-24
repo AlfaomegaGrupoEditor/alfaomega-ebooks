@@ -33,7 +33,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
                 "grant_type"    => "password",
                 "username"      => $this->getUsername(),
                 "password"      => $this->getPassword(),
-                "scope"         => "*"
+                "scope"         => ""
             ];
 
             $args = [
@@ -45,10 +45,15 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
 
             $response = wp_remote_post( $this->getTokenUrl(), $args );
             if ( is_wp_error( $response ) ) {
-                return null;
-            } else {
-                $this->saveAuthToFile(json_encode($response));
+                throw new \Exception(esc_html__('Authentication error', 'alfaomega-ebooks'));
             }
+
+            $body = json_decode($response['body'], true);
+            if (!empty($body['error'])) {
+                throw new \Exception(esc_html__('Authentication error', 'alfaomega-ebooks') . "- " . $body['error']);
+            }
+            $this->saveAuthToFile(json_encode($response['body']));
+            return $body['token'];
         }
 
         public function getAuth()
@@ -77,26 +82,32 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
 
         public function request($method, $uri, $data = null, $retrying = false)
         {
-            $uri = $this->getServerUrl() . $uri;
-            $headers = $this->getHeaders();
-            if ($headers) {
-                $args = [ 'headers' => $headers ];
-                switch ($method) {
-                    case 'post':
-                        $args['body'] = $data;
-                        $response = wp_remote_post( $uri, $args );
-                        break;
-                    case 'get':
-                        $response = wp_remote_get( $uri, $args );
-                        break;
-                }
-                if ( is_wp_error( $response ) ) {
-                    return null;
-                } else {
+            try {
+                $uri = $this->getServerUrl() . $uri;
+                $headers = $this->getHeaders();
+                if ($headers) {
+                    $args = [ 'headers' => $headers ];
+                    switch ($method) {
+                        case 'post':
+                            $args['body'] = $data;
+                            $response = wp_remote_post( $uri, $args );
+                            break;
+                        case 'get':
+                            $response = wp_remote_get( $uri, $args );
+                            break;
+                        default:
+                            throw new Exception(esc_html__('method not supported yet', 'alfaomega-ebooks'));
+                    }
+                    if ( is_wp_error( $response ) ) {
+                        throw new Exception(esc_html__('Request failed', 'alfaomega-ebooks'));
+                    }
+
                     return $response;
+                } else {
+                    throw new Exception(esc_html__('Request failed', 'alfaomega-ebooks'));
                 }
-            } else {
-                return null;
+            } catch (\Exception $exception) {
+                throw new Exception(esc_html__('Request failed', 'alfaomega-ebooks') . ":" . $exception->getMessage());
             }
         }
 
@@ -117,7 +128,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
 
         public function getServerUrl()
         {
-            return $this->settings['alfaomega_ebooks_panel'];
+            return rtrim($this->settings['alfaomega_ebooks_panel'], '/');
         }
 
         public function getClientId()
