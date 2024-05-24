@@ -64,7 +64,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
         public function getAuth()
         {
             $token = $this->getAuthFromFile();
-            if (is_null($token))
+            if (is_null($token)) // or expired
                 $token = $this->authenticate();
 
             return json_decode($token);
@@ -88,7 +88,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
         public function request($method, $uri, $data = null, $retrying = false)
         {
             try {
-                $uri = $this->getServerUrl() . $uri;
+                $uri = $this->getApiUrl($uri);
                 $headers = $this->getHeaders();
                 if ($headers) {
                     $args = [ 'headers' => $headers ];
@@ -103,8 +103,8 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
                         default:
                             throw new Exception(esc_html__('method not supported yet', 'alfaomega-ebooks'));
                     }
-                    if ( is_wp_error( $response ) ) {
-                        throw new Exception(esc_html__('Request failed', 'alfaomega-ebooks'));
+                    if ( is_wp_error( $response ) || $response['response']['code'] !== 200) {
+                        throw new Exception($response['response']['message'] ?? '');
                     }
 
                     return $response;
@@ -129,6 +129,11 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
         public function getTokenUrl()
         {
             return $this->settings['alfaomega_ebooks_token'];
+        }
+
+        public function getApiUrl($url)
+        {
+            return rtrim($this->settings['alfaomega_ebooks_api'], '/') . $url;
         }
 
         public function getServerUrl()
