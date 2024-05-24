@@ -15,7 +15,7 @@
                         <?php esc_html_e("Pull new eBooks from the Publisher Panel, update the list of eBooks and search the relative product for the new ebooks to create a link using the Digital ISBN.", 'alfaomega-ebooks') ?>
                     </p>
                     <p class="alfaomega_ebooksLinkWrapper">
-                        <a href="?page=alfaomega_ebooks-import">Import eBooks</a>
+                        <a href="?page=alfaomega_ebooks_import">Import eBooks</a>
                     </p>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                         <?php esc_html_e("Resfresh the eBooks information pulling the current eBook data in Publisher Panel and search the relative product to create a link using the Digital ISBN.", 'alfaomega-ebooks') ?>
                     </p>
                     <p class="alfaomega_ebooksLinkWrapper">
-                        <a href="?page=alfaomega_ebooks-refresh">Refresh eBooks</a>
+                        <a href="?page=alfaomega_ebooks_refresh">Refresh eBooks</a>
                     </p>
                 </div>
             </div>
@@ -39,7 +39,7 @@
                         <?php esc_html_e("Using the list of eBooks already imported search the relative product to create a link using the Digital ISBN.", 'alfaomega-ebooks') ?>
                     </p>
                     <p class="alfaomega_ebooksLinkWrapper">
-                        <a href="?page=alfaomega_ebooks-link">Link Products</a>
+                        <a href="?page=alfaomega_ebooks_link">Link Products</a>
                     </p>
                 </div>
             </div>

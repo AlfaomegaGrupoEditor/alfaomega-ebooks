@@ -239,52 +239,58 @@ class Alfaomega_Ebooks {
             esc_html__('AO eBooks', 'alfaomega-ebooks'),
             'install_plugins',
             'alfaomega_ebooks_admin',
-            array( $this, 'renderHome' ),
+            [$this, 'renderHome'],
             'dashicons-book',
             56
         );
 
         add_submenu_page(
             'alfaomega_ebooks_admin',
-            esc_html__( 'Settings', 'alfaomega-ebooks' ),
-            esc_html__( 'Settings', 'alfaomega-ebooks' ),
+            esc_html__('Settings', 'alfaomega-ebooks'),
+            esc_html__('Settings', 'alfaomega-ebooks'),
             'install_plugins',
             'alfaomega_ebooks_settings',
-            array( $this, 'renderSettings' ),
+            [$this, 'renderSettings'],
             null
         );
 
         add_submenu_page(
             'alfaomega_ebooks_admin',
-            esc_html__( 'All Alfaomega eBooks', 'alfaomega-ebooks' ),
-            esc_html__( 'All items', 'alfaomega-ebooks' ),
+            esc_html__('All Alfaomega eBooks', 'alfaomega-ebooks'),
+            esc_html__('List', 'alfaomega-ebooks'),
             'install_plugins',
             'edit.php?post_type=alfaomega-ebook',
             null,
             null
         );
 
-        // No allowed
-//        add_submenu_page(
-//            'alfaomega_ebooks_admin',
-//            esc_html__( 'Add New eBook', 'alfaomega-ebooks' ),
-//            esc_html__( 'Add New eBook', 'alfaomega-ebooks' ),
-//            'install_plugins',
-//            'post-new.php?post_type=alfaomega-ebook',
-//            null,
-//            null
-//        );
-
-        // TODO: import new books from the Alfaomega API
-        //  redirect to edit.php?post_type=alfaomega-ebook
-        //  notify the user about the process result
         add_submenu_page(
             'alfaomega_ebooks_admin',
-            esc_html__( 'Import & Update eBooks', 'alfaomega-ebooks' ),
-            esc_html__( 'Import & Update', 'alfaomega-ebooks' ),
+            esc_html__('Import eBooks', 'alfaomega-ebooks'),
+            esc_html__('Import', 'alfaomega-ebooks'),
             'install_plugins',
-            'post-new.php?post_type=alfaomega-ebook',
-            null,
+            'alfaomega_ebooks_import',
+            [$this, 'renderImport'],
+            null
+        );
+
+        add_submenu_page(
+            'alfaomega_ebooks_admin',
+            esc_html__('Refresh eBooks', 'alfaomega-ebooks'),
+            esc_html__('Refresh', 'alfaomega-ebooks'),
+            'install_plugins',
+            'alfaomega_ebooks_refresh',
+            [$this, 'renderRefresh'],
+            null
+        );
+
+        add_submenu_page(
+            'alfaomega_ebooks_admin',
+            esc_html__('Link Products', 'alfaomega-ebooks'),
+            esc_html__('Link', 'alfaomega-ebooks'),
+            'install_plugins',
+            'alfaomega_ebooks_link',
+            [$this, 'renderLink'],
             null
         );
     }
@@ -317,7 +323,45 @@ class Alfaomega_Ebooks {
 
     public function renderHome(): void
     {
+        if( ! current_user_can( 'install_plugins' ) ){
+            return;
+        }
+
+        settings_errors( 'alfaomega_ebook_options' );
+
         require( ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_home_page.php' );
     }
 
+    public function renderImport(): void
+    {
+        if( ! current_user_can( 'install_plugins' ) ){
+            return;
+        }
+
+        settings_errors( 'alfaomega_ebook_options' );
+
+        require( ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_import_page.php' );
+    }
+
+    public function renderRefresh(): void
+    {
+        if( ! current_user_can( 'install_plugins' ) ){
+            return;
+        }
+
+        settings_errors( 'alfaomega_ebook_options' );
+
+        require( ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_refresh_page.php' );
+    }
+
+    public function renderLink(): void
+    {
+        if( ! current_user_can( 'install_plugins' ) ){
+            return;
+        }
+
+        settings_errors( 'alfaomega_ebook_options' );
+
+        require( ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_link_page.php' );
+    }
 }
