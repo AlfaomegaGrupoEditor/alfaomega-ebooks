@@ -22,7 +22,10 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
 
         public function saveAuthToFile($data)
         {
-            file_put_contents($this->token_filename, $data);
+            $data = json_decode($data);
+            $nextYear = date('Y-m-d', strtotime('+360 days'));
+            $data->expires_in = date_timestamp_get(date_create($nextYear));
+            file_put_contents($this->token_filename, json_encode($data));
         }
 
         public function authenticate()
@@ -64,10 +67,13 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
         public function getAuth()
         {
             $token = $this->getAuthFromFile();
-            if (is_null($token)) // or expired
-                $token = $this->authenticate();
-
-            return json_decode($token);
+            if (empty($token)) {
+                return $this->authenticate();
+            }
+            $token = json_decode($token);
+            return empty($token->expires_in) || $token->expires_in <= time()
+                ? $this->authenticate()
+                : $token;
         }
 
         public function getHeaders()
