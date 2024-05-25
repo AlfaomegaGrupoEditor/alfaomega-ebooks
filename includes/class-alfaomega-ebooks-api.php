@@ -13,14 +13,14 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
             $this->token_filename = ALFAOMEGA_SECURITY_PATH . '/token.txt';
         }
 
-        private function getAuthFromFile()
+        private function getAuthFromFile(): ?string
         {
             return file_exists($this->token_filename)
                 ? file_get_contents($this->token_filename)
                 : null;
         }
 
-        public function saveAuthToFile($data)
+        public function saveAuthToFile($data): void
         {
             $data = json_decode($data);
             $nextYear = date('Y-m-d', strtotime('+360 days'));
