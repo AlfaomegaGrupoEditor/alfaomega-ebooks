@@ -31,14 +31,24 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
         public function importEbooks(): array
         {
-            $newBooks = $this->api->get('/book/all');
+            // TODO HERE
+            // get the latest ebook
+            // search ebooks with pagination
+            // create or update the ebook
+            // search the ebook related product
+            // update the product variant
+            $response = $this->api->get('/book/all');
+            if ($response['response']['code'] !== 200) {
+                throw new Exception($response['response']['message']);
+            }
+            $data = json_decode($response['body'], true)['data'];
 
             // pull from panel all new ebooks
             // add each new ebook
             // link each related product
 
             return [
-                'imported' => rand(0, 2)
+                'imported' => count($data)
             ];
         }
 
