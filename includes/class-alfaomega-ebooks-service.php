@@ -31,6 +31,11 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
         public function importEbooks(): array
         {
+            $latestBook = $this->latestPost();
+
+            //$book = $this->searchPost('9788410181038');
+
+
             // TODO HERE
             // get the latest ebook
             // search ebooks with pagination
@@ -54,12 +59,32 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
         public function refreshEbooks(): array
         {
-            // pull from panel the information of each ebook already imported
-            // update or create the ebook information
-            // refresh the link of each related product
+            $postsPerPage = 50;
+            $page = 0;
+            $args = [
+                'posts_per_page' => $postsPerPage,
+                'post_type'      => 'alfaomega-ebook',
+            ];
+            $isbns = [];
+
+            do {
+                $args['offset'] = $postsPerPage * $page;
+                $posts = get_posts($args);
+                foreach ($posts as $post) {
+                    $isbn = get_post_meta($post->ID, 'alfaomega_ebook_isbn', true);
+                    $isbns[$isbn] = $post->ID;
+                }
+
+                $eBooks = $this->getEbooksInfo(array_keys($isbns));
+                foreach ($eBooks as $eBook) {
+                    $eBook = $this->updateEbookPost($isbns[$eBook['isbn']], $eBook);
+                    $this->linkProduct($eBook);
+                }
+                $page++;
+            } while (count($posts) === $postsPerPage);
 
             return [
-                'refreshed' => rand(0, 2)
+                'refreshed' => count($isbns)
             ];
         }
 
@@ -72,6 +97,114 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return [
                 'linked' => rand(0, 2)
             ];
+        }
+
+        protected function getPosts($count, $query = []): WP_Query
+        {
+            $args = array_merge($query, [
+                'posts_per_page' => $count,
+                'paged'          => 1,
+                'post_type'      => 'alfaomega-ebook',
+            ]);
+
+            return new WP_Query( $args );
+        }
+
+        protected function savePostMeta($postId, $data): array
+        {
+            $fields = [
+                'alfaomega_ebook_isbn' => [
+                    'old'     => get_post_meta($postId, 'alfaomega_ebook_isbn', true),
+                    'new'     => $data['isbn'],
+                    'default' => '',
+                ],
+                'alfaomega_ebook_id'   => [
+                    'old'     => get_post_meta($postId, 'alfaomega_ebook_id', true),
+                    'new'     => $data['pdf_id'],
+                    'default' => '',
+                ],
+                'alfaomega_ebook_url'  => [
+                    'old'     => get_post_meta($postId, 'alfaomega_ebook_url', true),
+                    'new'     => $data['ebook_url'],
+                    'default' => '',
+                ],
+            ];
+
+            wp_publish_post($postId);
+            foreach ( $fields as $field => $data ) {
+                $new_value = sanitize_text_field( $data['new'] );
+                $old_value = $data['old'];
+
+                if ( empty( $new_value ) ) {
+                    $new_value = $data['default'];
+                }
+
+                update_post_meta( $postId, $field, $new_value, $old_value );
+            }
+
+            return $this->getPostMeta($postId);
+        }
+
+        protected function getPostMeta($post): array
+        {
+            return [
+                'id'        => $post->ID,
+                'title'     => $post->post_title,
+                'author'    => $post->post_author,
+                'isbn'      => get_post_meta($post->ID, 'alfaomega_ebook_isbn', true),
+                'pdf_id'    => get_post_meta($post->ID, 'alfaomega_ebook_id', true),
+                'ebook_url' => get_post_meta($post->ID, 'alfaomega_ebook_url', true),
+                'date'      => $post->post_date,
+            ];
+        }
+
+        protected function searchPost($isbn): ?array
+        {
+            $query = [
+                'numberposts' => 1,
+                'post_type'    => 'alfaomega-ebook',
+                'meta_key'     => 'alfaomega_ebook_isbn',
+                'meta_value'   => $isbn,
+                'meta_compare' => '=',
+            ];
+
+            $posts = get_posts($query);
+            if (empty($posts)) {
+                return null;
+            }
+
+            return $this->getPostMeta($posts[0]);
+        }
+
+        protected function latestPost(): ?array
+        {
+            $query = [
+                'numberposts' => 1,
+                'post_type'    => 'alfaomega-ebook',
+            ];
+
+            $posts = get_posts($query);
+            if (empty($posts)) {
+                return null;
+            }
+
+            return $this->getPostMeta($posts[0]);
+        }
+
+        protected function getEbooksInfo(array $isbn): array
+        {
+            // get eBooks info from Alfaomega
+            return [];
+        }
+
+        protected function updateEbookPost($postId, $data): array
+        {
+            return [];
+        }
+
+        protected function linkProduct($ebook): void
+        {
+            // link WooCommerce Product to eBook
         }
     }
 }
