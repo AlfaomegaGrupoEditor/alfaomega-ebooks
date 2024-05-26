@@ -51,7 +51,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             ];
         }
 
-        public function refreshEbooks(): array
+        public function refreshEbooks($postIds = null): array
         {
             $postsPerPage = 50;
             $page = 0;
@@ -61,21 +61,33 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             ];
             $isbns = [];
 
-            do {
-                $args['offset'] = $postsPerPage * $page;
-                $posts = get_posts($args);
-                foreach ($posts as $post) {
-                    $isbn = get_post_meta($post->ID, 'alfaomega_ebook_isbn', true);
-                    $isbns[$isbn] = $post->ID;
-                }
+            if (empty($postIds)) {
+                do {
+                    $args['offset'] = $postsPerPage * $page;
+                    $posts = get_posts($args);
+                    foreach ($posts as $post) {
+                        $isbn = get_post_meta($post->ID, 'alfaomega_ebook_isbn', true);
+                        $isbns[$isbn] = $post->ID;
+                    }
 
+                    $eBooks = $this->getEbooksInfo(array_keys($isbns));
+                    foreach ($eBooks as $eBook) {
+                        $response = $this->updateEbookPost($isbns[$eBook['isbn']], $eBook);
+                        $this->linkProduct($response);
+                    }
+                    $page++;
+                } while (count($posts) === $postsPerPage);
+            } else {
+                foreach ($postIds as $postId) {
+                    $isbn = get_post_meta($postId, 'alfaomega_ebook_isbn', true);
+                    $isbns[$isbn] = $postId;
+                }
                 $eBooks = $this->getEbooksInfo(array_keys($isbns));
                 foreach ($eBooks as $eBook) {
-                    $eBook = $this->updateEbookPost($isbns[$eBook['isbn']], $eBook);
-                    $this->linkProduct($eBook);
+                    $response = $this->updateEbookPost($isbns[$eBook['isbn']], $eBook);
+                    $this->linkProduct($response);
                 }
-                $page++;
-            } while (count($posts) === $postsPerPage);
+            }
 
             return [
                 'refreshed' => count($isbns)

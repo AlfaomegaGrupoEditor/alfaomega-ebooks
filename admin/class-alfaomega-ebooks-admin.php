@@ -120,4 +120,25 @@ class Alfaomega_Ebooks_Admin {
         ]);
     }
 
+    public function bulk_action_update_ebooks($bulk_actions): array
+    {
+        $bulk_actions['update-ebooks'] = __('Update', 'alfaomega-ebooks');
+        return $bulk_actions;
+    }
+
+    public function show_notification(): void
+    {
+        if (!empty($_REQUEST['updated-ebooks'])) {
+            $updatedEbooks = $_REQUEST['updated-ebooks'];
+            if ($updatedEbooks === 'fail') {
+                $class = 'notice notice-error';
+                $message = esc_html__('Update eBooks failed!', 'alfaomega-ebooks');
+            } else {
+                $class = 'notice notice-success is-dismissible';
+                $message = printf(esc_html__('Updated $1 eBooks successfully', 'alfaomega-ebooks'), $updatedEbooks);
+            }
+
+            printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
+        }
+    }
 }

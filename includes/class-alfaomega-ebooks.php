@@ -8,6 +8,7 @@
  *
  * @link       https://github.com/livan2r
  * @since      1.0.0
+ * @see https://wpshout.com/the-wordpress-plugin-boilerplate-101/, https://wppb.me/
  *
  * @package    Alfaomega_Ebooks
  * @subpackage Alfaomega_Ebooks/includes
@@ -72,7 +73,7 @@ class Alfaomega_Ebooks {
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->plugin_name = 'alfaomega-ebooks';
+		$this->plugin_name = ALFAOMEGA_EBOOKS_NAME;
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -191,6 +192,11 @@ class Alfaomega_Ebooks {
         $controller = new Alfaomega_Ebooks_Controller();
         $this->loader->add_action( 'admin_post_nopriv_alfaomega_ebooks_form', $controller, 'process' );
         $this->loader->add_action( 'admin_post_alfaomega_ebooks_form', $controller,'process' );
+
+        $this->loader->add_filter('bulk_actions-edit-alfaomega-ebook', $plugin_admin, 'bulk_action_update_ebooks');
+        $this->loader->add_filter('handle_bulk_actions-edit-alfaomega-ebook', $controller, 'bulk_action_update_ebooks', 10, 3);
+
+        $this->loader->add_action('admin_notices', $plugin_admin, 'show_notification');
 
         // Add plugin settings to WooCommerce
         // @deprecated Using the own plugin settings
