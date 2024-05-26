@@ -29,7 +29,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             );
         }
 
-        public function importEbooks($max = 100): array
+        public function importEbooks($max = 500): array
         {
             $latestBook = $this->latestPost();
             $isbn = empty($latestBook) ? '' : $latestBook['isbn'];
@@ -44,7 +44,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 }
                 $imported += count($eBooks);
                 $page++;
-            } while (count($eBooks) === $countPerPage || $imported >= $max);
+            } while (count($eBooks) === $countPerPage && $imported < $max);
 
             return [
                 'imported' => $imported
@@ -114,12 +114,12 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 ],
                 'alfaomega_ebook_id'   => [
                     'old'     => get_post_meta($postId, 'alfaomega_ebook_id', true),
-                    'new'     => $data['pdf_id'],
+                    'new'     => !empty($data['links']['adobe']) ? $data['links']['adobe'] : '',
                     'default' => '',
                 ],
                 'alfaomega_ebook_url'  => [
                     'old'     => get_post_meta($postId, 'alfaomega_ebook_url', true),
-                    'new'     => $data['ebook_url'],
+                    'new'     => !empty($data['links']['html_ebook']) ? $data['links']['html_ebook'] : '',
                     'default' => '',
                 ],
             ];
@@ -213,14 +213,38 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         {
             if (empty($postId)) {
                 $post = $this->searchPost($data['isbn']);
+                if (!empty($post)) {
+                    $postId = $post['id'];
+                }
             }
 
-            return [];
+            $user = wp_get_current_user();
+
+            $newPost = [
+                'post_title'   => $data['title'],
+                'post_content' => $data['description'],
+                'post_status'  => 'publish',
+                'post_author'  => $user->ID,
+                'post_type'    => 'alfaomega-ebook',
+            ];
+
+            if (!empty($postId)) {
+                $newPost['ID'] = $postId;
+            }
+
+            $postId = wp_insert_post($newPost);
+            if (empty($postId)) {
+                throw new Exception(esc_html__('Unable to create post.', 'alfaomega-ebook'));
+            }
+
+            return $this->savePostMeta($postId, $data);
         }
 
         protected function linkProduct($ebook): void
         {
             // link WooCommerce Product to eBook
         }
+
+
     }
 }
