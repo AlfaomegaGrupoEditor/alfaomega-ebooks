@@ -186,13 +186,21 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         protected function getEbooksInfo(array $isbns): array
         {
             // get eBooks info from Alfaomega
-            return [];
+            $response = $this->api->post("/book/index", ['isbns' => $isbns]);
+            if ($response['response']['code'] !== 200) {
+                throw new Exception($response['response']['message']);
+            }
+            return json_decode($response['body'], true)['data'];
         }
 
         protected function retrieveEbooks($isbn, $count=100, $page=0): array
         {
             // pull from Panel all eBooks updated after the specified book
-            return [];
+            $response = $this->api->get("/book/index/$isbn?page={$page}&items={$count}");
+            if ($response['response']['code'] !== 200) {
+                throw new Exception($response['response']['message']);
+            }
+            return json_decode($response['body'], true)['data'];
         }
 
         protected function updateEbookPost($postId, $data): array
