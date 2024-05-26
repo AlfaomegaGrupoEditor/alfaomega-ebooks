@@ -32,11 +32,12 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         public function importEbooks(): array
         {
             $latestBook = $this->latestPost();
+            $isbn = empty($latestBook) ? '' : $latestBook['isbn'];
             $countPerPage = 100;
             $page = 0;
             $imported = 0;
             do {
-                $eBooks = $this->retrieveEbooks($latestBook['isbn'], $countPerPage, $page);
+                $eBooks = $this->retrieveEbooks($isbn, $countPerPage, $page);
                 foreach ($eBooks as $eBook) {
                     $eBook = $this->updateEbookPost(null, $eBook);
                     $this->linkProduct($eBook);
@@ -193,14 +194,18 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return json_decode($response['body'], true)['data'];
         }
 
-        protected function retrieveEbooks($isbn, $count=100, $page=0): array
+        protected function retrieveEbooks($isbn = '', $count=100, $page=0): array
         {
             // pull from Panel all eBooks updated after the specified book
             $response = $this->api->get("/book/index/$isbn?page={$page}&items={$count}");
             if ($response['response']['code'] !== 200) {
                 throw new Exception($response['response']['message']);
             }
-            return json_decode($response['body'], true)['data'];
+            $content = json_decode($response['body'], true);
+            if ($content['status'] !== 'success') {
+                throw new Exception($content['message']);
+            }
+            return $content['data'];
         }
 
         protected function updateEbookPost($postId, $data): array
