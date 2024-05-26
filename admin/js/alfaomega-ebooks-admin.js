@@ -36,6 +36,7 @@
 				url: php_vars.admin_post_url,
 				type: 'POST',
 				dataType: 'JSON',
+				timeout: 0,
 				data: $(this).serialize(),
 				beforeSend: function() {
 					$('#wpfooter')

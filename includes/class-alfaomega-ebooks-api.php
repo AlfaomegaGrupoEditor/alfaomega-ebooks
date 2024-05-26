@@ -97,7 +97,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
                 $uri = $this->getApiUrl($uri);
                 $headers = $this->getHeaders();
                 if ($headers) {
-                    $args = [ 'headers' => $headers ];
+                    $args = [ 'headers' => $headers, 'timeout' => 60 ];
                     switch ($method) {
                         case 'post':
                             $args['body'] = $data;
@@ -109,8 +109,8 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
                         default:
                             throw new Exception(esc_html__('method not supported yet', 'alfaomega-ebooks'));
                     }
-                    if ( is_wp_error( $response ) || $response['response']['code'] !== 200) {
-                        throw new Exception($response['response']['message'] ?? '');
+                    if ( is_wp_error( $response ) || !empty($response->errors)) {
+                        throw new Exception(json_encode($response->errors));
                     }
 
                     return $response;
