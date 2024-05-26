@@ -95,6 +95,15 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 ['label_for' => 'alfaomega_ebooks_notify_to']
             );
 
+            add_settings_field(
+                'alfaomega_ebooks_import_limit',
+                esc_html__('Import Limit', 'alfaomega-ebooks'),
+                [$this, 'alfaomega_ebooks_import_limit_callback'],
+                'alfaomega_ebooks_page2',
+                'alfaomega_ebooks_second_section',
+                ['label_for' => 'alfaomega_ebooks_import_limit']
+            );
+
             // Platform tab
             // TODO Alfaomega external services to use by the Client Digital Library
             add_settings_section(
@@ -279,6 +288,27 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 value="<?php echo isset(self::$generalOptions['alfaomega_ebooks_notify_to']) ? esc_attr(self::$generalOptions['alfaomega_ebooks_notify_to']) : ''; ?>"
             >
             <p class="description"> <? esc_html_e("Email address to send a copy of every download code set to clients", 'alfaomega-ebooks') ?> </p>
+            <?php
+        }
+
+        /**
+         * Render the notify_to field
+         * @return void
+         * @since 1.0.0
+         * @access public
+         */
+        public function alfaomega_ebooks_import_limit_callback(): void
+        {
+            ?>
+            <input
+                type="number"
+                name="alfaomega_ebooks_general_options[alfaomega_ebooks_import_limit]"
+                id="alfaomega_ebooks_notify_to"
+                min="1"
+                max="500"
+                value="<?php echo isset(self::$generalOptions['alfaomega_ebooks_import_limit']) ? esc_attr(self::$generalOptions['alfaomega_ebooks_import_limit']) : '300'; ?>"
+            >
+            <p class="description"> <? esc_html_e("Max number of new eBooks to import at once", 'alfaomega-ebooks') ?> </p>
             <?php
         }
 
