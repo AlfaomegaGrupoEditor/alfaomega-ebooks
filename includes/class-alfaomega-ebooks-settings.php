@@ -334,6 +334,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 type="checkbox"
                 name="alfaomega_ebooks_general_options[alfaomega_ebooks_import_from_latest]"
                 id="alfaomega_ebooks_import_from_latest"
+                disabled
                 value="1"
                 <?php
                 if ( isset( self::$generalOptions['alfaomega_ebooks_import_from_latest'])) {
