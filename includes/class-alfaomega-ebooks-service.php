@@ -32,28 +32,20 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         public function importEbooks(): array
         {
             $latestBook = $this->latestPost();
-
-            //$book = $this->searchPost('9788410181038');
-
-
-            // TODO HERE
-            // get the latest ebook
-            // search ebooks with pagination
-            // create or update the ebook
-            // search the ebook related product
-            // update the product variant
-            $response = $this->api->get('/book/all');
-            if ($response['response']['code'] !== 200) {
-                throw new Exception($response['response']['message']);
-            }
-            $data = json_decode($response['body'], true)['data'];
-
-            // pull from panel all new ebooks
-            // add each new ebook
-            // link each related product
+            $countPerPage = 100;
+            $page = 0;
+            $imported = 0;
+            do {
+                $eBooks = $this->retrieveEbooks($latestBook['isbn'], $countPerPage, $page);
+                foreach ($eBooks as $eBook) {
+                    $eBook = $this->updateEbookPost(null, $eBook);
+                    $this->linkProduct($eBook);
+                }
+                $imported += count($eBooks);
+            } while (count($eBooks) === $countPerPage);
 
             return [
-                'imported' => count($data)
+                'imported' => $imported
             ];
         }
 
@@ -191,14 +183,24 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return $this->getPostMeta($posts[0]);
         }
 
-        protected function getEbooksInfo(array $isbn): array
+        protected function getEbooksInfo(array $isbns): array
         {
             // get eBooks info from Alfaomega
             return [];
         }
 
+        protected function retrieveEbooks($isbn, $count=100, $page=0): array
+        {
+            // pull from Panel all eBooks updated after the specified book
+            return [];
+        }
+
         protected function updateEbookPost($postId, $data): array
         {
+            if (empty($postId)) {
+                $post = $this->searchPost($data['isbn']);
+            }
+
             return [];
         }
 
