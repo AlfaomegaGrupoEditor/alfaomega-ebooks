@@ -155,15 +155,19 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return $this->getPostMeta($postId);
         }
 
-        protected function getPostMeta($post): array
+        protected function getPostMeta($postId): array
         {
+            $post = get_post($postId);
+            if (empty($post)) {
+                throw new Exception("Post $postId not found");
+            }
             return [
-                'id'        => $post->ID,
+                'id'        => $postId,
                 'title'     => $post->post_title,
                 'author'    => $post->post_author,
-                'isbn'      => get_post_meta($post->ID, 'alfaomega_ebook_isbn', true),
-                'pdf_id'    => get_post_meta($post->ID, 'alfaomega_ebook_id', true),
-                'ebook_url' => get_post_meta($post->ID, 'alfaomega_ebook_url', true),
+                'isbn'      => get_post_meta($postId, 'alfaomega_ebook_isbn', true),
+                'pdf_id'    => get_post_meta($postId, 'alfaomega_ebook_id', true),
+                'ebook_url' => get_post_meta($postId, 'alfaomega_ebook_url', true),
                 'date'      => $post->post_date,
             ];
         }
@@ -183,7 +187,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 return null;
             }
 
-            return $this->getPostMeta($posts[0]);
+            return $this->getPostMeta($posts[0]->ID);
         }
 
         protected function latestPost(): ?array
@@ -198,7 +202,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 return null;
             }
 
-            return $this->getPostMeta($posts[0]);
+            return $this->getPostMeta($posts[0]->ID);
         }
 
         protected function getEbooksInfo(array $isbns): array
