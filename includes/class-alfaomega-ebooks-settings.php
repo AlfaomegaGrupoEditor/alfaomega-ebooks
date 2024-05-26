@@ -104,6 +104,15 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 ['label_for' => 'alfaomega_ebooks_import_limit']
             );
 
+            add_settings_field(
+                'alfaomega_ebooks_import_from_latest',
+                esc_html__('Import from Latest', 'alfaomega-ebooks'),
+                [$this, 'alfaomega_ebooks_import_from_latest_callback'],
+                'alfaomega_ebooks_page2',
+                'alfaomega_ebooks_second_section',
+                ['label_for' => 'alfaomega_ebooks_import_from_latest']
+            );
+
             // Platform tab
             // TODO Alfaomega external services to use by the Client Digital Library
             add_settings_section(
@@ -309,6 +318,32 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 value="<?php echo isset(self::$generalOptions['alfaomega_ebooks_import_limit']) ? esc_attr(self::$generalOptions['alfaomega_ebooks_import_limit']) : '300'; ?>"
             >
             <p class="description"> <? esc_html_e("Max number of new eBooks to import at once", 'alfaomega-ebooks') ?> </p>
+            <?php
+        }
+
+        /**
+         * Render the active field
+         * @return void
+         * @since 1.0.0
+         * @access public
+         */
+        public function alfaomega_ebooks_import_from_latest_callback(): void
+        {
+            ?>
+            <input
+                type="checkbox"
+                name="alfaomega_ebooks_general_options[alfaomega_ebooks_import_from_latest]"
+                id="alfaomega_ebooks_import_from_latest"
+                value="1"
+                <?php
+                if ( isset( self::$generalOptions['alfaomega_ebooks_import_from_latest'])) {
+                    checked( "1", self::$generalOptions['alfaomega_ebooks_import_from_latest'], true);
+                }
+                ?>
+            >
+            <label for="alfaomega_ebooks_active">
+                <? esc_html_e('Start importing from the latest imported eBook.', 'alfaomega-ebooks'); ?>
+            </label>
             <?php
         }
 

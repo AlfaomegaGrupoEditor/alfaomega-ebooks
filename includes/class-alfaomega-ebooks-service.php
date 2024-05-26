@@ -32,8 +32,11 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         public function importEbooks(): array
         {
             $max = $this->settings['alfaomega_ebooks_import_limit'];
-            $latestBook = $this->latestPost();
-            $isbn = empty($latestBook) ? '' : $latestBook['isbn'];
+            $isbn = '';
+            if ($this->settings['alfaomega_ebooks_import_from_latest']) {
+                $latestBook = $this->latestPost();
+                $isbn = empty($latestBook) ? '' : $latestBook['isbn'];
+            }
             $countPerPage = 50;
             $page = 0;
             $imported = 0;
