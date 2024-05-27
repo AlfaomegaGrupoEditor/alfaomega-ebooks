@@ -78,6 +78,8 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             $args = [
                 'posts_per_page' => $postsPerPage,
                 'post_type'      => 'alfaomega-ebook',
+                'orderby'        => 'ID',
+                'order'          => 'ASC',
             ];
             $isbns = [];
 

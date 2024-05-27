@@ -41,6 +41,7 @@
 				timeout: 0,
 				data: $(this).serialize(),
 				beforeSend: function() {
+					checkQueue();
 					$('#wpfooter')
 						.append('<div class="alfaomega_ebooksLoading">Loading&#8230;</div>')
 						.show();
