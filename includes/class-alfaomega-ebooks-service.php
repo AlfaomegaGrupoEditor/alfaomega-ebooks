@@ -92,13 +92,10 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                         $isbns[$isbn] = $post->ID;
                     }
 
-                    $eBooks = $this->getEbooksInfo(array_keys($isbns));
-                    foreach ($eBooks as $eBook) {
-                        as_enqueue_async_action(
-                            'alfaomega_ebooks_queue_refresh',
-                            [ $isbns[$eBook['isbn']], $eBook ]
-                        );
-                    }
+                    as_enqueue_async_action(
+                        'alfaomega_ebooks_queue_refresh_list',
+                        [ $isbns ]
+                    );
                     $page++;
                 } while (count($posts) === $postsPerPage);
             } else {
@@ -115,6 +112,17 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return [
                 'refreshed' => count($isbns)
             ];
+        }
+
+        public function refreshEbookList(array $isbns): void
+        {
+            $eBooks = $this->getEbooksInfo(array_keys($isbns));
+            foreach ($eBooks as $eBook) {
+                as_enqueue_async_action(
+                    'alfaomega_ebooks_queue_refresh',
+                    [ $isbns[$eBook['isbn']], $eBook ]
+                );
+            }
         }
 
         public function refreshEbook($postId, array $eBook): void
@@ -303,9 +311,9 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 SELECT status, count(*) as 'count'
                 FROM wp_actionscheduler_actions a
                 WHERE 1 = 1
-                  AND (a.hook = '$queue' OR
-                       (a.extended_args IS NULL AND a.args = '$queue') OR
-                       a.extended_args = '$queue')
+                  AND (a.hook like '$queue%' OR
+                       (a.extended_args IS NULL AND a.args like '$queue%') OR
+                       a.extended_args like '$queue%')
                 GROUP BY status
             " );
 

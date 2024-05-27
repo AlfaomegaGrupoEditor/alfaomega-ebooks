@@ -92,7 +92,7 @@
 		const queueFailed = $("#queue-failed")
 		const queuePending = $("#queue-pending")
 
-		if (alfaomegaEbooksForm.length > 0) {
+		if (alfaomegaEbooksForm.length > 0 && queuePending.html().trim() !== '0') {
 			interval = setInterval(function() {
 				const endpoint = alfaomegaEbooksForm.find("input[name=endpoint]");
 				let queue = '';
@@ -127,6 +127,7 @@
 							if (response.data.pending === 0) {
 								clearInterval(interval);
 								showInfo('Process completed!');
+								formSubmit.prop("disabled", false);
 							}
 						}
 					}
