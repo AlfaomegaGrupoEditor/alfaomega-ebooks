@@ -48,6 +48,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                         [ $eBook ]
                     );
                     $imported++;
+                    // break; // testing
                 }
                 $last = end($eBooks);
                 $isbn = $last['isbn'];
