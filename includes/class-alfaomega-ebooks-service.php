@@ -283,12 +283,28 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
         public function queueStatus($queue): array
         {
-            return [
-                'queue'     => $queue,
-                'completed' => rand(100, 1000),
-                'failed'    => rand(0, 30),
-                'pending'   => rand(0, 5),
+            global $wpdb;
+            $results = $wpdb->get_results( "
+                SELECT status, count(*) as 'count'
+                FROM wp_actionscheduler_actions a
+                WHERE 1 = 1
+                  AND (a.hook = '$queue' OR
+                       (a.extended_args IS NULL AND a.args = '$queue') OR
+                       a.extended_args = '$queue')
+                GROUP BY status
+            " );
+
+            $data = [
+                'queue'    => $queue,
+                'complete' => 0,
+                'failed'   => 0,
+                'pending'  => 0,
             ];
+            foreach ($results as $result) {
+                $data[$result->status] = intval($result->count);
+            }
+
+            return $data;
         }
     }
 }

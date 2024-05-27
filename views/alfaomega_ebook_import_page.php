@@ -31,9 +31,9 @@
                 </div>
                 <div class="divTableBody">
                     <div class="divTableRow">
-                        <div class="divTableCell"><?php esc_html_e("Completed", 'alfaomega-ebooks'); ?></div>
-                        <div id="queue-completed" class="divTableCell">
-                            <?php echo $queueStatus['completed'] ?>
+                        <div class="divTableCell"><?php esc_html_e("Complete", 'alfaomega-ebooks'); ?></div>
+                        <div id="queue-complete" class="divTableCell">
+                            <?php echo $queueStatus['complete'] ?>
                         </div>
                     </div>
                     <div class="divTableRow">

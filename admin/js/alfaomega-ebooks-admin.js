@@ -87,7 +87,7 @@
 	function checkQueue() {
 		const alfaomegaEbooksForm = $('#alfaomega_ebooks_form');
 		const formSubmit = $('#form_submit');
-		const queueCompleted = $("#queue-completed")
+		const queueCompleted = $("#queue-complete")
 		const queueFailed = $("#queue-failed")
 		const queuePending = $("#queue-pending")
 
@@ -119,7 +119,7 @@
 					success: function(response) {
 						if (response.status === 'success') {
 							formSubmit.prop("disabled", response.data.pending > 0)
-							queueCompleted.html(response.data.completed);
+							queueCompleted.html(response.data.complete);
 							queueFailed.html(response.data.failed);
 							queuePending.html(response.data.pending);
 
