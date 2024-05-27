@@ -116,7 +116,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
         public function linkProducts(): array
         {
-            // pull the eBook information of each linked product
+            // TODO: pull the eBook information of each linked product
             // update or create the eBook information
             // refresh de link of each product
 

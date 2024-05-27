@@ -140,6 +140,17 @@ class Alfaomega_Ebooks_Admin {
             }
 
             printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
+        } elseif (!empty($_REQUEST['link-product'])) {
+            $linkProduct = intval($_REQUEST['link-product']);
+            if ($linkProduct === 'fail') {
+                $class = 'notice notice-error is-dismissible';
+                $message = esc_html__('Link product failed!', 'alfaomega-ebooks');
+            } else {
+                $class = 'notice notice-success is-dismissible';
+                $message = sprintf(esc_html__('Linked %u products successfully', 'alfaomega-ebooks'), $linkProduct);
+            }
+
+            printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
         }
     }
 }

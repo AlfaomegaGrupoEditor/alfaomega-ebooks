@@ -66,6 +66,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
             switch ($action) {
                 case 'update-meta':
                     try {
+                        $redirect_url = remove_query_arg('link-product', $redirect_url);
                         $result = $this->refresh_ebooks($post_ids);
                         $redirect_url = add_query_arg('updated-meta', $result['data']['refreshed'], $redirect_url);
 
@@ -74,6 +75,14 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
                     }
                     break;
                 case 'link-product':
+                    try {
+                        $redirect_url = remove_query_arg('updated-meta', $redirect_url);
+                        $result = $this->link_products($post_ids);
+                        $redirect_url = add_query_arg('link-product', $result['data']['linked'], $redirect_url);
+
+                    } catch (Exception $exception) {
+                        $redirect_url = add_query_arg('link-product', 'fail', $redirect_url);
+                    }
                     break;
             }
 
@@ -108,9 +117,9 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
             ];
         }
 
-        public function link_products(): array
+        public function link_products($postIds = null): array
         {
-            $response = $this->service->linkProducts();
+            $response = $this->service->linkProducts($postIds);
 
             $message = $response['linked'] > 0
                 ? str_replace('%s', $response['linked'], esc_html__("Linked %s products successfully!", 'alfaomega-ebooks'))
