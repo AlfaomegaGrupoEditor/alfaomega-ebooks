@@ -61,17 +61,22 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
             }
         }
 
-        public function bulk_action_update_ebooks($redirect_url, $action, $post_ids): string
+        public function bulk_action_alfaomega_ebooks($redirect_url, $action, $post_ids): string
         {
-            if ($action == 'update-ebooks') {
-                try {
-                    $result = $this->refresh_ebooks($post_ids);
-                    $redirect_url = add_query_arg('updated-ebooks', $result['data']['refreshed'], $redirect_url);
+            switch ($action) {
+                case 'update-meta':
+                    try {
+                        $result = $this->refresh_ebooks($post_ids);
+                        $redirect_url = add_query_arg('updated-meta', $result['data']['refreshed'], $redirect_url);
 
-                } catch (Exception $exception) {
-                    $redirect_url = add_query_arg('updated-ebooks', 'fail', $redirect_url);
-                }
+                    } catch (Exception $exception) {
+                        $redirect_url = add_query_arg('updated-meta', 'fail', $redirect_url);
+                    }
+                    break;
+                case 'link-product':
+                    break;
             }
+
             return $redirect_url;
         }
 

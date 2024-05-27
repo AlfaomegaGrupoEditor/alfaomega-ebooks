@@ -120,22 +120,23 @@ class Alfaomega_Ebooks_Admin {
         ]);
     }
 
-    public function bulk_action_update_ebooks($bulk_actions): array
+    public function bulk_actions_alfaomega_ebooks($bulk_actions): array
     {
-        $bulk_actions['update-ebooks'] = __('Update', 'alfaomega-ebooks');
+        $bulk_actions['update-meta'] = __('Update meta', 'alfaomega-ebooks');
+        $bulk_actions['link-product'] = __('Link product', 'alfaomega-ebooks');
         return $bulk_actions;
     }
 
     public function show_notification(): void
     {
-        if (!empty($_REQUEST['updated-ebooks'])) {
-            $updatedEbooks = $_REQUEST['updated-ebooks'];
+        if (!empty($_REQUEST['updated-meta'])) {
+            $updatedEbooks = intval($_REQUEST['updated-meta']);
             if ($updatedEbooks === 'fail') {
-                $class = 'notice notice-error';
-                $message = esc_html__('Update eBooks failed!', 'alfaomega-ebooks');
+                $class = 'notice notice-error is-dismissible';
+                $message = esc_html__('Update eBooks meta failed!', 'alfaomega-ebooks');
             } else {
                 $class = 'notice notice-success is-dismissible';
-                $message = printf(esc_html__('Updated $1 eBooks successfully', 'alfaomega-ebooks'), $updatedEbooks);
+                $message = sprintf(esc_html__('Updated %u eBooks meta successfully', 'alfaomega-ebooks'), $updatedEbooks);
             }
 
             printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );

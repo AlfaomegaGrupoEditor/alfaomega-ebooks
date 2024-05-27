@@ -228,6 +228,12 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             if ($response['response']['code'] !== 200) {
                 throw new Exception($response['response']['message']);
             }
+
+            $content = json_decode($response['body'], true);
+            if ($content['status'] !== 'success') {
+                throw new Exception($content['message']);
+            }
+
             return json_decode($response['body'], true)['data'];
         }
 

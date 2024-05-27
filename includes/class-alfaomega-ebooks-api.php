@@ -100,7 +100,8 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
                     $args = [ 'headers' => $headers, 'timeout' => 60 ];
                     switch ($method) {
                         case 'post':
-                            $args['body'] = $data;
+                            $args['body'] = json_encode($data);
+                            $args['method'] = 'POST';
                             $response = wp_remote_post( $uri, $args );
                             break;
                         case 'get':
