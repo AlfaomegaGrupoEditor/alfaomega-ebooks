@@ -6,6 +6,11 @@
         </p>
     </div>
 
+    <?php
+        $service = new Alfaomega_Ebooks_Service(false);
+        $queueStatus = $service->queueStatus('alfaomega_ebooks_queue_refresh');
+    ?>
+
     <div class="alfaomega_ebooks-pagebody">
         <div class="alfaomega_ebooks-success-msg" style="display: none;"></div>
         <div class="alfaomega_ebooks-error-msg" style="display: none;"></div>
@@ -17,7 +22,10 @@
             <input type="hidden" name="endpoint" value="refresh_ebooks" />
             <input type="hidden" name="alfaomega_ebook_nonce" value="<?=wp_create_nonce('alfaomega_ebook_nonce')?>" />
 
-            <h2><?php esc_html_e("Queue status", 'alfaomega-ebooks'); ?></h2>
+            <h2>
+                <?php esc_html_e("Queue status", 'alfaomega-ebooks'); ?>:
+                <span> [<?php echo $queueStatus['pending'] > 0 ? esc_html__("Working", 'alfaomega-ebooks') : esc_html__("Idle", 'alfaomega-ebooks'); ?>]</span>
+            </h2>
             <div class="divTable blueTable">
                 <div class="divTableHeading">
                     <div class="divTableRow">
@@ -28,21 +36,28 @@
                 <div class="divTableBody">
                     <div class="divTableRow">
                         <div class="divTableCell"><?php esc_html_e("Completed", 'alfaomega-ebooks'); ?></div>
-                        <div id="queue-refresh-completed" class="divTableCell">0</div>
+                        <div id="queue-refresh-completed" class="divTableCell">
+                            <?php echo $queueStatus['complete'] ?>
+                        </div>
                     </div>
                     <div class="divTableRow">
                         <div class="divTableCell"><?php esc_html_e("Failed", 'alfaomega-ebooks'); ?></div>
-                        <div id="queue-refresh-failed" class="divTableCell">0</div>
+                        <div id="queue-refresh-failed" class="divTableCell">
+                            <?php echo $queueStatus['failed'] ?>
+                        </div>
                     </div>
                     <div class="divTableRow">
                         <div class="divTableCell"><?php esc_html_e("Pending", 'alfaomega-ebooks'); ?></div>
-                        <div id="queue-refresh-scheduled" class="divTableCell">0</div>
+                        <div id="queue-refresh-scheduled" class="divTableCell">
+                            <?php echo $queueStatus['pending'] ?>
+                        </div>
                     </div>
                 </div>
             </div>
             
             <input class="alfaomega_ebooks-btn btnFade alfaomega_ebooks-btnBlueGreen alfaomega_ebooks_refresh_ebooks"
                    type="submit"
+                    <?php echo $queueStatus['pending'] > 0 ? 'disabled="disabled"' : ''; ?>
                    name="alfaomega_ebooks_refresh_ebooks"
                    value="<?php esc_html_e("Refresh eBooks", 'alfaomega-ebooks') ?>"
             >

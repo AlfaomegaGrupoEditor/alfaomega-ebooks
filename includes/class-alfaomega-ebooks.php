@@ -206,6 +206,7 @@ class Alfaomega_Ebooks {
         // queue actions
         $service = new Alfaomega_Ebooks_Service(false);
         $this->loader->add_action('alfaomega_ebooks_queue_import', $service, 'importEbook');
+        $this->loader->add_action('alfaomega_ebooks_queue_refresh', $service, 'refreshEbook', 10, 2);
 
         // Add plugin settings to WooCommerce
         // @deprecated Using the own plugin settings
