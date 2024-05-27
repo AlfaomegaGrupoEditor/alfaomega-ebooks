@@ -36,19 +36,19 @@
                 <div class="divTableBody">
                     <div class="divTableRow">
                         <div class="divTableCell"><?php esc_html_e("Completed", 'alfaomega-ebooks'); ?></div>
-                        <div id="queue-refresh-completed" class="divTableCell">
+                        <div id="queue-complete" class="divTableCell">
                             <?php echo $queueStatus['complete'] ?>
                         </div>
                     </div>
                     <div class="divTableRow">
                         <div class="divTableCell"><?php esc_html_e("Failed", 'alfaomega-ebooks'); ?></div>
-                        <div id="queue-refresh-failed" class="divTableCell">
+                        <div id="queue-failed" class="divTableCell">
                             <?php echo $queueStatus['failed'] ?>
                         </div>
                     </div>
                     <div class="divTableRow">
                         <div class="divTableCell"><?php esc_html_e("Pending", 'alfaomega-ebooks'); ?></div>
-                        <div id="queue-refresh-scheduled" class="divTableCell">
+                        <div id="queue-pending" class="divTableCell">
                             <?php echo $queueStatus['pending'] ?>
                         </div>
                     </div>
