@@ -75,7 +75,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
             $response = $this->service->importEbooks();
 
             $message = $response['imported'] > 0
-                ? str_replace('%s', $response['imported'], esc_html__("Imported %s new ebooks successfully!", 'alfaomega-ebooks'))
+                ? str_replace('%s', $response['imported'], esc_html__("%s new ebooks were added to the import scheduler successfully!", 'alfaomega-ebooks'))
                 : esc_html__('No new eBooks to import', 'alfaomega-ebooks');
 
             return [

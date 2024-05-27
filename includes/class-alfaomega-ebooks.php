@@ -155,7 +155,7 @@ class Alfaomega_Ebooks {
         /**
          * The class responsible for processing queue job tasks.
          */
-        require_once( ACTION_SCHEDULER_PATH );
+        // require_once( ACTION_SCHEDULER_PATH );
 
 		$this->loader = new Alfaomega_Ebooks_Loader();
 
@@ -202,6 +202,10 @@ class Alfaomega_Ebooks {
         $this->loader->add_filter('handle_bulk_actions-edit-alfaomega-ebook', $controller, 'bulk_action_update_ebooks', 10, 3);
 
         $this->loader->add_action('admin_notices', $plugin_admin, 'show_notification');
+
+        // queue actions
+        $service = new Alfaomega_Ebooks_Service(false);
+        $this->loader->add_action('alfaomega_ebooks_queue_import', $service, 'importEbook');
 
         // Add plugin settings to WooCommerce
         // @deprecated Using the own plugin settings

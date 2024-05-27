@@ -47,8 +47,6 @@ define( 'ALFAOMEGA_EBOOKS_VERSION', '1.0.0' );
 define( 'ALFAOMEGA_EBOOKS_NAME', 'alfaomega-ebooks' );
 define( 'ALFAOMEGA_EBOOKS_POST_TYPE', 'alfaomega-ebook' );
 define( 'ALFAOMEGA_SECURITY_PATH', plugin_dir_path( __FILE__ ) . 'security' );
-define( 'ACTION_SCHEDULER_PATH', plugin_dir_path(WP_PLUGIN_DIR . 'woocommerce/packages/action-scheduler/action-scheduler.php'));
-
 
 if (!function_exists('is_plugin_active')) {
     include_once(ABSPATH . '/wp-admin/includes/plugin.php');

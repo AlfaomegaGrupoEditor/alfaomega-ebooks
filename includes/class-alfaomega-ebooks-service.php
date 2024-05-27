@@ -14,10 +14,12 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         protected Alfaomega_Ebooks_Api $api;
         protected array $settings = [];
 
-        public function __construct()
+        public function __construct(bool $initApi=true)
         {
-            $this->getSettings();
-            $this->api = new Alfaomega_Ebooks_Api($this->settings);
+            if ($initApi) {
+                $this->getSettings();
+                $this->api = new Alfaomega_Ebooks_Api($this->settings);
+            }
         }
 
         public function getSettings(): void
@@ -31,28 +33,42 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
         public function importEbooks(): array
         {
-            $max = $this->settings['alfaomega_ebooks_import_limit'];
             $isbn = '';
             if ($this->settings['alfaomega_ebooks_import_from_latest']) {
                 $latestBook = $this->latestPost();
                 $isbn = empty($latestBook) ? '' : $latestBook['isbn'];
             }
-            $countPerPage = 50;
-            $page = 0;
+            $countPerPage = $this->settings['alfaomega_ebooks_import_limit'];
             $imported = 0;
             do {
-                $eBooks = $this->retrieveEbooks($isbn, $countPerPage, $page);
+                $eBooks = $this->retrieveEbooks($isbn, $countPerPage);
                 foreach ($eBooks as $eBook) {
-                    $eBook = $this->updateEbookPost(null, $eBook);
-                    $this->linkProduct($eBook);
+                    as_enqueue_async_action(
+                        'alfaomega_ebooks_queue_import',
+                        [ $eBook ]
+                    );
+                    $imported++;
                 }
-                $imported += count($eBooks);
-                $page++;
-            } while (count($eBooks) === $countPerPage && $imported < $max);
+                $last = end($eBooks);
+                $isbn = $last['isbn'];
+            } while (count($eBooks) === $countPerPage);
 
             return [
                 'imported' => $imported
             ];
+        }
+
+        /**
+         * Will be called from the job
+         * @param array $eBook
+         *
+         * @return void
+         * @throws \Exception
+         */
+        public function importEbook(array $eBook): void
+        {
+            $eBook = $this->updateEbookPost(null, $eBook);
+            $this->linkProduct($eBook);
         }
 
         public function refreshEbooks($postIds = null): array
@@ -130,12 +146,12 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 ],
                 'alfaomega_ebook_id'   => [
                     'old'     => get_post_meta($postId, 'alfaomega_ebook_id', true),
-                    'new'     => !empty($data['links']['adobe']) ? $data['links']['adobe'] : '',
+                    'new'     => !empty($data['adobe']) ? $data['adobe'] : '',
                     'default' => '',
                 ],
                 'alfaomega_ebook_url'  => [
                     'old'     => get_post_meta($postId, 'alfaomega_ebook_url', true),
-                    'new'     => !empty($data['links']['html_ebook']) ? $data['links']['html_ebook'] : '',
+                    'new'     => !empty($data['html_ebook']) ? $data['html_ebook'] : '',
                     'default' => '',
                 ],
             ];
@@ -215,10 +231,10 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return json_decode($response['body'], true)['data'];
         }
 
-        protected function retrieveEbooks($isbn = '', $count=100, $page=0): array
+        protected function retrieveEbooks($isbn = '', $count=100): array
         {
             // pull from Panel all eBooks updated after the specified book
-            $response = $this->api->get("/book/index/$isbn?page={$page}&items={$count}");
+            $response = $this->api->get("/book/index/$isbn?items={$count}");
             if ($response['response']['code'] !== 200) {
                 throw new Exception($response['response']['message']);
             }

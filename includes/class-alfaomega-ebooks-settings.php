@@ -314,8 +314,9 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 name="alfaomega_ebooks_general_options[alfaomega_ebooks_import_limit]"
                 id="alfaomega_ebooks_notify_to"
                 min="1"
-                max="500"
-                value="<?php echo isset(self::$generalOptions['alfaomega_ebooks_import_limit']) ? esc_attr(self::$generalOptions['alfaomega_ebooks_import_limit']) : '300'; ?>"
+                max="5000"
+                style="width: 7em"
+                value="<?php echo isset(self::$generalOptions['alfaomega_ebooks_import_limit']) ? esc_attr(self::$generalOptions['alfaomega_ebooks_import_limit']) : '1000'; ?>"
             >
             <p class="description"> <? esc_html_e("Max number of new eBooks to import at once", 'alfaomega-ebooks') ?> </p>
             <?php
@@ -334,7 +335,6 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 type="checkbox"
                 name="alfaomega_ebooks_general_options[alfaomega_ebooks_import_from_latest]"
                 id="alfaomega_ebooks_import_from_latest"
-                disabled
                 value="1"
                 <?php
                 if ( isset( self::$generalOptions['alfaomega_ebooks_import_from_latest'])) {
