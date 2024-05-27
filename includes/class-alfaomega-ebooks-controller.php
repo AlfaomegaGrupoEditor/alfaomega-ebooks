@@ -21,7 +21,12 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
         public function process(): void
         {
             try {
-                $this->request = $_POST;
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    $this->request = $_POST;
+                } else {
+                    $this->request = $_GET;
+                }
+
                 header('Content-Type: application/json; charset=utf-8');
 
                 if( isset( $this->request['alfaomega_ebook_nonce'] ) ){
@@ -109,6 +114,14 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
             return [
                 'data'    => $response,
                 'message' => $message,
+            ];
+        }
+
+        public function queue_status(): array
+        {
+            $queue = $this->request['queue'];
+            return [
+                'data' => $this->service->queueStatus($queue)
             ];
         }
     }

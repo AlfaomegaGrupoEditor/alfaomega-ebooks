@@ -30,7 +30,9 @@
 	 */
 
 	$(function() {
-		$('#alfaomega_ebooks_form').submit(function(event) {
+		const alfaomegaEbooksForm = $('#alfaomega_ebooks_form');
+
+		alfaomegaEbooksForm.submit(function(event) {
 			event.preventDefault();
 			$.ajax({
 				url: php_vars.admin_post_url,
@@ -55,16 +57,16 @@
 					} else {
 						showError(response.error);
 					}
+					checkQueue();
 				},
 
 			});
 		});
 
-		setInterval(function () {
-			// get queue information
-
-		}, 2000);
+		checkQueue();
 	});
+
+	let interval;
 
 	function showError( msg = 'Something went wrong. Please try again') {
 		$('.alfaomega_ebooks-error-msg')
@@ -82,4 +84,53 @@
 			.fadeOut('slow');
 	}
 
+	function checkQueue() {
+		const alfaomegaEbooksForm = $('#alfaomega_ebooks_form');
+		const formSubmit = $('#form_submit');
+		const queueCompleted = $("#queue-completed")
+		const queueFailed = $("#queue-failed")
+		const queuePending = $("#queue-pending")
+
+		if (alfaomegaEbooksForm.length > 0) {
+			interval = setInterval(function() {
+				const endpoint = alfaomegaEbooksForm.find("input[name=endpoint]");
+				let queue = '';
+				switch (endpoint.val()) {
+					case 'import_ebooks':
+						queue = 'alfaomega_ebooks_queue_import';
+						break;
+					case 'refresh_ebooks':
+						queue = 'alfaomega_ebooks_queue_refresh';
+						break;
+					case 'link_ebooks':
+						queue = 'alfaomega_ebooks_queue_link';
+						break;
+				}
+				let data = alfaomegaEbooksForm.serialize().replace(endpoint.val(), 'queue_status');
+
+				$.ajax({
+					url: php_vars.admin_post_url,
+					type: 'GET',
+					dataType: 'JSON',
+					timeout: 0,
+					data: data + `&queue=${queue}`,
+					error: function(error) {
+					},
+					success: function(response) {
+						if (response.status === 'success') {
+							formSubmit.prop("disabled", response.data.pending > 0)
+							queueCompleted.html(response.data.completed);
+							queueFailed.html(response.data.failed);
+							queuePending.html(response.data.pending);
+
+							if (response.data.pending === 0) {
+								clearInterval(interval);
+							}
+						}
+					}
+				});
+
+			}, 6000);
+		}
+	}
 })( jQuery );

@@ -6,6 +6,10 @@
         </p>
     </div>
 
+    <?php
+        $service = new Alfaomega_Ebooks_Service(false);
+        $queueStatus = $service->queueStatus('alfaomega_ebooks_queue_import');
+    ?>
     <div class="alfaomega_ebooks-pagebody">
         <div class="alfaomega_ebooks-success-msg" style="display: none;"></div>
         <div class="alfaomega_ebooks-error-msg" style="display: none;"></div>
@@ -28,21 +32,29 @@
                 <div class="divTableBody">
                     <div class="divTableRow">
                         <div class="divTableCell"><?php esc_html_e("Completed", 'alfaomega-ebooks'); ?></div>
-                        <div id="queue-import-completed" class="divTableCell">0</div>
+                        <div id="queue-completed" class="divTableCell">
+                            <?php echo $queueStatus['completed'] ?>
+                        </div>
                     </div>
                     <div class="divTableRow">
                         <div class="divTableCell"><?php esc_html_e("Failed", 'alfaomega-ebooks'); ?></div>
-                        <div id="queue-import-failed" class="divTableCell">0</div>
+                        <div id="queue-failed" class="divTableCell">
+                            <?php echo $queueStatus['failed'] ?>
+                        </div>
                     </div>
                     <div class="divTableRow">
                         <div class="divTableCell"><?php esc_html_e("Pending", 'alfaomega-ebooks'); ?></div>
-                        <div id="queue-import-scheduled" class="divTableCell">0</div>
+                        <div id="queue-pending" class="divTableCell">
+                            <?php echo $queueStatus['pending'] ?>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <input class="alfaomega_ebooks-btn btnFade alfaomega_ebooks-btnBlueGreen alfaomega_ebooks_import_ebooks"
                    type="submit"
+                   id="form_submit"
+                    <?php echo $queueStatus['pending'] > 0 ? 'disabled="disabled"' : ''; ?>
                    name="alfaomega_ebooks_import_ebooks"
                    value="<?php esc_html_e("Import eBooks", 'alfaomega-ebooks') ?>"
             >

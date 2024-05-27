@@ -281,6 +281,14 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             // link WooCommerce Product to eBook
         }
 
-
+        public function queueStatus($queue): array
+        {
+            return [
+                'queue'     => $queue,
+                'completed' => rand(100, 1000),
+                'failed'    => rand(0, 30),
+                'pending'   => rand(0, 5),
+            ];
+        }
     }
 }
