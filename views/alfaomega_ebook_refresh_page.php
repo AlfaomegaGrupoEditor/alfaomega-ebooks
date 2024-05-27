@@ -56,6 +56,7 @@
             </div>
             
             <input class="alfaomega_ebooks-btn btnFade alfaomega_ebooks-btnBlueGreen alfaomega_ebooks_refresh_ebooks"
+                   id="form_submit"
                    type="submit"
                     <?php echo $queueStatus['pending'] > 0 ? 'disabled="disabled"' : ''; ?>
                    name="alfaomega_ebooks_refresh_ebooks"

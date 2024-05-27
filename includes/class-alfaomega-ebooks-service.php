@@ -73,7 +73,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
         public function refreshEbooks($postIds = null): array
         {
-            $postsPerPage = 20;
+            $postsPerPage = 5;
             $page = 0;
             $args = [
                 'posts_per_page' => $postsPerPage,
@@ -92,10 +92,13 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                         $isbns[$isbn] = $post->ID;
                     }
 
-                    as_enqueue_async_action(
+                    $result = as_enqueue_async_action(
                         'alfaomega_ebooks_queue_refresh_list',
                         [ $isbns ]
                     );
+                    if ($result === 0) {
+                        throw new Exception('Queue action failed');
+                    }
                     $page++;
                 } while (count($posts) === $postsPerPage);
             } else {
@@ -118,11 +121,14 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         {
             $eBooks = $this->getEbooksInfo(array_keys($isbns));
             foreach ($eBooks as $eBook) {
-                if (!as_has_scheduled_action( 'alfaomega_ebooks_queue_refresh', [ $isbns[$eBook['isbn']], $eBook ] )) {
-                    as_enqueue_async_action(
-                        'alfaomega_ebooks_queue_refresh',
-                        [ $isbns[$eBook['isbn']], $eBook ]
-                    );
+                $result = as_enqueue_async_action(
+                    'alfaomega_ebooks_queue_refresh',
+                    [ $isbns[$eBook['isbn']], $eBook ],
+                    '',
+                    true
+                );
+                if ($result === 0) {
+                    throw new Exception('Queue action failed');
                 }
             }
         }
