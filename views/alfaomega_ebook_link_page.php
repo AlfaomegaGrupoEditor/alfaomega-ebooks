@@ -17,6 +17,30 @@
             <input type="hidden" name="endpoint" value="link_products" />
             <input type="hidden" name="alfaomega_ebook_nonce" value="<?=wp_create_nonce('alfaomega_ebook_nonce')?>" />
 
+            <h2><?php esc_html_e("Queue status", 'alfaomega-ebooks'); ?></h2>
+            <div class="divTable blueTable">
+                <div class="divTableHeading">
+                    <div class="divTableRow">
+                        <div class="divTableHead"><?php esc_html_e("Status", 'alfaomega-ebooks'); ?></div>
+                        <div class="divTableHead"><?php esc_html_e("Count", 'alfaomega-ebooks'); ?></div>
+                    </div>
+                </div>
+                <div class="divTableBody">
+                    <div class="divTableRow">
+                        <div class="divTableCell"><?php esc_html_e("Completed", 'alfaomega-ebooks'); ?></div>
+                        <div id="queue-link-completed" class="divTableCell">0</div>
+                    </div>
+                    <div class="divTableRow">
+                        <div class="divTableCell"><?php esc_html_e("Failed", 'alfaomega-ebooks'); ?></div>
+                        <div id="queue-link-failed" class="divTableCell">0</div>
+                    </div>
+                    <div class="divTableRow">
+                        <div class="divTableCell"><?php esc_html_e("Scheduled", 'alfaomega-ebooks'); ?></div>
+                        <div id="queue-link-scheduled" class="divTableCell">0</div>
+                    </div>
+                </div>
+            </div>
+            
             <input class="alfaomega_ebooks-btn btnFade alfaomega_ebooks-btnBlueGreen alfaomega_ebooks_link_products"
                    type="submit"
                    name="alfaomega_ebooks_link_ebooks"

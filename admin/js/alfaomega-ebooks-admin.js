@@ -59,6 +59,11 @@
 
 			});
 		});
+
+		setInterval(function () {
+			// get queue information
+
+		}, 2000);
 	});
 
 	function showError( msg = 'Something went wrong. Please try again') {

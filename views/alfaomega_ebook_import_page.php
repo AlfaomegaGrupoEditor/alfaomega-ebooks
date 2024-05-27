@@ -17,11 +17,36 @@
             <input type="hidden" name="endpoint" value="import_ebooks" />
             <input type="hidden" name="alfaomega_ebook_nonce" value="<?= wp_create_nonce('alfaomega_ebook_nonce') ?>" />
 
+            <h2><?php esc_html_e("Queue status", 'alfaomega-ebooks'); ?></h2>
+            <div class="divTable blueTable">
+                <div class="divTableHeading">
+                    <div class="divTableRow">
+                        <div class="divTableHead"><?php esc_html_e("Status", 'alfaomega-ebooks'); ?></div>
+                        <div class="divTableHead"><?php esc_html_e("Count", 'alfaomega-ebooks'); ?></div>
+                    </div>
+                </div>
+                <div class="divTableBody">
+                    <div class="divTableRow">
+                        <div class="divTableCell"><?php esc_html_e("Completed", 'alfaomega-ebooks'); ?></div>
+                        <div id="queue-import-completed" class="divTableCell">0</div>
+                    </div>
+                    <div class="divTableRow">
+                        <div class="divTableCell"><?php esc_html_e("Failed", 'alfaomega-ebooks'); ?></div>
+                        <div id="queue-import-failed" class="divTableCell">0</div>
+                    </div>
+                    <div class="divTableRow">
+                        <div class="divTableCell"><?php esc_html_e("Scheduled", 'alfaomega-ebooks'); ?></div>
+                        <div id="queue-import-scheduled" class="divTableCell">0</div>
+                    </div>
+                </div>
+            </div>
+
             <input class="alfaomega_ebooks-btn btnFade alfaomega_ebooks-btnBlueGreen alfaomega_ebooks_import_ebooks"
                    type="submit"
                    name="alfaomega_ebooks_import_ebooks"
                    value="<?php esc_html_e("Import eBooks", 'alfaomega-ebooks') ?>"
             >
+
             <a class="alfaomega_ebooks-btn btnFade alfaomega_ebooks-btnBlueGreenAnchor"
                href="<?php esc_url(admin_url('admin.php')) ?> ?page=alfaomega_ebooks_admin"
             >
