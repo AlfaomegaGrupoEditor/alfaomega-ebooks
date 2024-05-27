@@ -148,9 +148,14 @@ class Alfaomega_Ebooks {
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-service.php';
 
         /**
-         * The class responsible for processing the plugin logic.
+         * The class responsible for processing API calls.
          */
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-api.php';
+
+        /**
+         * The class responsible for processing queue job tasks.
+         */
+        require_once( ACTION_SCHEDULER_PATH );
 
 		$this->loader = new Alfaomega_Ebooks_Loader();
 
