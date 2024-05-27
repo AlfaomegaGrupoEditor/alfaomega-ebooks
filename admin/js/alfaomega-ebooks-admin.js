@@ -31,6 +31,7 @@
 
 	$(function() {
 		const alfaomegaEbooksForm = $('#alfaomega_ebooks_form');
+		const formSubmit = $('#form_submit');
 
 		alfaomegaEbooksForm.submit(function(event) {
 			event.preventDefault();
@@ -45,6 +46,7 @@
 					$('#wpfooter')
 						.append('<div class="alfaomega_ebooksLoading">Loading&#8230;</div>')
 						.show();
+					formSubmit.prop("disabled", false);
 				},
 				error: function(error) {
 					$('.alfaomega_ebooksLoading').remove();
@@ -58,7 +60,7 @@
 					} else {
 						showError(response.error);
 					}
-					checkQueue();
+					checkQueue(true);
 				},
 
 			});
@@ -85,14 +87,14 @@
 			.fadeOut('slow');
 	}
 
-	function checkQueue() {
+	function checkQueue(force) {
 		const alfaomegaEbooksForm = $('#alfaomega_ebooks_form');
 		const formSubmit = $('#form_submit');
 		const queueCompleted = $("#queue-complete")
 		const queueFailed = $("#queue-failed")
 		const queuePending = $("#queue-pending")
 
-		if (alfaomegaEbooksForm.length > 0 && queuePending.html().trim() !== '0') {
+		if (alfaomegaEbooksForm.length > 0 && (force || queuePending.html().trim() !== '0')) {
 			interval = setInterval(function() {
 				const endpoint = alfaomegaEbooksForm.find("input[name=endpoint]");
 				let queue = '';

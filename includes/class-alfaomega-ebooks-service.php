@@ -73,7 +73,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
         public function refreshEbooks($postIds = null): array
         {
-            $postsPerPage = 100;
+            $postsPerPage = 20;
             $page = 0;
             $args = [
                 'posts_per_page' => $postsPerPage,
@@ -118,10 +118,12 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         {
             $eBooks = $this->getEbooksInfo(array_keys($isbns));
             foreach ($eBooks as $eBook) {
-                as_enqueue_async_action(
-                    'alfaomega_ebooks_queue_refresh',
-                    [ $isbns[$eBook['isbn']], $eBook ]
-                );
+                if (!as_has_scheduled_action( 'alfaomega_ebooks_queue_refresh', [ $isbns[$eBook['isbn']], $eBook ] )) {
+                    as_enqueue_async_action(
+                        'alfaomega_ebooks_queue_refresh',
+                        [ $isbns[$eBook['isbn']], $eBook ]
+                    );
+                }
             }
         }
 
