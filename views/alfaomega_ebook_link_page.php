@@ -35,7 +35,7 @@
                         <div id="queue-link-failed" class="divTableCell">0</div>
                     </div>
                     <div class="divTableRow">
-                        <div class="divTableCell"><?php esc_html_e("Scheduled", 'alfaomega-ebooks'); ?></div>
+                        <div class="divTableCell"><?php esc_html_e("Pending", 'alfaomega-ebooks'); ?></div>
                         <div id="queue-link-scheduled" class="divTableCell">0</div>
                     </div>
                 </div>
