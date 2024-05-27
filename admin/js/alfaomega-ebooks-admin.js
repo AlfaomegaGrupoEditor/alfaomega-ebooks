@@ -125,6 +125,7 @@
 
 							if (response.data.pending === 0) {
 								clearInterval(interval);
+								showInfo('Process completed!');
 							}
 						}
 					}

@@ -21,7 +21,10 @@
             <input type="hidden" name="endpoint" value="import_ebooks" />
             <input type="hidden" name="alfaomega_ebook_nonce" value="<?= wp_create_nonce('alfaomega_ebook_nonce') ?>" />
 
-            <h2><?php esc_html_e("Queue status", 'alfaomega-ebooks'); ?></h2>
+            <h2>
+                <?php esc_html_e("Queue status", 'alfaomega-ebooks'); ?>:
+                <span> [<?php echo $queueStatus['pending'] > 0 ? esc_html__("Working", 'alfaomega-ebooks') : esc_html__("Idle", 'alfaomega-ebooks'); ?>]</span>
+            </h2>
             <div class="divTable blueTable">
                 <div class="divTableHeading">
                     <div class="divTableRow">
