@@ -136,7 +136,7 @@ class Alfaomega_Ebooks_Admin {
                 $message = esc_html__('Update eBooks meta failed!', 'alfaomega-ebooks');
             } else {
                 $class = 'notice notice-success is-dismissible';
-                $message = sprintf(esc_html__('Updated %u eBooks meta successfully', 'alfaomega-ebooks'), $updatedEbooks);
+                $message = sprintf(esc_html__('%u eBooks meta updated successfully', 'alfaomega-ebooks'), $updatedEbooks);
             }
 
             printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
@@ -147,7 +147,7 @@ class Alfaomega_Ebooks_Admin {
                 $message = esc_html__('Link product failed!', 'alfaomega-ebooks');
             } else {
                 $class = 'notice notice-success is-dismissible';
-                $message = sprintf(esc_html__('Linked %u products successfully', 'alfaomega-ebooks'), $linkProduct);
+                $message = sprintf(esc_html__('%u products linked successfully', 'alfaomega-ebooks'), $linkProduct);
             }
 
             printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
