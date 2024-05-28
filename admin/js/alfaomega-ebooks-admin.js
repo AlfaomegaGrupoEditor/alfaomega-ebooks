@@ -31,6 +31,7 @@
 
 	$(function() {
 		const alfaomegaEbooksForm = $('#alfaomega_ebooks_form');
+		const clearQueue = $('#clear-queue');
 		const formSubmit = $('#form_submit');
 		const queueStatus = $("#queue_status")
 
@@ -62,6 +63,30 @@
 					} else {
 						showError(response.error);
 					}
+					checkQueue(true);
+				},
+
+			});
+		});
+
+		clearQueue.click(function(event){
+			event.preventDefault();
+			const endpoint = alfaomegaEbooksForm.find("input[name=endpoint]");
+			let data = alfaomegaEbooksForm.serialize().replace(endpoint.val(), 'clear_queue');
+			$.ajax({
+				url: php_vars.admin_post_url,
+				type: 'POST',
+				timeout: 0,
+				data: data,
+				error: function(error) {
+					showError(error?.responseJSON?.error ? error?.responseJSON?.error : '');
+				},
+				success: function(response) {
+					if ('success' === response.status) {
+						showInfo(response.message);
+					} else {
+						showError(response.error);
+					};
 					checkQueue(true);
 				},
 
@@ -132,7 +157,7 @@
 
 							if (response.data.pending === 0) {
 								clearInterval(interval);
-								showInfo('Process completed!');
+								showInfo('Queue status updated!');
 								formSubmit.prop("disabled", false);
 								$('queue_status').html('Idle');
 							}

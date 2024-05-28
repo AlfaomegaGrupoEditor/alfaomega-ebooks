@@ -138,5 +138,13 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
                 'data' => $this->service->queueStatus($queue)
             ];
         }
+
+        public function clear_queue(): array
+        {
+            return [
+                'data'    => $this->service->clearQueue(),
+                'message' => esc_html__('Queue cleared successfully', 'alfaomega-ebooks'),
+            ];
+        }
     }
 }

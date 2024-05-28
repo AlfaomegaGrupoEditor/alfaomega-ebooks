@@ -62,6 +62,11 @@
                    name="alfaomega_ebooks_refresh_ebooks"
                    value="<?php esc_html_e("Refresh eBooks", 'alfaomega-ebooks') ?>"
             >
+
+            <button id="clear-queue" class="alfaomega_ebooks-btn btnFade alfaomega_ebooks-btnBlueGreenAnchor">
+                <?php esc_html_e("Clear queue", 'alfaomega-ebooks') ?>
+            </button>
+
             <a class="alfaomega_ebooks-btn btnFade alfaomega_ebooks-btnBlueGreenAnchor"
                href="<?php esc_url(admin_url('admin.php')) ?> ?page=alfaomega_ebooks_admin"
             >

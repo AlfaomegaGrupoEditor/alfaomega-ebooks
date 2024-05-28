@@ -78,7 +78,8 @@ table#alfaomega_ebooksListPostsTbl thead tr th, table#alfaomega_ebooksListProduc
     font-size: 16px;
     border: 0;
     padding: 15px;
-    border-radius: 5px
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 .alfaomega_ebooks-btnBlueGreen {

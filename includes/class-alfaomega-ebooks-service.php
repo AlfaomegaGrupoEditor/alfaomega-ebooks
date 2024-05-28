@@ -341,5 +341,18 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
             return $data;
         }
+
+        public function clearQueue(): array
+        {
+            global $wpdb;
+            $wpdb->get_results( "
+                DELETE
+                FROM wp_actionscheduler_actions
+                WHERE hook like '%alfaomega_ebooks_queue%'
+                    AND status not in ('pending', 'in-process');
+            " );
+
+            return [];
+        }
     }
 }
