@@ -32,6 +32,7 @@
 	$(function() {
 		const alfaomegaEbooksForm = $('#alfaomega_ebooks_form');
 		const formSubmit = $('#form_submit');
+		const queueStatus = $("#queue_status")
 
 		alfaomegaEbooksForm.submit(function(event) {
 			event.preventDefault();
@@ -43,6 +44,7 @@
 				data: $(this).serialize(),
 				beforeSend: function() {
 					formSubmit.prop("disabled", true);
+					queueStatus.html('Scheduling jobs');
 					checkQueue();
 					$('#wpfooter')
 						.append('<div class="alfaomega_ebooksLoading">Loading&#8230;</div>')

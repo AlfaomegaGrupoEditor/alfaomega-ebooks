@@ -129,9 +129,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             foreach ($eBooks as $eBook) {
                 $result = as_enqueue_async_action(
                     'alfaomega_ebooks_queue_refresh',
-                    [ $isbns[$eBook['isbn']], $eBook ],
-                    '',
-                    true
+                    [ $isbns[$eBook['isbn']], $eBook ]
                 );
                 if ($result === 0) {
                     throw new Exception('Refresh queue failed');
