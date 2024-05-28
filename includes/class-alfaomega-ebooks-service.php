@@ -143,14 +143,16 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             $this->linkProduct($eBook);
         }
 
-        public function linkProducts(): array
+        public function linkProducts($postIds): array
         {
-            // TODO: pull the eBook information of each linked product
-            // update or create the eBook information
-            // refresh de link of each product
+            $linked = 0;
+            foreach ($postIds as $postId) {
+                $this->linkProduct($this->getPostMeta($postId));
+                $linked++;
+            }
 
             return [
-                'linked' => rand(0, 2)
+                'linked' => $linked
             ];
         }
 
@@ -313,7 +315,8 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
         protected function linkProduct($ebook): void
         {
-            // link WooCommerce Product to eBook
+            // find a product with the same ebook ISBN
+            // create or update the product variant following the configuration
         }
 
         public function queueStatus($queue): array
