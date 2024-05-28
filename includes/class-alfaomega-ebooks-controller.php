@@ -108,7 +108,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
             $response = $this->service->refreshEbooks($postIds);
 
             $message = $response['refreshed'] > 0
-                ? str_replace('%s', $response['refreshed'], esc_html__("Refreshed %s ebooks successfully!", 'alfaomega-ebooks'))
+                ? str_replace('%s', $response['refreshed'], esc_html__("Scheduled to refresh %s ebooks successfully!", 'alfaomega-ebooks'))
                 : esc_html__('No eBooks found to refresh', 'alfaomega-ebooks');
 
             return [
