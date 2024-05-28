@@ -354,29 +354,25 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         protected function linkProduct($ebook): void
         {
             // TODO @see https://stackoverflow.com/questions/65204134/woocommerce-api-giving-json-syntax-error-on-every-request
-            $products = (array) $this->woocommerce
-                ->get("products", [
-                    'tag'=> $ebook['tag_id']
-                ]);
-
-            if (count($products) === 0) {
-                throw new Exception("Product with digital ISBN {$ebook['isbn']} not found");
+            $product = $this->getProduct($ebook['tag_id'], $ebook['title']);
+            if (empty($product)) {
+                throw new Exception("Products with digital ISBN {$ebook['isbn']} not found");
             }
 
-            if (count($products) > 1) {
-                throw new Exception("Multiple products with digital ISBN {$ebook['isbn']} found");
+            $product = $this->updateProductType($product);
+            if (empty($product)) {
+                throw new Exception("Product type not supported");
             }
 
-            $product = $products[0];
+            $product = $this->updateProductFormats($product);
+            if (empty($product)) {
+                throw new Exception("Product formats failed");
+            }
 
-            $formats = $this->woocommerce
-                ->get("products/59/variations");
-            $variations = $this->woocommerce
-                ->get("products/59/variations");
-
-            $variations = $this->woocommerce
-                ->get("products/{$ebook->id}/variations");
-
+            $product = $this->updateProductVariants($product);
+            if (empty($product)) {
+                throw new Exception("Product variants failed");
+            }
         }
 
         public function queueStatus($queue): array
@@ -434,6 +430,71 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 throw new Exception("Tag creation failed");
             }
             return $tag->id;
+        }
+
+        public function getProduct(int $tagId, string $title = null): ?array
+        {
+            $products = (array) $this->woocommerce
+                ->get("products", [
+                    'tag'=> $tagId
+                ]);
+
+            if (count($products) === 1) {
+                return (array) $products[0];
+            }
+
+            if (count($products) === 0 || !empty($title)) {
+                $product = $this->findProduct($title, $tagId);
+                if (!empty($product)) {
+                    return $product;
+                }
+            }
+
+            return null;
+        }
+
+        public function findProduct(string $title, int $tagId): ?array
+        {
+            $products = (array) $this->woocommerce
+                ->get("products", [
+                    'search' => $title
+                ]);
+
+            if (count($products) === 1) {
+                $product = $products[0];
+                $this->woocommerce
+                    ->put("products/{$product->id}", [
+                        'tags' => [[ 'id' => $tagId ]]
+                    ]);
+
+                return (array) $product;
+            }
+
+            return null;
+        }
+
+        public function updateProductType(array $product, string $type = 'variable'): ?array
+        {
+            if ($product['type'] !== $type) {
+                $product = (array) $this->woocommerce
+                    ->put("products/{$product['id']}", [
+                        'type' => $type
+                    ]);
+
+                return !empty($product) ? $product : null;
+            }
+
+            return $product;
+        }
+
+        public function updateProductVariants(array $product): array
+        {
+            return $product;
+        }
+
+        public function updateProductFormats(array $product): array
+        {
+            return $product;
         }
     }
 }
