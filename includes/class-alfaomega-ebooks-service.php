@@ -115,6 +115,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 $eBooks = $this->getEbooksInfo(array_keys($isbns));
                 foreach ($eBooks as $eBook) {
                     $this->refreshEbook($isbns[$eBook['isbn']], $eBook);
+                    $total++;
                 }
             }
 
