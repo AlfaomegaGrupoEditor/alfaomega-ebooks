@@ -24,7 +24,7 @@
 
             <h2>
                 <?php esc_html_e("Queue status", 'alfaomega-ebooks'); ?>:
-                <span> [<?php echo $queueStatus['pending'] > 0 ? esc_html__("Working", 'alfaomega-ebooks') : esc_html__("Idle", 'alfaomega-ebooks'); ?>]</span>
+                <span id="queue_status"><?php echo $queueStatus['pending'] > 0 ? esc_html__("Working", 'alfaomega-ebooks') : esc_html__("Idle", 'alfaomega-ebooks'); ?></span>
             </h2>
             <div class="divTable blueTable">
                 <div class="divTableHeading">

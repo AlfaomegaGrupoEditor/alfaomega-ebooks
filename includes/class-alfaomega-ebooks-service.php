@@ -81,12 +81,13 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 'orderby'        => 'ID',
                 'order'          => 'ASC',
             ];
-            $isbns = [];
+            $total = 0;
 
             if (empty($postIds)) {
                 do {
                     $args['offset'] = $postsPerPage * $page;
                     $posts = get_posts($args);
+                    $isbns = [];
                     foreach ($posts as $post) {
                         $isbn = get_post_meta($post->ID, 'alfaomega_ebook_isbn', true);
                         $isbns[$isbn] = $post->ID;
@@ -97,9 +98,14 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                         [ $isbns ]
                     );
                     if ($result === 0) {
+                        as_enqueue_async_action(
+                            'alfaomega_ebooks_queue_refresh_list',
+                            [ $isbns ]
+                        );
                         throw new Exception('Queue action failed');
                     }
                     $page++;
+                    $total += count($isbns);
                 } while (count($posts) === $postsPerPage);
             } else {
                 foreach ($postIds as $postId) {
@@ -113,7 +119,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             }
 
             return [
-                'refreshed' => count($isbns)
+                'refreshed' => $total
             ];
         }
 

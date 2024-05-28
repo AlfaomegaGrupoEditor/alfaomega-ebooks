@@ -93,8 +93,10 @@
 		const queueCompleted = $("#queue-complete")
 		const queueFailed = $("#queue-failed")
 		const queuePending = $("#queue-pending")
+		const queueStatus = $("#queue_status")
 
 		if (alfaomegaEbooksForm.length > 0 && (force || queuePending.html().trim() !== '0')) {
+			$('queue_status').html('Working')
 			interval = setInterval(function() {
 				const endpoint = alfaomegaEbooksForm.find("input[name=endpoint]");
 				let queue = '';
@@ -130,6 +132,7 @@
 								clearInterval(interval);
 								showInfo('Process completed!');
 								formSubmit.prop("disabled", false);
+								$('queue_status').html('Idle');
 							}
 						}
 					}
