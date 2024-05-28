@@ -247,6 +247,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 'pdf_id'    => get_post_meta($postId, 'alfaomega_ebook_id', true),
                 'ebook_url' => get_post_meta($postId, 'alfaomega_ebook_url', true),
                 'date'      => $post->post_date,
+                'tag_id'    => intval(get_post_meta($postId, 'alfaomega_ebook_tag_id', true)),
             ];
         }
 
@@ -352,11 +353,10 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
          */
         protected function linkProduct($ebook): void
         {
-            // the tag_id is in the eBook
             // TODO @see https://stackoverflow.com/questions/65204134/woocommerce-api-giving-json-syntax-error-on-every-request
             $products = (array) $this->woocommerce
                 ->get("products", [
-                    'tag'=> 32 /*$ebook['isbn']*/
+                    'tag'=> $ebook['tag_id']
                 ]);
 
             if (count($products) === 0) {
