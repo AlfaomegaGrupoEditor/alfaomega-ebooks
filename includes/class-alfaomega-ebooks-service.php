@@ -13,6 +13,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
         protected Alfaomega_Ebooks_Api $api;
         protected array $settings = [];
+        protected $wooCommerceClient;
 
         public function __construct(bool $initApi=true)
         {
@@ -20,6 +21,19 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 $this->getSettings();
                 $this->api = new Alfaomega_Ebooks_Api($this->settings);
             }
+        }
+
+        public function initWooCommerceClient(): void
+        {
+            $this->wooCommerceClient = new Client(
+                'https://example.com',
+                'consumer_key',
+                'consumer_secret',
+                [
+                    'wp_api' => true,
+                    'version' => 'wc/v3'
+                ]
+            );
         }
 
         public function getSettings(): void
@@ -313,10 +327,29 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return $this->savePostMeta($postId, $data);
         }
 
+        /**
+         * @param $ebook
+         * @see https://woocommerce.github.io/woocommerce-rest-api-docs/#introduction
+         *
+         * @return void
+         */
         protected function linkProduct($ebook): void
         {
-            // find a product with the same ebook ISBN
-            // create or update the product variant following the configuration
+            $a = $ebook;
+            $data = [
+                'regular_price' => '9.00',
+                'image' => [
+                    'id' => 423
+                ],
+                'attributes' => [
+                    [
+                        'id' => 9,
+                        'option' => 'Black'
+                    ]
+                ]
+            ];
+
+            print_r($woocommerce->post("products/{$ebook->id}/variations", $data));
         }
 
         public function queueStatus($queue): array
