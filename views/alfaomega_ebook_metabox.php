@@ -51,4 +51,21 @@
             >
         </td>
     </tr>
+    <tr>
+        <th>
+            <label for="alfaomega_ebook_tag_id">
+                <?php esc_html_e( 'Tag Id', 'alfaomega-ebook' ); ?>
+            </label>
+        </th>
+        <td>
+            <input
+                type="text"
+                name="alfaomega_ebook_tag_id"
+                id="alfaomega_ebook_tag_id"
+                class="regular-text tag_id"
+                value="<?php echo ( isset( $tag_id ) ) ? esc_attr( $tag_id ) : ''; ?>"
+                required
+            >
+        </td>
+    </tr>
 </table>

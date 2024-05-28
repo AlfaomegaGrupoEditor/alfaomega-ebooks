@@ -153,9 +153,9 @@ class Alfaomega_Ebooks {
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-api.php';
 
         /**
-         * The class responsible for handle WooCommerce API requests.
+         * Loading composer dependencies.
          */
-        //require_once( WP_PLUGIN_DIR . 'woocommerce/vendor/' );
+        require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php' );
 
 		$this->loader = new Alfaomega_Ebooks_Loader();
 

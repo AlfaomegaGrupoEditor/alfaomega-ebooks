@@ -1,4 +1,5 @@
 <?php
+use \Automattic\WooCommerce\Client;
 
 /**
  * This class defines the general plugin settings.
@@ -9,31 +10,38 @@
  * @author     Livan Rodriguez <livan2r@gmail.com>
  */
 if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
+
+
     class Alfaomega_Ebooks_Service{
 
         protected Alfaomega_Ebooks_Api $api;
         protected array $settings = [];
-        protected $wooCommerceClient;
+        protected ?Client $woocommerce = null;
 
         public function __construct(bool $initApi=true)
         {
             if ($initApi) {
                 $this->getSettings();
                 $this->api = new Alfaomega_Ebooks_Api($this->settings);
+                $this->initWooCommerceClient();
             }
         }
 
-        public function initWooCommerceClient(): void
+        public function initWooCommerceClient(): self
         {
-            $this->wooCommerceClient = new Client(
-                'https://example.com',
-                'consumer_key',
-                'consumer_secret',
+            $this->woocommerce = new Client(
+                get_site_url(),
+                WOOCOMMERCE_API_KEY,
+                WOOCOMMERCE_API_SECRET,
                 [
-                    'wp_api' => true,
-                    'version' => 'wc/v3'
+                    'wp_api'           => true,
+                    'version'          => 'wc/v3',
+                    'verify_ssl'       => false,
+                    'timeout'          => 180
                 ]
             );
+
+            return $this;
         }
 
         public function getSettings(): void
@@ -85,7 +93,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         public function importEbook(array $eBook): void
         {
             $eBook = $this->updateEbookPost(null, $eBook);
-            $this->linkProduct($eBook);
+            //$this->linkProduct($eBook);
         }
 
         public function refreshEbooks($postIds = null): array
@@ -154,11 +162,15 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         public function refreshEbook($postId, array $eBook): void
         {
             $eBook = $this->updateEbookPost($postId, $eBook);
-            $this->linkProduct($eBook);
+            //$this->linkProduct($eBook);
         }
 
         public function linkProducts($postIds): array
         {
+            if (empty($this->woocommerce)) {
+                throw new Exception(esc_html__('WooCommerce client not initialized', 'alfaomega-ebooks'));
+            }
+
             $linked = 0;
             foreach ($postIds as $postId) {
                 $this->linkProduct($this->getPostMeta($postId));
@@ -197,6 +209,11 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 'alfaomega_ebook_url'  => [
                     'old'     => get_post_meta($postId, 'alfaomega_ebook_url', true),
                     'new'     => !empty($data['html_ebook']) ? $data['html_ebook'] : '',
+                    'default' => '',
+                ],
+                'alfaomega_ebook_tag_id'  => [
+                    'old'     => get_post_meta($postId, 'alfaomega_ebook_tag_id', true),
+                    'new'     => !empty($data['isbn']) ? $this->getTagId($data['isbn']) : '',
                     'default' => '',
                 ],
             ];
@@ -335,21 +352,31 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
          */
         protected function linkProduct($ebook): void
         {
-            $a = $ebook;
-            $data = [
-                'regular_price' => '9.00',
-                'image' => [
-                    'id' => 423
-                ],
-                'attributes' => [
-                    [
-                        'id' => 9,
-                        'option' => 'Black'
-                    ]
-                ]
-            ];
+            // the tag_id is in the eBook
+            // TODO @see https://stackoverflow.com/questions/65204134/woocommerce-api-giving-json-syntax-error-on-every-request
+            $products = (array) $this->woocommerce
+                ->get("products", [
+                    'tag'=> 32 /*$ebook['isbn']*/
+                ]);
 
-            print_r($woocommerce->post("products/{$ebook->id}/variations", $data));
+            if (count($products) === 0) {
+                throw new Exception("Product with digital ISBN {$ebook['isbn']} not found");
+            }
+
+            if (count($products) > 1) {
+                throw new Exception("Multiple products with digital ISBN {$ebook['isbn']} found");
+            }
+
+            $product = $products[0];
+
+            $formats = $this->woocommerce
+                ->get("products/59/variations");
+            $variations = $this->woocommerce
+                ->get("products/59/variations");
+
+            $variations = $this->woocommerce
+                ->get("products/{$ebook->id}/variations");
+
         }
 
         public function queueStatus($queue): array
@@ -389,6 +416,24 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             " );
 
             return [];
+        }
+
+        public function getTagId(string $isbn): int
+        {
+            $tags = (array) $this->woocommerce->get("products/tags", [
+                'search' => $isbn,
+            ]);
+            if (count($tags) > 0) {
+                return $tags[0]->id;
+            }
+
+            $tag = $this->woocommerce->post("products/tags", [
+                'name' => $isbn,
+            ]);
+            if (empty($tag->id)) {
+                throw new Exception("Tag creation failed");
+            }
+            return $tag->id;
         }
     }
 }

@@ -119,7 +119,9 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
 
         public function link_products($postIds = null): array
         {
-            $response = $this->service->linkProducts($postIds);
+            $response = $this->service
+                ->initWooCommerceClient()
+                ->linkProducts($postIds);
 
             $message = $response['linked'] > 0
                 ? str_replace('%s', $response['linked'], esc_html__("Linked %s products successfully!", 'alfaomega-ebooks'))
