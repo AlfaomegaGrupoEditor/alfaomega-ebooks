@@ -43,10 +43,13 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             do {
                 $eBooks = $this->retrieveEbooks($isbn, $countPerPage);
                 foreach ($eBooks as $eBook) {
-                    as_enqueue_async_action(
+                    $result = as_enqueue_async_action(
                         'alfaomega_ebooks_queue_import',
                         [ $eBook ]
                     );
+                    if ($result === 0) {
+                        throw new Exception("Import queue failed");
+                    }
                     $imported++;
                 }
                 $last = end($eBooks);
@@ -98,11 +101,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                         [ $isbns ]
                     );
                     if ($result === 0) {
-                        as_enqueue_async_action(
-                            'alfaomega_ebooks_queue_refresh_list',
-                            [ $isbns ]
-                        );
-                        throw new Exception('Queue action failed');
+                        throw new Exception('Refresh list queue failed');
                     }
                     $page++;
                     $total += count($isbns);
@@ -135,7 +134,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                     true
                 );
                 if ($result === 0) {
-                    throw new Exception('Queue action failed');
+                    throw new Exception('Refresh queue failed');
                 }
             }
         }

@@ -48,7 +48,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
                 $response = $this->{$this->request['endpoint']}();
                 echo json_encode([
                     'status'  => 'success',
-                    'message' => $response['message'],
+                    'message' => !empty($response['message']) ? $response['message'] : esc_html__('God Job!!', 'alfaomega-ebooks'),
                     'data'    => $response['data'],
                 ]);
 

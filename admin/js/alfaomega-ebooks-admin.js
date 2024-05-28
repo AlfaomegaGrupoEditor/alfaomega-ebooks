@@ -42,11 +42,11 @@
 				timeout: 0,
 				data: $(this).serialize(),
 				beforeSend: function() {
+					formSubmit.prop("disabled", true);
 					checkQueue();
 					$('#wpfooter')
 						.append('<div class="alfaomega_ebooksLoading">Loading&#8230;</div>')
 						.show();
-					formSubmit.prop("disabled", false);
 				},
 				error: function(error) {
 					$('.alfaomega_ebooksLoading').remove();
@@ -96,7 +96,7 @@
 		const queueStatus = $("#queue_status")
 
 		if (alfaomegaEbooksForm.length > 0 && (force || queuePending.html().trim() !== '0')) {
-			$('queue_status').html('Working')
+			queueStatus.html('Working');
 			interval = setInterval(function() {
 				const endpoint = alfaomegaEbooksForm.find("input[name=endpoint]");
 				let queue = '';
