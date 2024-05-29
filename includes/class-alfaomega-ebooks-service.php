@@ -378,7 +378,6 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 throw new Exception("Product formats failed");
             }
 
-            // TODO: default attribute value
             $product = $this->updateProductVariants($product, $prices);
             if (empty($product)) {
                 throw new Exception("Product variants failed");
@@ -525,6 +524,19 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 }
             }
 
+            $product = (array) $this->woocommerce
+                ->put("products/{$product['id']}", [
+                    'default_attributes' => [
+                        'id' => $this->settings['alfaomega_ebooks_format_attr_id'],
+                        'name' => 'Formato',
+                        'option' => 'Impreso + digital'
+                    ]
+                ]);
+
+            if (empty($product)) {
+                return null;
+            }
+
             return $product;
         }
 
@@ -540,7 +552,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 'options'   => [
                     'Impreso',
                     'Digital',
-                    'Impreso y digital',
+                    'Impreso + digital',
                 ],
             ];
             $found = false;
