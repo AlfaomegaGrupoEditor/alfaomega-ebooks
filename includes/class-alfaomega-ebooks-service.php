@@ -27,6 +27,11 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             }
         }
 
+        /**
+         * @see https://stackoverflow.com/questions/65204134/woocommerce-api-giving-json-syntax-error-on-every-request
+         * @return $this
+         *
+         */
         public function initWooCommerceClient(): self
         {
             $this->woocommerce = new Client(
@@ -347,19 +352,23 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
         /**
          * @param $ebook
-         * @see https://woocommerce.github.io/woocommerce-rest-api-docs/#introduction
          *
          * @return void
+         * @throws \Exception
+         * @see https://woocommerce.github.io/woocommerce-rest-api-docs/#introduction
          */
         protected function linkProduct($ebook): void
         {
-            // TODO @see https://stackoverflow.com/questions/65204134/woocommerce-api-giving-json-syntax-error-on-every-request
             $product = $this->getProduct($ebook['tag_id'], $ebook['title']);
             if (empty($product)) {
                 throw new Exception("Products with digital ISBN {$ebook['isbn']} not found");
             }
 
             $product = $this->updateProductType($product);
+            $prices = [
+                'regular_price' => $product['regular_price'],
+                'sale_price'    => $product['sale_price'],
+            ];
             if (empty($product)) {
                 throw new Exception("Product type not supported");
             }
@@ -369,7 +378,8 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 throw new Exception("Product formats failed");
             }
 
-            $product = $this->updateProductVariants($product);
+            // TODO: default attribute value
+            $product = $this->updateProductVariants($product, $prices);
             if (empty($product)) {
                 throw new Exception("Product variants failed");
             }
@@ -496,44 +506,26 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return $product;
         }
 
-        public function updateProductVariants(array $product): ?array
+        public function updateProductVariants(array $product, array $prices): ?array
         {
             $variations = (array) $this->woocommerce
                 ->get("products/{$product['id']}/variations");
-            if (!empty($variations)) {
-                $printedPrices = [
-                    'regular_price' => 0,
-                    'sale_price'    => 0,
-                ];
-                foreach ($variations as $variation) {
-                    if ($variation->name === 'Impreso') {
-                        $printedPrices['regular_price'] = $variation['regular_price'];
-                        $printedPrices['sale_price'] = $variation['sale_price'];
-                    }
-                    break;
-                }
-                $newVariations = [];
-                foreach ($variations as $variation) {
-                    $newVariations[] = (array) $variation;
-                    switch ($variation->name) {
-                        case 'Impreso':
-                            continue;
-                        case 'Digital':
 
-                            break;
-                        case 'Digital y Impreso':
-                            break;
-                    }
+            if (!empty($variations)) {
+                return $product;
+            }
+
+            $formatOptions = ['impreso', 'digital', 'impreso-digital'];
+            foreach ($formatOptions as $format) {
+                $data = $this->getVariationData($product, $format, $prices);
+                $variation = $this->woocommerce
+                    ->post("products/{$product['id']}/variations", $data);
+                if (empty($variation)) {
+                    throw new Exception("Variation creation failed");
                 }
             }
 
-
-            $product = (array) $this->woocommerce
-                ->put("products/{$product['id']}", [
-                    'variations' => $variations
-                ]);
-
-            return !empty($product) ? $product : null;
+            return $product;
         }
 
         public function updateProductFormats(array $product): ?array
@@ -618,6 +610,70 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             }
 
             return $formatAttribute->id;
+        }
+
+        protected function getVariationData(array $product, string $format, array $prices): array
+        {
+            return match ($format) {
+                'impreso' => [
+                    'description'     => 'Libro impreso',
+                    'sku'             => $product['id'] . '_printed',
+                    'regular_price'   => $prices['regular_price'],
+                    'status'          => 'publish',
+                    'virtual'         => false,
+                    'downloadable'    => false,
+                    'manage_stock'    => true,
+                    'stock_quantity'  => $product['stock_quantity'],
+                    'stock_status'    => $product['stock_status'],
+                    'weight'          => $product['weight'],
+                    'dimensions'      => $product['dimensions'],
+                    'shipping_class'  => $product['shipping_class'],
+                    'attributes'      => [[
+                        'id' => $this->settings['alfaomega_ebooks_format_attr_id'],
+                        'option' => $format
+                    ]],
+                ],
+                'digital' => [
+                    'description'     => 'Libro digital para lectura en línea y descarga del PDF con DRM',
+                    'sku'             => $product['id'] . '_digital',
+                    'regular_price'   => number_format($prices['regular_price']
+                                                       * ($this->settings['alfaomega_ebooks_price'] / 100), 0),
+                    'status'          => 'publish',
+                    'virtual'         => true,
+                    'downloadable'    => true,
+                    //'downloads'       => 'something_goes_here',
+                    'download_limit'  => -1,
+                    'download_expiry' => 30,
+                    'manage_stock'    => false,
+                    'attributes'      => [
+                        [
+                            'id'     => $this->settings['alfaomega_ebooks_format_attr_id'],
+                            'option' => $format,
+                        ],
+                    ],
+                ],
+                'impreso-digital' => [
+                    'description'     => 'Libro impreso y libro digital para lectura en línea y descarga del PDF con DRM',
+                    'sku'             => $product['id'] . '_printed_digital',
+                    'regular_price'   => number_format($prices['regular_price'] * ($this->settings['alfaomega_ebooks_printed_digital_price'] / 100), 0),
+                    'status'          => 'publish',
+                    'virtual'         => true,
+                    'downloadable'    => true,
+                    //'downloads'       => 'something_goes_here',
+                    'download_limit'  => -1,
+                    'download_expiry' => 30,
+                    'manage_stock'    => true,
+                    'stock_quantity'  => $product['stock_quantity'],
+                    'stock_status'    => $product['stock_status'],
+                    'weight'          => $product['weight'],
+                    'dimensions'      => $product['dimensions'],
+                    'shipping_class'  => $product['shipping_class'],
+                    'attributes'      => [[
+                        'id' => $this->settings['alfaomega_ebooks_format_attr_id'],
+                        'option' => $format
+                    ]],
+                ],
+            };
         }
     }
 }

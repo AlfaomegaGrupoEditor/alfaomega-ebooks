@@ -230,12 +230,12 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
             );
 
             add_settings_field(
-                'alfaomega_ebooks_printed_price',
+                'alfaomega_ebooks_printed_digital_price',
                 esc_html__('Printed + Digital Price', 'alfaomega-ebooks'),
-                [$this, 'alfaomega_ebooks_printed_price_callback'],
+                [$this, 'alfaomega_ebooks_printed_digital_price_callback'],
                 'alfaomega_ebooks_page5',
                 'alfaomega_ebooks_fifth_section',
-                ['label_for' => 'alfaomega_ebooks_printed_price']
+                ['label_for' => 'alfaomega_ebooks_printed_digital_price']
             );
         }
 
@@ -559,15 +559,15 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
          * @since 1.0.0
          * @access public
          */
-        public function alfaomega_ebooks_printed_price_callback(): void
+        public function alfaomega_ebooks_printed_digital_price_callback(): void
         {
             ?>
             <input
                 type="number"
-                name="alfaomega_ebooks_product_options[alfaomega_ebooks_printed_price]"
-                id="alfaomega_ebooks_printed_price"
+                name="alfaomega_ebooks_product_options[alfaomega_ebooks_printed_digital_price]"
+                id="alfaomega_ebooks_printed_digital_price"
                 size="50"
-                value="<?php echo isset(self::$productOptions['alfaomega_ebooks_printed_price']) ? esc_attr(self::$productOptions['alfaomega_ebooks_printed_price']) : '130'; ?>"
+                value="<?php echo isset(self::$productOptions['alfaomega_ebooks_printed_digital_price']) ? esc_attr(self::$productOptions['alfaomega_ebooks_printed_digital_price']) : '130'; ?>"
             >
             <p class="description"> <? esc_html_e("Percent of printed price", 'alfaomega-ebooks') ?> </p>
             <?php
