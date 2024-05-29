@@ -14,6 +14,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
         public static $generalOptions;
         public static $platformOptions;
         public static $apiOptions;
+        public static $productOptions;
 
         /**
          * Constructor
@@ -26,6 +27,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
             self::$generalOptions = get_option('alfaomega_ebooks_general_options');
             self::$platformOptions = get_option('alfaomega_ebooks_platform_options');
             self::$apiOptions = get_option('alfaomega_ebooks_api_options');
+            self::$productOptions = get_option('alfaomega_ebooks_product_options');
 
             add_action( 'admin_init', array( $this, 'admin_init' ) );
         }
@@ -47,6 +49,12 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
             register_setting(
                 'alfaomega_ebooks_api_group',
                 'alfaomega_ebooks_api_options',
+                [ $this, 'alfaomega_books_validate']
+            );
+
+            register_setting(
+                'alfaomega_ebooks_product_group',
+                'alfaomega_ebooks_product_options',
                 [ $this, 'alfaomega_books_validate']
             );
 
@@ -150,24 +158,6 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 ['label_for' => 'alfaomega_ebooks_client']
             );
 
-            add_settings_field(
-                'alfaomega_ebooks_price',
-                esc_html__('Digital Price', 'alfaomega-ebooks'),
-                [$this, 'alfaomega_ebooks_price_callback'],
-                'alfaomega_ebooks_page3',
-                'alfaomega_ebooks_third_section',
-                ['label_for' => 'alfaomega_ebooks_price']
-            );
-
-            add_settings_field(
-                'alfaomega_ebooks_printed_price',
-                esc_html__('Printed + Digital Price', 'alfaomega-ebooks'),
-                [$this, 'alfaomega_ebooks_printed_price_callback'],
-                'alfaomega_ebooks_page3',
-                'alfaomega_ebooks_third_section',
-                ['label_for' => 'alfaomega_ebooks_printed_price']
-            );
-
             // API tab
             // TODO Alfaomega API configuration.
             add_settings_section(
@@ -211,6 +201,41 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 'alfaomega_ebooks_page4',
                 'alfaomega_ebooks_fourth_section',
                 ['label_for' => 'alfaomega_ebooks_client_secret']
+            );
+
+            // Product tab
+            add_settings_section(
+                'alfaomega_ebooks_fifth_section',
+                esc_html__( 'Product Options', 'alfaomega-ebooks' ),
+                null,
+                'alfaomega_ebooks_page5'
+            );
+
+            add_settings_field(
+                'alfaomega_ebooks_format_attr_id',
+                esc_html__('Format Attribute Id', 'alfaomega-ebooks'),
+                [$this, 'alfaomega_ebooks_format_attr_id_callback'],
+                'alfaomega_ebooks_page5',
+                'alfaomega_ebooks_fifth_section',
+                ['label_for' => 'alfaomega_ebooks_price']
+            );
+
+            add_settings_field(
+                'alfaomega_ebooks_price',
+                esc_html__('Digital Price', 'alfaomega-ebooks'),
+                [$this, 'alfaomega_ebooks_price_callback'],
+                'alfaomega_ebooks_page5',
+                'alfaomega_ebooks_fifth_section',
+                ['label_for' => 'alfaomega_ebooks_price']
+            );
+
+            add_settings_field(
+                'alfaomega_ebooks_printed_price',
+                esc_html__('Printed + Digital Price', 'alfaomega-ebooks'),
+                [$this, 'alfaomega_ebooks_printed_price_callback'],
+                'alfaomega_ebooks_page5',
+                'alfaomega_ebooks_fifth_section',
+                ['label_for' => 'alfaomega_ebooks_printed_price']
             );
         }
 
@@ -409,46 +434,6 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
         }
 
         /**
-         * Render the client field
-         * @return void
-         * @since 1.0.0
-         * @access public
-         */
-        public function alfaomega_ebooks_price_callback(): void
-        {
-            ?>
-            <input
-                type="number"
-                name="alfaomega_ebooks_platform_options[alfaomega_ebooks_price]"
-                id="alfaomega_ebooks_price"
-                size="50"
-                value="<?php echo isset(self::$platformOptions['alfaomega_ebooks_price']) ? esc_attr(self::$platformOptions['alfaomega_ebooks_price']) : 80; ?>"
-            >
-            <p class="description"> <? esc_html_e("Percent of printed price", 'alfaomega-ebooks') ?> </p>
-            <?php
-        }
-
-        /**
-         * Render the client field
-         * @return void
-         * @since 1.0.0
-         * @access public
-         */
-        public function alfaomega_ebooks_printed_price_callback(): void
-        {
-            ?>
-            <input
-                type="number"
-                name="alfaomega_ebooks_platform_options[alfaomega_ebooks_printed_price]"
-                id="alfaomega_ebooks_printed_price"
-                size="50"
-                value="<?php echo isset(self::$platformOptions['alfaomega_ebooks_printed_price']) ? esc_attr(self::$platformOptions['alfaomega_ebooks_printed_price']) : '130'; ?>"
-            >
-            <p class="description"> <? esc_html_e("Percent of printed price", 'alfaomega-ebooks') ?> </p>
-            <?php
-        }
-
-        /**
          * Render the token field
          * @return void
          * @since 1.0.0
@@ -528,6 +513,66 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
             <?php
         }
 
+        /**
+         * Render the client field
+         * @return void
+         * @since 1.0.0
+         * @access public
+         */
+        public function alfaomega_ebooks_price_callback(): void
+        {
+            ?>
+            <input
+                type="number"
+                name="alfaomega_ebooks_product_options[alfaomega_ebooks_price]"
+                id="alfaomega_ebooks_price"
+                size="50"
+                value="<?php echo isset(self::$productOptions['alfaomega_ebooks_price']) ? esc_attr(self::$productOptions['alfaomega_ebooks_price']) : 80; ?>"
+            >
+            <p class="description"> <? esc_html_e("Percent of printed price", 'alfaomega-ebooks') ?> </p>
+            <?php
+        }
+
+        /**
+         * Render the client field
+         * @return void
+         * @since 1.0.0
+         * @access public
+         */
+        public function alfaomega_ebooks_format_attr_id_callback(): void
+        {
+            ?>
+            <input
+                type="number"
+                name="alfaomega_ebooks_product_options[alfaomega_ebooks_format_attr_id]"
+                id="alfaomega_ebooks_price"
+                size="50"
+                value="<?php echo isset(self::$productOptions['alfaomega_ebooks_format_attr_id']) ? esc_attr(self::$productOptions['alfaomega_ebooks_format_attr_id']) : ''; ?>"
+            >
+            <p class="description"> <? esc_html_e("Attribute Id to create the product variants", 'alfaomega-ebooks') ?> </p>
+            <?php
+        }
+
+        /**
+         * Render the client field
+         * @return void
+         * @since 1.0.0
+         * @access public
+         */
+        public function alfaomega_ebooks_printed_price_callback(): void
+        {
+            ?>
+            <input
+                type="number"
+                name="alfaomega_ebooks_product_options[alfaomega_ebooks_printed_price]"
+                id="alfaomega_ebooks_printed_price"
+                size="50"
+                value="<?php echo isset(self::$productOptions['alfaomega_ebooks_printed_price']) ? esc_attr(self::$productOptions['alfaomega_ebooks_printed_price']) : '130'; ?>"
+            >
+            <p class="description"> <? esc_html_e("Percent of printed price", 'alfaomega-ebooks') ?> </p>
+            <?php
+        }
+
         public function alfaomega_books_validate(array $input): array
         {
             $new_input = [];
@@ -541,11 +586,11 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                     'alfaomega_ebooks_api' => esc_url_raw($value),
                     default => sanitize_text_field($value),
                 };
-                if (empty($value) && !in_array($key, ['alfaomega_ebooks_active'])) {
+                if (empty($value) && !in_array($key, ['alfaomega_ebooks_active', 'alfaomega_ebooks_format_attr_id'])) {
                     add_settings_error(
                         'alfaomega_ebook_options',
                         'alfaomega_ebook_message',
-                        printf( esc_html__( 'The field %d can not be left empty', 'alfaomega-ebooks' ), esc_html__($key, 'alfaomega-ebooks') ),
+                        sprintf( esc_html__( 'The field %d can not be left empty', 'alfaomega-ebooks' ), esc_html__($key, 'alfaomega-ebooks') ),
                         'error'
                     );
                     return [];

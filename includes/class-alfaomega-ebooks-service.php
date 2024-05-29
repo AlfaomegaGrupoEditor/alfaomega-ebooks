@@ -21,9 +21,9 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         public function __construct(bool $initApi=true)
         {
             if ($initApi) {
+                $this->initWooCommerceClient();
                 $this->getSettings();
                 $this->api = new Alfaomega_Ebooks_Api($this->settings);
-                $this->initWooCommerceClient();
             }
         }
 
@@ -49,12 +49,14 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             $this->settings = array_merge(
                 (array) get_option('alfaomega_ebooks_general_options'),
                 (array) get_option('alfaomega_ebooks_platform_options'),
-                (array) get_option('alfaomega_ebooks_api_options')
+                (array) get_option('alfaomega_ebooks_api_options'),
+                (array) get_option('alfaomega_ebooks_product_options')
             );
         }
 
         public function importEbooks(): array
         {
+            $this->checkFormatAttribute();
             $isbn = '';
             if ($this->settings['alfaomega_ebooks_import_from_latest']) {
                 $latestBook = $this->latestPost();
@@ -98,6 +100,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
         public function refreshEbooks($postIds = null): array
         {
+            $this->checkFormatAttribute();
             $postsPerPage = 5;
             $page = 0;
             $args = [
@@ -167,10 +170,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
         public function linkProducts($postIds): array
         {
-            if (empty($this->woocommerce)) {
-                throw new Exception(esc_html__('WooCommerce client not initialized', 'alfaomega-ebooks'));
-            }
-
+            $this->checkFormatAttribute();
             $linked = 0;
             foreach ($postIds as $postId) {
                 $this->linkProduct($this->getPostMeta($postId));
@@ -539,7 +539,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         public function updateProductFormats(array $product): ?array
         {
             $formats = [
-                'id'        => WOOCOMMERCE_FORMAT_ATTR_ID,
+                'id'        => $this->settings['alfaomega_ebooks_format_attr_id'],
                 'name'      => 'Formato',
                 'slug'      => 'pa_book-format',
                 'position'  => 0,
@@ -571,6 +571,53 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 ]);
 
             return !empty($product) ? $product : null;
+        }
+
+        public function checkFormatAttribute(): void
+        {
+            if (empty($this->settings['alfaomega_ebooks_format_attr_id'])) {
+                $productOptions = (array) get_option('alfaomega_ebooks_product_options');
+                $productOptions['alfaomega_ebooks_format_attr_id'] = $this->getOrCreateFormatAttribute('pa_book-format2');
+                update_option('alfaomega_ebooks_product_options', $productOptions);
+                $this->settings['alfaomega_ebooks_format_attr_id'] = $productOptions['alfaomega_ebooks_format_attr_id'];
+            }
+        }
+
+        public function getOrCreateFormatAttribute($name = 'pa_book-format'): int
+        {
+            // search the attribute
+            $attributes = (array) $this->woocommerce->get('products/attributes');
+            foreach ($attributes as $attribute) {
+                if ($attribute->slug === $name) {
+                    return $attribute->id;
+                }
+            }
+
+            // if it doesn't exist create it
+            $data = [
+                'name'         => 'Formato',
+                'slug'         => $name,
+                'type'         => 'select',
+            ];
+            $formatAttribute = $this->woocommerce->post("products/attributes", $data);
+            if (empty($formatAttribute)) {
+                throw new Exception("Format attribute creation failed");
+            }
+
+            // create the attribute terms
+            $options = [
+                ['name' => 'Impreso', 'description' => 'Libro impreso'],
+                ['name' => 'Digital', 'description' => 'Lectura en línea y descaga del PDF'],
+                ['name' => 'Impreso + Digital', 'description' => 'Libro impreso, digital en línea y descarga del PDF'],
+            ];
+            foreach ($options as $option) {
+                $newOption = $this->woocommerce->post("products/attributes/{$formatAttribute->id}/terms", $option);
+                if (empty($newOption)) {
+                    throw new Exception("Format attribute option creation failed");
+                }
+            }
+
+            return $formatAttribute->id;
         }
     }
 }

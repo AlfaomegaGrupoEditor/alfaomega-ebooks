@@ -13,6 +13,9 @@
         <a href="?page=alfaomega_ebooks_settings&tab=api_options" class="nav-tab <?php echo $active_tab == 'api_options' ? 'nav-tab-active' : ''; ?>">
             <?php esc_html_e( 'API Settings', 'alfaomega-ebooks' ); ?>
         </a>
+        <a href="?page=alfaomega_ebooks_settings&tab=product_options" class="nav-tab <?php echo $active_tab == 'product_options' ? 'nav-tab-active' : ''; ?>">
+            <?php esc_html_e( 'Product Options', 'alfaomega-ebooks' ); ?>
+        </a>
     </h2>
     <form action="options.php" method="post">
         <?php
@@ -29,6 +32,10 @@
                 case 'api_options':
                     settings_fields( 'alfaomega_ebooks_api_group' );
                     do_settings_sections( 'alfaomega_ebooks_page4' );
+                    break;
+                case 'product_options':
+                    settings_fields( 'alfaomega_ebooks_product_group' );
+                    do_settings_sections( 'alfaomega_ebooks_page5' );
                     break;
             }
             submit_button( esc_html__( 'Save Settings', 'alfaomega-ebooks' ) );
