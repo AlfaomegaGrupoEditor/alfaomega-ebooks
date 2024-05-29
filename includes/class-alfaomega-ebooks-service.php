@@ -577,7 +577,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         {
             if (empty($this->settings['alfaomega_ebooks_format_attr_id'])) {
                 $productOptions = (array) get_option('alfaomega_ebooks_product_options');
-                $productOptions['alfaomega_ebooks_format_attr_id'] = $this->getOrCreateFormatAttribute('pa_book-format2');
+                $productOptions['alfaomega_ebooks_format_attr_id'] = $this->getOrCreateFormatAttribute();
                 update_option('alfaomega_ebooks_product_options', $productOptions);
                 $this->settings['alfaomega_ebooks_format_attr_id'] = $productOptions['alfaomega_ebooks_format_attr_id'];
             }
