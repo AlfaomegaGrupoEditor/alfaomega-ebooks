@@ -476,25 +476,101 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         public function updateProductType(array $product, string $type = 'variable'): ?array
         {
             if ($product['type'] !== $type) {
+                $regularPrice = $product['regular_price'];
+                $salePrice = $product['sale_price'];
                 $product = (array) $this->woocommerce
                     ->put("products/{$product['id']}", [
                         'type' => $type
                     ]);
 
-                return !empty($product) ? $product : null;
+                if (empty($product)) {
+                    return null;
+                }
+
+                $product['regular_price'] = $regularPrice;
+                $product['sale_price'] = $salePrice;
+
+                return $product;
             }
 
             return $product;
         }
 
-        public function updateProductVariants(array $product): array
+        public function updateProductVariants(array $product): ?array
         {
-            return $product;
+            $variations = (array) $this->woocommerce
+                ->get("products/{$product['id']}/variations");
+            if (!empty($variations)) {
+                $printedPrices = [
+                    'regular_price' => 0,
+                    'sale_price'    => 0,
+                ];
+                foreach ($variations as $variation) {
+                    if ($variation->name === 'Impreso') {
+                        $printedPrices['regular_price'] = $variation['regular_price'];
+                        $printedPrices['sale_price'] = $variation['sale_price'];
+                    }
+                    break;
+                }
+                $newVariations = [];
+                foreach ($variations as $variation) {
+                    $newVariations[] = (array) $variation;
+                    switch ($variation->name) {
+                        case 'Impreso':
+                            continue;
+                        case 'Digital':
+
+                            break;
+                        case 'Digital y Impreso':
+                            break;
+                    }
+                }
+            }
+
+
+            $product = (array) $this->woocommerce
+                ->put("products/{$product['id']}", [
+                    'variations' => $variations
+                ]);
+
+            return !empty($product) ? $product : null;
         }
 
-        public function updateProductFormats(array $product): array
+        public function updateProductFormats(array $product): ?array
         {
-            return $product;
+            $formats = [
+                'id'        => WOOCOMMERCE_FORMAT_ATTR_ID,
+                'name'      => 'Formato',
+                'slug'      => 'pa_book-format',
+                'position'  => 0,
+                'visible'   => false,
+                'variation' => true,
+                'options'   => [
+                    'Impreso',
+                    'Digital',
+                    'Impreso y digital',
+                ],
+            ];
+            $found = false;
+            $attributes = [];
+            foreach ($product['attributes'] as $attribute) {
+                if ($attribute->slug === 'pa_book-format') {
+                    $attributes[] = array_merge((array) $attributes, $formats);
+                    $found = true;
+                } else {
+                    $attributes[] = (array) $attributes;
+                }
+            }
+            if (!$found) {
+                $attributes[] = $formats;
+            }
+
+            $product = (array) $this->woocommerce
+                ->put("products/{$product['id']}", [
+                    'attributes' => $attributes
+                ]);
+
+            return !empty($product) ? $product : null;
         }
     }
 }
