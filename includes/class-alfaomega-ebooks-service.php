@@ -527,10 +527,12 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             $product = (array) $this->woocommerce
                 ->put("products/{$product['id']}", [
                     'default_attributes' => [
-                        'id' => $this->settings['alfaomega_ebooks_format_attr_id'],
-                        'name' => 'Formato',
-                        'option' => 'Impreso + Digital'
-                    ]
+                        [
+                            'id'     => $this->settings['alfaomega_ebooks_format_attr_id'],
+                            'name'   => 'Formato',
+                            'option' => 'Impreso + Digital',
+                        ],
+                    ],
                 ]);
 
             if (empty($product)) {
