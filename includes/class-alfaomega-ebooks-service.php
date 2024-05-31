@@ -529,7 +529,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                     'default_attributes' => [
                         'id' => $this->settings['alfaomega_ebooks_format_attr_id'],
                         'name' => 'Formato',
-                        'option' => 'Impreso + digital'
+                        'option' => 'Impreso + Digital'
                     ]
                 ]);
 
@@ -552,7 +552,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 'options'   => [
                     'Impreso',
                     'Digital',
-                    'Impreso + digital',
+                    'Impreso + Digital',
                 ],
             ];
             $found = false;
