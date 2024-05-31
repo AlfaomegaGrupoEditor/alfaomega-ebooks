@@ -510,15 +510,45 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             $variations = (array) $this->woocommerce
                 ->get("products/{$product['id']}/variations");
 
+            $variationIds = [];
             if (!empty($variations)) {
-                return $product;
+                foreach ($variations as $variation) {
+                    $format = '';
+                    foreach ($variation->attributes as $attribute) {
+                        if ($attribute->name === 'Formato') {
+                            $format = match ($attribute->option) {
+                                'Impreso' => 'impreso',
+                                'Digital' => 'digital',
+                                'Impreso + Digital' => 'impreso-digital',
+                                default => null,
+                            };
+                            if ($format === 'impreso') {
+                                $prices = [
+                                    'regular_price' => $variation->regular_price,
+                                    'sale_price' => $variation->sale_price
+                                ];
+                            }
+                        }
+                    }
+                    if (empty($format)) {
+                        return $product;
+                    }
+
+                    $variationIds[$format] = $variation->id;
+                }
+
+                if (empty($prices['regular_price'])) {
+                    return $product;
+                }
             }
 
             $formatOptions = ['impreso', 'digital', 'impreso-digital'];
             foreach ($formatOptions as $format) {
                 $data = $this->getVariationData($product, $format, $prices);
-                $variation = $this->woocommerce
-                    ->post("products/{$product['id']}/variations", $data);
+                $variation = empty($variationIds[$format])
+                    ? $this->woocommerce->post("products/{$product['id']}/variations", $data)
+                    : $this->woocommerce->put("products/{$product['id']}/variations/{$variationIds[$format]}", $data);
+
                 if (empty($variation)) {
                     throw new Exception("Variation creation failed");
                 }
