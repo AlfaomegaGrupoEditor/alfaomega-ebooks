@@ -100,7 +100,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         public function importEbook(array $eBook): void
         {
             $eBook = $this->updateEbookPost(null, $eBook);
-            //$this->linkProduct($eBook);
+            $this->linkProduct($eBook);
         }
 
         public function refreshEbooks($postIds = null): array
@@ -170,7 +170,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         public function refreshEbook($postId, array $eBook): void
         {
             $eBook = $this->updateEbookPost($postId, $eBook);
-            //$this->linkProduct($eBook);
+            $this->linkProduct($eBook);
         }
 
         public function linkProducts($postIds): array
@@ -187,13 +187,22 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             ];
         }
 
-        public function linkEbooks($postIds): array
+        public function linkEbooks($productsId): array
         {
             $linked = 0;
-            foreach ($postIds as $postId) {
-                //$this->linkProduct($this->getPostMeta($postId));
+            $this->checkFormatAttribute();
+
+            foreach ($productsId as $productId) {
+                $tags = wp_get_post_terms( $productId, 'product_tag' );
+                foreach ($tags as $tag) {
+                    $isbns[] = $tag->name;
+                }
+            }
+
+            $eBooks = $this->getEbooksInfo($isbns);
+            foreach ($eBooks as $eBook) {
+                $this->importEbook($eBook);
                 $linked++;
-                throw new Exception('test');
             }
 
             return [
