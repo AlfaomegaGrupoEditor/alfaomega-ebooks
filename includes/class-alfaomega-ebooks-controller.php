@@ -84,6 +84,16 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
                         $redirect_url = add_query_arg('link-product', 'fail', $redirect_url);
                     }
                     break;
+                case 'link-ebook':
+                    try {
+                        //$redirect_url = remove_query_arg('link-product', $redirect_url);
+                        $result = $this->link_ebooks($post_ids);
+                        $redirect_url = add_query_arg('link-ebook', $result['data']['linked'], $redirect_url);
+
+                    } catch (Exception $exception) {
+                        $redirect_url = add_query_arg('link-ebook', 'fail', $redirect_url);
+                    }
+                    break;
             }
 
             return $redirect_url;
@@ -126,6 +136,22 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
             $message = $response['linked'] > 0
                 ? str_replace('%s', $response['linked'], esc_html__("Linked %s products successfully!", 'alfaomega-ebooks'))
                 : esc_html__('No products found to link', 'alfaomega-ebooks');
+
+            return [
+                'data'    => $response,
+                'message' => $message,
+            ];
+        }
+
+        public function link_ebooks($postIds = null): array
+        {
+            $response = $this->service
+                ->initWooCommerceClient()
+                ->linkEbooks($postIds);
+
+            $message = $response['linked'] > 0
+                ? str_replace('%s', $response['linked'], esc_html__("Linked %s ebooks successfully!", 'alfaomega-ebooks'))
+                : esc_html__('No ebooks found to link, please check the product ISBN tag', 'alfaomega-ebooks');
 
             return [
                 'data'    => $response,

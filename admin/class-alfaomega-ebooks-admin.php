@@ -127,27 +127,44 @@ class Alfaomega_Ebooks_Admin {
         return $bulk_actions;
     }
 
+    public function bulk_actions_wc_product($bulk_actions): array
+    {
+        $bulk_actions['link-ebook'] = __('Link eBook', 'alfaomega-ebooks');
+        return $bulk_actions;
+    }
+
     public function show_notification(): void
     {
         if (!empty($_REQUEST['updated-meta'])) {
-            $updatedEbooks = intval($_REQUEST['updated-meta']);
-            if ($updatedEbooks === 'fail') {
+            if ($_REQUEST['updated-meta'] === 'fail') {
                 $class = 'notice notice-error is-dismissible';
                 $message = esc_html__('Update eBooks meta failed!', 'alfaomega-ebooks');
             } else {
                 $class = 'notice notice-success is-dismissible';
-                $message = sprintf(esc_html__('%u eBooks meta updated successfully', 'alfaomega-ebooks'), $updatedEbooks);
+                $updatedEbooks = intval($_REQUEST['updated-meta']);
+                $message = sprintf(esc_html__('%u eBooks meta updated successfully', 'alfaomega-ebooks'), intval($updatedEbooks));
             }
 
             printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
         } elseif (!empty($_REQUEST['link-product'])) {
-            $linkProduct = intval($_REQUEST['link-product']);
-            if ($linkProduct === 'fail') {
+            if ($_REQUEST['link-product'] === 'fail') {
                 $class = 'notice notice-error is-dismissible';
                 $message = esc_html__('Link product failed!', 'alfaomega-ebooks');
             } else {
+                $linkProduct = intval($_REQUEST['link-product']);
                 $class = 'notice notice-success is-dismissible';
                 $message = sprintf(esc_html__('%u products linked successfully', 'alfaomega-ebooks'), $linkProduct);
+            }
+
+            printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
+        } elseif (!empty($_REQUEST['link-ebook'])) {
+            if ($_REQUEST['link-ebook'] === 'fail') {
+                $class = 'notice notice-error is-dismissible';
+                $message = esc_html__('Link eBook failed! Please check the product ISBN tag.', 'alfaomega-ebooks');
+            } else {
+                $linkEbook = intval($_REQUEST['link-ebook']);
+                $class = 'notice notice-success is-dismissible';
+                $message = sprintf(esc_html__('%u ebooks linked successfully', 'alfaomega-ebooks'), $linkEbook);
             }
 
             printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );

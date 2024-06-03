@@ -200,6 +200,8 @@ class Alfaomega_Ebooks {
 
         $this->loader->add_filter('bulk_actions-edit-alfaomega-ebook', $plugin_admin, 'bulk_actions_alfaomega_ebooks');
         $this->loader->add_filter('handle_bulk_actions-edit-alfaomega-ebook', $controller, 'bulk_action_alfaomega_ebooks', 10, 3);
+        $this->loader->add_filter('bulk_actions-edit-product', $plugin_admin, 'bulk_actions_wc_product');
+        $this->loader->add_filter('handle_bulk_actions-edit-product', $controller, 'bulk_action_alfaomega_ebooks', 10, 3);
 
         $this->loader->add_action('admin_notices', $plugin_admin, 'show_notification');
 

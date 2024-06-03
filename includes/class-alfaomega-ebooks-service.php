@@ -187,6 +187,20 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             ];
         }
 
+        public function linkEbooks($postIds): array
+        {
+            $linked = 0;
+            foreach ($postIds as $postId) {
+                //$this->linkProduct($this->getPostMeta($postId));
+                $linked++;
+                throw new Exception('test');
+            }
+
+            return [
+                'linked' => $linked
+            ];
+        }
+
         protected function getPosts($count, $query = []): WP_Query
         {
             $args = array_merge($query, [
