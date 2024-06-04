@@ -100,7 +100,8 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         public function importEbook(array $eBook): void
         {
             $eBook = $this->updateEbookPost(null, $eBook);
-            $this->linkProduct($eBook, false);
+            // FIXME too slow
+            // $this->linkProduct($eBook, false);
         }
 
         public function refreshEbooks($postIds = null): array
