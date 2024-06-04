@@ -100,7 +100,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         public function importEbook(array $eBook): void
         {
             $eBook = $this->updateEbookPost(null, $eBook);
-            $this->linkProduct($eBook);
+            $this->linkProduct($eBook, false);
         }
 
         public function refreshEbooks($postIds = null): array
@@ -170,7 +170,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         public function refreshEbook($postId, array $eBook): void
         {
             $eBook = $this->updateEbookPost($postId, $eBook);
-            $this->linkProduct($eBook);
+            $this->linkProduct($eBook, false);
         }
 
         public function linkProducts($postIds): array
@@ -375,16 +375,20 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
         /**
          * @param $ebook
+         * @param bool $notFoundError
          *
          * @return void
          * @throws \Exception
          * @see https://woocommerce.github.io/woocommerce-rest-api-docs/#introduction
          */
-        protected function linkProduct($ebook): void
+        protected function linkProduct($ebook, $notFoundError=true): void
         {
             $product = $this->getProduct($ebook['tag_id'], $ebook['title']);
             if (empty($product)) {
-                throw new Exception("Products with digital ISBN {$ebook['isbn']} not found");
+                if ($notFoundError) {
+                    throw new Exception("Products with digital ISBN {$ebook['isbn']} not found");
+                }
+                return;
             }
 
             $product = $this->updateProductType($product);
