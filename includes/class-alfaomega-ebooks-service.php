@@ -171,7 +171,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         public function refreshEbook($postId, array $eBook): void
         {
             $eBook = $this->updateEbookPost($postId, $eBook);
-            $this->linkProduct($eBook, false);
+            // $this->linkProduct($eBook, false);
         }
 
         public function linkProducts($postIds): array
