@@ -3,16 +3,6 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * @link       https://github.com/livan2r
- * @since      1.0.0
- *
- * @package    Alfaomega_Ebooks
- * @subpackage Alfaomega_Ebooks/public
- */
-
-/**
- * The public-facing functionality of the plugin.
- *
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the public-facing stylesheet and JavaScript.
  *
@@ -100,4 +90,23 @@ class Alfaomega_Ebooks_Public {
 
 	}
 
+    public function load_routes()
+    {
+        new Alfaomega_Ebooks_Custom_Route(
+            'alfaomega-ebooks/(.+?)/(.+?)/?$',
+            ['param_1', 'param_2'],
+            ALFAOMEGA_EBOOKS_PATH . 'public/alfaomega-ebooks-routes.php',
+            true
+        );
+    }
+
+    public function show_notice(): void
+    {
+        $msg = $_SESSION['alfaomega_ebooks_msg'];
+
+        if (!empty($msg)) {
+            wc_add_notice($msg['message'], $msg['type']);
+            $_SESSION['alfaomega_ebooks_msg'] =  null;
+        }
+    }
 }

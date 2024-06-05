@@ -159,6 +159,18 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
             ];
         }
 
+        public function download_ebook()
+        {
+            try {
+                $product = $this->request['product'];
+                $download_id = $this->request['download_id']; // the unique download ID
+                $this->service->downloadEbook($product, $download_id);
+                // show success message
+            } catch (Exception $exception) {
+                // show error message
+            }
+        }
+
         public function queue_status(): array
         {
             $queue = $this->request['queue'];

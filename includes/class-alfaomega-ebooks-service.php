@@ -42,7 +42,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                     'wp_api'           => true,
                     'version'          => 'wc/v3',
                     'verify_ssl'       => false,
-                    'timeout'          => 180
+                    'timeout'          => 180,
                 ]
             );
 
@@ -86,7 +86,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             } while (count($eBooks) === $countPerPage);
 
             return [
-                'imported' => $imported
+                'imported' => $imported,
             ];
         }
 
@@ -149,7 +149,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             }
 
             return [
-                'refreshed' => $total
+                'refreshed' => $total,
             ];
         }
 
@@ -183,7 +183,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             }
 
             return [
-                'linked' => $linked
+                'linked' => $linked,
             ];
         }
 
@@ -206,7 +206,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             }
 
             return [
-                'linked' => $linked
+                'linked' => $linked,
             ];
         }
 
@@ -405,7 +405,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 throw new Exception("Product formats failed");
             }
 
-            $product = $this->updateProductVariants($product, $prices);
+            $product = $this->updateProductVariants($product, $prices, $ebook);
             if (empty($product)) {
                 throw new Exception("Product variants failed");
             }
@@ -472,7 +472,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         {
             $products = (array) $this->woocommerce
                 ->get("products", [
-                    'tag'=> $tagId
+                    'tag'=> $tagId,
                 ]);
 
             if (count($products) === 1) {
@@ -493,14 +493,14 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         {
             $products = (array) $this->woocommerce
                 ->get("products", [
-                    'search' => $title
+                    'search' => $title,
                 ]);
 
             if (count($products) === 1) {
                 $product = $products[0];
                 $this->woocommerce
                     ->put("products/{$product->id}", [
-                        'tags' => [[ 'id' => $tagId ]]
+                        'tags' => [[ 'id' => $tagId ]],
                     ]);
 
                 return (array) $product;
@@ -516,7 +516,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 $salePrice = $product['sale_price'];
                 $product = (array) $this->woocommerce
                     ->put("products/{$product['id']}", [
-                        'type' => $type
+                        'type' => $type,
                     ]);
 
                 if (empty($product)) {
@@ -532,7 +532,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return $product;
         }
 
-        public function updateProductVariants(array $product, array $prices): ?array
+        public function updateProductVariants(array $product, array $prices, array $ebook): ?array
         {
             $variations = (array) $this->woocommerce
                 ->get("products/{$product['id']}/variations");
@@ -552,7 +552,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                             if ($format === 'impreso') {
                                 $prices = [
                                     'regular_price' => $variation->regular_price,
-                                    'sale_price' => $variation->sale_price
+                                    'sale_price' => $variation->sale_price,
                                 ];
                             }
                         }
@@ -571,7 +571,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
             $formatOptions = ['impreso', 'digital', 'impreso-digital'];
             foreach ($formatOptions as $format) {
-                $data = $this->getVariationData($product, $format, $prices);
+                $data = $this->getVariationData($product, $format, $prices, $ebook['id']);
                 $variation = empty($variationIds[$format])
                     ? $this->woocommerce->post("products/{$product['id']}/variations", $data)
                     : $this->woocommerce->put("products/{$product['id']}/variations/{$variationIds[$format]}", $data);
@@ -630,7 +630,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
             $product = (array) $this->woocommerce
                 ->put("products/{$product['id']}", [
-                    'attributes' => $attributes
+                    'attributes' => $attributes,
                 ]);
 
             return !empty($product) ? $product : null;
@@ -683,7 +683,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return $formatAttribute->id;
         }
 
-        protected function getVariationData(array $product, string $format, array $prices): array
+        protected function getVariationData(array $product, string $format, array $prices, int $ebookId): array
         {
             return match ($format) {
                 'impreso' => [
@@ -701,7 +701,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                     'shipping_class'  => $product['shipping_class'],
                     'attributes'      => [[
                         'id' => $this->settings['alfaomega_ebooks_format_attr_id'],
-                        'option' => $format
+                        'option' => $format,
                     ]],
                 ],
                 'digital' => [
@@ -712,7 +712,9 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                     'status'          => 'publish',
                     'virtual'         => true,
                     'downloadable'    => true,
-                    //'downloads'       => 'something_goes_here',
+                    'downloads'       => [
+                        [ 'name' => 'pdf', 'file' => site_url('alfaomega-ebooks/download/' . $ebookId) ]
+                    ],
                     'download_limit'  => -1,
                     'download_expiry' => 30,
                     'manage_stock'    => false,
@@ -730,7 +732,9 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                     'status'          => 'publish',
                     'virtual'         => true,
                     'downloadable'    => true,
-                    //'downloads'       => 'something_goes_here',
+                    'downloads'       => [
+                        [ 'name' => 'pdf', 'file' => site_url('alfaomega-ebooks/download/' . $ebookId) ]
+                    ],
                     'download_limit'  => -1,
                     'download_expiry' => 30,
                     'manage_stock'    => true,
@@ -741,10 +745,48 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                     'shipping_class'  => $product['shipping_class'],
                     'attributes'      => [[
                         'id' => $this->settings['alfaomega_ebooks_format_attr_id'],
-                        'option' => $format
+                        'option' => $format,
                     ]],
                 ],
             };
+        }
+
+        public function downloadEbook(int $ebookId, string $downloadId): void
+        {
+            // TODO: on order complete generate the access code so the user can access the online eBook
+            // check user product order with the $downloadId
+            // throw new Exception(esc_html__('eBook download not available, please check order status', 'alfaomega-ebooks');
+
+            $eBook = $this->getPostMeta($ebookId);
+            $content = $this->getDownloadFileContent($eBook['isbn'], $downloadId);
+            if (empty($content)) {
+                throw new Exception(esc_html__('eBook download not available, please check order status', 'alfaomega-ebooks'));
+            }
+
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/vnd.adobe.adept+xml');
+            header('Content-Disposition: attachment; filename=$transaction.acsm');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . strlen($content));
+            echo $content;
+        }
+
+        public function getDownloadFileContent($isbn, $transaction, $rights = null): ?string
+        {
+            if (!$rights) {
+                $link = $this->api->get("book/store/fulfilment/$isbn/$transaction");
+            } else {
+                $link = $this->api->post("book/store/fulfilment/$isbn/$transaction", [
+                    "rights" => $rights
+                ]);
+            }
+            if ($link['status'] == "success") {
+                return $link['content'];
+            }
+
+            return null;
         }
     }
 }

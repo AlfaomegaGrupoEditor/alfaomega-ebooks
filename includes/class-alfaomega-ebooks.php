@@ -138,6 +138,11 @@ class Alfaomega_Ebooks {
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-settings.php';
 
         /**
+         * Loading custom route class.
+         */
+        require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-custom-route.php' );
+
+        /**
          * The class responsible for processing the request.
          */
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-controller.php';
@@ -226,10 +231,14 @@ class Alfaomega_Ebooks {
 	private function define_public_hooks() {
 
 		$plugin_public = new Alfaomega_Ebooks_Public( $this->get_plugin_name(), $this->get_version() );
+        $plugin_public->load_routes();
+        if (!session_id()) {
+            session_start();
+        }
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-
+		$this->loader->add_action( 'init', $plugin_public, 'show_notice' );
 	}
 
 	/**
