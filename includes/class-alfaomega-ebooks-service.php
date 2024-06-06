@@ -763,18 +763,18 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
          */
         public function downloadEbook(int $ebookId, string $downloadId): string
         {
-            $filePath = ALFAOMEGA_EBOOKS_PATH . "downloads/{$ebookId}_{$downloadId}.acsm";
+            $eBook = $this->getPostMeta($ebookId);
+            $filePath = ALFAOMEGA_EBOOKS_PATH . "downloads/{$eBook['isbn']}_{$downloadId}.acsm";
             if (file_exists($filePath)) {
                 return $filePath;
             }
 
-            $eBook = $this->getPostMeta($ebookId);
             $content = $this->getDownloadFileContent($eBook['isbn'], $downloadId);
             if (empty($content)) {
                 return '';
             }
 
-            $success = file_put_contents($content, $filePath);
+            $success = file_put_contents($filePath, $content);
             if (!$success) {
                 return '';
             }
