@@ -793,8 +793,8 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 throw new Exception('eBook not found');
             }
 
-            // TODO: implement the page to embed the reader app
-            return ALFAOMEGA_EBOOKS_URL . "/{$eBook['isbn']}/read";
+            // TODO: implement the page to embed the reader app and the route
+            return site_url("alfaomega-ebooks/read/{$eBook['isbn']}");
         }
 
         public function getDownloadFileContent($isbn, $transaction, $rights = null): ?string
