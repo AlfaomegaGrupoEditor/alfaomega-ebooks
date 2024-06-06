@@ -685,6 +685,9 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
         protected function getVariationData(array $product, string $format, array $prices, int $ebookId): array
         {
+            $uploads = wp_get_upload_dir();
+            $ebooksDir = $uploads['baseurl'] . '/woocommerce_uploads/alfaomega_ebooks/';
+
             return match ($format) {
                 'impreso' => [
                     'description'     => 'Libro impreso',
@@ -713,7 +716,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                     'virtual'         => true,
                     'downloadable'    => true,
                     'downloads'       => [
-                        [ 'name' => 'PDF eBook', 'file' => $ebookId ]
+                        [ 'name' => 'PDF eBook', 'file' => $ebooksDir . $ebookId ]
                     ],
                     'download_limit'  => -1,
                     'download_expiry' => 30,
@@ -733,7 +736,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                     'virtual'         => true,
                     'downloadable'    => true,
                     'downloads'       => [
-                        [ 'name' => 'PDF eBook', 'file' => $ebookId ]
+                        [ 'name' => 'PDF eBook', 'file' => $ebooksDir . $ebookId ]
                     ],
                     'download_limit'  => -1,
                     'download_expiry' => 30,
