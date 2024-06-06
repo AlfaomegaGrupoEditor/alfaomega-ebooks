@@ -716,7 +716,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                     'virtual'         => true,
                     'downloadable'    => true,
                     'downloads'       => [
-                        [ 'name' => 'PDF eBook', 'file' => $ebooksDir . $ebookId ]
+                        [ 'name' => 'PDF', 'file' => $ebooksDir . $ebookId ]
                     ],
                     'download_limit'  => -1,
                     'download_expiry' => 30,
@@ -736,7 +736,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                     'virtual'         => true,
                     'downloadable'    => true,
                     'downloads'       => [
-                        [ 'name' => 'PDF eBook', 'file' => $ebooksDir . $ebookId ]
+                        [ 'name' => 'PDF', 'file' => $ebooksDir . $ebookId ]
                     ],
                     'download_limit'  => -1,
                     'download_expiry' => 30,
@@ -764,6 +764,10 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         public function downloadEbook(int $ebookId, string $downloadId): string
         {
             $eBook = $this->getPostMeta($ebookId);
+            if (empty($eBook)) {
+                return '';
+            }
+
             $filePath = ALFAOMEGA_EBOOKS_PATH . "downloads/{$eBook['isbn']}_{$downloadId}.acsm";
             if (file_exists($filePath)) {
                 return $filePath;
@@ -780,6 +784,17 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             }
 
             return $filePath;
+        }
+
+        public function readEbookUrl(int $ebookId): string
+        {
+            $eBook = $this->getPostMeta($ebookId);
+            if (empty($eBook)) {
+                throw new Exception('eBook not found');
+            }
+
+            // TODO: implement the page to embed the reader app
+            return ALFAOMEGA_EBOOKS_URL . "/{$eBook['isbn']}/read";
         }
 
         public function getDownloadFileContent($isbn, $transaction, $rights = null): ?string

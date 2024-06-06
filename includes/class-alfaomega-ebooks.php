@@ -241,6 +241,8 @@ class Alfaomega_Ebooks {
 		//$this->loader->add_action( 'init', $plugin_public, 'show_notice' );
 
         $this->loader->add_filter('woocommerce_download_product_filepath', $plugin_public, 'download_product_filepath', 10, 5);
+        $this->loader->add_filter('woocommerce_account_downloads_columns', $plugin_public, 'download_product_columns');
+        $this->loader->add_action( 'woocommerce_account_downloads_column_read-online', $plugin_public, 'add_read_online_column' );
 	}
 
 	/**
