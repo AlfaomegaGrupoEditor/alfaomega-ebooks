@@ -17,7 +17,7 @@ switch (get_query_var('param_1')) {
 
         try {
             $service = new Alfaomega_Ebooks_Service();
-            $service->downloadEbook(get_query_var('param_2'), $_GET['id'] ?? '');
+            $service->downloadEbook(get_query_var('param_2'), $_GET['download_id'] ?? '');
         } catch (Exception $e) {
             $_SESSION['alfaomega_ebooks_msg'] = [
                 'type' => 'error',

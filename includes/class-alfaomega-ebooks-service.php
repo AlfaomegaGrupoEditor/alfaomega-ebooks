@@ -753,8 +753,37 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
         public function downloadEbook(int $ebookId, string $downloadId): void
         {
-            // TODO: check if the current user has a download with that Id to that ebook and it's valid
-            // throw new Exception(esc_html__('eBook download not available, please check order status', 'alfaomega-ebooks');
+            $customer = wp_get_current_user();
+            if (empty($customer)) {
+                throw new Exception(esc_html__('User not logged in yet', 'alfaomega-ebooks'));
+            }
+
+            $customerDownloads = (array) $this->woocommerce
+                ->get("customers/{$customer->ID}/downloads", [
+                    'download_id' => $downloadId,
+                ]);
+            if (empty($customerDownloads)) {
+                throw new Exception(esc_html__('eBook download not available, please check order status', 'alfaomega-ebooks'));
+            }
+
+            $expected = 'alfaomega-ebooks/download/' . $ebookId;
+            $requestedDownload = null;
+            foreach ($customerDownloads as $download) {
+                if ($download->download_id === $downloadId) {
+                    $path = trim(parse_url($download->download_url, PHP_URL_PATH), '/');
+                    if ($expected === $path) {
+                        $requestedDownload = $download;
+                        break;
+                    }
+                }
+            }
+
+            if (empty($requestedDownload) ||
+                $requestedDownload->downloads_remaining === 0 ||
+                \Carbon\Carbon::parse($requestedDownload->access_expires)->isPast()
+            ) {
+                throw new Exception(esc_html__('eBook download not available, please check order status', 'alfaomega-ebooks'));
+            }
 
             $eBook = $this->getPostMeta($ebookId);
             $content = $this->getDownloadFileContent($eBook['isbn'], $downloadId);
