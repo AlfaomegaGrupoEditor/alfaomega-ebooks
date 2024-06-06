@@ -114,8 +114,8 @@ class Alfaomega_Ebooks_Public {
     {
         $downloadId = $download->data['download_id'];
         $filePathArray = explode('/', trim($file_path, '/'));
-        $eBookId = end($filePathArray);
-        if (empty($downloadId) || empty($eBookIdId)) {
+        $eBookId = intval(end($filePathArray));
+        if (empty($downloadId) || empty($eBookId)) {
             return $file_path;
         }
 
