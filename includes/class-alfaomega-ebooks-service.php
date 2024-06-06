@@ -751,6 +751,14 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             };
         }
 
+        /**
+         * @param int $ebookId
+         * @param string $downloadId
+         * @see https://woocommerce.github.io/woocommerce-rest-api-docs/#retrieve-customer-downloads
+         *
+         * @return void
+         * @throws \Exception
+         */
         public function downloadEbook(int $ebookId, string $downloadId): void
         {
             $customer = wp_get_current_user();
