@@ -109,4 +109,12 @@ class Alfaomega_Ebooks_Public {
             $_SESSION['alfaomega_ebooks_msg'] =  null;
         }
     }
+
+    public function download_product_filepath($file_path, $email_address, $order, $product, $download): string
+    {
+        $downloadId = $download->data['download_id'];
+        $filePath = ALFAOMEGA_EBOOKS_PATH . '/downloads/9786075760117_TEST.acsm';
+
+        return $filePath;
+    }
 }

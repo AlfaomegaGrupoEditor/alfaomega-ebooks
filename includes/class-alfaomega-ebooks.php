@@ -239,6 +239,8 @@ class Alfaomega_Ebooks {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		$this->loader->add_action( 'init', $plugin_public, 'show_notice' );
+
+        $this->loader->add_filter('woocommerce_download_product_filepath', $plugin_public, 'download_product_filepath', 10, 5);
 	}
 
 	/**
