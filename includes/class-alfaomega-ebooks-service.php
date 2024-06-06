@@ -713,7 +713,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                     'virtual'         => true,
                     'downloadable'    => true,
                     'downloads'       => [
-                        [ 'name' => 'pdf', 'file' => site_url('alfaomega-ebooks/download/' . $ebookId) ]
+                        [ 'name' => 'PDF eBook', 'file' => $ebookId ]
                     ],
                     'download_limit'  => -1,
                     'download_expiry' => 30,
@@ -733,7 +733,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                     'virtual'         => true,
                     'downloadable'    => true,
                     'downloads'       => [
-                        [ 'name' => 'pdf', 'file' => site_url('alfaomega-ebooks/download/' . $ebookId) ]
+                        [ 'name' => 'PDF eBook', 'file' => $ebookId ]
                     ],
                     'download_limit'  => -1,
                     'download_expiry' => 30,
@@ -759,54 +759,25 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
          * @return void
          * @throws \Exception
          */
-        public function downloadEbook(int $ebookId, string $downloadId): void
+        public function downloadEbook(int $ebookId, string $downloadId): string
         {
-            $customer = wp_get_current_user();
-            if (empty($customer)) {
-                throw new Exception(esc_html__('User not logged in yet', 'alfaomega-ebooks'));
-            }
-
-            $customerDownloads = (array) $this->woocommerce
-                ->get("customers/{$customer->ID}/downloads", [
-                    'download_id' => $downloadId,
-                ]);
-            if (empty($customerDownloads)) {
-                throw new Exception(esc_html__('eBook download not available, please check order status', 'alfaomega-ebooks'));
-            }
-
-            $expected = 'alfaomega-ebooks/download/' . $ebookId;
-            $requestedDownload = null;
-            foreach ($customerDownloads as $download) {
-                if ($download->download_id === $downloadId) {
-                    $path = trim(parse_url($download->download_url, PHP_URL_PATH), '/');
-                    if ($expected === $path) {
-                        $requestedDownload = $download;
-                        break;
-                    }
-                }
-            }
-
-            if (empty($requestedDownload) ||
-                $requestedDownload->downloads_remaining === 0 ||
-                \Carbon\Carbon::parse($requestedDownload->access_expires)->isPast()
-            ) {
-                throw new Exception(esc_html__('eBook download not available, please check order status', 'alfaomega-ebooks'));
+            $filePath = ALFAOMEGA_EBOOKS_PATH . "downloads/{$ebookId}_{$downloadId}.acsm";
+            if (file_exists($filePath)) {
+                return $filePath;
             }
 
             $eBook = $this->getPostMeta($ebookId);
             $content = $this->getDownloadFileContent($eBook['isbn'], $downloadId);
             if (empty($content)) {
-                throw new Exception(esc_html__('eBook download not available, please check order status', 'alfaomega-ebooks'));
+                return '';
             }
 
-            header('Content-Description: File Transfer');
-            header('Content-Type: application/vnd.adobe.adept+xml');
-            header("Content-Disposition: attachment; filename={$eBook['isbn']}_{$downloadId}.acsm");
-            header('Expires: 0');
-            header('Cache-Control: must-revalidate');
-            header('Pragma: public');
-            header('Content-Length: ' . strlen($content));
-            echo $content;
+            $success = file_put_contents($content, $filePath);
+            if (!$success) {
+                return '';
+            }
+
+            return $filePath;
         }
 
         public function getDownloadFileContent($isbn, $transaction, $rights = null): ?string

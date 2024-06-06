@@ -113,8 +113,16 @@ class Alfaomega_Ebooks_Public {
     public function download_product_filepath($file_path, $email_address, $order, $product, $download): string
     {
         $downloadId = $download->data['download_id'];
-        $filePath = ALFAOMEGA_EBOOKS_PATH . '/downloads/9786075760117_TEST.acsm';
+        $eBookId = $file_path;
+        if (empty($downloadId) || empty($eBookIdId)) {
+            return $file_path;
+        }
 
-        return $filePath;
+        try {
+            $service = new Alfaomega_Ebooks_Service();
+            return $service->downloadEbook($eBookId, $downloadId);
+        } catch (Exception $exception) {
+            return $file_path;
+        }
     }
 }
