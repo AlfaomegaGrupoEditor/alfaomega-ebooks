@@ -18,10 +18,6 @@ switch (get_query_var('param_1')) {
         try {
             $service = new Alfaomega_Ebooks_Service();
             $service->downloadEbook(get_query_var('param_2'), $_GET['id'] ?? '');
-            $_SESSION['alfaomega_ebooks_msg'] = [
-                'type' => 'success',
-                'message' => esc_html__('Please upload the downloaded license file into your eBook reader. Notice that you can also access the ebook to read online.', 'alfaomega-ebooks')
-            ];
         } catch (Exception $e) {
             $_SESSION['alfaomega_ebooks_msg'] = [
                 'type' => 'error',

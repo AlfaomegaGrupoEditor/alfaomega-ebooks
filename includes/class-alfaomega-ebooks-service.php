@@ -753,8 +753,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
         public function downloadEbook(int $ebookId, string $downloadId): void
         {
-            // TODO: on order complete generate the access code so the user can access the online eBook
-            // check user product order with the $downloadId
+            // TODO: check if the current user has a download with that Id to that ebook and it's valid
             // throw new Exception(esc_html__('eBook download not available, please check order status', 'alfaomega-ebooks');
 
             $eBook = $this->getPostMeta($ebookId);
@@ -765,7 +764,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
             header('Content-Description: File Transfer');
             header('Content-Type: application/vnd.adobe.adept+xml');
-            header('Content-Disposition: attachment; filename=$transaction.acsm');
+            header("Content-Disposition: attachment; filename={$eBook['isbn']}_{$downloadId}.acsm");
             header('Expires: 0');
             header('Cache-Control: must-revalidate');
             header('Pragma: public');
@@ -775,13 +774,15 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
         public function getDownloadFileContent($isbn, $transaction, $rights = null): ?string
         {
-            if (!$rights) {
-                $link = $this->api->get("book/store/fulfilment/$isbn/$transaction");
-            } else {
-                $link = $this->api->post("book/store/fulfilment/$isbn/$transaction", [
-                    "rights" => $rights
-                ]);
+            $result = $rights
+                ? $this->api->post("/book/store/fulfilment/$isbn/$transaction", [ "rights" => $rights ])
+                : $this->api->get("/book/store/fulfilment/$isbn/$transaction");
+
+            if ($result['response']['code'] !== 200) {
+                return null;
             }
+
+            $link = json_decode($result['body'], true);
             if ($link['status'] == "success") {
                 return $link['content'];
             }
