@@ -138,10 +138,11 @@ class Alfaomega_Ebooks_Public {
     public function add_read_online_column(array $download): void
     {
         try {
-            $service = new Alfaomega_Ebooks_Service();
             $filePathArray = explode('/', trim($download['file']['file'], '/'));
+            $downloadId = $download['download_id'];
             $eBookId = intval(end($filePathArray));
-            $readerUrl = $service->readEbookUrl($eBookId);
+            $service = new Alfaomega_Ebooks_Service();
+            $readerUrl = $service->readEbookUrl($eBookId, $downloadId);
             echo '<a target="_blank" href="' . $readerUrl . '" class="woocommerce-MyAccount-downloads-file button alt">' . esc_html__( 'Read', 'alfaomega-ebooks' ) . '</a>';
         } catch (Exception $exception) {
             esc_html_e( 'Not available', 'alfaomega-ebooks' );

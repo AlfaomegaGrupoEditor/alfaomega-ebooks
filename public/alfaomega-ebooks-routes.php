@@ -5,7 +5,7 @@ $redirectUrl = is_user_logged_in()
     : get_permalink( get_option('woocommerce_myaccount_page_id') );
 
 switch (get_query_var('param_1')) {
-    case 'download':
+    case 'read':
         if (!is_user_logged_in()) {
             $_SESSION['alfaomega_ebooks_msg'] = [
                 'type' => 'error',
@@ -17,7 +17,7 @@ switch (get_query_var('param_1')) {
 
         try {
             $service = new Alfaomega_Ebooks_Service();
-            $service->downloadEbook(get_query_var('param_2'), $_GET['download_id'] ?? '');
+            $service->readEbook(get_query_var('param_2'), $_GET['key'] ?? '');
         } catch (Exception $e) {
             $_SESSION['alfaomega_ebooks_msg'] = [
                 'type' => 'error',

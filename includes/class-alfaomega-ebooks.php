@@ -231,14 +231,14 @@ class Alfaomega_Ebooks {
 	private function define_public_hooks() {
 
 		$plugin_public = new Alfaomega_Ebooks_Public( $this->get_plugin_name(), $this->get_version() );
-        //$plugin_public->load_routes();
-        /*if (!session_id()) {
+        $plugin_public->load_routes();
+        if (!session_id()) {
             session_start();
-        }*/
+        }
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-		//$this->loader->add_action( 'init', $plugin_public, 'show_notice' );
+		$this->loader->add_action( 'init', $plugin_public, 'show_notice' );
 
         $this->loader->add_filter('woocommerce_download_product_filepath', $plugin_public, 'download_product_filepath', 10, 5);
         $this->loader->add_filter('woocommerce_account_downloads_columns', $plugin_public, 'download_product_columns');
