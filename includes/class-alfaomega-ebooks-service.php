@@ -815,7 +815,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
             $requestedDownload = null;
             foreach ($customerDownloads as $download) {
-                if ($download->download_id === $key &&
+                if (/*$download->download_id === $key &&*/
                     str_ends_with($download->file->file, "/$ebookId")) {
                     $requestedDownload = $download;
                     break;

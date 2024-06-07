@@ -2,7 +2,12 @@
     $service = new Alfaomega_ebooks_Service();
     $key = $_GET['key'] ?? '';
     $path = explode('/', trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/'));
-    $data = $service->getReaderData(intval($path[array_key_last($path)]), $key);
+    $eBookId = intval($path[array_key_last($path)]);
+    if (empty($eBookId)) {
+        end($path);
+        $eBookId = intval($path[array_key_last($path)]);
+    }
+    $data = $service->getReaderData($eBookId, $key);
 ?>
 <?php if(empty($data)):?>
     <?php
