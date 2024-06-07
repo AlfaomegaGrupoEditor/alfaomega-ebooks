@@ -4,7 +4,7 @@
     $path = explode('/', trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/'));
     $eBookId = intval($path[array_key_last($path)]);
     if (empty($eBookId)) {
-        end($path);
+        array_pop($path);
         $eBookId = intval($path[array_key_last($path)]);
     }
     $data = $service->getReaderData($eBookId, $key);
