@@ -795,7 +795,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 throw new Exception(esc_html__('Online eBook not available, please check order status', 'alfaomega-ebooks'));
             }
 
-            echo 'ebook reader';
+            require( ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_reader_page.php' );
         }
 
         public function validateAccess(int $ebookId, string $key): bool
