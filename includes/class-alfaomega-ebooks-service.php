@@ -851,5 +851,26 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
             return null;
         }
+
+        public function getReaderData(int $ebookId, string $key): ?array
+        {
+            if (!$this->validateAccess($ebookId, $key)) {
+                return null;
+            };
+
+            $eBook = $this->getPostMeta($ebookId);
+            if (empty($eBook)) {
+                return null;
+            }
+
+            return [
+                'title'          => $eBook['title'],
+                'isbn'           => $eBook['isbn'],
+                'favicon'        => '',
+                'readerUrl'      => $this->settings[''],
+                'libraryBaseUrl' => $this->settings[''],
+                'token'          => '',
+            ];
+        }
     }
 }
