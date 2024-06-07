@@ -863,14 +863,46 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 return null;
             }
 
+            $token = $this->getUserToken($eBook['isbn']);
+            if (empty($token)) {
+                return null;
+            }
+
             return [
                 'title'          => $eBook['title'],
                 'isbn'           => $eBook['isbn'],
-                'favicon'        => '',
-                'readerUrl'      => $this->settings[''],
-                'libraryBaseUrl' => $this->settings[''],
-                'token'          => '',
+                'favicon'        => get_site_icon_url(),
+                'readerUrl'      => $this->settings['alfaomega_ebooks_reader'],
+                'libraryBaseUrl' => $this->settings['alfaomega_ebooks_panel'],
+                'token'          => $token,
             ];
+        }
+
+        public function getUserToken($isbn): ?string
+        {
+            $customer = wp_get_current_user();
+            if (empty($customer)) {
+                return null;
+            }
+
+            $result = $this->api->post( '/user/access-token', [
+                'email'          => $customer->data->user_email,
+                'username'       => $customer->data->user_nicename,
+                'password'       => "4lf40m3g4",
+                'bookIsbn'       => $isbn,
+                'partial_access' => false,
+                'subdomain'      => 'ecommerce'
+            ]);
+            if ($result['response']['code'] !== 200) {
+                return null;
+            }
+
+            $response = json_decode($result['body'], true);
+            if ($response['status'] != "success") {
+                return null;
+            }
+
+            return $response['token'];
         }
     }
 }

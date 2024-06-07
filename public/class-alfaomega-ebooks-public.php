@@ -143,7 +143,7 @@ class Alfaomega_Ebooks_Public {
             $eBookId = intval(end($filePathArray));
             $service = new Alfaomega_Ebooks_Service();
             $readerUrl = $service->readEbookUrl($eBookId, $downloadId);
-            echo '<a target="_blank" href="' . $readerUrl . '" class="woocommerce-MyAccount-downloads-file button alt">' . esc_html__( 'Read', 'alfaomega-ebooks' ) . '</a>';
+            echo '<a href="' . $readerUrl . '" class="woocommerce-MyAccount-downloads-file button alt">' . esc_html__( 'Read', 'alfaomega-ebooks' ) . '</a>';
         } catch (Exception $exception) {
             esc_html_e( 'Not available', 'alfaomega-ebooks' );
         }
