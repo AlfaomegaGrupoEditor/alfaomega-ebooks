@@ -813,22 +813,16 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 throw new Exception(esc_html__('eBook download not available, please check order status', 'alfaomega-ebooks'));
             }
 
-            $uploads = wp_get_upload_dir();
-            $expected = $uploads['baseurl'] . '/woocommerce_uploads/alfaomega_ebooks/' . $ebookId;
             $requestedDownload = null;
             foreach ($customerDownloads as $download) {
-                if ($download->download_id === $key) {
-                    $path = trim(parse_url($download->download_url, PHP_URL_PATH), '/');
-                    if ($expected === $path) {
-                        $requestedDownload = $download;
-                        break;
-                    }
+                if ($download->download_id === $key &&
+                    str_ends_with($download->file->file, "/$ebookId")) {
+                    $requestedDownload = $download;
+                    break;
                 }
             }
 
-            if (empty($requestedDownload) ||
-                \Carbon\Carbon::parse($requestedDownload->access_expires)->isPast()
-            ) {
+            if (empty($requestedDownload)) {
                 throw new Exception(esc_html__('eBook download not available, please check order status', 'alfaomega-ebooks'));
             }
 
@@ -837,12 +831,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
         public function readEbookUrl(int $ebookId, string $downloadId): string
         {
-            $eBook = $this->getPostMeta($ebookId);
-            if (empty($eBook)) {
-                throw new Exception('eBook not found');
-            }
-
-            return site_url("alfaomega-ebooks/read/{$eBook['isbn']}?key={$downloadId}");
+            return site_url("alfaomega-ebooks/read/{$ebookId}?key={$downloadId}");
         }
 
         public function getDownloadFileContent($isbn, $transaction, $rights = null): ?string
