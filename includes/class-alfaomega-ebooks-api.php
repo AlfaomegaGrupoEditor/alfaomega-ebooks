@@ -5,10 +5,10 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
     class Alfaomega_Ebooks_Api
     {
         // The authentication token
-        protected $auth;
+        protected mixed $auth;
 
         // The filename where the token is stored
-        protected $token_filename;
+        protected string $token_filename;
 
         // The settings array
         protected array $settings;
