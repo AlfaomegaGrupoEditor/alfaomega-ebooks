@@ -1,20 +1,6 @@
 <?php
 
 /**
- * The file that defines the core plugin class
- *
- * A class definition that includes attributes and functions used across both the
- * public-facing side of the site and the admin area.
- *
- * @link       https://github.com/livan2r
- * @since      1.0.0
- * @see https://wpshout.com/the-wordpress-plugin-boilerplate-101/, https://wppb.me/
- *
- * @package    Alfaomega_Ebooks
- * @subpackage Alfaomega_Ebooks/includes
- */
-
-/**
  * The core plugin class.
  *
  * This is used to define internationalization, admin-specific hooks, and
@@ -30,141 +16,131 @@
  */
 class Alfaomega_Ebooks {
 
-	/**
-	 * The loader that's responsible for maintaining and registering all hooks that power
-	 * the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      Alfaomega_Ebooks_Loader    $loader    Maintains and registers all hooks for the plugin.
-	 */
-	protected $loader;
+    /**
+     * The loader that's responsible for maintaining and registering all hooks that power
+     * the plugin.
+     *
+     * @since    1.0.0
+     * @access   protected
+     * @var      Alfaomega_Ebooks_Loader    $loader    Maintains and registers all hooks for the plugin.
+     */
+    protected $loader;
 
-	/**
-	 * The unique identifier of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
-	 */
-	protected $plugin_name;
+    /**
+     * The unique identifier of this plugin.
+     *
+     * @since    1.0.0
+     * @access   protected
+     * @var      string    $plugin_name    The string used to uniquely identify this plugin.
+     */
+    protected $plugin_name;
 
-	/**
-	 * The current version of the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string    $version    The current version of the plugin.
-	 */
-	protected $version;
+    /**
+     * The current version of the plugin.
+     *
+     * @since    1.0.0
+     * @access   protected
+     * @var      string    $version    The current version of the plugin.
+     */
+    protected $version;
 
-	/**
-	 * Define the core functionality of the plugin.
-	 *
-	 * Set the plugin name and the plugin version that can be used throughout the plugin.
-	 * Load the dependencies, define the locale, and set the hooks for the admin area and
-	 * the public-facing side of the site.
-	 *
-	 * @since    1.0.0
-	 */
-	public function __construct() {
-		if ( defined( 'ALFAOMEGA_EBOOKS_VERSION' ) ) {
-			$this->version = ALFAOMEGA_EBOOKS_VERSION;
-		} else {
-			$this->version = '1.0.0';
-		}
-		$this->plugin_name = ALFAOMEGA_EBOOKS_NAME;
+    /**
+     * Define the core functionality of the plugin.
+     *
+     * Set the plugin name and the plugin version that can be used throughout the plugin.
+     * Load the dependencies, define the locale, and set the hooks for the admin area and
+     * the public-facing side of the site.
+     *
+     * @since    1.0.0
+     */
+    public function __construct() {
+        if ( defined( 'ALFAOMEGA_EBOOKS_VERSION' ) ) {
+            $this->version = ALFAOMEGA_EBOOKS_VERSION;
+        } else {
+            $this->version = '1.0.0';
+        }
+        $this->plugin_name = ALFAOMEGA_EBOOKS_NAME;
 
-		$this->load_dependencies();
-		$this->set_locale();
-		$this->define_admin_hooks();
-		$this->define_public_hooks();
+        $this->load_dependencies();
+        $this->set_locale();
+        $this->define_admin_hooks();
+        $this->define_public_hooks();
 
         $Alfaomega_Ebooks_Post_Type = new Alfaomega_Ebooks_Post_Type();
         $Alfaomega_Ebooks_Settings = new Alfaomega_Ebooks_Settings();
 
         add_action( 'admin_menu', array( $this, 'add_menu' ) );
-	}
+    }
 
-	/**
-	 * Load the required dependencies for this plugin.
-	 *
-	 * Include the following files that make up the plugin:
-	 *
-	 * - Alfaomega_Ebooks_Loader. Orchestrates the hooks of the plugin.
-	 * - Alfaomega_Ebooks_i18n. Defines internationalization functionality.
-	 * - Alfaomega_Ebooks_Admin. Defines all hooks for the admin area.
-	 * - Alfaomega_Ebooks_Public. Defines all hooks for the public side of the site.
-	 *
-	 * Create an instance of the loader which will be used to register the hooks
-	 * with WordPress.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function load_dependencies() {
+    /**
+ * Load the required dependencies for this plugin.
+ *
+ * This method includes the necessary files that make up the plugin and creates an instance of the loader
+ * which will be used to register the hooks with WordPress.
+ *
+ * @since    1.0.0
+ * @access   private
+ */
+private function load_dependencies() {
 
-		/**
-		 * The class responsible for orchestrating the actions and filters of the
-		 * core plugin.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-loader.php';
+    /**
+     * The class responsible for orchestrating the actions and filters of the core plugin.
+     */
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-loader.php';
 
-		/**
-		 * The class responsible for defining internationalization functionality
-		 * of the plugin.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-i18n.php';
+    /**
+     * The class responsible for defining internationalization functionality of the plugin.
+     */
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-i18n.php';
 
-		/**
-		 * The class responsible for defining all actions that occur in the admin area.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-alfaomega-ebooks-admin.php';
+    /**
+     * The class responsible for defining all actions that occur in the admin area.
+     */
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-alfaomega-ebooks-admin.php';
 
-		/**
-		 * The class responsible for defining all actions that occur in the public-facing
-		 * side of the site.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-alfaomega-ebooks-public.php';
+    /**
+     * The class responsible for defining all actions that occur in the public-facing side of the site.
+     */
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-alfaomega-ebooks-public.php';
 
-        /**
-         * The class responsible for defining the CPT alfaomega-ebook.
-         */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'post_types/class-alfaomega-ebooks-post-type.php';
+    /**
+     * The class responsible for defining the Custom Post Type alfaomega-ebook.
+     */
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'post_types/class-alfaomega-ebooks-post-type.php';
 
-        /**
-         * The class responsible for defining the settings page.
-         */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-settings.php';
+    /**
+     * The class responsible for defining the settings page.
+     */
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-settings.php';
 
-        /**
-         * Loading custom route class.
-         */
-        require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-custom-route.php' );
+    /**
+     * The class responsible for loading custom route class.
+     */
+    require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-custom-route.php' );
 
-        /**
-         * The class responsible for processing the request.
-         */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-controller.php';
+    /**
+     * The class responsible for processing the request.
+     */
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-controller.php';
 
-        /**
-         * The class responsible for processing the plugin logic.
-         */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-service.php';
+    /**
+     * The class responsible for processing the plugin logic.
+     */
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-service.php';
 
-        /**
-         * The class responsible for processing API calls.
-         */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-api.php';
+    /**
+     * The class responsible for processing API calls.
+     */
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-api.php';
 
-        /**
-         * Loading composer dependencies.
-         */
-        require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php' );
+    /**
+     * The class responsible for loading composer dependencies.
+     */
+    require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php' );
 
-		$this->loader = new Alfaomega_Ebooks_Loader();
-
-	}
+    // Create an instance of the loader which will be used to register the hooks with WordPress.
+    $this->loader = new Alfaomega_Ebooks_Loader();
+}
 
 	/**
 	 * Define the locale for this plugin for internationalization.
@@ -285,6 +261,14 @@ class Alfaomega_Ebooks {
 		return $this->version;
 	}
 
+    /**
+     * This method is responsible for adding the plugin's menu and submenu pages in the WordPress admin dashboard.
+     *
+     * It uses WordPress's built-in add_menu_page and add_submenu_page functions to add the pages.
+     *
+     * @since    1.0.0
+     * @access   public
+     */
     public function add_menu(): void
     {
         add_menu_page(
@@ -374,47 +358,83 @@ class Alfaomega_Ebooks {
         require( ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_settings_page.php' );
     }
 
+    /**
+     * Renders the home page of the plugin in the WordPress admin dashboard.
+     * This method checks if the current user has the 'install_plugins' capability. If not, it returns immediately.
+     * If the user has the necessary capability, it displays any settings errors and then includes the PHP file for the
+     * home page view.
+     *
+     * @since    1.0.0
+     * @access   public
+     */
     public function renderHome(): void
     {
-        if( ! current_user_can( 'install_plugins' ) ){
+        if (! current_user_can('install_plugins')) {
             return;
         }
 
-        settings_errors( 'alfaomega_ebook_options' );
+        settings_errors('alfaomega_ebook_options');
 
-        require( ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_home_page.php' );
+        require(ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_home_page.php');
     }
 
+    /**
+     * Renders the import page of the plugin in the WordPress admin dashboard.
+     * This method checks if the current user has the 'install_plugins' capability. If not, it returns immediately.
+     * If the user has the necessary capability, it displays any settings errors and then includes the PHP file for the
+     * import page view.
+     *
+     * @since    1.0.0
+     * @access   public
+     */
     public function renderImport(): void
     {
-        if( ! current_user_can( 'install_plugins' ) ){
+        if (! current_user_can('install_plugins')) {
             return;
         }
 
-        settings_errors( 'alfaomega_ebook_options' );
+        settings_errors('alfaomega_ebook_options');
 
-        require( ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_import_page.php' );
+        require(ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_import_page.php');
     }
 
+    /**
+     * Renders the refresh page of the plugin in the WordPress admin dashboard.
+     * This method checks if the current user has the 'install_plugins' capability. If not, it returns immediately.
+     * If the user has the necessary capability, it displays any settings errors and then includes the PHP file for the
+     * refresh page view.
+     *
+     * @since    1.0.0
+     * @access   public
+     */
     public function renderRefresh(): void
     {
-        if( ! current_user_can( 'install_plugins' ) ){
+        if (! current_user_can('install_plugins')) {
             return;
         }
 
-        settings_errors( 'alfaomega_ebook_options' );
+        settings_errors('alfaomega_ebook_options');
 
-        require( ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_refresh_page.php' );
+        require(ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_refresh_page.php');
     }
 
+    /**
+     * Renders the link page of the plugin in the WordPress admin dashboard.
+     * This method checks if the current user has the 'install_plugins' capability. If not, it returns immediately.
+     * If the user has the necessary capability, it displays any settings errors and then includes the PHP file for the
+     * link page view.
+     *
+     * @since    1.0.0
+     * @access   public
+     */
     public function renderLink(): void
     {
-        if( ! current_user_can( 'install_plugins' ) ){
+        if (! current_user_can('install_plugins')) {
             return;
         }
 
-        settings_errors( 'alfaomega_ebook_options' );
+        settings_errors('alfaomega_ebook_options');
 
-        require( ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_link_page.php' );
+        require(ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_link_page.php');
     }
 }
