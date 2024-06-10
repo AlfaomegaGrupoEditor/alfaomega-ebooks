@@ -10,17 +10,25 @@
  */
 if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
     class Alfaomega_Ebooks_Settings{
-
-        public static $generalOptions;
-        public static $platformOptions;
-        public static $apiOptions;
-        public static $productOptions;
+        /**
+         * @var array $generalOptions General options for the plugin
+         */
+        public static array $generalOptions;
+        /**
+         * @var array $platformOptions Options related to the platform the plugin is running on
+         */
+        public static array $platformOptions;
+        /**
+         * @var array $apiOptions Options related to the API the plugin is using
+         */
+        public static array $apiOptions;
+        /**
+         * @var array $productOptions Options related to the products the plugin is managing
+         */
+        public static array $productOptions;
 
         /**
-         * Constructor
-         * @return void
-         * @since 1.0.0
-         * @access public
+         * Alfaomega_Ebooks_Settings constructor.
          */
         public function __construct()
         {
@@ -32,6 +40,12 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
             add_action( 'admin_init', array( $this, 'admin_init' ) );
         }
 
+        /**
+         * Register the settings
+         * @return void
+         * @since 1.0.0
+         * @access public
+         */
         public function admin_init(): void
         {
             register_setting(
@@ -573,6 +587,13 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
             <?php
         }
 
+        /**
+         * Validate the input
+         * @param array $input
+         * @return array
+         * @since 1.0.0
+         * @access public
+         */
         public function alfaomega_books_validate(array $input): array
         {
             $new_input = [];
