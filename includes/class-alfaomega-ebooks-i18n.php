@@ -1,19 +1,6 @@
 <?php
 
 /**
- * Define the internationalization functionality
- *
- * Loads and defines the internationalization files for this plugin
- * so that it is ready for translation.
- *
- * @link       https://github.com/livan2r
- * @since      1.0.0
- *
- * @package    Alfaomega_Ebooks
- * @subpackage Alfaomega_Ebooks/includes
- */
-
-/**
  * Define the internationalization functionality.
  *
  * Loads and defines the internationalization files for this plugin
