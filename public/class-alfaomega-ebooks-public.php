@@ -1,97 +1,57 @@
 <?php
 
 /**
- * The public-facing functionality of the plugin.
+ * Class Alfaomega_Ebooks_Public
  *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the public-facing stylesheet and JavaScript.
- *
- * @package    Alfaomega_Ebooks
- * @subpackage Alfaomega_Ebooks/public
- * @author     Livan Rodriguez <livan2r@gmail.com>
+ * This class handles the public-facing functionality of the Alfaomega Ebooks plugin.
+ * It includes methods for enqueuing styles and scripts, loading routes, showing notices,
+ * and handling ebook downloads.
  */
 class Alfaomega_Ebooks_Public {
 
-	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
+    /**
+     * The ID of this plugin.
+     *
+     * @var string $plugin_name The ID of this plugin.
+     */
+    private $plugin_name;
 
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
+    /**
+     * The version of this plugin.
+     *
+     * @var string $version The current version of this plugin.
+     */
+    private $version;
 
-	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of the plugin.
-	 * @param      string    $version    The version of this plugin.
-	 */
-	public function __construct( $plugin_name, $version ) {
+    /**
+     * Alfaomega_Ebooks_Public constructor.
+     *
+     * @param string $plugin_name The name of the plugin.
+     * @param string $version The version of this plugin.
+     */
+    public function __construct( $plugin_name, $version ) {
+        $this->plugin_name = $plugin_name;
+        $this->version = $version;
+    }
 
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+    /**
+     * Register the stylesheets for the public-facing side of the site.
+     */
+    public function enqueue_styles() {
+        wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/alfaomega-ebooks-public.css', array(), $this->version, 'all' );
+    }
 
-	}
+    /**
+     * Register the JavaScript for the public-facing side of the site.
+     */
+    public function enqueue_scripts() {
+        wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/alfaomega-ebooks-public.js', array( 'jquery' ), $this->version, false );
+    }
 
-	/**
-	 * Register the stylesheets for the public-facing side of the site.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_styles() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Alfaomega_Ebooks_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Alfaomega_Ebooks_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/alfaomega-ebooks-public.css', array(), $this->version, 'all' );
-
-	}
-
-	/**
-	 * Register the JavaScript for the public-facing side of the site.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_scripts() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Alfaomega_Ebooks_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Alfaomega_Ebooks_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/alfaomega-ebooks-public.js', array( 'jquery' ), $this->version, false );
-
-	}
-
-    public function load_routes()
-    {
+    /**
+     * Load custom routes for the plugin.
+     */
+    public function load_routes() {
         new Alfaomega_Ebooks_Custom_Route(
             'alfaomega-ebooks/(.+?)/(.+?)/?$',
             ['param_1', 'param_2'],
@@ -100,8 +60,10 @@ class Alfaomega_Ebooks_Public {
         );
     }
 
-    public function show_notice(): void
-    {
+    /**
+     * Show notices to the user.
+     */
+    public function show_notice(): void {
         $msg = $_SESSION['alfaomega_ebooks_msg'];
 
         if (!empty($msg)) {
@@ -110,8 +72,17 @@ class Alfaomega_Ebooks_Public {
         }
     }
 
-    public function download_product_filepath($file_path, $email_address, $order, $product, $download): string
-    {
+    /**
+     * Get the file path for the product download.
+     *
+     * @param string $file_path The original file path.
+     * @param string $email_address The email address of the user.
+     * @param WC_Order $order The order object.
+     * @param WC_Product $product The product object.
+     * @param WC_Customer_Download $download The download object.
+     * @return string The file path for the download.
+     */
+    public function download_product_filepath($file_path, $email_address, $order, $product, $download): string {
         $downloadId = $download->data['download_id'];
         $filePathArray = explode('/', trim($file_path, '/'));
         $eBookId = intval(end($filePathArray));
@@ -127,16 +98,25 @@ class Alfaomega_Ebooks_Public {
         }
     }
 
-    public function download_product_columns(array $columns): array
-    {
+    /**
+     * Modify the columns for the product download.
+     *
+     * @param array $columns The original columns.
+     * @return array The modified columns.
+     */
+    public function download_product_columns(array $columns): array {
         unset($columns['download-remaining']);
         unset($columns['download-expires']);
         $columns['read-online'] = __('Read&nbsp;Online', 'alfaomega-ebooks');
         return $columns;
     }
 
-    public function add_read_online_column(array $download): void
-    {
+    /**
+     * Add a "Read Online" column to the product download.
+     *
+     * @param array $download The download data.
+     */
+    public function add_read_online_column(array $download): void {
         try {
             $filePathArray = explode('/', trim($download['file']['file'], '/'));
             $downloadId = $download['download_id'];
