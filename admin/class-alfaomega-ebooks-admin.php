@@ -3,16 +3,6 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * @link       https://github.com/livan2r
- * @since      1.0.0
- *
- * @package    Alfaomega_Ebooks
- * @subpackage Alfaomega_Ebooks/admin
- */
-
-/**
- * The admin-specific functionality of the plugin.
- *
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
@@ -61,18 +51,6 @@ class Alfaomega_Ebooks_Admin {
 	 */
 	public function enqueue_styles() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Alfaomega_Ebooks_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Alfaomega_Ebooks_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/alfaomega-ebooks-admin.css', array(), $this->version, 'all' );
 
 	}
@@ -83,18 +61,6 @@ class Alfaomega_Ebooks_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Alfaomega_Ebooks_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Alfaomega_Ebooks_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/alfaomega-ebooks-admin.js', array( 'jquery' ), $this->version, false );
 
@@ -112,7 +78,13 @@ class Alfaomega_Ebooks_Admin {
         return $settings;
     }
 
-    function localize_script_variables(): void
+    /**
+     * Localize script variables for use in JavaScript
+     *
+     * @since    1.0.0
+     * @access   public
+     */
+    public function localize_script_variables(): void
     {
         wp_localize_script( $this->plugin_name, 'php_vars', [
             'my_variable' => "Hello, World!",
@@ -120,6 +92,14 @@ class Alfaomega_Ebooks_Admin {
         ]);
     }
 
+    /**
+     * Add custom bulk actions for Alfaomega eBooks
+     *
+     * @since    1.0.0
+     * @access   public
+     * @param    array    $bulk_actions    The existing bulk actions.
+     * @return   array    The modified bulk actions.
+     */
     public function bulk_actions_alfaomega_ebooks($bulk_actions): array
     {
         $bulk_actions['update-meta'] = __('Update meta', 'alfaomega-ebooks');
@@ -127,12 +107,26 @@ class Alfaomega_Ebooks_Admin {
         return $bulk_actions;
     }
 
+    /**
+     * Add custom bulk actions for WooCommerce products
+     *
+     * @since    1.0.0
+     * @access   public
+     * @param    array    $bulk_actions    The existing bulk actions.
+     * @return   array    The modified bulk actions.
+     */
     public function bulk_actions_wc_product($bulk_actions): array
     {
         $bulk_actions['link-ebook'] = __('Link eBook', 'alfaomega-ebooks');
         return $bulk_actions;
     }
 
+    /**
+     * Show notifications based on request parameters
+     *
+     * @since    1.0.0
+     * @access   public
+     */
     public function show_notification(): void
     {
         if (!empty($_REQUEST['updated-meta'])) {
