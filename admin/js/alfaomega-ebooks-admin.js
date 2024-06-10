@@ -1,42 +1,32 @@
+/**
+ * This is a self-invoking function that uses jQuery to handle the admin-facing JavaScript source code.
+ * It includes handlers for DOM-ready and window-load events.
+ * It also includes AJAX calls for form submission and queue clearing, as well as a function to check the queue status.
+ */
 (function( $ ) {
 	'use strict';
 
 	/**
-	 * All of the code for your admin-facing JavaScript source
-	 * should reside in this file.
-	 *
-	 * Note: It has been assumed you will write jQuery code here, so the
-	 * $ function reference has been prepared for usage within the scope
-	 * of this function.
-	 *
-	 * This enables you to define handlers, for when the DOM is ready:
-	 *
-	 * $(function() {
-	 *
-	 * });
-	 *
-	 * When the window is loaded:
-	 *
-	 * $( window ).load(function() {
-	 *
-	 * });
-	 *
-	 * ...and/or other possibilities.
-	 *
-	 * Ideally, it is not considered best practise to attach more than a
-	 * single DOM-ready or window-load handler for a particular page.
-	 * Although scripts in the WordPress core, Plugins and Themes may be
-	 * practising this, we should strive to set a better example in our own work.
+	 * This function is executed when the DOM is ready.
+	 * It sets up event handlers for form submission and queue clearing.
+	 * It also initiates the queue checking process.
 	 */
-
 	$(function() {
+		// Define variables for form, clear queue button, form submit button, and queue status
 		const alfaomegaEbooksForm = $('#alfaomega_ebooks_form');
 		const clearQueue = $('#clear-queue');
 		const formSubmit = $('#form_submit');
 		const queueStatus = $("#queue_status")
 
+		/**
+		 * This is the event handler for form submission.
+		 * It prevents the default form submission action and makes an AJAX call instead.
+		 */
 		alfaomegaEbooksForm.submit(function(event) {
+			// Prevent default form submission
 			event.preventDefault();
+
+			// Make AJAX call
 			$.ajax({
 				url: php_vars.admin_post_url,
 				type: 'POST',
@@ -44,6 +34,7 @@
 				timeout: 0,
 				data: $(this).serialize(),
 				beforeSend: function() {
+					// Disable form submit button and update queue status before sending the request
 					formSubmit.prop("disabled", true);
 					queueStatus.html('Scheduling jobs');
 					checkQueue();
@@ -52,10 +43,12 @@
 						.show();
 				},
 				error: function(error) {
+					// Remove loading indicator and show error message on error
 					$('.alfaomega_ebooksLoading').remove();
 					showError(error?.responseJSON?.error ? error?.responseJSON?.error : '');
 				},
 				success: function(response) {
+					// Remove loading indicator and show success or error message on success
 					$('.alfaomega_ebooksLoading').remove();
 
 					if ('success' === response.status) {
@@ -69,19 +62,30 @@
 			});
 		});
 
+		/**
+		 * This is the event handler for the clear queue button click event.
+		 * It prevents the default action and makes an AJAX call instead.
+		 */
 		clearQueue.click(function(event){
+			// Prevent default action
 			event.preventDefault();
+
+			// Prepare data for AJAX call
 			const endpoint = alfaomegaEbooksForm.find("input[name=endpoint]");
 			let data = alfaomegaEbooksForm.serialize().replace(endpoint.val(), 'clear_queue');
+
+			// Make AJAX call
 			$.ajax({
 				url: php_vars.admin_post_url,
 				type: 'POST',
 				timeout: 0,
 				data: data,
 				error: function(error) {
+					// Show error message on error
 					showError(error?.responseJSON?.error ? error?.responseJSON?.error : '');
 				},
 				success: function(response) {
+					// Show success or error message on success
 					if ('success' === response.status) {
 						showInfo(response.message);
 					} else {
@@ -93,11 +97,17 @@
 			});
 		});
 
+		// Initiate queue checking process
 		checkQueue();
 	});
 
+	// Define interval variable
 	let interval;
 
+	/**
+	 * This function shows an error message.
+	 * @param {string} msg - The error message to show. Defaults to a generic error message.
+	 */
 	function showError( msg = 'Something went wrong. Please try again') {
 		$('.alfaomega_ebooks-error-msg')
 			.html(msg)
@@ -106,6 +116,10 @@
 			.fadeOut('slow');
 	}
 
+	/**
+	 * This function shows an info message.
+	 * @param {string} msg - The info message to show. Defaults to a generic info message.
+	 */
 	function showInfo( msg = 'Good Jod!!') {
 		$('.alfaomega_ebooks-success-msg')
 			.html(msg)
@@ -114,7 +128,13 @@
 			.fadeOut('slow');
 	}
 
-	function checkQueue(force) {
+	/**
+	 * This function checks the queue status.
+	 * It makes an AJAX call to get the queue status and updates the UI accordingly.
+	 * @param {boolean} force - Whether to force the queue checking process. Defaults to false.
+	 */
+	function checkQueue(force= false) {
+		// Define variables for form, form submit button, and queue status elements
 		const alfaomegaEbooksForm = $('#alfaomega_ebooks_form');
 		const formSubmit = $('#form_submit');
 		const queueCompleted = $("#queue-complete")
@@ -122,9 +142,12 @@
 		const queuePending = $("#queue-pending")
 		const queueStatus = $("#queue_status")
 
+		// Check if form exists and queue checking process should be initiated
 		if (alfaomegaEbooksForm.length > 0 && (force || queuePending.html().trim() !== '0')) {
+			// Update queue status and start interval to check queue status
 			queueStatus.html('Working');
 			interval = setInterval(function() {
+				// Prepare data for AJAX call
 				const endpoint = alfaomegaEbooksForm.find("input[name=endpoint]");
 				let queue = '';
 				switch (endpoint.val()) {
@@ -140,6 +163,7 @@
 				}
 				let data = alfaomegaEbooksForm.serialize().replace(endpoint.val(), 'queue_status');
 
+				// Make AJAX call
 				$.ajax({
 					url: php_vars.admin_post_url,
 					type: 'GET',
@@ -149,6 +173,7 @@
 					error: function(error) {
 					},
 					success: function(response) {
+						// Update UI based on response
 						if (response.status === 'success') {
 							formSubmit.prop("disabled", response.data.pending > 0)
 							queueCompleted.html(response.data.complete);
@@ -156,6 +181,7 @@
 							queuePending.html(response.data.pending);
 
 							if (response.data.pending === 0) {
+								// Stop interval and show info message if all jobs are complete
 								clearInterval(interval);
 								showInfo('Queue status updated!');
 								formSubmit.prop("disabled", false);
