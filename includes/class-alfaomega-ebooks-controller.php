@@ -1,7 +1,13 @@
 <?php
 
 /**
- * This class defines the general plugin settings.
+ * The Alfaomega_Ebooks_Controller class.
+ * This class is responsible for processing requests, handling bulk actions, and interacting with the
+ * Alfaomega_Ebooks_Service. It provides methods for importing ebooks, refreshing ebooks, linking products, linking
+ * ebooks, downloading ebooks, checking the queue status, and clearing the queue. It also provides a method for
+ * processing requests, which includes checking the request method, verifying the nonce, checking the user
+ * capabilities, and calling the appropriate endpoint method. The class uses the Alfaomega_Ebooks_Service class to
+ * perform these actions.
  *
  * @since      1.0.0
  * @package    Alfaomega_Ebooks
@@ -10,11 +16,29 @@
  */
 if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
     class Alfaomega_Ebooks_Controller{
-
+        /**
+         * @var array $request
+         * Holds the request data. This could be either POST or GET data.
+         */
         protected array $request = [];
+
+        /**
+         * @var Alfaomega_Ebooks_Service $service
+         * An instance of the Alfaomega_Ebooks_Service class. This service class is used to perform various actions such
+         * as importing ebooks, refreshing ebooks, linking products, linking ebooks, downloading ebooks, checking the
+         * queue status, and clearing the queue.
+         */
         protected Alfaomega_Ebooks_Service $service;
 
-        public function __construct() {
+        /**
+         * The constructor for the Alfaomega_Ebooks_Controller class.
+         * This method is called when an object of the Alfaomega_Ebooks_Controller class is created. It initializes the
+         * $service property with a new instance of the Alfaomega_Ebooks_Service class.
+         *
+         * @since 1.0
+         */
+        public function __construct()
+        {
             $this->service = new Alfaomega_Ebooks_Service();
         }
 
@@ -61,7 +85,22 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
             }
         }
 
-        public function bulk_action_alfaomega_ebooks($redirect_url, $action, $post_ids): string
+        /**
+         * Performs a bulk action on a set of ebooks.
+         * This method takes a redirect URL, an action, and an array of post IDs. It performs the specified action on the posts
+         * with the given IDs. The actions can be 'update-meta', 'link-product', or 'link-ebook'. For each action, it calls the
+         * appropriate method, updates the redirect URL with the result, and returns the updated URL. If an error occurs during
+         * the action, it adds 'fail' to the redirect URL.
+         *
+         * @param string $redirect_url The URL to redirect to after the action is performed.
+         * @param string $action       The action to perform. Can be 'update-meta', 'link-product', or 'link-ebook'.
+         * @param array $post_ids      The IDs of the posts to perform the action on.
+         *
+         * @return string The updated redirect URL.
+         * @throws Exception If an error occurs during the action.
+         * @since 1.0
+         */
+        public function bulk_action_alfaomega_ebooks(string $redirect_url, string $action, array $post_ids): string
         {
             switch ($action) {
                 case 'update-meta':
@@ -69,7 +108,6 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
                         $redirect_url = remove_query_arg('link-product', $redirect_url);
                         $result = $this->refresh_ebooks($post_ids);
                         $redirect_url = add_query_arg('updated-meta', $result['data']['refreshed'], $redirect_url);
-
                     } catch (Exception $exception) {
                         $redirect_url = add_query_arg('updated-meta', 'fail', $redirect_url);
                     }
@@ -79,7 +117,6 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
                         $redirect_url = remove_query_arg('updated-meta', $redirect_url);
                         $result = $this->link_products($post_ids);
                         $redirect_url = add_query_arg('link-product', $result['data']['linked'], $redirect_url);
-
                     } catch (Exception $exception) {
                         $redirect_url = add_query_arg('link-product', 'fail', $redirect_url);
                     }
@@ -89,7 +126,6 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
                         //$redirect_url = remove_query_arg('link-product', $redirect_url);
                         $result = $this->link_ebooks($post_ids);
                         $redirect_url = add_query_arg('link-ebook', $result['data']['linked'], $redirect_url);
-
                     } catch (Exception $exception) {
                         $redirect_url = add_query_arg('link-ebook', 'fail', $redirect_url);
                     }
@@ -99,6 +135,16 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
             return $redirect_url;
         }
 
+        /**
+         * Imports ebooks and returns the response.
+         * This method calls the importEbooks method of the service class, which imports ebooks and returns a response.
+         * The response contains the number of imported ebooks. If the number of imported ebooks is greater than 0,
+         * it generates a success message. Otherwise, it generates a message indicating that no new ebooks were imported.
+         *
+         * @return array An associative array containing the response data and the message.
+         * @throws \Exception
+         * @since 1.0
+         */
         public function import_ebooks(): array
         {
             $response = $this->service->importEbooks();
@@ -113,7 +159,19 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
             ];
         }
 
-        public function refresh_ebooks($postIds = null): array
+        /**
+         * Refreshes ebooks and returns the response.
+         * This method calls the refreshEbooks method of the service class, which refreshes ebooks and returns a response.
+         * The response contains the number of refreshed ebooks. If the number of refreshed ebooks is greater than 0,
+         * it generates a success message. Otherwise, it generates a message indicating that no ebooks were found to refresh.
+         *
+         * @param array|null $postIds The IDs of the posts to refresh. If null, all posts are refreshed.
+         *
+         * @return array An associative array containing the response data and the message.
+         * @throws \Exception
+         * @since 1.0
+         */
+        public function refresh_ebooks(array $postIds = null): array
         {
             $response = $this->service->refreshEbooks($postIds);
 
@@ -127,7 +185,18 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
             ];
         }
 
-        public function link_products($postIds = null): array
+        /**
+         * Links products and returns the response.
+         * This method calls the linkProducts method of the service class, which links products and returns a response.
+         * The response contains the number of linked products. If the number of linked products is greater than 0,
+         * it generates a success message. Otherwise, it generates a message indicating that no products were found to link.
+         *
+         * @param array|null $postIds The IDs of the posts to link. If null, all posts are linked.
+         *
+         * @return array An associative array containing the response data and the message.
+         * @since 1.0
+         */
+        public function link_products(array $postIds = null): array
         {
             $response = $this->service
                 ->initWooCommerceClient()
@@ -143,6 +212,17 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
             ];
         }
 
+        /**
+         * Links ebooks and returns the response.
+         * This method calls the linkEbooks method of the service class, which links ebooks and returns a response.
+         * The response contains the number of linked ebooks. If the number of linked ebooks is greater than 0,
+         * it generates a success message. Otherwise, it generates a message indicating that no ebooks were found to link.
+         *
+         * @param array|null $postIds The IDs of the posts to link. If null, all posts are linked.
+         *
+         * @return array An associative array containing the response data and the message.
+         * @since 1.0
+         */
         public function link_ebooks($postIds = null): array
         {
             $response = $this->service
@@ -159,7 +239,15 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
             ];
         }
 
-        public function download_ebook()
+        /**
+         * Downloads an ebook.
+         * This method calls the downloadEbook method of the service class, which downloads an ebook.
+         * The product and download ID are retrieved from the request data.
+         *
+         * @throws Exception If an error occurs during the download.
+         * @since 1.0
+         */
+        public function download_ebook(): void
         {
             try {
                 $product = $this->request['product'];
@@ -171,14 +259,31 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
             }
         }
 
+        /**
+         * Returns the status of a queue.
+         * This method calls the queueStatus method of the service class, which returns the status of a queue.
+         * The queue is retrieved from the request data.
+         *
+         * @return array An associative array containing the queue status.
+         * @since 1.0
+         */
         public function queue_status(): array
         {
             $queue = $this->request['queue'];
+
             return [
-                'data' => $this->service->queueStatus($queue)
+                'data' => $this->service->queueStatus($queue),
             ];
         }
 
+        /**
+         * Clears a queue and returns the response.
+         * This method calls the clearQueue method of the service class, which clears a queue and returns a response.
+         * The response contains a success message.
+         *
+         * @return array An associative array containing the response data and the message.
+         * @since 1.0
+         */
         public function clear_queue(): array
         {
             return [
