@@ -13,15 +13,18 @@
 class Alfaomega_Ebooks_Deactivator {
 
 	/**
-	 * Short Description. (use period)
+	 * Deactivates the plugin.
 	 *
-	 * Long Description.
+	 * This method is called during the plugin's deactivation. It flushes the rewrite rules and unregisters the post type.
 	 *
 	 * @since    1.0.0
 	 */
 	public static function deactivate(): void
     {
+        // Flushes the rewrite rules
         flush_rewrite_rules();
+
+        // Unregisters the post type
         unregister_post_type( ALFAOMEGA_EBOOKS_POST_TYPE );
 	}
 
