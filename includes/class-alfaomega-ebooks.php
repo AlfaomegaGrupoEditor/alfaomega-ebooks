@@ -73,74 +73,73 @@ class Alfaomega_Ebooks {
     }
 
     /**
- * Load the required dependencies for this plugin.
- *
- * This method includes the necessary files that make up the plugin and creates an instance of the loader
- * which will be used to register the hooks with WordPress.
- *
- * @since    1.0.0
- * @access   private
- */
-private function load_dependencies() {
-
-    /**
-     * The class responsible for orchestrating the actions and filters of the core plugin.
+     * Load the required dependencies for this plugin.
+     * This method includes the necessary files that make up the plugin and creates an instance of the loader
+     * which will be used to register the hooks with WordPress.
+     *
+     * @since    1.0.0
+     * @access   private
      */
-    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-loader.php';
+    private function load_dependencies()
+    {
+        /**
+         * The class responsible for orchestrating the actions and filters of the core plugin.
+         */
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-alfaomega-ebooks-loader.php';
 
-    /**
-     * The class responsible for defining internationalization functionality of the plugin.
-     */
-    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-i18n.php';
+        /**
+         * The class responsible for defining internationalization functionality of the plugin.
+         */
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-alfaomega-ebooks-i18n.php';
 
-    /**
-     * The class responsible for defining all actions that occur in the admin area.
-     */
-    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-alfaomega-ebooks-admin.php';
+        /**
+         * The class responsible for defining all actions that occur in the admin area.
+         */
+        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-alfaomega-ebooks-admin.php';
 
-    /**
-     * The class responsible for defining all actions that occur in the public-facing side of the site.
-     */
-    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-alfaomega-ebooks-public.php';
+        /**
+         * The class responsible for defining all actions that occur in the public-facing side of the site.
+         */
+        require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-alfaomega-ebooks-public.php';
 
-    /**
-     * The class responsible for defining the Custom Post Type alfaomega-ebook.
-     */
-    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'post_types/class-alfaomega-ebooks-post-type.php';
+        /**
+         * The class responsible for defining the Custom Post Type alfaomega-ebook.
+         */
+        require_once plugin_dir_path(dirname(__FILE__)) . 'post_types/class-alfaomega-ebooks-post-type.php';
 
-    /**
-     * The class responsible for defining the settings page.
-     */
-    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-settings.php';
+        /**
+         * The class responsible for defining the settings page.
+         */
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-alfaomega-ebooks-settings.php';
 
-    /**
-     * The class responsible for loading custom route class.
-     */
-    require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-custom-route.php' );
+        /**
+         * The class responsible for loading custom route class.
+         */
+        require_once(plugin_dir_path(dirname(__FILE__)) . 'includes/class-alfaomega-ebooks-custom-route.php');
 
-    /**
-     * The class responsible for processing the request.
-     */
-    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-controller.php';
+        /**
+         * The class responsible for processing the request.
+         */
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-alfaomega-ebooks-controller.php';
 
-    /**
-     * The class responsible for processing the plugin logic.
-     */
-    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-service.php';
+        /**
+         * The class responsible for processing the plugin logic.
+         */
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-alfaomega-ebooks-service.php';
 
-    /**
-     * The class responsible for processing API calls.
-     */
-    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-alfaomega-ebooks-api.php';
+        /**
+         * The class responsible for processing API calls.
+         */
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-alfaomega-ebooks-api.php';
 
-    /**
-     * The class responsible for loading composer dependencies.
-     */
-    require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php' );
+        /**
+         * The class responsible for loading composer dependencies.
+         */
+        require_once(plugin_dir_path(dirname(__FILE__)) . 'vendor/autoload.php');
 
-    // Create an instance of the loader which will be used to register the hooks with WordPress.
-    $this->loader = new Alfaomega_Ebooks_Loader();
-}
+        // Create an instance of the loader which will be used to register the hooks with WordPress.
+        $this->loader = new Alfaomega_Ebooks_Loader();
+    }
 
 	/**
 	 * Define the locale for this plugin for internationalization.
