@@ -252,7 +252,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
          * @return string The token URL.
          * @since 1.0
          */
-        public function getTokenUrl()
+        public function getTokenUrl():string
         {
             return $this->settings['alfaomega_ebooks_token'];
         }
@@ -267,7 +267,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
          * @return string The full API URL.
          * @since 1.0
          */
-        public function getApiUrl($url)
+        public function getApiUrl($url): string
         {
             return rtrim($this->settings['alfaomega_ebooks_api'], '/') . $url;
         }
@@ -279,7 +279,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
          * @return string The server URL.
          * @since 1.0
          */
-        public function getServerUrl()
+        public function getServerUrl(): string
         {
             return rtrim($this->settings['alfaomega_ebooks_panel'], '/');
         }
@@ -291,7 +291,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
          * @return string The client ID.
          * @since 1.0
          */
-        public function getClientId()
+        public function getClientId(): string
         {
             return $this->settings['alfaomega_ebooks_client_id'];
         }
@@ -303,7 +303,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
          * @return string The client.
          * @since 1.0
          */
-        public function getClient()
+        public function getClient(): string
         {
             return $this->settings['alfaomega_ebooks_client'];
         }
@@ -315,7 +315,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
          * @return string The client secret.
          * @since 1.0
          */
-        public function getSecret()
+        public function getSecret(): string
         {
             return $this->settings['alfaomega_ebooks_client_secret'];
         }
@@ -327,7 +327,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
          * @return string The username.
          * @since 1.0
          */
-        public function getUsername()
+        public function getUsername(): string
         {
             return $this->settings['alfaomega_ebooks_username'];
         }
@@ -339,7 +339,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
          * @return string The password.
          * @since 1.0
          */
-        public function getPassword()
+        public function getPassword(): string
         {
             return $this->settings['alfaomega_ebooks_password'];
         }
@@ -351,7 +351,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Api' )) {
          * @return string The reader URL.
          * @since 1.0
          */
-        public function getReaderUrl()
+        public function getReaderUrl(): string
         {
             return $this->settings['alfaomega_ebooks_reader'];
         }
