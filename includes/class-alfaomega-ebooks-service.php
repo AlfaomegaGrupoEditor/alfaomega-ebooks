@@ -13,11 +13,34 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
 
 
     class Alfaomega_Ebooks_Service{
-
+        /**
+         * @var Alfaomega_Ebooks_Api $api
+         * This protected property holds an instance of the Alfaomega_Ebooks_Api class.
+         * It is used to interact with the Alfaomega Ebooks API.
+         */
         protected Alfaomega_Ebooks_Api $api;
+
+        /**
+         * @var array $settings
+         * This protected property holds the settings for the Alfaomega Ebooks service.
+         * It is an associative array where the keys are the setting names and the values are the setting values.
+         */
         protected array $settings = [];
+
+        /**
+         * @var Client|null $woocommerce
+         * This protected property holds an instance of the WooCommerce Client class.
+         * It is used to interact with the WooCommerce API.
+         * It is nullable, meaning it can also hold a null value.
+         */
         protected ?Client $woocommerce = null;
 
+        /**
+         * This is the class constructor.
+         *  It initializes the WooCommerce client and retrieves the settings.
+         *
+         * @param bool $initApi
+         */
         public function __construct(bool $initApi=true)
         {
             if ($initApi) {
@@ -28,9 +51,14 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         }
 
         /**
-         * @see https://stackoverflow.com/questions/65204134/woocommerce-api-giving-json-syntax-error-on-every-request
-         * @return $this
+         * Initializes the WooCommerce client.
          *
+         * This method creates a new instance of the WooCommerce Client class and assigns it to the $woocommerce property.
+         * The client is configured with the site URL, API key, and API secret, along with other necessary settings.
+         *
+         * FIXME: make sure the permanent_links are updated in the site settings
+         * @see https://stackoverflow.com/questions/65204134/woocommerce-api-giving-json-syntax-error-on-every-request
+         * @return self Returns the current instance of the class to allow for method chaining.
          */
         public function initWooCommerceClient(): self
         {
@@ -49,6 +77,12 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return $this;
         }
 
+        /**
+         * Retrieves the settings for the Alfaomega Ebooks service.
+         *
+         * This method retrieves the settings from the WordPress options table and assigns them to the $settings property.
+         * @return void
+         */
         public function getSettings(): void
         {
             $this->settings = array_merge(
@@ -59,6 +93,15 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             );
         }
 
+        /**
+         * Imports eBooks from Alfaomega.
+         *
+         * This method imports eBooks from the Alfaomega API and creates posts for them in WordPress.
+         * It retrieves the eBooks from the API, creates a post for each eBook, and links the post to a product in WooCommerce.
+         *
+         * @return array Returns an array with the number of eBooks imported.
+         * @throws \Exception Throws an exception if the import queue fails.
+         */
         public function importEbooks(): array
         {
             $this->checkFormatAttribute();
@@ -91,8 +134,11 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         }
 
         /**
-         * Will be called from the job
-         * @param array $eBook
+         * Imports a single eBook from Alfaomega.
+         * This method imports a single eBook from the Alfaomega API and creates a post for it in WordPress.
+         * It retrieves the eBook from the API, creates a post for it, and links the post to a product in WooCommerce.
+         *
+         * @param array $eBook The eBook data to import.
          *
          * @return void
          * @throws \Exception
@@ -103,7 +149,18 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             $this->linkProduct($eBook, false);
         }
 
-        public function refreshEbooks($postIds = null): array
+        /**
+         * Refreshes eBooks in WordPress.
+         *
+         * This method refreshes the eBooks in WordPress by updating the post content and metadata for each eBook.
+         * It retrieves the eBooks from the API, updates the post content and metadata for each eBook, and links the post to a product in WooCommerce.
+         *
+         * @param array|null $postIds An array of post IDs to refresh. If null, all eBooks are refreshed.
+         *
+         * @return array Returns an array with the number of eBooks refreshed.
+         * @throws \Exception Throws an exception if the refresh list queue fails.
+         */
+        public function refreshEbooks(array $postIds = null): array
         {
             $this->checkFormatAttribute();
             $postsPerPage = 5;
@@ -153,6 +210,17 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             ];
         }
 
+        /**
+         * Refreshes a single eBook in WordPress.
+         * This method refreshes a single eBook in WordPress by updating the post content and metadata.
+         * It retrieves the eBook from the API, updates the post content and metadata, and links the post to a product in WooCommerce.
+         *
+         * @param int $postId  The post ID of the eBook to refresh.
+         * @param array $eBook The eBook data to refresh.
+         *
+         * @return void
+         * @throws \Exception
+         */
         public function refreshEbookList(array $isbns): void
         {
             $eBooks = $this->getEbooksInfo(array_keys($isbns));
@@ -167,13 +235,34 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             }
         }
 
-        public function refreshEbook($postId, array $eBook): void
+        /**
+         * Refreshes a single eBook in WordPress.
+         * This method refreshes a single eBook in WordPress by updating the post content and metadata.
+         * It retrieves the eBook from the API, updates the post content and metadata, and links the post to a product in WooCommerce.
+         *
+         * @param int $postId  The post ID of the eBook to refresh.
+         * @param array $eBook The eBook data to refresh.
+         *
+         * @return void
+         * @throws \Exception
+         */
+        public function refreshEbook(int $postId, array $eBook): void
         {
             $eBook = $this->updateEbookPost($postId, $eBook);
             $this->linkProduct($eBook, false);
         }
 
-        public function linkProducts($postIds): array
+        /**
+         * Links eBooks to products in WooCommerce.
+         * This method links eBooks to products in WooCommerce by creating a product for each eBook.
+         * It retrieves the eBooks from the API, creates a product for each eBook, and links the product to the eBook post.
+         *
+         * @param array $postIds An array of post IDs to link.
+         *
+         * @return array Returns an array with the number of eBooks linked.
+         * @throws \Exception
+         */
+        public function linkProducts(array $postIds): array
         {
             $this->checkFormatAttribute();
             $linked = 0;
@@ -187,7 +276,17 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             ];
         }
 
-        public function linkEbooks($productsId): array
+        /**
+         * Links eBooks to products in WooCommerce.
+         * This method links eBooks to products in WooCommerce by creating a product for each eBook.
+         * It retrieves the eBooks from the API, creates a product for each eBook, and links the product to the eBook post.
+         *
+         * @param array $productsId An array of product IDs to link.
+         *
+         * @return array Returns an array with the number of eBooks linked.
+         * @throws \Exception
+         */
+        public function linkEbooks(array $productsId): array
         {
             $linked = 0;
             $this->checkFormatAttribute();
@@ -210,7 +309,17 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             ];
         }
 
-        protected function getPosts($count, $query = []): WP_Query
+        /**
+         * Retrieves a set number of posts of type 'alfaomega-ebook'.
+         * This method retrieves a set number of posts of type 'alfaomega-ebook' from the WordPress database.
+         * The number of posts to retrieve and any additional query parameters can be specified.
+         *
+         * @param int $count   The number of posts to retrieve.
+         * @param array $query Optional. An array of additional query parameters.
+         *
+         * @return WP_Query Returns a new instance of the WP_Query class with the specified query parameters.
+         */
+        protected function getPosts(int $count, array $query = []): WP_Query
         {
             $args = array_merge($query, [
                 'posts_per_page' => $count,
@@ -218,50 +327,72 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                 'post_type'      => 'alfaomega-ebook',
             ]);
 
-            return new WP_Query( $args );
+            return new WP_Query($args);
         }
 
-        protected function savePostMeta($postId, $data): array
+        /**
+         * Saves the post metadata.
+         * This method saves the metadata for a post of type 'alfaomega-ebook'.
+         * It sanitizes the new values before saving them and uses default values if the new values are empty.
+         * It also publishes the post and retrieves the updated post metadata.
+         *
+         * @param int $postId The ID of the post to save metadata for.
+         * @param array $data An associative array containing the new metadata values.
+         *
+         * @return array Returns an associative array containing the updated post metadata.
+         * @throws \Exception
+         */
+        protected function savePostMeta(int $postId, array $data): array
         {
             $fields = [
-                'alfaomega_ebook_isbn' => [
+                'alfaomega_ebook_isbn'   => [
                     'old'     => get_post_meta($postId, 'alfaomega_ebook_isbn', true),
                     'new'     => $data['isbn'],
                     'default' => '',
                 ],
-                'alfaomega_ebook_id'   => [
+                'alfaomega_ebook_id'     => [
                     'old'     => get_post_meta($postId, 'alfaomega_ebook_id', true),
-                    'new'     => !empty($data['adobe']) ? $data['adobe'] : '',
+                    'new'     => ! empty($data['adobe']) ? $data['adobe'] : '',
                     'default' => '',
                 ],
-                'alfaomega_ebook_url'  => [
+                'alfaomega_ebook_url'    => [
                     'old'     => get_post_meta($postId, 'alfaomega_ebook_url', true),
-                    'new'     => !empty($data['html_ebook']) ? $data['html_ebook'] : '',
+                    'new'     => ! empty($data['html_ebook']) ? $data['html_ebook'] : '',
                     'default' => '',
                 ],
-                'alfaomega_ebook_tag_id'  => [
+                'alfaomega_ebook_tag_id' => [
                     'old'     => get_post_meta($postId, 'alfaomega_ebook_tag_id', true),
-                    'new'     => !empty($data['isbn']) ? $this->getTagId($data['isbn']) : '',
+                    'new'     => ! empty($data['isbn']) ? $this->getTagId($data['isbn']) : '',
                     'default' => '',
                 ],
             ];
 
             wp_publish_post($postId);
-            foreach ( $fields as $field => $data ) {
-                $new_value = sanitize_text_field( $data['new'] );
+            foreach ($fields as $field => $data) {
+                $new_value = sanitize_text_field($data['new']);
                 $old_value = $data['old'];
 
-                if ( empty( $new_value ) ) {
+                if (empty($new_value)) {
                     $new_value = $data['default'];
                 }
 
-                update_post_meta( $postId, $field, $new_value, $old_value );
+                update_post_meta($postId, $field, $new_value, $old_value);
             }
 
             return $this->getPostMeta($postId);
         }
 
-        protected function getPostMeta($postId): array
+        /**
+         * Retrieves the metadata for a post of type 'alfaomega-ebook'.
+         * This method retrieves the metadata for a post of type 'alfaomega-ebook' from the WordPress database.
+         * It retrieves the post title, author, ISBN, Adobe ID, eBook URL, publication date, and tag ID.
+         *
+         * @param int $postId The ID of the post to retrieve metadata for.
+         *
+         * @return array Returns an associative array containing the post metadata.
+         * @throws \Exception
+         */
+        protected function getPostMeta(int $postId): array
         {
             $post = get_post($postId);
             if (empty($post)) {
@@ -279,6 +410,16 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             ];
         }
 
+        /**
+         * Searches for a post of type 'alfaomega-ebook' by ISBN.
+         * This method searches for a post of type 'alfaomega-ebook' in the WordPress database by ISBN.
+         * It retrieves the post metadata if a post is found.
+         *
+         * @param string $isbn The ISBN to search for.
+         *
+         * @return array|null Returns an associative array containing the post metadata if a post is found, or null if no post is found.
+         * @throws \Exception
+         */
         protected function searchPost($isbn): ?array
         {
             $query = [
@@ -297,6 +438,14 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return $this->getPostMeta($posts[0]->ID);
         }
 
+        /**
+         * Retrieves the latest post of type 'alfaomega-ebook'.
+         * This method retrieves the latest post of type 'alfaomega-ebook' from the WordPress database.
+         * It retrieves the post metadata if a post is found.
+         *
+         * @return array|null Returns an associative array containing the post metadata if a post is found, or null if no post is found.
+         * @throws \Exception
+         */
         protected function latestPost(): ?array
         {
             $query = [
@@ -312,6 +461,17 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return $this->getPostMeta($posts[0]->ID);
         }
 
+        /**
+         * Retrieves eBooks information from Alfaomega.
+         * This method sends a POST request to the Alfaomega API to retrieve information about eBooks.
+         * The eBooks are identified by their ISBNs, which are passed as an array.
+         * The method throws an exception if the API response code is not 200 or if the status of the content is not 'success'.
+         *
+         * @param array $isbns An array of ISBNs of the eBooks to retrieve information for.
+         *
+         * @return array Returns an associative array containing the eBooks information.
+         * @throws Exception Throws an exception if the API response code is not 200 or if the status of the content is not 'success'.
+         */
         protected function getEbooksInfo(array $isbns): array
         {
             // get eBooks info from Alfaomega
@@ -328,7 +488,20 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return json_decode($response['body'], true)['data'];
         }
 
-        protected function retrieveEbooks($isbn = '', $count=100): array
+        /**
+         * Retrieves eBooks from Alfaomega.
+         *
+         * This method sends a GET request to the Alfaomega API to retrieve eBooks.
+         * The eBooks are identified by their ISBNs, which are passed as an array.
+         * The method throws an exception if the API response code is not 200 or if the status of the content is not 'success'.
+         *
+         * @param string $isbn The ISBN of the eBook to start retrieving from. Default is an empty string.
+         * @param int $count The number of eBooks to retrieve. Default is 100.
+         *
+         * @return array Returns an associative array containing the eBooks information.
+         * @throws Exception Throws an exception if the API response code is not 200 or if the status of the content is not 'success'.
+         */
+        protected function retrieveEbooks(string $isbn = '', int $count=100): array
         {
             // pull from Panel all eBooks updated after the specified book
             $response = $this->api->get("/book/index/$isbn?items={$count}");
@@ -342,7 +515,20 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return $content['data'];
         }
 
-        protected function updateEbookPost($postId, $data): array
+        /**
+         * Updates or creates a new eBook post.
+         *
+         * This method updates an existing eBook post or creates a new one if it doesn't exist.
+         * It uses the provided eBook data to set the post title, content, status, author, and type.
+         * It also saves the post metadata.
+         *
+         * @param int|null $postId The ID of the post to update. If null, a new post is created.
+         * @param array $data An associative array containing the eBook data.
+         *
+         * @return array Returns an associative array containing the updated post metadata.
+         * @throws Exception Throws an exception if unable to create post.
+         */
+        protected function updateEbookPost(?int $postId, array $data): array
         {
             if (empty($postId)) {
                 $post = $this->searchPost($data['isbn']);
@@ -374,14 +560,18 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         }
 
         /**
-         * @param $ebook
-         * @param bool $notFoundError
+         * Links an eBook to a product in WooCommerce.
+         *
+         * This method links an eBook to a product in WooCommerce by creating a product for the eBook.
+         * It retrieves the product by its tag ID and title, updates the product type, formats, and variants, and links the product to the eBook post.
+         *
+         * @param array $ebook An associative array containing the eBook data.
+         * @param bool $notFoundError If true, throws an exception if the product is not found. Default is true.
          *
          * @return void
-         * @throws \Exception
-         * @see https://woocommerce.github.io/woocommerce-rest-api-docs/#introduction
+         * @throws Exception Throws an exception if the product is not found, the product type is not supported, product formats failed, or product variants failed.
          */
-        protected function linkProduct($ebook, $notFoundError=true): void
+        protected function linkProduct(array $ebook, bool $notFoundError=true): void
         {
             $product = $this->getProduct($ebook['tag_id'], $ebook['title']);
             if (empty($product)) {
@@ -411,7 +601,17 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             }
         }
 
-        public function queueStatus($queue): array
+        /**
+         * Retrieves the status of a queue.
+         *
+         * This method retrieves the status of a queue by querying the WordPress actionscheduler_actions table.
+         * It retrieves the number of actions with the specified queue name and status.
+         *
+         * @param string $queue The queue name to query.
+         *
+         * @return array Returns an associative array containing the queue name and the number of actions with the specified status.
+         */
+        public function queueStatus(string $queue): array
         {
             global $wpdb;
             $results = $wpdb->get_results( "
@@ -437,6 +637,13 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return $data;
         }
 
+        /**
+         * Clears a queue.
+         *
+         * This method clears a queue by deleting all actions with the specified queue name and status.
+         *
+         * @return array Returns an empty array.
+         */
         public function clearQueue(): array
         {
             global $wpdb;
@@ -450,6 +657,17 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return [];
         }
 
+        /**
+         * Retrieves the tag ID for a product in WooCommerce.
+         *
+         * This method retrieves the tag ID for a product in WooCommerce by searching for the product tag with the specified ISBN.
+         * If the tag is not found, it creates a new tag with the specified ISBN.
+         *
+         * @param string $isbn The ISBN to search for.
+         *
+         * @return int Returns the tag ID for the product.
+         * @throws Exception Throws an exception if the tag creation failed.
+         */
         public function getTagId(string $isbn): int
         {
             $tags = (array) $this->woocommerce->get("products/tags", [
@@ -468,6 +686,19 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return $tag->id;
         }
 
+        /**
+         * Retrieves a product from WooCommerce.
+         *
+         * This method retrieves a product from WooCommerce by searching for the product with the specified tag ID and title.
+         * If the product is not found, it searches for the product with the specified title.
+         * If the product is still not found, it searches for the product with the specified tag ID.
+         * If the product is still not found, it searches for the product with the specified title and creates a new product if the title is not empty.
+         *
+         * @param int $tagId The tag ID to search for.
+         * @param string $title The title to search for. Default is an empty string.
+         *
+         * @return array|null Returns an associative array containing the product data if the product is found, or null if the product is not found.
+         */
         public function getProduct(int $tagId, string $title = null): ?array
         {
             $products = (array) $this->woocommerce
@@ -489,6 +720,17 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return null;
         }
 
+        /**
+         * Finds a product in WooCommerce.
+         *
+         * This method finds a product in WooCommerce by searching for the product with the specified title.
+         * If the product is found, it updates the product tags with the specified tag ID.
+         *
+         * @param string $title The title to search for.
+         * @param int $tagId The tag ID to update the product with.
+         *
+         * @return array|null Returns an associative array containing the product data if the product is found, or null if the product is not found.
+         */
         public function findProduct(string $title, int $tagId): ?array
         {
             $products = (array) $this->woocommerce
@@ -509,6 +751,17 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return null;
         }
 
+        /**
+         * Updates the product type in WooCommerce.
+         *
+         * This method updates the product type in WooCommerce by changing the product type to the specified type.
+         * If the product type is already the specified type, it returns the product data.
+         *
+         * @param array $product The product data to update.
+         * @param string $type The product type to update to. Default is 'variable'.
+         *
+         * @return array|null Returns an associative array containing the updated product data if the product type is updated, or null if the product type is not updated.
+         */
         public function updateProductType(array $product, string $type = 'variable'): ?array
         {
             if ($product['type'] !== $type) {
@@ -532,6 +785,19 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return $product;
         }
 
+        /**
+         * Retrieves the variation data for a product in WooCommerce.
+         * This method retrieves the variation data for a product in WooCommerce by creating an associative array with the specified data.
+         * The data includes the product ID, regular price, sale price, and attributes.
+         *
+         * @param array $product The product data to retrieve the variation data for.
+         * @param string $format The format of the product. Default is 'impreso'.
+         * @param array $prices  The prices of the product. Default is an empty array.
+         * @param int $ebookId   The eBook ID to retrieve the variation data for. Default is 0.
+         *
+         * @return array Returns an associative array containing the variation data for the product.
+         * @throws \Exception
+         */
         public function updateProductVariants(array $product, array $prices, array $ebook): ?array
         {
             $variations = (array) $this->woocommerce
@@ -599,6 +865,16 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return $product;
         }
 
+        /**
+         * Updates the product formats in WooCommerce.
+         *
+         * This method updates the product formats in WooCommerce by adding the specified format to the product attributes.
+         * If the format is already in the product attributes, it returns the product data.
+         *
+         * @param array $product The product data to update.
+         *
+         * @return array|null Returns an associative array containing the updated product data if the product formats are updated, or null if the product formats are not updated.
+         */
         public function updateProductFormats(array $product): ?array
         {
             $formats = [
@@ -636,6 +912,14 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return !empty($product) ? $product : null;
         }
 
+        /**
+         * Checks the format attribute in WooCommerce.
+         * This method checks the format attribute in WooCommerce by searching for the attribute with the specified name.
+         * If the attribute is not found, it creates a new attribute with the specified name.
+         *
+         * @return void
+         * @throws \Exception
+         */
         public function checkFormatAttribute(): void
         {
             if (empty($this->settings['alfaomega_ebooks_format_attr_id'])) {
@@ -646,7 +930,17 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             }
         }
 
-        public function getOrCreateFormatAttribute($name = 'pa_book-format'): int
+        /**
+         * Gets or creates the format attribute in WooCommerce.
+         * This method gets or creates the format attribute in WooCommerce by searching for the attribute with the specified name.
+         * If the attribute is not found, it creates a new attribute with the specified name.
+         *
+         * @param string $name The name of the attribute to search for. Default is 'pa_book-format'.
+         *
+         * @return int Returns the ID of the format attribute.
+         * @throws \Exception
+         */
+        public function getOrCreateFormatAttribute(string $name = 'pa_book-format'): int
         {
             // search the attribute
             $attributes = (array) $this->woocommerce->get('products/attributes');
@@ -683,6 +977,18 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return $formatAttribute->id;
         }
 
+        /**
+         * Gets the variation data for a product in WooCommerce.
+         * This method gets the variation data for a product in WooCommerce by creating an associative array with the specified data.
+         * The data includes the description, SKU, regular price, status, virtual, downloadable, manage stock, stock quantity, stock status, weight, dimensions, shipping class, and attributes.
+         *
+         * @param array $product The product data to get the variation data for.
+         * @param string $format The format of the product.
+         * @param array $prices The prices of the product.
+         * @param int $ebookId The eBook ID to get the variation data for.
+         *
+         * @return array Returns an associative array containing the variation data for the product.
+         */
         protected function getVariationData(array $product, string $format, array $prices, int $ebookId): array
         {
             $uploads = wp_get_upload_dir();
@@ -755,10 +1061,18 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         }
 
         /**
-         * @param int $ebookId
-         * @param string $downloadId
+         * Downloads an eBook.
+         * This method downloads an eBook by its ID and download ID. It first retrieves the eBook metadata.
+         * If the eBook is found, it constructs the file path for the eBook download.
+         * If the file already exists, it returns the file path.
+         * If the file does not exist, it retrieves the download file content and writes it to the file path.
+         * If the file write is successful, it returns the file path.
+         * If the eBook is not found, the download file content is empty, or the file write is unsuccessful, it returns an empty string.
          *
-         * @return void
+         * @param int $ebookId       The ID of the eBook to download.
+         * @param string $downloadId The download ID of the eBook.
+         *
+         * @return string Returns the file path of the downloaded eBook if the download is successful, or an empty string if the download is unsuccessful.
          * @throws \Exception
          */
         public function downloadEbook(int $ebookId, string $downloadId): string
@@ -779,13 +1093,28 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             }
 
             $success = file_put_contents($filePath, $content);
-            if (!$success) {
+            if (! $success) {
                 return '';
             }
 
             return $filePath;
         }
 
+        /**
+         * Reads an eBook.
+         * This method reads an eBook by its ID and download ID. It first retrieves the eBook metadata.
+         * If the eBook is found, it constructs the file path for the eBook download.
+         * If the file already exists, it returns the file path.
+         * If the file does not exist, it retrieves the download file content and writes it to the file path.
+         * If the file write is successful, it returns the file path.
+         * If the eBook is not found, the download file content is empty, or the file write is unsuccessful, it returns an empty string.
+         *
+         * @param int $ebookId       The ID of the eBook to read.
+         * @param string $downloadId The download ID of the eBook.
+         *
+         * @return void
+         * @throws \Exception
+         */
         public function readEbook(int $ebookId, string $key): void
         {
             $this->validateAccess($ebookId, $key);
@@ -798,6 +1127,21 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             require( ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_reader_page.php' );
         }
 
+        /**
+         * Validates access to an eBook.
+         * This method validates access to an eBook by its ID and download ID. It first retrieves the current user.
+         * If the user is not found, it throws an exception.
+         * It then retrieves the customer downloads for the user.
+         * If the customer downloads are not found, it throws an exception.
+         * If the requested download is not found, it throws an exception.
+         * If the requested download is found, it returns true.
+         *
+         * @param int $ebookId The ID of the eBook to validate access for.
+         * @param string $key   The download ID of the eBook.
+         *
+         * @return bool Returns true if access to the eBook is validated, or false if access to the eBook is not validated.
+         * @throws \Exception
+         */
         public function validateAccess(int $ebookId, string $key): bool
         {
             $customer = wp_get_current_user();
@@ -829,15 +1173,39 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return true;
         }
 
+        /**
+         * Generates a URL for reading an eBook.
+         * This method generates a URL for reading an eBook by its ID and download ID.
+         * The URL is constructed using the site URL, the eBook ID, and the download ID.
+         *
+         * @param int $ebookId       The ID of the eBook to generate a URL for.
+         * @param string $downloadId The download ID of the eBook.
+         *
+         * @return string Returns the URL for reading the eBook.
+         */
         public function readEbookUrl(int $ebookId, string $downloadId): string
         {
             return site_url("alfaomega-ebooks/read/{$ebookId}?key={$downloadId}");
         }
 
+        /**
+         * Retrieves the download file content for an eBook from Alfaomega.
+         * This method sends a GET or POST request to the Alfaomega API to retrieve the download file content for an eBook.
+         * The eBook is identified by its ISBN and transaction ID, which are passed as parameters.
+         * If rights are provided, a POST request is sent, otherwise a GET request is sent.
+         * The method returns null if the API response code is not 200, the status of the content is not 'success', or the download file content is empty.
+         *
+         * @param string $isbn        The ISBN of the eBook to retrieve the download file content for.
+         * @param string $transaction The transaction ID of the eBook.
+         * @param string|null $rights Optional. The rights for the eBook. Default is null.
+         *
+         * @return string|null Returns the download file content for the eBook if the retrieval is successful, or null if the retrieval is unsuccessful.
+         * @throws \Exception
+         */
         public function getDownloadFileContent($isbn, $transaction, $rights = null): ?string
         {
             $result = $rights
-                ? $this->api->post("/book/store/fulfilment/$isbn/$transaction", [ "rights" => $rights ])
+                ? $this->api->post("/book/store/fulfilment/$isbn/$transaction", ["rights" => $rights])
                 : $this->api->get("/book/store/fulfilment/$isbn/$transaction");
 
             if ($result['response']['code'] !== 200) {
@@ -852,6 +1220,16 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             return null;
         }
 
+        /**
+         * Retrieves the post metadata for an eBook.
+         * This method retrieves the post metadata for an eBook by its ID.
+         * It retrieves the post metadata for the eBook post type, including the title, author, ISBN, PDF ID, eBook URL, date, and tag ID.
+         *
+         * @param int $postId The ID of the eBook to retrieve the post metadata for.
+         *
+         * @return array|null Returns an associative array containing the post metadata for the eBook if the post is found, or null if the post is not found.
+         * @throws \Exception
+         */
         public function getReaderData(int $ebookId, string $key): ?array
         {
             if (!$this->validateAccess($ebookId, $key)) {
@@ -878,6 +1256,16 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
             ];
         }
 
+        /**
+         * Retrieves the user token for an eBook.
+         * This method retrieves the user token for an eBook by its ISBN.
+         * It retrieves the user token for the current user, or null if the current user is not found.
+         *
+         * @param string $isbn The ISBN of the eBook to retrieve the user token for.
+         *
+         * @return string|null Returns the user token for the eBook if the user is found, or null if the user is not found.
+         * @throws \Exception
+         */
         public function getUserToken($isbn): ?string
         {
             $customer = wp_get_current_user();
