@@ -14,6 +14,9 @@
  * @subpackage Alfaomega_Ebooks/includes
  * @author     Livan Rodriguez <livan2r@gmail.com>
  */
+
+use AlfaomegaEbooks\Services\Service;
+
 if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
     class Alfaomega_Ebooks_Controller{
         /**
@@ -42,6 +45,14 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
             $this->service = new Alfaomega_Ebooks_Service();
         }
 
+        /**
+         * Processes the request.
+         * This method is responsible for processing requests. It checks the request method, verifies the nonce, checks
+         * the user capabilities, and calls the appropriate endpoint method. It returns a JSON response with the status,
+         * message, and data.
+         *
+         * @since 1.0
+         */
         public function process(): void
         {
             try {
@@ -147,7 +158,12 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
          */
         public function import_ebooks(): array
         {
-            $response = $this->service->importEbooks();
+            $response = Service::make()
+                ->ebooks()
+                ->import()
+                ->batch();
+
+            //$response = $this->service->importEbooks();
 
             $message = $response['imported'] > 0
                 ? str_replace('%s', $response['imported'], esc_html__("%s new ebooks were added to the import scheduler successfully!", 'alfaomega-ebooks'))
@@ -194,6 +210,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
          * @param array|null $postIds The IDs of the posts to link. If null, all posts are linked.
          *
          * @return array An associative array containing the response data and the message.
+         * @throws \Exception
          * @since 1.0
          */
         public function link_products(array $postIds = null): array
@@ -221,6 +238,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
          * @param array|null $postIds The IDs of the posts to link. If null, all posts are linked.
          *
          * @return array An associative array containing the response data and the message.
+         * @throws \Exception
          * @since 1.0
          */
         public function link_ebooks($postIds = null): array

@@ -33,6 +33,7 @@ class ComposerStaticInitcd53d4cc421fe0b70226223f299ac0ad
         'A' => 
         array (
             'Automattic\\WooCommerce\\' => 23,
+            'AlfaomegaEbooks\\' => 16,
         ),
     );
 
@@ -68,6 +69,10 @@ class ComposerStaticInitcd53d4cc421fe0b70226223f299ac0ad
         'Automattic\\WooCommerce\\' => 
         array (
             0 => __DIR__ . '/..' . '/automattic/woocommerce/src/WooCommerce',
+        ),
+        'AlfaomegaEbooks\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
         ),
     );
 

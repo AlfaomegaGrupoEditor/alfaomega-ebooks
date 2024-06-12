@@ -1,6 +1,14 @@
 {
+    "name": "bnb-computer-services/your-plugin-name",
+    "description": "Wordpress plugin to integrate Alfaomega eBooks with WooCommerce",
+    "type": "wordpress-plugin",
     "require": {
         "automattic/woocommerce": "^3.1",
         "nesbot/carbon": "^2.72"
+    },
+    "autoload": {
+        "psr-4": {
+            "AlfaomegaEbooks\\": "src/"
+        }
     }
 }

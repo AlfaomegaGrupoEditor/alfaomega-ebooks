@@ -10,8 +10,6 @@ use \Automattic\WooCommerce\Client;
  * @author     Livan Rodriguez <livan2r@gmail.com>
  */
 if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
-
-
     class Alfaomega_Ebooks_Service{
         /**
          * @var Alfaomega_Ebooks_Api $api
@@ -1266,7 +1264,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
          * @return string|null Returns the user token for the eBook if the user is found, or null if the user is not found.
          * @throws \Exception
          */
-        public function getUserToken($isbn): ?string
+        public function getUserToken(string $isbn): ?string
         {
             $customer = wp_get_current_user();
             if (empty($customer)) {
