@@ -3,6 +3,8 @@
 namespace AlfaomegaEbooks\Services\Process;
 
 use AlfaomegaEbooks\Services\Entities\WooCommerce\ProductEntity;
+use AlfaomegaEbooks\Services\Service;
+use Exception;
 
 /**
  * Link ebooks process.
@@ -23,13 +25,68 @@ class LinkProduct extends AbstractProcess
         parent::__construct($settings);
     }
 
-    public function single(): array
+    /**
+     * Do the process on a single object.
+     *
+     * @param array $eBook
+     * @param bool $throwError
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function single(array $eBook, bool $throwError=false): void
     {
-        // TODO: Implement single() method.
+        $product = $this->entity->get($eBook['tag_id'], $eBook['title']);
+        if (empty($product)) {
+            if ($throwError) {
+                throw new Exception("Products with digital ISBN {$eBook['isbn']} not found");
+            }
+            return;
+        }
+
+        $product = $this->entity
+            ->updateType($product);
+        $prices = [
+            'regular_price' => $product['regular_price'],
+            'sale_price'    => $product['sale_price'],
+        ];
+        if (empty($product)) {
+            throw new Exception("Product type not supported");
+        }
+
+        $product = $this->entity
+            ->updateFormats($product);
+        if (empty($product)) {
+            throw new Exception("Product formats failed");
+        }
+
+        $product = $this->entity->variant()
+            ->update($product, $prices, $eBook);
+        if (empty($product)) {
+            throw new Exception("Product variants failed");
+        }
     }
 
+    /**
+     * Do the process in bach.
+     *
+     * @param array $data The data.
+     *
+     * @return array
+     * @throws \Exception
+     */
     public function batch(array $data = []): array
     {
-        // TODO: Implement batch() method.
+        $linked = 0;
+        $ebookPost = Service::make()->ebooks()->ebookPost();
+
+        foreach ($data as $postId) {
+            $this->single($ebookPost->get($postId));
+            $linked++;
+        }
+
+        return [
+            'linked' => $linked,
+        ];
     }
 }

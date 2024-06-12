@@ -18,12 +18,20 @@ class EbookManager extends AbstractManager
      * @var ImportEbook
      */
     protected ImportEbook $importEbook;
+
     /**
      * The RefreshEbook instance.
      *
      * @var RefreshEbook
      */
     protected RefreshEbook $refreshEbook;
+
+    /**
+     * The EbookPost instance.
+     *
+     * @var EbookPost
+     */
+    protected EbookPost $ebookPost;
 
     /**
      * The EbookManager constructor.
@@ -34,8 +42,9 @@ class EbookManager extends AbstractManager
     public function __construct(Api $api, array $settings) {
         parent::__construct($api, $settings);
 
-        $this->importEbook = new ImportEbook($settings, EbookPost::make($api));
-        $this->refreshEbook = new RefreshEbook($settings, EbookPost::make($api));
+        $this->ebookPost = EbookPost::make($api);
+        $this->importEbook = new ImportEbook($settings, $this->ebookPost);
+        $this->refreshEbook = new RefreshEbook($settings, $this->ebookPost);
     }
 
     /**
@@ -56,5 +65,15 @@ class EbookManager extends AbstractManager
     public function refreshEbook(): RefreshEbook
     {
         return $this->refreshEbook;
+    }
+
+    /**
+     * Get the EbookPost instance.
+     *
+     * @return EbookPost
+     */
+    public function ebookPost(): EbookPost
+    {
+        return $this->ebookPost;
     }
 }

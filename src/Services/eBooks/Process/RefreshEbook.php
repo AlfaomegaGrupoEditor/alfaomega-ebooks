@@ -23,15 +23,24 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
     }
 
     /**
-     * @inheritDoc
+     * Do the process on a single object.
+     *
+     * @param array $eBook
+     * @param bool $throwError
+     *
+     * @return void
+     * @throws \Exception
      */
-    public function single(): array
+    public function single(array $eBook, bool $throwError=false): void
     {
-        return [];
     }
 
     /**
-     * @inheritDoc
+     * Do the process in bach.
+     *
+     * @param array $data The data.
+     *
+     * @return array
      */
     public function batch(array $data = []): array
     {

@@ -6,6 +6,7 @@ use AlfaomegaEbooks\Alfaomega\Api;
 use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\Attribute;
 use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\Product;
 use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\Tag;
+use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\Variant;
 use AlfaomegaEbooks\Services\Process\LinkProduct;
 use Automattic\WooCommerce\Client;
 
@@ -46,6 +47,13 @@ class WooCommerceManager extends AbstractManager
     protected LinkProduct $linkProduct;
 
     /**
+     * @var Product $product
+     * This protected property holds an instance of the Product class.
+     * It is used to interact with the WooCommerce product.
+     */
+    protected Product $product;
+
+    /**
      * Initialize the WooCommerce client.
      *
      */
@@ -53,9 +61,14 @@ class WooCommerceManager extends AbstractManager
     {
         parent::__construct($api, $settings);
 
-        $this->format = new Attribute($this->client);
-        $this->tag = new Tag($this->client);
-        $this->linkProduct = new LinkProduct($settings, Product::make($this->client));
+        $this->format = new Attribute($this->client, $settings);
+        $this->tag = new Tag($this->client, $settings);
+        $this->product = new Product(
+            $this->client,
+            $settings,
+            new Variant($this->client, $settings)
+        );
+        $this->linkProduct = new LinkProduct($settings, $this->product);
     }
 
     /**
