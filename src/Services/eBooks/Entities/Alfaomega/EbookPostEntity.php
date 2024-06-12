@@ -45,4 +45,45 @@ interface EbookPostEntity
      * @throws Exception Throws an exception if the API response code is not 200 or if the status of the content is not 'success'.
      */
     public function retrieve(string $isbn = '', int $count=100): array;
+
+    /**
+     * Updates or creates a new eBook post.
+     *
+     * This method updates an existing eBook post or creates a new one if it doesn't exist.
+     * It uses the provided eBook data to set the post title, content, status, author, and type.
+     * It also saves the post metadata.
+     *
+     * @param int|null $postId The ID of the post to update. If null, a new post is created.
+     * @param array $data An associative array containing the eBook data.
+     *
+     * @return array Returns an associative array containing the updated post metadata.
+     * @throws Exception Throws an exception if unable to create post.
+     */
+    public function update(?int $postId, array $data): array;
+
+    /**
+     * Searches for a post of type 'alfaomega-ebook' by ISBN.
+     * This method searches for a post of type 'alfaomega-ebook' in the WordPress database by ISBN.
+     * It retrieves the post metadata if a post is found.
+     *
+     * @param string $isbn The ISBN to search for.
+     *
+     * @return array|null Returns an associative array containing the post metadata if a post is found, or null if no post is found.
+     * @throws \Exception
+     */
+    public function search($isbn): ?array;
+
+    /**
+     * Saves the post metadata.
+     * This method saves the metadata for a post of type 'alfaomega-ebook'.
+     * It sanitizes the new values before saving them and uses default values if the new values are empty.
+     * It also publishes the post and retrieves the updated post metadata.
+     *
+     * @param int $postId The ID of the post to save metadata for.
+     * @param array $data An associative array containing the new metadata values.
+     *
+     * @return array Returns an associative array containing the updated post metadata.
+     * @throws \Exception
+     */
+    public function save(int $postId, array $data): array;
 }

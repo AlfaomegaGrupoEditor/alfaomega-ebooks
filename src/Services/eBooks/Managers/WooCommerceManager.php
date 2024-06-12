@@ -4,6 +4,7 @@ namespace AlfaomegaEbooks\Services\Managers;
 
 use AlfaomegaEbooks\Alfaomega\Api;
 use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\Attribute;
+use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\Tag;
 use AlfaomegaEbooks\Services\Process\LinkProduct;
 use Automattic\WooCommerce\Client;
 
@@ -37,14 +38,22 @@ class WooCommerceManager extends AbstractManager
     protected LinkProduct $linkProduct;
 
     /**
+     * @var Tag $tag
+     * This protected property holds an instance of the Tag class.
+     * It is used to interact with the WooCommerce product tags.
+     */
+    protected Tag $tag;
+
+    /**
      * Initialize the WooCommerce client.
      *
-     * @return self
      */
-    public function __construct(Api $api, array $settings) {
+    public function __construct(Api $api, array $settings)
+    {
         parent::__construct($api, $settings);
 
         $this->format = new Attribute($this->client);
+        $this->tag = new Tag($this->client);
         //$this->linkProduct = new LinkProduct($this->client);
     }
 
@@ -80,5 +89,17 @@ class WooCommerceManager extends AbstractManager
     public function format(): Attribute
     {
         return $this->format;
+    }
+
+    /**
+     * Get the tag attribute.
+     * This method is used to get the tag attribute of the WooCommerce product.
+     * The tag attribute is an instance of the Tag class and is used to interact with the WooCommerce product tags.
+     *
+     * @return Tag The tag attribute of the WooCommerce product.
+     */
+    public function tag(): Tag
+    {
+        return $this->tag;
     }
 }

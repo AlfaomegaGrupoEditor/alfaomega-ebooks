@@ -26,13 +26,15 @@ class ImportEbook extends AbstractProcess implements ProcessContract
     }
 
     /**
-     * Do the process.
+     * Do the process on a single object.
+     *
+     * @param array $eBook
      *
      * @return array
      */
-    public function single(): array
+    public function single(array $eBook): void
     {
-        $eBook = $this->updateEbookPost(null, $eBook);
+        $eBook = $this->entity->update(null, $eBook);
         $this->linkProduct($eBook, false);
     }
 
