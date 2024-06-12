@@ -128,4 +128,26 @@ class WooCommerceManager extends AbstractManager
     {
         return $this->linkProduct;
     }
+
+    /**
+     * Get the downloads for a specific customer.
+     *
+     * This method is used to get the downloads for a specific customer from the WooCommerce API.
+     * It takes a customer object and an optional download key as parameters.
+     * The customer object should be an instance of the stdClass class and should contain the ID of the customer.
+     * The download key is a string and is used to filter the downloads by download ID.
+     * If the download key is not provided, the method returns all downloads for the customer.
+     * The method returns an array with the downloads, or null if there are no downloads for the customer.
+     *
+     * @param int $customer The customer to get the downloads for.
+     * @param string $key The download key to filter the downloads by.
+     * @return array|null The downloads for the customer, or null if there are no downloads.
+     */
+    public function getCustomerDownloads(int $customerId, string $key=''): ?array
+    {
+        return (array) $this->client
+            ->get("customers/$customerId/downloads", [
+                'download_id' => $key,
+            ]);
+    }
 }
