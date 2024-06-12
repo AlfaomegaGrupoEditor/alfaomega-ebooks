@@ -28,10 +28,10 @@ if( ! class_exists( 'Alfaomega_Ebooks_Custom_Route' )){
          */
         public string $route_name;
         /**
-         * @var string $query_name
+         * @var array $query_name
          * The name of the query variable. This is used as the query variable for the rewrite rule.
          */
-        public string $query_name;
+        public array $query_name;
         /**
          * @var string $route_path
          * The path to the template file that should be used when the custom route is matched.
@@ -57,11 +57,11 @@ if( ! class_exists( 'Alfaomega_Ebooks_Custom_Route' )){
          * Alfaomega_Ebooks_Custom_Route constructor.
          *
          * @param string $route_name The name of the custom route.
-         * @param string $query_name The name of the query variable.
+         * @param array $query_name The name of the query variable.
          * @param string $route_path The path to the template file.
          * @param bool $forch_flush  If true, it will rebuild the permalink structure.
          */
-        public function __construct(string $route_name, string $query_name, string $route_path, bool $forch_flush)
+        public function __construct(string $route_name, array $query_name, string $route_path, bool $forch_flush)
         {
             $this->route_name = $route_name;
             $this->query_name = $query_name;
