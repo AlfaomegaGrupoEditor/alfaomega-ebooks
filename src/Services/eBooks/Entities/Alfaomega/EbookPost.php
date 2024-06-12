@@ -1,8 +1,9 @@
 <?php
 
-namespace AlfaomegaEbooks\Services\eBooks\Entities;
+namespace AlfaomegaEbooks\Services\eBooks\Entities\Alfaomega;
 
 use AlfaomegaEbooks\Services\Alfaomega\Api;
+use AlfaomegaEbooks\Services\eBooks\Entities\AbstractEntity;
 use AlfaomegaEbooks\Services\eBooks\Service;
 use Exception;
 

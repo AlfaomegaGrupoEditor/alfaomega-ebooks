@@ -3,7 +3,7 @@
 namespace AlfaomegaEbooks\Services\eBooks\Managers;
 
 use AlfaomegaEbooks\Services\Alfaomega\Api;
-use AlfaomegaEbooks\Services\eBooks\Entities\EbookPost;
+use AlfaomegaEbooks\Services\eBooks\Entities\Alfaomega\EbookPost;
 use AlfaomegaEbooks\Services\eBooks\Process\ImportEbook;
 use AlfaomegaEbooks\Services\eBooks\Process\RefreshEbook;
 use AlfaomegaEbooks\Services\eBooks\Service;

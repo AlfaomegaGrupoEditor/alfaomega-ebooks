@@ -2,7 +2,7 @@
 
 namespace AlfaomegaEbooks\Services\eBooks\Process;
 
-use AlfaomegaEbooks\Services\eBooks\Entities\EbookPostEntity;
+use AlfaomegaEbooks\Services\eBooks\Entities\Alfaomega\EbookPostEntity;
 use AlfaomegaEbooks\Services\eBooks\Service;
 use Exception;
 
