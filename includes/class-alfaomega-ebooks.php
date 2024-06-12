@@ -61,6 +61,7 @@ class Alfaomega_Ebooks {
         }
         $this->plugin_name = ALFAOMEGA_EBOOKS_NAME;
 
+        //add_action('init', [$this, 'start_session'], 1);
         $this->load_dependencies();
         $this->set_locale();
         $this->define_admin_hooks();
@@ -68,8 +69,7 @@ class Alfaomega_Ebooks {
 
         $Alfaomega_Ebooks_Post_Type = new Alfaomega_Ebooks_Post_Type();
         $Alfaomega_Ebooks_Settings = new Alfaomega_Ebooks_Settings();
-
-        add_action( 'admin_menu', array( $this, 'add_menu' ) );
+        add_action( 'admin_menu', [$this, 'add_menu'] );
     }
 
     /**
@@ -207,9 +207,6 @@ class Alfaomega_Ebooks {
 
 		$plugin_public = new Alfaomega_Ebooks_Public( $this->get_plugin_name(), $this->get_version() );
         $plugin_public->load_routes();
-        if (!session_id()) {
-            session_start();
-        }
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
@@ -435,5 +432,16 @@ class Alfaomega_Ebooks {
         settings_errors('alfaomega_ebook_options');
 
         require(ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_link_page.php');
+    }
+
+    /**
+     * Start the session if it is not already started.
+     * FIXME: Start the session only when needed.
+     * @since 1.0.0
+     */
+    public function start_session(): void {
+        if (!session_id()) {
+            session_start();
+        }
     }
 }

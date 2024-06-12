@@ -51,7 +51,8 @@ class Alfaomega_Ebooks_Public {
     /**
      * Load custom routes for the plugin.
      */
-    public function load_routes() {
+    public function load_routes(): void
+    {
         new Alfaomega_Ebooks_Custom_Route(
             'alfaomega-ebooks/(.+?)/(.+?)/?$',
             ['param_1', 'param_2'],
