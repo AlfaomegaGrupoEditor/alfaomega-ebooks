@@ -38,7 +38,13 @@ class WooCommerceManager extends AbstractManager
      */
     protected Tag $tag;
 
+    /**
+     * @var LinkProduct $linkProduct
+     * This protected property holds an instance of the LinkProduct class.
+     * It is used to link the product with the ebook.
+     */
     protected LinkProduct $linkProduct;
+
     /**
      * Initialize the WooCommerce client.
      *
