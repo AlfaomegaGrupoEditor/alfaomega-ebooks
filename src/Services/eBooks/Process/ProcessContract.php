@@ -9,11 +9,12 @@ interface ProcessContract
      *
      * @param array $eBook
      * @param bool $throwError
+     * @param int|null $postId
      *
      * @return void
      * @throws \Exception
      */
-    public function single(array $eBook, bool $throwError=false): void;
+    public function single(array $eBook, bool $throwError=false, int $postId = null): void;
 
     /**
      * Do the process in bach.

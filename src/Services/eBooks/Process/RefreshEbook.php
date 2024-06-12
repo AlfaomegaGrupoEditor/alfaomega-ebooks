@@ -3,6 +3,8 @@
 namespace AlfaomegaEbooks\Services\Process;
 
 use AlfaomegaEbooks\Services\Entities\EbookPostEntity;
+use AlfaomegaEbooks\Services\Service;
+use Exception;
 
 /**
  * The refresh ebooks process.
@@ -27,12 +29,17 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
      *
      * @param array $eBook
      * @param bool $throwError
+     * @param int|null $postId
      *
      * @return void
      * @throws \Exception
      */
-    public function single(array $eBook, bool $throwError=false): void
+    public function single(array $eBook, bool $throwError=false, int $postId = null): void
     {
+        $eBook = $this->entity->update($postId, $eBook);
+        Service::make()->wooCommerce()
+            ->linkProduct()
+            ->single($eBook, false);
     }
 
     /**
@@ -41,9 +48,23 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
      * @param array $data The data.
      *
      * @return array
+     * @throws \Exception
      */
     public function batch(array $data = []): array
     {
-        return [];
+        $eBooks = $this->entity->index(array_keys($data));
+        foreach ($eBooks as $eBook) {
+            $result = as_enqueue_async_action(
+                'alfaomega_ebooks_queue_refresh',
+                [ $data[$eBook['isbn']], $eBook ]
+            );
+            if ($result === 0) {
+                throw new Exception('Refresh queue failed');
+            }
+        }
+
+        return [
+            'refreshed' => count($eBooks),
+        ];
     }
 }

@@ -30,11 +30,12 @@ class LinkProduct extends AbstractProcess
      *
      * @param array $eBook
      * @param bool $throwError
+     * @param int|null $postId
      *
      * @return void
      * @throws \Exception
      */
-    public function single(array $eBook, bool $throwError=false): void
+    public function single(array $eBook, bool $throwError=false, int $postId = null): void
     {
         $product = $this->entity->get($eBook['tag_id'], $eBook['title']);
         if (empty($product)) {
