@@ -1,12 +1,12 @@
 <?php
 
-namespace AlfaomegaEbooks\Services\Managers;
+namespace AlfaomegaEbooks\Services\eBooks\Managers;
 
-use AlfaomegaEbooks\Alfaomega\Api;
-use AlfaomegaEbooks\Services\Entities\EbookPost;
-use AlfaomegaEbooks\Services\Process\ImportEbook;
-use AlfaomegaEbooks\Services\Process\RefreshEbook;
-use AlfaomegaEbooks\Services\Service;
+use AlfaomegaEbooks\Services\Alfaomega\Api;
+use AlfaomegaEbooks\Services\eBooks\Entities\EbookPost;
+use AlfaomegaEbooks\Services\eBooks\Process\ImportEbook;
+use AlfaomegaEbooks\Services\eBooks\Process\RefreshEbook;
+use AlfaomegaEbooks\Services\eBooks\Service;
 use Exception;
 
 /**

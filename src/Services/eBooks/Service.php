@@ -1,11 +1,11 @@
 <?php
-namespace AlfaomegaEbooks\Services;
+namespace AlfaomegaEbooks\Services\eBooks;
 
-use AlfaomegaEbooks\Alfaomega\Api;
-use AlfaomegaEbooks\Services\Managers\EbookManager;
-use AlfaomegaEbooks\Services\Managers\QueueManager;
-use AlfaomegaEbooks\Services\Managers\SettingsManager;
-use AlfaomegaEbooks\Services\Managers\WooCommerceManager;
+use AlfaomegaEbooks\Services\Alfaomega\Api;
+use AlfaomegaEbooks\Services\eBooks\Managers\EbookManager;
+use AlfaomegaEbooks\Services\eBooks\Managers\QueueManager;
+use AlfaomegaEbooks\Services\eBooks\Managers\SettingsManager;
+use AlfaomegaEbooks\Services\eBooks\Managers\WooCommerceManager;
 
 /**
  * eBooks service.

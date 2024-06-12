@@ -1,6 +1,6 @@
 <?php
 
-namespace AlfaomegaEbooks\Alfaomega;
+namespace AlfaomegaEbooks\Services\Alfaomega;
 
 use Exception;
 use WP_Error;

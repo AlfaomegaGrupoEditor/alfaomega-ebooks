@@ -1,7 +1,7 @@
 <?php
 namespace AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce;
 
-use AlfaomegaEbooks\Services\Entities\WooCommerce\ProductEntity;
+use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\ProductEntity;
 use Automattic\WooCommerce\Client;
 
 class Product extends WooAbstractEntity implements ProductEntity

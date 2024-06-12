@@ -2,7 +2,7 @@
 
 namespace AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce;
 
-use AlfaomegaEbooks\Services\Entities\AbstractEntity;
+use AlfaomegaEbooks\Services\eBooks\Entities\AbstractEntity;
 use Automattic\WooCommerce\Client;
 
 class WooAbstractEntity extends AbstractEntity

@@ -1,6 +1,6 @@
 <?php
 
-namespace AlfaomegaEbooks\Services\Managers;
+namespace AlfaomegaEbooks\Services\eBooks\Managers;
 
 class QueueManager extends AbstractManager
 {

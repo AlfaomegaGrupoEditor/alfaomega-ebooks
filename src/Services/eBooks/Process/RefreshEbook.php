@@ -1,9 +1,9 @@
 <?php
 
-namespace AlfaomegaEbooks\Services\Process;
+namespace AlfaomegaEbooks\Services\eBooks\Process;
 
-use AlfaomegaEbooks\Services\Entities\EbookPostEntity;
-use AlfaomegaEbooks\Services\Service;
+use AlfaomegaEbooks\Services\eBooks\Entities\EbookPostEntity;
+use AlfaomegaEbooks\Services\eBooks\Service;
 use Exception;
 
 /**

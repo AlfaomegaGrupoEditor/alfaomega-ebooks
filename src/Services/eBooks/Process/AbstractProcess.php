@@ -1,8 +1,6 @@
 <?php
 
-namespace AlfaomegaEbooks\Services\Process;
-
-use AlfaomegaEbooks\Services\Entities\EntityContract;
+namespace AlfaomegaEbooks\Services\eBooks\Process;
 
 /**
  * The abstract process.

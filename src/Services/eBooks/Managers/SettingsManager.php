@@ -1,8 +1,8 @@
 <?php
 
-namespace AlfaomegaEbooks\Services\Managers;
+namespace AlfaomegaEbooks\Services\eBooks\Managers;
 
-use AlfaomegaEbooks\Services\Service;/**
+use AlfaomegaEbooks\Services\eBooks\Service;/**
  * Class SettingsManager
  * This class is responsible for managing the settings of the Alfaomega eBooks.
  * It provides methods to create an instance of the class, get the settings, and check the settings.

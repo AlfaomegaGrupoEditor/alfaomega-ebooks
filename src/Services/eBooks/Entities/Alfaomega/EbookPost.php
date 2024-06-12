@@ -1,9 +1,9 @@
 <?php
 
-namespace AlfaomegaEbooks\Services\Entities;
+namespace AlfaomegaEbooks\Services\eBooks\Entities;
 
-use AlfaomegaEbooks\Alfaomega\Api;
-use AlfaomegaEbooks\Services\Service;
+use AlfaomegaEbooks\Services\Alfaomega\Api;
+use AlfaomegaEbooks\Services\eBooks\Service;
 use Exception;
 
 class EbookPost extends AbstractEntity implements EbookPostEntity

@@ -1,13 +1,13 @@
 <?php
 
-namespace AlfaomegaEbooks\Services\Managers;
+namespace AlfaomegaEbooks\Services\eBooks\Managers;
 
-use AlfaomegaEbooks\Alfaomega\Api;
+use AlfaomegaEbooks\Services\Alfaomega\Api;
 use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\Attribute;
 use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\Product;
 use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\Tag;
 use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\Variant;
-use AlfaomegaEbooks\Services\Process\LinkProduct;
+use AlfaomegaEbooks\Services\eBooks\Process\LinkProduct;
 use Automattic\WooCommerce\Client;
 
 class WooCommerceManager extends AbstractManager

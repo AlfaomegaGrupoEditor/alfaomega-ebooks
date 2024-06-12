@@ -1,8 +1,8 @@
 <?php
 
-namespace AlfaomegaEbooks\Services\Managers;
+namespace AlfaomegaEbooks\Services\eBooks\Managers;
 
-use AlfaomegaEbooks\Alfaomega\Api;
+use AlfaomegaEbooks\Services\Alfaomega\Api;
 
 class AbstractManager
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace AlfaomegaEbooks\Services\Process;
+namespace AlfaomegaEbooks\Services\eBooks\Process;
 
 interface ProcessContract
 {

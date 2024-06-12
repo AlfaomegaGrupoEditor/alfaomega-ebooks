@@ -1,8 +1,6 @@
 <?php
 
-namespace AlfaomegaEbooks\Services\Entities\WooCommerce;
-
-use Exception;
+namespace AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce;
 
 interface ProductEntity
 {

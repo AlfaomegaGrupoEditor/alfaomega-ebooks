@@ -1,6 +1,6 @@
 <?php
 
-namespace AlfaomegaEbooks\Services\Entities;
+namespace AlfaomegaEbooks\Services\eBooks\Entities;
 
 use Exception;
 
