@@ -158,8 +158,9 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
          */
         public function import_ebooks(): array
         {
-            //$response = $this->service->importEbooks();
-            $response = Service::make()->ebooks()->import()->batch();
+            $response = Service::make()->ebooks()
+                ->importEbook()
+                ->batch();
 
             $message = $response['imported'] > 0
                 ? str_replace('%s', $response['imported'], esc_html__("%s new ebooks were added to the import scheduler successfully!", 'alfaomega-ebooks'))

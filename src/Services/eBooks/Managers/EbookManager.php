@@ -17,13 +17,13 @@ class EbookManager extends AbstractManager
      *
      * @var ImportEbook
      */
-    protected ImportEbook $importEbooks;
+    protected ImportEbook $importEbook;
     /**
      * The RefreshEbook instance.
      *
      * @var RefreshEbook
      */
-    protected RefreshEbook $refreshEbooks;
+    protected RefreshEbook $refreshEbook;
 
     /**
      * The EbookManager constructor.
@@ -34,8 +34,8 @@ class EbookManager extends AbstractManager
     public function __construct(Api $api, array $settings) {
         parent::__construct($api, $settings);
 
-        $this->importEbooks = new ImportEbook($settings, EbookPost::make($api));
-        $this->refreshEbooks = new RefreshEbook($settings, EbookPost::make($api));
+        $this->importEbook = new ImportEbook($settings, EbookPost::make($api));
+        $this->refreshEbook = new RefreshEbook($settings, EbookPost::make($api));
     }
 
     /**
@@ -43,9 +43,9 @@ class EbookManager extends AbstractManager
      *
      * @return ImportEbook
      */
-    public function import(): ImportEbook
+    public function importEbook(): ImportEbook
     {
-        return $this->importEbooks;
+        return $this->importEbook;
     }
 
     /**
@@ -53,8 +53,8 @@ class EbookManager extends AbstractManager
      *
      * @return RefreshEbook
      */
-    public function refresh(): RefreshEbook
+    public function refreshEbook(): RefreshEbook
     {
-        return $this->refreshEbooks;
+        return $this->refreshEbook;
     }
 }

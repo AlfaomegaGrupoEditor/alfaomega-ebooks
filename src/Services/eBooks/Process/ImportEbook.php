@@ -2,7 +2,6 @@
 
 namespace AlfaomegaEbooks\Services\Process;
 
-use AlfaomegaEbooks\Services\Entities\AbstractEntity;
 use AlfaomegaEbooks\Services\Entities\EbookPostEntity;
 use AlfaomegaEbooks\Services\Service;
 use Exception;
@@ -31,11 +30,14 @@ class ImportEbook extends AbstractProcess implements ProcessContract
      * @param array $eBook
      *
      * @return array
+     * @throws \Exception
      */
     public function single(array $eBook): void
     {
         $eBook = $this->entity->update(null, $eBook);
-        $this->linkProduct($eBook, false);
+        Service::make()->wooCommerce()
+            ->linkProduct()
+            ->single($eBook, false);
     }
 
     /**

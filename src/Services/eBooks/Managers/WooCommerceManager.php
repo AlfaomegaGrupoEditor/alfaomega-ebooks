@@ -4,6 +4,7 @@ namespace AlfaomegaEbooks\Services\Managers;
 
 use AlfaomegaEbooks\Alfaomega\Api;
 use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\Attribute;
+use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\Product;
 use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\Tag;
 use AlfaomegaEbooks\Services\Process\LinkProduct;
 use Automattic\WooCommerce\Client;
@@ -31,19 +32,13 @@ class WooCommerceManager extends AbstractManager
     protected Attribute $format;
 
     /**
-     * @var LinkProduct $linkProduct
-     * This protected property holds an instance of the LinkProduct class.
-     * It is used to link products to the WooCommerce store.
-     */
-    protected LinkProduct $linkProduct;
-
-    /**
      * @var Tag $tag
      * This protected property holds an instance of the Tag class.
      * It is used to interact with the WooCommerce product tags.
      */
     protected Tag $tag;
 
+    protected LinkProduct $linkProduct;
     /**
      * Initialize the WooCommerce client.
      *
@@ -54,7 +49,7 @@ class WooCommerceManager extends AbstractManager
 
         $this->format = new Attribute($this->client);
         $this->tag = new Tag($this->client);
-        //$this->linkProduct = new LinkProduct($this->client);
+        $this->linkProduct = new LinkProduct($settings, Product::make($this->client));
     }
 
     /**
@@ -101,5 +96,17 @@ class WooCommerceManager extends AbstractManager
     public function tag(): Tag
     {
         return $this->tag;
+    }
+
+    /**
+     * Get the link product process.
+     * This method is used to get the instance of the LinkProduct class.
+     * The LinkProduct class is used to link the product with the ebook.
+     *
+     * @return LinkProduct The instance of the LinkProduct class.
+     */
+    public function linkProduct(): LinkProduct
+    {
+        return $this->linkProduct;
     }
 }
