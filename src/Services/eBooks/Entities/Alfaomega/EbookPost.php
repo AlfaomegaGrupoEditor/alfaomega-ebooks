@@ -226,7 +226,7 @@ class EbookPost extends AbstractEntity implements EbookPostEntity
             ],
             'alfaomega_ebook_tag_id' => [
                 'old'     => get_post_meta($postId, 'alfaomega_ebook_tag_id', true),
-                'new'     => ! empty($tag) ?  $tag->ID : '',
+                'new'     => ! empty($tag) ?  $tag->id : '',
                 'default' => '',
             ],
         ];
