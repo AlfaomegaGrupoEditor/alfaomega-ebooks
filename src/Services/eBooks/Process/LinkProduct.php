@@ -2,24 +2,34 @@
 
 namespace AlfaomegaEbooks\Services\Process;
 
+use AlfaomegaEbooks\Services\Entities\WooCommerce\ProductEntity;
+
 /**
  * Link ebooks process.
  */
 class LinkProduct extends AbstractProcess
 {
     /**
-     * @inheritDoc
+     * Initialize the process.
+     *
+     * @param array $settings The settings.
+     * @param ProductEntity $entity The entity.
+     *
      */
-    public function do(): array
+    public function __construct(
+        array $settings,
+        protected ProductEntity $entity)
     {
-        return [];
+        parent::__construct($settings);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function doBatch(array $data): array
+    public function single(): array
     {
-        return [];
+        // TODO: Implement single() method.
+    }
+
+    public function batch(array $data = []): array
+    {
+        // TODO: Implement batch() method.
     }
 }

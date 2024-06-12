@@ -2,7 +2,10 @@
 
 namespace AlfaomegaEbooks\Services\Process;
 
+use AlfaomegaEbooks\Services\Entities\AbstractEntity;
+use AlfaomegaEbooks\Services\Entities\EbookPostEntity;
 use AlfaomegaEbooks\Services\Service;
+use Exception;
 
 /**
  * Import ebooks process.
@@ -10,7 +13,22 @@ use AlfaomegaEbooks\Services\Service;
 class ImportEbook extends AbstractProcess implements ProcessContract
 {
     /**
-     * @inheritDoc
+     * Initialize the process.
+     *
+     * @param array $settings The settings.
+     * @param EbookPostEntity $entity The entity.
+     */
+    public function __construct(
+        array $settings,
+        protected EbookPostEntity $entity)
+    {
+        parent::__construct($settings);
+    }
+
+    /**
+     * Do the process.
+     *
+     * @return array
      */
     public function single(): array
     {
@@ -24,19 +42,19 @@ class ImportEbook extends AbstractProcess implements ProcessContract
      * @param array $data The data.
      *
      * @return array
+     * @throws \Exception
      */
     public function batch(array $data = []): array
     {
-        Service::make()->wooCommerce()->check();
         $isbn = '';
         if ($this->settings['alfaomega_ebooks_import_from_latest']) {
-            $latestBook = $this->latestPost();
+            $latestBook = $this->entity->latest();
             $isbn = empty($latestBook) ? '' : $latestBook['isbn'];
         }
         $countPerPage = intval($this->settings['alfaomega_ebooks_import_limit']);
         $imported = 0;
         do {
-            $eBooks = $this->retrieveEbooks($isbn, $countPerPage);
+            $eBooks = $this->entity->retrieve($isbn, $countPerPage);
             foreach ($eBooks as $eBook) {
                 $result = as_enqueue_async_action(
                     'alfaomega_ebooks_queue_import',

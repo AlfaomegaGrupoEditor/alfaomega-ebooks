@@ -4,7 +4,7 @@ namespace AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce;
 
 use Exception;
 
-class Attribute extends AbstractEntity
+class Attribute extends WooAbstractEntity
 {
     /**
      * Get the attribute by name.

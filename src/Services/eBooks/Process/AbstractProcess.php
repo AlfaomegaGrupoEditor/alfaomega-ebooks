@@ -2,6 +2,8 @@
 
 namespace AlfaomegaEbooks\Services\Process;
 
+use AlfaomegaEbooks\Services\Entities\EntityContract;
+
 /**
  * The abstract process.
  */
@@ -13,7 +15,6 @@ abstract class AbstractProcess implements ProcessContract
      * @param array $entity The entity.
      */
     public function __construct(
-        protected array $entity,
         protected array $settings
     ) {}
 }

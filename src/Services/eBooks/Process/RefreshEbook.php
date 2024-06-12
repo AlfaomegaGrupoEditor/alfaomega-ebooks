@@ -2,15 +2,30 @@
 
 namespace AlfaomegaEbooks\Services\Process;
 
+use AlfaomegaEbooks\Services\Entities\EbookPostEntity;
+
 /**
  * The refresh ebooks process.
  */
-class RefreshEbook extends AbstractProcess
+class RefreshEbook extends AbstractProcess implements ProcessContract
 {
+    /**
+     * Initialize the process.
+     *
+     * @param array $settings The settings.
+     * @param EbookPostEntity $entity The entity.
+     */
+    public function __construct(
+        array $settings,
+        protected EbookPostEntity $entity)
+    {
+        parent::__construct($settings);
+    }
+
     /**
      * @inheritDoc
      */
-    public function do(): array
+    public function single(): array
     {
         return [];
     }
@@ -18,7 +33,7 @@ class RefreshEbook extends AbstractProcess
     /**
      * @inheritDoc
      */
-    public function doBatch(array $data): array
+    public function batch(array $data = []): array
     {
         return [];
     }

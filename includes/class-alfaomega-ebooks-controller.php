@@ -158,10 +158,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
          */
         public function import_ebooks(): array
         {
-            $response = Service::make()
-                ->ebooks()
-                ->import()
-                ->batch();
+            $response = Service::make()->ebooks()->import()->batch();
 
             //$response = $this->service->importEbooks();
 
