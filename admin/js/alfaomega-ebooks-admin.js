@@ -155,13 +155,13 @@
 				const endpoint = alfaomegaEbooksForm.find("input[name=endpoint]");
 				let queue = '';
 				switch (endpoint.val()) {
-					case 'import_ebooks':
+					case 'import-ebooks':
 						queue = 'alfaomega_ebooks_queue_import';
 						break;
-					case 'refresh_ebooks':
+					case 'refresh-ebooks':
 						queue = 'alfaomega_ebooks_queue_refresh';
 						break;
-					case 'link_ebooks':
+					case 'link-ebooks':
 						queue = 'alfaomega_ebooks_queue_link';
 						break;
 				}
@@ -173,7 +173,9 @@
 					type: 'GET',
 					dataType: 'JSON',
 					timeout: 0,
-					data: data + `&queue=${queue}`,
+					data: {
+						queue: queue
+					},
 					beforeSend: function(xhr) {
 						xhr.setRequestHeader('X-WP-Nonce', php_vars.nonce);
 					},
