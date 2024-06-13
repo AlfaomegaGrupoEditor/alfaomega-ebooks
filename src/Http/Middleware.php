@@ -1,4 +1,7 @@
 <?php
+namespace AlfaomegaEbooks\Http;
+
+use WP_REST_Request;
 
 class Middleware
 {

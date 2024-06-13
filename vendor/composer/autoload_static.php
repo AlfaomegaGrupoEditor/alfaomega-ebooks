@@ -77,6 +77,9 @@ class ComposerStaticInitcd53d4cc421fe0b70226223f299ac0ad
     );
 
     public static $classMap = array (
+        'AlfaomegaEbooks\\Http\\Controllers\\EbooksController' => __DIR__ . '/../..' . '/src/Http/Controllers/EbooksController.php',
+        'AlfaomegaEbooks\\Http\\Middleware' => __DIR__ . '/../..' . '/src/Http/Middleware.php',
+        'AlfaomegaEbooks\\Http\\RouteManager' => __DIR__ . '/../..' . '/src/Http/RouteManager.php',
         'AlfaomegaEbooks\\Services\\Alfaomega\\Api' => __DIR__ . '/../..' . '/src/Services/Alfaomega/Api.php',
         'AlfaomegaEbooks\\Services\\eBooks\\Entities\\AbstractEntity' => __DIR__ . '/../..' . '/src/Services/eBooks/Entities/AbstractEntity.php',
         'AlfaomegaEbooks\\Services\\eBooks\\Entities\\Alfaomega\\EbookPost' => __DIR__ . '/../..' . '/src/Services/eBooks/Entities/Alfaomega/EbookPost.php',

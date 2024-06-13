@@ -88,7 +88,8 @@ class Alfaomega_Ebooks_Admin {
     {
         wp_localize_script( $this->plugin_name, 'php_vars', [
             'my_variable' => "Hello, World!",
-            'admin_post_url' => esc_url(admin_url('admin-post.php'))
+            'admin_post_url' => esc_url(admin_url('admin-post.php')),
+            'rest_url' => esc_url(get_site_url() . '/wp-json/' . RouteManager::ROUTE_NAMESPACE),
         ]);
     }
 

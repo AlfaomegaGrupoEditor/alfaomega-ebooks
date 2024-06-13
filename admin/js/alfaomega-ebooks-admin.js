@@ -28,7 +28,8 @@
 
 			// Make AJAX call
 			$.ajax({
-				url: php_vars.admin_post_url,
+				url: php_vars.rest_url + '/import-ebooks',
+				//url: php_vars.admin_post_url,
 				type: 'POST',
 				dataType: 'JSON',
 				timeout: 0,

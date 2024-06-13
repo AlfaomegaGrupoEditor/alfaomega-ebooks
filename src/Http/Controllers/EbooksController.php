@@ -1,6 +1,6 @@
 <?php
 
-namespace AlfaomegaEbooks\Http\Controller;
+namespace AlfaomegaEbooks\Http\Controllers;
 
 use AlfaomegaEbooks\Services\eBooks\Service;
 use WP_REST_Request;

@@ -1,5 +1,7 @@
 <?php
 
+use AlfaomegaEbooks\Http\RouteManager;
+
 /**
  * The core plugin class.
  *
@@ -136,6 +138,8 @@ class Alfaomega_Ebooks {
          * The class responsible for loading composer dependencies.
          */
         require_once(plugin_dir_path(dirname(__FILE__)) . 'vendor/autoload.php');
+
+        require_once(plugin_dir_path(dirname(__FILE__)) . 'src/Http/RouteManager.php');
 
         // Create an instance of the loader which will be used to register the hooks with WordPress.
         $this->loader = new Alfaomega_Ebooks_Loader();

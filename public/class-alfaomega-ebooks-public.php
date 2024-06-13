@@ -65,7 +65,7 @@ class Alfaomega_Ebooks_Public {
      * Show notices to the user.
      */
     public function show_notice(): void {
-        $msg = $_SESSION['alfaomega_ebooks_msg'];
+        $msg = session_id() ? $_SESSION['alfaomega_ebooks_msg'] : null;
 
         if (!empty($msg)) {
             wc_add_notice($msg['message'], $msg['type']);

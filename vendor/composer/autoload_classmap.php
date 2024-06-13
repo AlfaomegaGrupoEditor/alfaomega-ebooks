@@ -6,6 +6,9 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AlfaomegaEbooks\\Http\\Controllers\\EbooksController' => $baseDir . '/src/Http/Controllers/EbooksController.php',
+    'AlfaomegaEbooks\\Http\\Middleware' => $baseDir . '/src/Http/Middleware.php',
+    'AlfaomegaEbooks\\Http\\RouteManager' => $baseDir . '/src/Http/RouteManager.php',
     'AlfaomegaEbooks\\Services\\Alfaomega\\Api' => $baseDir . '/src/Services/Alfaomega/Api.php',
     'AlfaomegaEbooks\\Services\\eBooks\\Entities\\AbstractEntity' => $baseDir . '/src/Services/eBooks/Entities/AbstractEntity.php',
     'AlfaomegaEbooks\\Services\\eBooks\\Entities\\Alfaomega\\EbookPost' => $baseDir . '/src/Services/eBooks/Entities/Alfaomega/EbookPost.php',
