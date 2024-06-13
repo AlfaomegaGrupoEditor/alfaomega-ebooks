@@ -174,6 +174,9 @@ class Alfaomega_Ebooks {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
         $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'localize_script_variables' );
 
+        $routeManager = new RouteManager();
+        $this->loader->add_action( 'rest_api_init', $routeManager, 'register' );
+
         $controller = new Alfaomega_Ebooks_Controller();
         $this->loader->add_action( 'admin_post_nopriv_alfaomega_ebooks_form', $controller, 'process' );
         $this->loader->add_action( 'admin_post_alfaomega_ebooks_form', $controller,'process' );

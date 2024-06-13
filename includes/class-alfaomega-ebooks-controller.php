@@ -15,7 +15,7 @@
  * @author     Livan Rodriguez <livan2r@gmail.com>
  */
 
-use AlfaomegaEbooks\Services\Service;
+use AlfaomegaEbooks\Services\eBooks\Service;
 
 if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
     class Alfaomega_Ebooks_Controller{
