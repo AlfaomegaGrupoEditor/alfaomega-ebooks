@@ -188,7 +188,7 @@ class Alfaomega_Ebooks_Admin {
             case 'product':
                 $actions['link-ebook'] = sprintf(
                     '<a href="%s">%s</a>',
-                    esc_url(add_query_arg(['action' => 'link-ebook', 'post' => $post->ID], 'admin-post.php')),
+                    esc_url(add_query_arg(['ebook_action' => 'link-ebook', 'post' => $post->ID], 'admin-post.php')),
                     esc_html__('Link eBook', 'alfaomega-ebooks')
                 );
                 break;
@@ -201,11 +201,11 @@ class Alfaomega_Ebooks_Admin {
                 $actions = array_merge([
                     'update-meta'  => sprintf(
                         '<a href="%s">%s</a>',
-                        esc_url(add_query_arg(['action' => 'update-meta', 'post' => $post->ID], 'admin-post.php')),
+                        esc_url(add_query_arg(['ebook_action' => 'update-meta', 'post' => $post->ID], 'admin-post.php')),
                         esc_html__('Update', 'alfaomega-ebooks')),
                     'link-product' => sprintf(
                         '<a href="%s">%s</a>',
-                        esc_url(add_query_arg(['action' => 'link-product', 'post' => $post->ID], 'admin-post.php')),
+                        esc_url(add_query_arg(['ebook_action' => 'link-product', 'post' => $post->ID], 'admin-post.php')),
                         esc_html__('Link', 'alfaomega-ebooks')
                     ),
                 ], $actions);

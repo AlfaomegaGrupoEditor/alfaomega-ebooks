@@ -187,16 +187,18 @@ class RouteManager
      */
     public function quickAction():void
     {
-        if (!isset($_GET['ebook_action']) || !isset($_GET['post'])) {
+        if (!isset($_GET['ebook_action'])) {
             return;
         }
 
         $action = $_GET['ebook_action'];
-        if (!array_key_exists($action, $this->quickActions)) {
+        if (!array_key_exists($action, $this->quickActions) || !isset($_GET['post'])){
+            wp_redirect(remove_query_arg($action));
             return;
         }
 
-        $controller = new $this->quickActions[$action];
+        $controller = new $this->quickActions[$action][0];
         $controller->{$this->quickActions[$action][1]}($_GET['post']);
+        wp_redirect(remove_query_arg($action));
     }
 }

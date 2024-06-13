@@ -22,7 +22,7 @@ class EbooksQuickActionsController
      * @return string The redirect URL with the result of the update process added as a query parameter.
      * @throws Exception If an error occurs during the update process.
      */
-    public function quickUpdateMeta(array $postIds, string $redirectUrl): string
+    public function quickUpdateMeta(int $postId): string
     {
         try {
             $redirectUrl = remove_query_arg('link-product', $redirectUrl);
