@@ -7,6 +7,7 @@ use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\Attribute;
 use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\Product;
 use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\Tag;
 use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\Variant;
+use AlfaomegaEbooks\Services\eBooks\Process\LinkEbook;
 use AlfaomegaEbooks\Services\eBooks\Process\LinkProduct;
 use Automattic\WooCommerce\Client;
 
@@ -47,6 +48,13 @@ class WooCommerceManager extends AbstractManager
     protected LinkProduct $linkProduct;
 
     /**
+     * @var LinkEbook $linkEbook
+     * This protected property holds an instance of the LinkEbook class.
+     * It is used to link the ebook with the product.
+     */
+    protected LinkEbook $linkEbook;
+
+    /**
      * @var Product $product
      * This protected property holds an instance of the Product class.
      * It is used to interact with the WooCommerce product.
@@ -70,6 +78,7 @@ class WooCommerceManager extends AbstractManager
             new Variant($this->client, $settings)
         );
         $this->linkProduct = new LinkProduct($settings, $this->product);
+        $this->linkEbook = new LinkEbook($settings, $this->product);
     }
 
     /**
@@ -128,6 +137,18 @@ class WooCommerceManager extends AbstractManager
     public function linkProduct(): LinkProduct
     {
         return $this->linkProduct;
+    }
+
+    /**
+     * Get the link ebook process.
+     * This method is used to get the instance of the LinkEbook class.
+     * The LinkEbook class is used to link the ebook with the product.
+     *
+     * @return LinkEbook The instance of the LinkEbook class.
+     */
+    public function linkEbook(): LinkEbook
+    {
+        return $this->linkEbook;
     }
 
     /**

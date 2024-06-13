@@ -22,20 +22,15 @@ class EbooksQuickActionsController
      * @return string The redirect URL with the result of the update process added as a query parameter.
      * @throws Exception If an error occurs during the update process.
      */
-    public function quickUpdateMeta(int $postId): string
+    public function quickUpdateMeta(int $postId): void
     {
         try {
-            $redirectUrl = remove_query_arg('link-product', $redirectUrl);
-            $result = Service::make()->ebooks()
+            Service::make()->ebooks()
                 ->refreshEbook()
-                ->batch($postIds);
-            $redirectUrl = add_query_arg('updated-meta', $result['data']['refreshed'], $redirectUrl);
+                ->batch([$postId]);
         } catch (Exception $exception) {
             error_log($exception->getMessage());
-            $redirectUrl = add_query_arg('updated-meta', 'fail', $redirectUrl);
         }
-
-        return $redirectUrl;
     }
 
     /**
@@ -53,20 +48,15 @@ class EbooksQuickActionsController
      * @return string The redirect URL with the result of the linking process added as a query parameter.
      * @throws Exception If an error occurs during the linking process.
      */
-    public function quickLinkProducts(array $postIds, string $redirectUrl): string
+    public function quickLinkProduct(int $postId): void
     {
         try {
-            $redirectUrl = remove_query_arg('updated-meta', $redirectUrl);
-            $result = Service::make()->wooCommerce()
+            Service::make()->wooCommerce()
                 ->linkProduct()
-                ->batch($postIds);
-            $redirectUrl = add_query_arg('link-product', $result['data']['linked'], $redirectUrl);
+                ->batch([$postId]);
         } catch (Exception $exception) {
             error_log($exception->getMessage());
-            $redirectUrl = add_query_arg('link-product', 'fail', $redirectUrl);
         }
-        
-        return $redirectUrl;
     }
 
     /**
@@ -84,20 +74,14 @@ class EbooksQuickActionsController
      * @return string The redirect URL with the result of the linking process added as a query parameter.
      * @throws Exception If an error occurs during the linking process.
      */
-    public function quickLinkEbooks(array $postIds, string $redirectUrl): string
+    public function quickLinkEbook(int $postId): void
     {
         try {
-            //$redirectUrl = remove_query_arg('link-product', $redirectUrl);
-            $result = Service::make()->wooCommerce()
+            Service::make()->wooCommerce()
                 ->linkEbook()
-                ->batch($postIds);
-
-            $redirectUrl = add_query_arg('link-ebook', $result['data']['linked'], $redirectUrl);
+                ->batch([$postId]);
         } catch (Exception $exception) {
             error_log($exception->getMessage());
-            $redirectUrl = add_query_arg('link-ebook', 'fail', $redirectUrl);
         }
-
-        return $redirectUrl;
     }
 }
