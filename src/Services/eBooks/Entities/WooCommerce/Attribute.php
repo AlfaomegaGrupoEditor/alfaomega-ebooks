@@ -43,7 +43,7 @@ class Attribute extends WooAbstractEntity
         }
 
         $attribute = $this->client->post('products/attributes', $data);
-        if (empty($formatAttribute)) {
+        if (empty($attribute)) {
             throw new Exception("Attribute creation failed");
         }
 
