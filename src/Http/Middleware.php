@@ -15,18 +15,6 @@ class Middleware
      */
     public function auth(WP_REST_Request $request): bool
     {
-        if (!current_user_can('edit_posts')){
-            return false;
-        }
-
-        if( !$request->has_param('alfaomega_ebook_nonce')){
-            return false;
-        }
-
-        if( ! wp_verify_nonce( $request->get_param('alfaomega_ebook_nonce'), 'alfaomega_ebook_nonce' ) ){
-            return false;
-        }
-
-        return true;
+        return current_user_can('edit_posts');
     }
 }

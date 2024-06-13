@@ -67,9 +67,16 @@ class RouteManager
      */
     public function register(): void
     {
+        $classes = [];
         foreach ($this->routes as $route => $args) {
-            /*$args['callback'][0] = new $args['callback'][0]();
-            $args['permission_callback'][0] = new $args['permission_callback'][0]();*/
+            if (!in_array($args['callback'][0], $classes)) {
+                $classes[$args['callback'][0]] = new $args['callback'][0];
+            }
+            if (!in_array($args['permission_callback'][0], $classes)) {
+                $classes[$args['permission_callback'][0]] = new $args['permission_callback'][0];
+            }
+            $args['callback'][0] = $classes[$args['callback'][0]];
+            $args['permission_callback'][0] = $classes[$args['permission_callback'][0]];
             register_rest_route(self::ROUTE_NAMESPACE, "/$route", $args);
         }
     }

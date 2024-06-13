@@ -1,3 +1,5 @@
+/* global wpApiSettings */
+
 /**
  * This is a self-invoking function that uses jQuery to handle the admin-facing JavaScript source code.
  * It includes handlers for DOM-ready and window-load events.
@@ -28,13 +30,14 @@
 
 			// Make AJAX call
 			$.ajax({
-				url: php_vars.rest_url + '/import-ebooks',
-				//url: php_vars.admin_post_url,
+				url: php_vars.api_url + '/' +  alfaomegaEbooksForm.find("input[name=endpoint]").val(),
 				type: 'POST',
 				dataType: 'JSON',
 				timeout: 0,
-				data: $(this).serialize(),
-				beforeSend: function() {
+				data: {},
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader('X-WP-Nonce', php_vars.nonce);
+
 					// Disable form submit button and update queue status before sending the request
 					formSubmit.prop("disabled", true);
 					queueStatus.html('Scheduling jobs');

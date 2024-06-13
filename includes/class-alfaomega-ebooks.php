@@ -139,8 +139,6 @@ class Alfaomega_Ebooks {
          */
         require_once(plugin_dir_path(dirname(__FILE__)) . 'vendor/autoload.php');
 
-        require_once(plugin_dir_path(dirname(__FILE__)) . 'src/Http/RouteManager.php');
-
         // Create an instance of the loader which will be used to register the hooks with WordPress.
         $this->loader = new Alfaomega_Ebooks_Loader();
     }
@@ -175,6 +173,7 @@ class Alfaomega_Ebooks {
 		$plugin_admin = new Alfaomega_Ebooks_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
         $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'localize_script_variables' );
 
