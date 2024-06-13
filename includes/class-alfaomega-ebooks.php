@@ -192,7 +192,7 @@ class Alfaomega_Ebooks {
 
         // queue actions
         $service = Service::make()->ebooks();
-        $this->loader->add_action('alfaomega_ebooks_queue_import', $service->importEbook(), 'single');
+        $this->loader->add_action('alfaomega_ebooks_queue_import', $service->importEbook()->setUpdateProduct(false), 'single');
         $this->loader->add_action('alfaomega_ebooks_queue_refresh_list', $service->refreshEbook(), 'batch');
         $this->loader->add_action('alfaomega_ebooks_queue_refresh', $service->refreshEbook(), 'single', 20, 2);
 

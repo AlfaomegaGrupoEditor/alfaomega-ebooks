@@ -37,9 +37,12 @@ class ImportEbook extends AbstractProcess implements ProcessContract
     public function single(array $eBook, bool $throwError=false, int $postId = null): void
     {
         $eBook = $this->entity->update(null, $eBook);
-        Service::make()->wooCommerce()
-            ->linkProduct()
-            ->single($eBook, false);
+
+        if ($this->updateProduct) {
+            Service::make()->wooCommerce()
+                ->linkProduct()
+                ->single($eBook, false);
+        }
     }
 
     /**
