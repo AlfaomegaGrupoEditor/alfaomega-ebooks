@@ -3,6 +3,7 @@ namespace AlfaomegaEbooks\Http;
 
 use AlfaomegaEbooks\Http\Controllers\EbooksController;
 use AlfaomegaEbooks\Http\Controllers\EbooksMassActionsController;
+use AlfaomegaEbooks\Http\Controllers\EbooksQuickActionsController;
 use AlfaomegaEbooks\Http\Controllers\QueueController;
 
 /**
@@ -102,6 +103,12 @@ class RouteManager
         'link-ebook'   => [EbooksMassActionsController::class, 'massLinkEbooks'],
     ];
 
+    protected array $quickActions = [
+        'update-meta'  => [EbooksQuickActionsController::class, 'quickUpdateMeta'],
+        'link-product' => [EbooksQuickActionsController::class, 'quickLinkProduct'],
+        'link-ebook'   => [EbooksQuickActionsController::class, 'quickLinkEbook'],
+    ];
+
     /**
      * Registers the routes.
      *
@@ -148,5 +155,12 @@ class RouteManager
 
         $controller = new $this->massActions[$action][0];
         return $controller->{$this->massActions[$action][1]}($post_ids);
+    }
+
+    public function quickAction():void
+    {
+        if (!isset($_GET['ebook_action'])) {
+            return;
+        }
     }
 }

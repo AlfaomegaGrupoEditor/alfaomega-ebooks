@@ -189,6 +189,8 @@ class Alfaomega_Ebooks {
         $this->loader->add_filter('bulk_actions-edit-product', $plugin_admin, 'bulk_actions_wc_product');
         $this->loader->add_filter('handle_bulk_actions-edit-product', $routeManager, 'massAction', 10, 3);
 
+        $this->loader->add_filter('post_row_actions', $plugin_admin, 'add_custom_quick_actions',10, 2);
+
         $this->loader->add_action('admin_notices', $plugin_admin, 'show_notification');
 
         // queue actions

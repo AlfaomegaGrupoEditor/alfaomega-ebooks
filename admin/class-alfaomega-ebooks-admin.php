@@ -168,4 +168,49 @@ class Alfaomega_Ebooks_Admin {
             printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
         }
     }
+
+    /**
+     * Adds custom quick actions to the WordPress admin dashboard for 'product' and 'alfaomega-ebook' post types.
+     *
+     * This method takes an array of existing actions and a post object as parameters. It checks the post type of the given post,
+     * and based on the post type, it removes the default quick actions and adds custom quick actions.
+     *
+     * For 'product' post type, it adds a 'Link' quick action which links the product to an eBook.
+     * For 'alfaomega-ebook' post type, it adds 'Update' and 'Link' quick actions which update the eBook metadata and link the eBook to a product respectively.
+     *
+     * @param array $actions An array of existing quick actions.
+     * @param WP_Post $post The post object for which to add the quick actions.
+     * @return array The modified array of quick actions.
+     */
+    public function add_custom_quick_actions($actions, $post): array
+    {
+        switch ($post->post_type) {
+            case 'product':
+                $actions['link-ebook'] = sprintf(
+                    '<a href="%s">%s</a>',
+                    esc_url(add_query_arg(['action' => 'link-ebook', 'post' => $post->ID], 'admin-post.php')),
+                    esc_html__('Link eBook', 'alfaomega-ebooks')
+                );
+                break;
+
+            case 'alfaomega-ebook':
+                // Remove the default quick actions
+                unset($actions['edit']);
+                unset($actions['inline hide-if-no-js']);
+
+                $actions = array_merge([
+                    'update-meta'  => sprintf(
+                        '<a href="%s">%s</a>',
+                        esc_url(add_query_arg(['action' => 'update-meta', 'post' => $post->ID], 'admin-post.php')),
+                        esc_html__('Update', 'alfaomega-ebooks')),
+                    'link-product' => sprintf(
+                        '<a href="%s">%s</a>',
+                        esc_url(add_query_arg(['action' => 'link-product', 'post' => $post->ID], 'admin-post.php')),
+                        esc_html__('Link', 'alfaomega-ebooks')
+                    ),
+                ], $actions);
+        }
+
+        return $actions;
+    }
 }
