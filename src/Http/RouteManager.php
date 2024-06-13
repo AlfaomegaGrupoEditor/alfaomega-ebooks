@@ -34,7 +34,7 @@ class RouteManager
      * @var array
      */
     protected array $routes = [
-        'import-ebooks' => [
+        'import-ebooks'  => [
             'methods'             => 'GET',
             'callback'            => [EbooksController::class, 'importEbooks'],
             'permission_callback' => [Middleware::class, 'auth'],
@@ -44,30 +44,14 @@ class RouteManager
             'callback'            => [EbooksController::class, 'refreshEbooks'],
             'permission_callback' => [Middleware::class, 'auth'],
         ],
-        'link-products' => [
+        'link-products'  => [
             'methods'             => 'GET',
             'callback'            => [EbooksController::class, 'linkProducts'],
             'permission_callback' => [Middleware::class, 'auth'],
         ],
-        'link-ebooks' => [
+        'link-ebooks'    => [
             'methods'             => 'GET',
             'callback'            => [EbooksController::class, 'linkEbooks'],
-            'permission_callback' => [Middleware::class, 'auth'],
-        ],
-
-        'mass-update-meta' => [
-            'methods'             => 'POST',
-            'callback'            => [EbooksMassController::class, 'massUpdateMeta'],
-            'permission_callback' => [Middleware::class, 'auth'],
-        ],
-        'mass-link-product' => [
-            'methods'             => 'POST',
-            'callback'            => [EbooksMassController::class, 'massLinkProduct'],
-            'permission_callback' => [Middleware::class, 'auth'],
-        ],
-        'mass-link-ebook' => [
-            'methods'             => 'POST',
-            'callback'            => [EbooksMassController::class, 'massLinkEbook'],
             'permission_callback' => [Middleware::class, 'auth'],
         ],
 
@@ -76,7 +60,7 @@ class RouteManager
             'callback'            => [QueueController::class, 'queueStatus'],
             'permission_callback' => [Middleware::class, 'auth'],
         ],
-        'queue-clear' => [
+        'queue-clear'  => [
             'methods'             => 'GET',
             'callback'            => [QueueController::class, 'queueClear'],
             'permission_callback' => [Middleware::class, 'auth'],

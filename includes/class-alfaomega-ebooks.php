@@ -195,10 +195,6 @@ class Alfaomega_Ebooks {
         $this->loader->add_action('alfaomega_ebooks_queue_import', $service->importEbook()->setUpdateProduct(false), 'single');
         $this->loader->add_action('alfaomega_ebooks_queue_refresh_list', $service->refreshEbook(), 'batch');
         $this->loader->add_action('alfaomega_ebooks_queue_refresh', $service->refreshEbook(), 'single', 20, 2);
-
-        // Add plugin settings to WooCommerce
-        // @deprecated Using the own plugin settings
-        // $this->loader->add_filter( 'woocommerce_get_settings_pages', $plugin_admin, 'alfaomega_ebooks_add_settings' );
 	}
 
 	/**
