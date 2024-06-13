@@ -1,5 +1,3 @@
-/* global wpApiSettings */
-
 /**
  * This is a self-invoking function that uses jQuery to handle the admin-facing JavaScript source code.
  * It includes handlers for DOM-ready and window-load events.
@@ -19,6 +17,7 @@
 		const clearQueue = $('#clear-queue');
 		const formSubmit = $('#form_submit');
 		const queueStatus = $("#queue_status")
+		const endpointValue = alfaomegaEbooksForm.find("input[name=endpoint]").val();
 
 		/**
 		 * This is the event handler for form submission.
@@ -30,11 +29,10 @@
 
 			// Make AJAX call
 			$.ajax({
-				url: php_vars.api_url + '/' +  alfaomegaEbooksForm.find("input[name=endpoint]").val(),
-				type: 'POST',
+				url: php_vars.api_url + '/' +  endpointValue,
+				type: 'GET',
 				dataType: 'JSON',
 				timeout: 0,
-				data: {},
 				beforeSend: function(xhr) {
 					xhr.setRequestHeader('X-WP-Nonce', php_vars.nonce);
 

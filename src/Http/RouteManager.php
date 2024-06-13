@@ -33,25 +33,25 @@ class RouteManager
      */
     protected array $routes = [
         'import-ebooks' => [
-            'methods'             => 'POST',
+            'methods'             => 'GET',
             'callback'            => [EbooksController::class, 'importEbooks'],
             'permission_callback' => [Middleware::class, 'auth'],
         ],
 
-        'refresh_ebooks' => [
-            'methods'             => 'POST',
+        'refresh-ebooks' => [
+            'methods'             => 'GET',
             'callback'            => [EbooksController::class, 'refreshEbooks'],
             'permission_callback' => [Middleware::class, 'auth'],
         ],
 
-        'link_products' => [
-            'methods'             => 'POST',
+        'link-products' => [
+            'methods'             => 'GET',
             'callback'            => [EbooksController::class, 'linkProducts'],
             'permission_callback' => [Middleware::class, 'auth'],
         ],
 
-        'link_ebooks' => [
-            'methods'             => 'POST',
+        'link-ebooks' => [
+            'methods'             => 'GET',
             'callback'            => [EbooksController::class, 'linkEbooks'],
             'permission_callback' => [Middleware::class, 'auth'],
         ],

@@ -17,9 +17,7 @@
               id="alfaomega_ebooks_form"
               class="alfaomega_ebooksCol-9"
         >
-            <input type="hidden" name="action" value="alfaomega_ebooks_form" />
             <input type="hidden" name="endpoint" value="import-ebooks" />
-            <!--<input type="hidden" name="alfaomega_ebook_nonce" value="<?php /*= wp_create_nonce('alfaomega_ebook_nonce') */?>" />-->
 
             <h2>
                 <?php esc_html_e("Queue status", 'alfaomega-ebooks'); ?>:
