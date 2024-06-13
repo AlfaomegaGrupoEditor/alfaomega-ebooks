@@ -179,8 +179,8 @@ class Alfaomega_Ebooks {
         $routeManager = new RouteManager();
         $this->loader->add_action( 'rest_api_init', $routeManager, 'register' );
 
-        $controller = new Alfaomega_Ebooks_Controller();
-        /*$this->loader->add_action( 'admin_post_nopriv_alfaomega_ebooks_form', $controller, 'process' );
+        /*$controller = new Alfaomega_Ebooks_Controller();
+        $this->loader->add_action( 'admin_post_nopriv_alfaomega_ebooks_form', $controller, 'process' );
         $this->loader->add_action( 'admin_post_alfaomega_ebooks_form', $controller,'process' );*/
 
         $this->loader->add_filter('bulk_actions-edit-alfaomega-ebook', $plugin_admin, 'bulk_actions_alfaomega_ebooks');
@@ -190,6 +190,7 @@ class Alfaomega_Ebooks {
         $this->loader->add_filter('handle_bulk_actions-edit-product', $routeManager, 'massAction', 10, 3);
 
         $this->loader->add_filter('post_row_actions', $plugin_admin, 'add_custom_quick_actions',10, 2);
+        $this->loader->add_action('admin_init', $routeManager, 'quickAction');
 
         $this->loader->add_action('admin_notices', $plugin_admin, 'show_notification');
 

@@ -103,6 +103,20 @@ class RouteManager
         'link-ebook'   => [EbooksMassActionsController::class, 'massLinkEbooks'],
     ];
 
+    /**
+     * @var array $quickActions
+     *
+     * An associative array that maps actions to their corresponding controllers and methods.
+     * Each key in the array is a string that represents the action to be performed.
+     * Each value in the array is an indexed array with two elements:
+     * - The first element is the fully qualified class name of the controller that should handle the action.
+     * - The second element is the name of the method in the controller that should be called to perform the action.
+     *
+     * Currently, the following actions are supported:
+     * - 'update-meta': Calls the 'quickUpdateMeta' method on the EbooksQuickActionsController class.
+     * - 'link-product': Calls the 'quickLinkProduct' method on the EbooksQuickActionsController class.
+     * - 'link-ebook': Calls the 'quickLinkEbook' method on the EbooksQuickActionsController class.
+     */
     protected array $quickActions = [
         'update-meta'  => [EbooksQuickActionsController::class, 'quickUpdateMeta'],
         'link-product' => [EbooksQuickActionsController::class, 'quickLinkProduct'],
@@ -157,10 +171,32 @@ class RouteManager
         return $controller->{$this->massActions[$action][1]}($post_ids);
     }
 
+    /**
+     * Executes a quick action on a single post.
+     *
+     * This method checks if the 'ebook_action' and 'post' query parameters are set in the GET request.
+     * If they are not set, the method returns without doing anything.
+     *
+     * If the 'ebook_action' query parameter is set, the method checks if this action exists in the $quickActions array.
+     * If it does, it creates a new instance of the controller associated with the action and calls the method associated
+     * with the action, passing the 'post' query parameter as an argument.
+     *
+     * If the 'ebook_action' query parameter is not a key in the $quickActions array, the method returns without doing anything.
+     *
+     * @return void
+     */
     public function quickAction():void
     {
-        if (!isset($_GET['ebook_action'])) {
+        if (!isset($_GET['ebook_action']) || !isset($_GET['post'])) {
             return;
         }
+
+        $action = $_GET['ebook_action'];
+        if (!array_key_exists($action, $this->quickActions)) {
+            return;
+        }
+
+        $controller = new $this->quickActions[$action];
+        $controller->{$this->quickActions[$action][1]}($_GET['post']);
     }
 }
