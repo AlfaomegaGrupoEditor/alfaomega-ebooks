@@ -2,7 +2,7 @@
 namespace AlfaomegaEbooks\Http;
 
 use AlfaomegaEbooks\Http\Controllers\EbooksController;
-use AlfaomegaEbooks\Http\Controllers\EbooksMassController;
+use AlfaomegaEbooks\Http\Controllers\EbooksMassActionsController;
 use AlfaomegaEbooks\Http\Controllers\QueueController;
 
 /**
@@ -27,11 +27,26 @@ class RouteManager
     public const string ROUTE_NAMESPACE = 'alfaomega-ebooks/v1';
 
     /**
-     * The routes to be registered.
+     * @var array $routes
      *
-     * Each route is an associative array with the keys 'methods', 'callback', and 'permission_callback'.
+     * An associative array that maps route names to their corresponding configurations.
+     * Each key in the array is a string that represents the route name.
+     * Each value in the array is an associative array with the following keys:
+     * - 'methods': The HTTP method for the route. This should be a string.
+     * - 'callback': An indexed array with two elements:
+     *   - The first element is the fully qualified class name of the controller that should handle the route.
+     *   - The second element is the name of the method in the controller that should be called when the route is accessed.
+     * - 'permission_callback': An indexed array with two elements:
+     *   - The first element is the fully qualified class name of the middleware that should handle the permission check for the route.
+     *   - The second element is the name of the method in the middleware that should be called to perform the permission check.
      *
-     * @var array
+     * Currently, the following routes are supported:
+     * - 'import-ebooks': Calls the 'importEbooks' method on the EbooksController class with 'GET' method.
+     * - 'refresh-ebooks': Calls the 'refreshEbooks' method on the EbooksController class with 'GET' method.
+     * - 'link-products': Calls the 'linkProducts' method on the EbooksController class with 'GET' method.
+     * - 'link-ebooks': Calls the 'linkEbooks' method on the EbooksController class with 'GET' method.
+     * - 'queue-status': Calls the 'queueStatus' method on the QueueController class with 'GET' method.
+     * - 'queue-clear': Calls the 'queueClear' method on the QueueController class with 'GET' method.
      */
     protected array $routes = [
         'import-ebooks'  => [
@@ -68,6 +83,26 @@ class RouteManager
     ];
 
     /**
+     * @var array $massActions
+     *
+     * An associative array that maps actions to their corresponding controllers and methods.
+     * Each key in the array is a string that represents the action to be performed.
+     * Each value in the array is an indexed array with two elements:
+     * - The first element is the fully qualified class name of the controller that should handle the action.
+     * - The second element is the name of the method in the controller that should be called to perform the action.
+     *
+     * Currently, the following actions are supported:
+     * - 'update-meta': Calls the 'massUpdateMeta' method on the EbooksMassActionsController class.
+     * - 'link-product': Calls the 'massLinkProducts' method on the EbooksMassActionsController class.
+     * - 'link-ebook': Calls the 'massLinkEbooks' method on the EbooksMassActionsController class.
+     */
+    protected array $massActions = [
+        'update-meta'  => [EbooksMassActionsController::class, 'massUpdateMeta'],
+        'link-product' => [EbooksMassActionsController::class, 'massLinkProducts'],
+        'link-ebook'   => [EbooksMassActionsController::class, 'massLinkEbooks'],
+    ];
+
+    /**
      * Registers the routes.
      *
      * This method loops through the $routes array and registers each route using the register_rest_route function.
@@ -89,5 +124,29 @@ class RouteManager
             $args['permission_callback'][0] = $classes[$args['permission_callback'][0]];
             register_rest_route(self::ROUTE_NAMESPACE, "/$route", $args);
         }
+    }
+
+    /**
+     * Executes a mass action on a set of posts.
+     *
+     * This method takes a redirect URL, an action, and an array of post IDs. It checks if the action exists in the
+     * $massActions array. If it does, it creates a new instance of the controller associated with the action and
+     * calls the method associated with the action, passing the post IDs as an argument. The result of this method
+     * call is then returned. If the action does not exist in the $massActions array, the method simply returns
+     * the redirect URL.
+     *
+     * @param string $redirect_url The URL to redirect to if the action does not exist in the $massActions array.
+     * @param string $action The action to perform. This should be a key in the $massActions array.
+     * @param array $post_ids An array of post IDs on which to perform the action.
+     * @return string The result of the action method call, or the redirect URL if the action does not exist.
+     */
+    public function massAction(string $redirect_url, string $action, array $post_ids): string
+    {
+        if (!array_key_exists($action, $this->massActions)) {
+            return $redirect_url;
+        }
+
+        $controller = new $this->massActions[$action][0];
+        return $controller->{$this->massActions[$action][1]}($post_ids);
     }
 }

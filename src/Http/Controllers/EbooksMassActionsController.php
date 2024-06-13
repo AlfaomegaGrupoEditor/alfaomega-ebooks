@@ -6,7 +6,7 @@ use AlfaomegaEbooks\Services\eBooks\Service;
 use WP_REST_Request;
 use WP_REST_Response;
 
-class EbooksMassController
+class EbooksMassActionsController
 {
     /**
      * Import eBooks from Alfaomega.
@@ -16,7 +16,7 @@ class EbooksMassController
      *
      * @return WP_REST_Response The response containing the status and message.
      */
-    public function masImportEbooks(WP_REST_Request $request): WP_REST_Response
+    public function masImportEbooks(array $postIds): string
     {
         try {
             $response = Service::make()->ebooks()
@@ -54,7 +54,7 @@ class EbooksMassController
      * @return WP_REST_Response A WP_REST_Response object containing the response from the service call and the message.
      * @throws \Exception If no post IDs are specified in the request.
      */
-    public function massLinkProducts(WP_REST_Request $request): WP_REST_Response
+    public function massLinkProducts(array $postIds): string
     {
         try {
             $response = Service::make()->wooCommerce()
@@ -92,7 +92,7 @@ class EbooksMassController
      * @return WP_REST_Response A WP_REST_Response object containing the response from the service call and the message.
      * @throws \Exception If no post IDs are specified in the request.
      */
-    public function massLinkEbooks(WP_REST_Request $request): WP_REST_Response
+    public function massLinkEbooks(array $postIds): string
     {
         try {
             $response = Service::make()->wooCommerce()

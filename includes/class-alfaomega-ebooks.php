@@ -180,20 +180,23 @@ class Alfaomega_Ebooks {
         $this->loader->add_action( 'rest_api_init', $routeManager, 'register' );
 
         $controller = new Alfaomega_Ebooks_Controller();
-        $this->loader->add_action( 'admin_post_nopriv_alfaomega_ebooks_form', $controller, 'process' );
-        $this->loader->add_action( 'admin_post_alfaomega_ebooks_form', $controller,'process' );
+        /*$this->loader->add_action( 'admin_post_nopriv_alfaomega_ebooks_form', $controller, 'process' );
+        $this->loader->add_action( 'admin_post_alfaomega_ebooks_form', $controller,'process' );*/
 
         $this->loader->add_filter('bulk_actions-edit-alfaomega-ebook', $plugin_admin, 'bulk_actions_alfaomega_ebooks');
-        $this->loader->add_filter('handle_bulk_actions-edit-alfaomega-ebook', $controller, 'bulk_action_alfaomega_ebooks', 10, 3);
+        $this->loader->add_filter('handle_bulk_actions-edit-alfaomega-ebook', $routeManager, 'massAction', 10, 3);
+
         $this->loader->add_filter('bulk_actions-edit-product', $plugin_admin, 'bulk_actions_wc_product');
-        $this->loader->add_filter('handle_bulk_actions-edit-product', $controller, 'bulk_action_alfaomega_ebooks', 10, 3);
+        $this->loader->add_filter('handle_bulk_actions-edit-product', $routeManager, 'massAction', 10, 3);
 
         $this->loader->add_action('admin_notices', $plugin_admin, 'show_notification');
 
         // queue actions
         $service = Service::make()->ebooks();
         $this->loader->add_action('alfaomega_ebooks_queue_import', $service->importEbook()->setUpdateProduct(false), 'single');
+        // Todo: work on this
         $this->loader->add_action('alfaomega_ebooks_queue_refresh_list', $service->refreshEbook(), 'batch');
+        // Todo: work on this
         $this->loader->add_action('alfaomega_ebooks_queue_refresh', $service->refreshEbook(), 'single', 20, 2);
 	}
 
