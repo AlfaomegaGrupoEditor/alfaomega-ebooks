@@ -57,14 +57,9 @@ class EbooksController
     public function refreshEbooks(WP_REST_Request $request): WP_REST_Response
     {
         try {
-            $postIds = $request->get_param('post_ids');
-            if (empty($postIds)) {
-                throw new \Exception('Post ids not specified');
-            }
-
             $response = Service::make()->ebooks()
                 ->refreshEbook()
-                ->batch($postIds);
+                ->batch();
 
             $message = $response['refreshed'] > 0
                 ? str_replace('%s', $response['refreshed'], esc_html__("Scheduled to refresh %s ebooks successfully!", 'alfaomega-ebooks'))
@@ -100,58 +95,13 @@ class EbooksController
     public function linkProducts(WP_REST_Request $request): WP_REST_Response
     {
         try {
-            $postIds = $request->get_param('post_ids');
-            if (empty($postIds)) {
-                throw new \Exception('Post ids not specified');
-            }
-
             $response = Service::make()->wooCommerce()
                 ->linkProduct()
-                ->batch($postIds);
+                ->batch();
 
             $message = $response['linked'] > 0
                 ? str_replace('%s', $response['linked'], esc_html__("Linked %s products successfully!", 'alfaomega-ebooks'))
                 : esc_html__('No products found to link', 'alfaomega-ebooks');
-
-            return new WP_REST_Response([
-                'status'  => 'success',
-                'data'    => $response,
-                'message' => $message,
-            ], 200);
-        } catch (\Exception $exception) {
-            return new WP_REST_Response([
-                'status'  => 'fail',
-                'message' => $exception->getMessage()
-            ], 400);
-        }
-    }
-
-    /**
-     * Links ebooks and returns the response.
-     *
-     * This method is responsible for linking eBooks. It first initializes the WooCommerce client,
-     * then calls the linkEbooks method of the service class, which links the eBooks and returns a response.
-     * The response contains the number of linked eBooks. If the number of linked eBooks is greater than 0,
-     * it generates a success message. Otherwise, it generates a message indicating that no eBooks were found to link.
-     * The response from the service call and the message are then returned in an array.
-     *
-     * @return array An array containing the response from the service call and the message.
-     */
-    public function linkEbooks(WP_REST_Request $request): WP_REST_Response
-    {
-        try {
-            $postIds = $request->get_param('post_ids');
-            if (empty($postIds)) {
-                throw new \Exception('Post ids not specified');
-            }
-
-            $response = Service::make()->wooCommerce()
-                ->linkEbooks() // FIXME
-                ->batch($postIds);
-
-            $message = $response['linked'] > 0
-                ? str_replace('%s', $response['linked'], esc_html__("Linked %s ebooks successfully!", 'alfaomega-ebooks'))
-                : esc_html__('No ebooks found to link, please check the product ISBN tag', 'alfaomega-ebooks');
 
             return new WP_REST_Response([
                 'status'  => 'success',

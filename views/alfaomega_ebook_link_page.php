@@ -6,6 +6,11 @@
         </p>
     </div>
 
+    <?php
+        $service = new Alfaomega_Ebooks_Service(false);
+        $queueStatus = $service->queueStatus('alfaomega_ebooks_queue_link_products')
+    ?>
+
     <div class="alfaomega_ebooks-pagebody">
         <div class="alfaomega_ebooks-success-msg" style="display: none;"></div>
         <div class="alfaomega_ebooks-error-msg" style="display: none;"></div>
@@ -43,6 +48,11 @@
                    name="alfaomega_ebooks_link_ebooks"
                    value="<?php esc_html_e("Link Products", 'alfaomega-ebooks') ?>"
             >
+
+            <button id="clear-queue" class="alfaomega_ebooks-btn btnFade alfaomega_ebooks-btnBlueGreenAnchor">
+                <?php esc_html_e("Clear queue", 'alfaomega-ebooks') ?>
+            </button>
+
             <a class="alfaomega_ebooks-btn btnFade alfaomega_ebooks-btnBlueGreenAnchor"
                href="<?php esc_url(admin_url('admin.php')) ?> ?page=alfaomega_ebooks_admin"
             >

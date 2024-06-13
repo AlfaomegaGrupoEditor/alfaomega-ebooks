@@ -145,7 +145,7 @@
 		const queueStatus = $("#queue_status")
 
 		// Check if form exists and queue checking process should be initiated
-		if (alfaomegaEbooksForm.length > 0 && (force || queuePending.html().trim() !== '0')) {
+		if (alfaomegaEbooksForm.length > 0 && (force || (queuePending.html() && queuePending.html().trim() !== '0'))) {
 			// Update queue status and start interval to check queue status
 			queueStatus.html('Working');
 			interval = setInterval(function() {
