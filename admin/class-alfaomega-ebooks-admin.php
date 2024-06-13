@@ -1,5 +1,7 @@
 <?php
 
+use AlfaomegaEbooks\Http\RouteManager;
+
 /**
  * The admin-specific functionality of the plugin.
  *
