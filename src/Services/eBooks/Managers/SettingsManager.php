@@ -59,20 +59,19 @@ class SettingsManager
     }
 
     /**
-     * Check the required settings.
+     * Check the settings.
      *
-     * This method checks if the required settings are configured.
-     * If the format attribute is not configured, it creates the format attribute.
+     * This method checks the settings values and updates them if necessary.
      *
-     * @return bool True if the settings are configured, false otherwise.
+     * @param array $values The settings values to check.
+     * @return bool True if the settings are valid, false otherwise.
      * @throws \Exception If the format attribute could not be created.
      */
-    public function check(): bool
+    public function check(array $values = []): array
     {
         // check if the format attribute was configured already
-        if (empty($this->settings['alfaomega_ebooks_format_attr_id'])) {
-            $productOptions = (array) get_option('alfaomega_ebooks_product_options');
-
+        if (isset($this->values['alfaomega_ebooks_format_attr_id']) &&
+            empty($this->values['alfaomega_ebooks_format_attr_id']) ) {
             $formatAttribute = Service::make()
                 ->wooCommerce()
                 ->format()
@@ -89,11 +88,9 @@ class SettingsManager
                 throw new \Exception('The format attribute could not be created.');
             }
 
-            $productOptions['alfaomega_ebooks_format_attr_id'] = $formatAttribute->id;
-            update_option('alfaomega_ebooks_product_options', $productOptions);
-            return false;
+            $values['alfaomega_ebooks_format_attr_id'] = $formatAttribute->id;
         }
 
-        return true;
+        return $values;
     }
 }

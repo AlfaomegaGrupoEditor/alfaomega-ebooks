@@ -8,6 +8,9 @@
  * @subpackage Alfaomega_Ebooks/includes
  * @author     Livan Rodriguez <livan2r@gmail.com>
  */
+
+use AlfaomegaEbooks\Services\eBooks\Managers\SettingsManager;
+
 if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
     class Alfaomega_Ebooks_Settings{
         /**
@@ -563,7 +566,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 size="50"
                 value="<?php echo isset(self::$productOptions['alfaomega_ebooks_format_attr_id']) ? esc_attr(self::$productOptions['alfaomega_ebooks_format_attr_id']) : ''; ?>"
             >
-            <p class="description"> <? esc_html_e("Attribute Id to create the product variants", 'alfaomega-ebooks') ?> </p>
+            <p class="description"> <? esc_html_e("Attribute Id to create the product variants. Left empty to create automatically.", 'alfaomega-ebooks') ?> </p>
             <?php
         }
 
@@ -589,9 +592,12 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
 
         /**
          * Validate the input
+         *
          * @param array $input
+         *
          * @return array
-         * @since 1.0.0
+         * @throws \Exception
+         * @since  1.0.0
          * @access public
          */
         public function alfaomega_books_validate(array $input): array
@@ -618,7 +624,8 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 }
             }
 
-            return $new_input;
+            // Check if the format attribute was configured already
+            return SettingsManager::make()->check($new_input);
         }
     }
 }

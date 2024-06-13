@@ -51,8 +51,7 @@ class Service
 
         $this->ebooksManager = new EbookManager($this->api, $settings);
         $this->queueManager = new QueueManager($this->api, $settings);
-        $this->wooCommerceManager = (new WooCommerceManager($this->api, $settings))->init();
-        $this->checkSettings();
+        $this->wooCommerceManager = new WooCommerceManager($this->api, $settings);
     }
 
     /**
@@ -87,24 +86,5 @@ class Service
     public function wooCommerce(): WooCommerceManager
     {
         return $this->wooCommerceManager;
-    }
-
-    /**
-     * Check and update settings.
-     * This method is used to check the settings using the SettingsManager.
-     * If the settings are not valid, it updates the settings of the EbookManager, QueueManager, and WooCommerceManager
-     * with the current settings.
-     *
-     * @return void
-     * @throws \Exception
-     */
-    protected function checkSettings(): void
-    {
-        $settings = SettingsManager::make();
-        if (!$settings->check()) {
-            $this->ebooksManager->updateSettings($settings->get());
-            $this->queueManager->updateSettings($settings->get());
-            $this->wooCommerceManager->updateSettings($settings->get());
-        };
     }
 }

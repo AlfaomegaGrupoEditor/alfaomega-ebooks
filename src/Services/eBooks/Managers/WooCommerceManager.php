@@ -60,6 +60,7 @@ class WooCommerceManager extends AbstractManager
     public function __construct(Api $api, array $settings)
     {
         parent::__construct($api, $settings);
+        $this->init();
 
         $this->format = new Attribute($this->client, $settings);
         $this->tag = new Tag($this->client, $settings);

@@ -56,11 +56,9 @@ class Alfaomega_Ebooks {
      * @since    1.0.0
      */
     public function __construct() {
-        if ( defined( 'ALFAOMEGA_EBOOKS_VERSION' ) ) {
-            $this->version = ALFAOMEGA_EBOOKS_VERSION;
-        } else {
-            $this->version = '1.0.0';
-        }
+        $this->version = defined('ALFAOMEGA_EBOOKS_VERSION')
+            ? ALFAOMEGA_EBOOKS_VERSION
+            : '1.0.0';
         $this->plugin_name = ALFAOMEGA_EBOOKS_NAME;
 
         //add_action('init', [$this, 'start_session'], 1);
