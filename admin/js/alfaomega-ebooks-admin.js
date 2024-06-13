@@ -78,10 +78,12 @@
 
 			// Make AJAX call
 			$.ajax({
-				url: php_vars.admin_post_url,
-				type: 'POST',
+				url: php_vars.api_url + '/queue-clear',
+				type: 'GET',
 				timeout: 0,
-				data: data,
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader('X-WP-Nonce', php_vars.nonce);
+				},
 				error: function(error) {
 					// Show error message on error
 					showError(error?.responseJSON?.error ? error?.responseJSON?.error : '');
@@ -167,11 +169,14 @@
 
 				// Make AJAX call
 				$.ajax({
-					url: php_vars.admin_post_url,
+					url: php_vars.api_url + '/queue-status',
 					type: 'GET',
 					dataType: 'JSON',
 					timeout: 0,
 					data: data + `&queue=${queue}`,
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-WP-Nonce', php_vars.nonce);
+					},
 					error: function(error) {
 					},
 					success: function(response) {

@@ -3,6 +3,7 @@ namespace AlfaomegaEbooks\Http;
 
 use AlfaomegaEbooks\Http\Controllers\EbooksController;
 use AlfaomegaEbooks\Http\Controllers\EbooksMassController;
+use AlfaomegaEbooks\Http\Controllers\QueueController;
 
 /**
  * Class RouteManger
@@ -67,6 +68,17 @@ class RouteManager
         'mass-link-ebook' => [
             'methods'             => 'POST',
             'callback'            => [EbooksMassController::class, 'massLinkEbook'],
+            'permission_callback' => [Middleware::class, 'auth'],
+        ],
+
+        'queue-status' => [
+            'methods'             => 'GET',
+            'callback'            => [QueueController::class, 'queueStatus'],
+            'permission_callback' => [Middleware::class, 'auth'],
+        ],
+        'queue-clear' => [
+            'methods'             => 'GET',
+            'callback'            => [QueueController::class, 'queueClear'],
             'permission_callback' => [Middleware::class, 'auth'],
         ],
     ];

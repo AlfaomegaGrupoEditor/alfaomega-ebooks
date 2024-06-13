@@ -1,6 +1,7 @@
 <?php
 
 use AlfaomegaEbooks\Http\RouteManager;
+use AlfaomegaEbooks\Services\eBooks\Service;
 
 /**
  * The core plugin class.
@@ -190,10 +191,10 @@ class Alfaomega_Ebooks {
         $this->loader->add_action('admin_notices', $plugin_admin, 'show_notification');
 
         // queue actions
-        $service = new Alfaomega_Ebooks_Service();
-        $this->loader->add_action('alfaomega_ebooks_queue_import', $service, 'importEbook');
-        $this->loader->add_action('alfaomega_ebooks_queue_refresh_list', $service, 'refreshEbookList');
-        $this->loader->add_action('alfaomega_ebooks_queue_refresh', $service, 'refreshEbook', 20, 2);
+        $service = Service::make()->ebooks();
+        $this->loader->add_action('alfaomega_ebooks_queue_import', $service->importEbook(), 'single');
+        $this->loader->add_action('alfaomega_ebooks_queue_refresh_list', $service->refreshEbook(), 'batch');
+        $this->loader->add_action('alfaomega_ebooks_queue_refresh', $service->refreshEbook(), 'single', 20, 2);
 
         // Add plugin settings to WooCommerce
         // @deprecated Using the own plugin settings
