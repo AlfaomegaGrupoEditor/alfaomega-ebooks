@@ -7,15 +7,22 @@ use AlfaomegaEbooks\Services\eBooks\Service;
 use Exception;
 
 /**
- * Import ebooks process.
+ * Class ImportEbook
+ *
+ * This class is responsible for the import process of eBooks. It extends the AbstractProcess class and implements
+ * the ProcessContract interface. The class provides methods to process a single eBook or a batch of eBooks.
+ *
+ * @package AlfaomegaEbooks\Services\eBooks\Process
  */
 class ImportEbook extends AbstractProcess implements ProcessContract
 {
     /**
-     * Initialize the process.
+     * ImportEbook constructor.
      *
-     * @param array $settings The settings.
-     * @param EbookPostEntity $entity The entity.
+     * Initializes the import process with the provided settings and eBook entity.
+     *
+     * @param array $settings The settings for the import process. These settings can include various configuration options.
+     * @param EbookPostEntity $entity The eBook entity to be processed. This entity represents an eBook in the system.
      */
     public function __construct(
         array $settings,
@@ -25,14 +32,17 @@ class ImportEbook extends AbstractProcess implements ProcessContract
     }
 
     /**
-     * Do the process on a single object.
+     * Processes a single eBook.
      *
-     * @param array $eBook
-     * @param bool $throwError
-     * @param int|null $postId
+     * This method takes an eBook array, a boolean indicating whether to throw an error, and an optional post ID as input.
+     * It updates the eBook entity with the provided eBook data.
+     * If the 'updateProduct' property is true, it also links the eBook to a WooCommerce product.
      *
-     * @return void
+     * @param array $eBook The eBook data.
+     * @param bool $throwError Indicates whether to throw an error.
+     * @param int|null $postId The post ID of the eBook. If provided, the method will process only this eBook.
      * @throws \Exception
+     * @return void
      */
     public function single(array $eBook, bool $throwError=false, int $postId = null): void
     {
@@ -46,12 +56,21 @@ class ImportEbook extends AbstractProcess implements ProcessContract
     }
 
     /**
-     * Do the process in bach.
+     * Processes a batch of eBooks.
      *
-     * @param array $data The data.
+     * This method takes an optional array of eBook data as input. If no array is provided, it retrieves a list of eBooks
+     * from the database and enqueues an asynchronous action to import each eBook.
      *
-     * @return array
-     * @throws \Exception
+     * The method uses the 'alfaomega_ebooks_queue_import' action to import each eBook. This action takes
+     * an array of eBook data as arguments.
+     *
+     * If the enqueuing of the action fails, the method throws an Exception with the message 'Import queue failed'.
+     *
+     * The method returns an array with the total number of eBooks imported.
+     *
+     * @param array $data An optional array of eBook data. If provided, the method will process only these eBooks.
+     * @throws \Exception If the enqueuing of the import action fails.
+     * @return array An array with the total number of eBooks imported.
      */
     public function batch(array $data = []): array
     {
