@@ -3,7 +3,13 @@
 namespace AlfaomegaEbooks\Services\eBooks\Process;
 
 /**
- * The abstract process.
+ * AbstractProcess Class
+ *
+ * This abstract class provides a blueprint for creating specific eBook processing classes.
+ * It implements the ProcessContract interface, which ensures that all child classes have the required methods for processing eBooks.
+ * The class also provides a property and a method for controlling whether a product should be updated during the processing of an eBook.
+ *
+ * @package AlfaomegaEbooks\Services\eBooks\Process
  */
 abstract class AbstractProcess implements ProcessContract
 {
@@ -16,9 +22,11 @@ abstract class AbstractProcess implements ProcessContract
     protected bool $updateProduct = true;
 
     /**
-     * Initialize the process.
+     * AbstractProcess constructor.
      *
-     * @param array $entity The entity.
+     * Initializes the process with the provided settings.
+     *
+     * @param array $settings The settings for the process. These settings can include various configuration options.
      */
     public function __construct(
         protected array $settings

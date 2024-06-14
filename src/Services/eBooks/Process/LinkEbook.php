@@ -9,7 +9,7 @@ use Exception;
 /**
  * Link ebooks process.
  */
-class LinkEbook extends AbstractProcess
+class LinkEbook extends AbstractProcess implements ProcessContract
 {
     /**
      * Initialize the process.
