@@ -42,7 +42,8 @@ class AbstractManager
      */
     public function getWoocommerceConstants(): ?array
     {
-        $content = @file_get_contents( '../../../../../../../wp-config.php' );
+        $root_folder = ABSPATH;
+        $content = @file_get_contents( "$root_folder/wp-config.php" );
 
         if( ! $content ) {
             return null;

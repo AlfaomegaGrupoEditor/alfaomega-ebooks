@@ -77,6 +77,12 @@ class WooCommerceManager extends AbstractManager
     public function __construct(Api $api, array $settings)
     {
         parent::__construct($api, $settings);
+        $woocommerce = $this->getWoocommerceConstants();
+        if (!empty($woocommerce)) {
+            $this->WOOCOMMERCE_API_KEY = $woocommerce['WOOCOMMERCE_API_KEY'];
+            $this->WOOCOMMERCE_API_SECRET = $woocommerce['WOOCOMMERCE_API_SECRET'];
+        }
+
         $this->init();
 
         $this->format = new Attribute($this->client, $settings);
@@ -88,12 +94,6 @@ class WooCommerceManager extends AbstractManager
         );
         $this->linkProduct = new LinkProduct($settings, $this->product);
         $this->linkEbook = new LinkEbook($settings, $this->product);
-
-        $woocommerce = $this->getWoocommerceConstants();
-        if (!empty($woocommerce)) {
-            $this->WOOCOMMERCE_API_KEY = $woocommerce['WOOCOMMERCE_API_KEY'];
-            $this->WOOCOMMERCE_API_SECRET = $woocommerce['WOOCOMMERCE_API_SECRET'];
-        }
     }
 
     /**
