@@ -42,31 +42,22 @@ class AbstractManager
      */
     public function getWoocommerceConstants(): ?array
     {
-        $root_folder = ABSPATH;
-        $content = @file_get_contents( "$root_folder/wp-config.php" );
-
+        $rootFolder = ABSPATH;
+        $content = @file_get_contents( "$rootFolder/wp-config.php" );
         if( ! $content ) {
             return null;
         }
 
         $params = [
-            'WOOCOMMERCE_API_KEY' => "/define.+?'WOOCOMMERCE_API_KEY'.+?'(.*?)'.+/",
+            'WOOCOMMERCE_API_KEY'    => "/define.+?'WOOCOMMERCE_API_KEY'.+?'(.*?)'.+/",
             'WOOCOMMERCE_API_SECRET' => "/define.+?'WOOCOMMERCE_API_SECRET'.+?'(.*?)'.+/",
-            'WCPAY_DEV_MODE' => "/define.+?'WCPAY_DEV_MODE'.+?'(.*?)'.+/",
+            'WCPAY_DEV_MODE'         => "/define.+?'WCPAY_DEV_MODE'.+?'(.*?)'.+/",
         ];
 
         $return = [];
-
         foreach( $params as $key => $value ) {
-
             $found = preg_match_all( $value, $content, $result );
-
-            if( $found ) {
-                $return[ $key ] = $result[ 1 ][ 0 ];
-            } else {
-                $return[ $key ] = false;
-            }
-
+            $return[ $key ] = $found ? $result[ 1 ][ 0 ] : false;
         }
 
         return $return;
