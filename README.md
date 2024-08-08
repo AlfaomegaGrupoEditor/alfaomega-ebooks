@@ -1,119 +1,52 @@
-# Plugin Name 
-Contributors: (this should be a list of wordpress.org userid's)
-Donate link: https://github.com/livan2r/
-Tags: comments, spam
-Requires at least: 3.0.1
-Tested up to: 3.4
-Stable tag: 4.3
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+# Alfaomega eBooks
+- **Contributors**: livan2r@alfaomega.com.mx
+- **Tags**: Alfaomega, Libros digitales, eBooks, WooCommerce
+- Requires at least **WordPress: 5.8** and **WooCommerce 5.5**
+- Tested up to: **6.2.6**
+- **License**: GPLv2 or later
+- **License URI**: http://www.gnu.org/licenses/gpl-2.0.html
 
-Here is a short description of the plugin.  This should be no more than 150 characters.  No markup here.
-
-##  References
-https://medium.com/@paulmiller3000/how-to-extend-woocommerce-with-the-wordpress-plugin-boilerplate-adac178b5a9b
-https://github.com/paulmiller3000/wordpress-plugin-boilerplate-woocommerce?tab=readme-ov-file
-https://www.sitepoint.com/handling-post-requests-the-wordpress-way/
+**Alfaomega eBooks** Manager to import, update, and synchronize **digital eBooks** with **WooCommerce products**.
 
 ##  Description
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+Alfaomega eBooks Manager provides a way to synchronize WooCommerce products to the **Alfaomega eBooks Platform**.
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+The plugin offers the following features to the WordPress admin:
+- **Import** eBooks from Alfaomega eBooks Platform to WooCommerce products. Given a WooCommerce product, the plugin will search for the corresponding eBook in the Alfaomega eBooks Platform, **import** it, and **convert the single product into a variable product**, with the buying options: **Printed**, **Digital**, and the combo **Printed + Digital**.
+- Plugin **configuration** to manage and connect the WP site with the Alfaomega eBooks Platform.
+  - **General configuration**: `Username`, `password`, `notifications`, and `import limits`
+  - **eBooks Platform**: App setup to connect with Alfaomega eBooks Platform
+  - **API Settings**: `Token Url`, `API server`, `Client ID`, and `Client secret` provided by **Alfaomega Grupo Editor**.
+  - **Product Options**: Setup `Format` attribute and option prices. The printed price is the base price, and the digital and combo prices are calculated based on the printed price and the percentage configured.
+  - **Queue Import and Refresh eBooks products**: It is possible to import and synchronize Alfaomega eBooks one by one from the Products list, but also the plugin provides a **batch import** to automatically grab all new eBooks available for your account in the Alfaomega Platform, **link to existed products** and **create the respective product variants** with the configured price. Furthermore, the plugin provides a way to **refresh the eBooks** products to update the eBook information.
 
-A few notes about the sections above:
+For the customer, **Alfaomega eBooks** adds the following features to the WooCommerce store:
+- **Add the buying options**: `Printed`, `Digital`, or the combo `Printed + Digital` to the product page.
+- If the customer buys the combo `Printed + Digital`, or `digital` the plugin will **add to the invoice** notification email a **link to download the eBook PDF**. Complementary to the offline digital version the customer will be able to **read online** the acquired eBook on the **Alfaomega eBook Platform**.
+- The **download link** will be also **added** to the customer's Download list on his account page.
+- All the eBooks the customer bought will be **accessible through the myEbooks digital library** for online read.
 
-*   "Contributors" is a comma separated list of wp.org/wp-plugins.org usernames
-*   "Tags" is a comma separated list of tags that apply to the plugin
-*   "Requires at least" is the lowest version that the plugin will work on
-*   "Tested up to" is the highest version that you've *successfully used to test the plugin*. Note that it might work on
-higher versions... this is just the highest one you've verified.
-*   Stable tag should indicate the Subversion "tag" of the latest stable version, or "trunk," if you use `/trunk/` for
-stable.
-
-    Note that the `readme.txt` of the stable tag is the one that is considered the defining one for the plugin, so
-if the `/trunk/readme.txt` file says that the stable tag is `4.3`, then it is `/tags/4.3/readme.txt` that'll be used
-for displaying information about the plugin.  In this situation, the only thing considered from the trunk `readme.txt`
-is the stable tag pointer.  Thus, if you develop in trunk, you can update the trunk `readme.txt` to reflect changes in
-your in-development version, without having that information incorrectly disclosed about the current stable version
-that lacks those changes -- as long as the trunk's `readme.txt` points to the correct stable tag.
-
-    If no stable tag is provided, it is assumed that trunk is stable, but you should specify "trunk" if that's where
-you put the stable version, in order to eliminate any doubt.
+##  Requirements
+- PHP 7.4 or higher
+- WordPress 5.8 or higher
+- WooCommerce 5.5 or higher
+- WooCommerce REST API v3 or higher
+- WooCommerce API Key
+- Alfaomega eBooks account
 
 ##  Installation
 
-This section describes how to install the plugin and get it working.
+1. Upload `alfaomega-ebooks` to the `/wp-content/plugins/` directory. The recommended way is to use the WordPress plugin [WP Pusher](https://wppusher.com/) and set up the GitHub repository [Alfaomega eBooks](https://github.com/AlfaomegaGrupoEditor/alfaomega-ebooks) on branch `Main` in order to receive the code updates automatically.
+2. Setup in the WordPress `wp-config.php` file the WooCommerce API credentials. If you don't have the `WooCommerce API keys`, you can generate them in the `WooCommerce settings`. You can find more information in the [WooCommerce REST API documentation](https://woocommerce.github.io/woocommerce-rest-api-docs/#authentication).
+```PHP
+/** WooCommerce API keys */
+define( 'WOOCOMMERCE_API_KEY', 'ck_*************************');
+define( 'WOOCOMMERCE_API_SECRET', 'cs_*************************');
+define( 'WCPAY_DEV_MODE', false );
+```
+3. Activate the plugin through the `Plugins` menu in WordPress.
+4. Go to the plugin settings page and configure the plugin options. The `username`, `password`, `panel client`, `client id` and `client secret` are provided by `Alfaomega Grupo Editor`. Please contact them to get the credentials. 
+5. Make sure your site has configured Permalinks to Post name. `Go to Settings > Permalinks and select Post name`.
 
-e.g.
-
-1. Upload `alfaomega-ebooks.php` to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Place `<?php do_action('plugin_name_hook'); ?>` in your templates
-
-##  Frequently Asked Questions
-
-= A question that someone might have =
-
-An answer to that question.
-
-= What about foo bar? =
-
-Answer to foo bar dilemma.
-
-##  Screenshots
-
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
-
-##  Changelog
-
-= 1.0 =
-* A change since the previous version.
-* Another change.
-
-= 0.5 =
-* List versions from most recent at top to oldest at bottom.
-
-##  Upgrade Notice
-
-= 1.0 =
-Upgrade notices describe the reason a user should upgrade.  No more than 300 characters.
-
-= 0.5 =
-This version fixes a security related bug.  Upgrade immediately.
-
-##  Arbitrary section
-
-You may provide arbitrary sections, in the same format as the ones above.  This may be of use for extremely complicated
-plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
-"installation."  Arbitrary sections will be shown below the built-in sections outlined above.
-
-##  A brief Markdown Example
-
-Ordered list:
-
-1. Some feature
-1. Another feature
-1. Something else about the plugin
-
-Unordered list:
-
-* something
-* something else
-* third thing
-
-Here's a link to [WordPress](http://wordpress.org/ "Your favorite software") and one to [Markdown's Syntax Documentation][markdown syntax].
-Titles are optional, naturally.
-
-[markdown syntax]: http://daringfireball.net/projects/markdown/syntax
-            "Markdown is what the parser uses to process much of the readme file"
-
-Markdown uses email style notation for blockquotes and I've been told:
-> Asterisks for *emphasis*. Double it up  for **strong**.
-
-`<?php code(); // goes in backticks ?>`
+## How to use
