@@ -10,6 +10,7 @@ use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\Variant;
 use AlfaomegaEbooks\Services\eBooks\Process\LinkEbook;
 use AlfaomegaEbooks\Services\eBooks\Process\LinkProduct;
 use Automattic\WooCommerce\Client;
+use \Exception;
 
 class WooCommerceManager extends AbstractManager
 {
@@ -72,18 +73,20 @@ class WooCommerceManager extends AbstractManager
 
     /**
      * Initialize the WooCommerce client.
+     * @param \AlfaomegaEbooks\Services\Alfaomega\Api $api
+     * @param array $settings
      *
+     * @throws Exception
      */
     public function __construct(Api $api, array $settings)
     {
         parent::__construct($api, $settings);
-        $woocommerce = $this->getWoocommerceConstants();
-        if (!empty($woocommerce)) {
-            $this->WOOCOMMERCE_API_KEY = $woocommerce['WOOCOMMERCE_API_KEY'];
-            $this->WOOCOMMERCE_API_SECRET = $woocommerce['WOOCOMMERCE_API_SECRET'];
+        $woocommerceCredentials = $this->getWoocommerceConstants();
+        if (empty($woocommerceCredentials)) {
+            throw new Exception('WooCommerce credentials are not set.');
         }
 
-        $this->init();
+        $this->init($woocommerceCredentials);
 
         $this->format = new Attribute($this->client, $settings);
         $this->tag = new Tag($this->client, $settings);
@@ -99,13 +102,15 @@ class WooCommerceManager extends AbstractManager
     /**
      * Initialize the WooCommerce client.
      *
+     * @param array $credentials
+     *
      * @return self
      */
-    public function init(): self {
+    public function init(array $credentials): self {
         $this->client = new Client(
             get_site_url(),
-            $this->WOOCOMMERCE_API_KEY,
-            $this->WOOCOMMERCE_API_SECRET,
+            $credentials['WOOCOMMERCE_API_KEY'],
+            $credentials['WOOCOMMERCE_API_SECRET'],
             [
                 'wp_api'           => self::WOOCOMMERCE_WP_API,
                 'version'          => self::WOOCOMMERCE_VERSION,
