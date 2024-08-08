@@ -31,4 +31,43 @@ class AbstractManager
         $this->settings = $settings;
         return $this;
     }
+
+    /**
+     * Get the WooCommerce constants.
+     *
+     * This method is used to get the WooCommerce constants from the wp-config.php file.
+     * It reads the content of the wp-config.php file, extracts the WooCommerce constants, and returns them as an array.
+     *
+     * @return array|null The WooCommerce constants.
+     */
+    public function getWoocommerceConstants(): ?array
+    {
+        $content = @file_get_contents( '../../../../../../../wp-config.php' );
+
+        if( ! $content ) {
+            return null;
+        }
+
+        $params = [
+            'WOOCOMMERCE_API_KEY' => "/define.+?'WOOCOMMERCE_API_KEY'.+?'(.*?)'.+/",
+            'WOOCOMMERCE_API_SECRET' => "/define.+?'WOOCOMMERCE_API_SECRET'.+?'(.*?)'.+/",
+            'WCPAY_DEV_MODE' => "/define.+?'WCPAY_DEV_MODE'.+?'(.*?)'.+/",
+        ];
+
+        $return = [];
+
+        foreach( $params as $key => $value ) {
+
+            $found = preg_match_all( $value, $content, $result );
+
+            if( $found ) {
+                $return[ $key ] = $result[ 1 ][ 0 ];
+            } else {
+                $return[ $key ] = false;
+            }
+
+        }
+
+        return $return;
+    }
 }

@@ -623,9 +623,11 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                     return [];
                 }
             }
+            // Check if the ebook attribute was configured already
+            SettingsManager::make()->checkEbookAttr();
 
             // Check if the format attribute was configured already
-            return SettingsManager::make()->check($new_input);
+            return SettingsManager::make()->checkFormatAttr($new_input);
         }
     }
 }

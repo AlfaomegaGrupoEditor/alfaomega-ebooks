@@ -1,13 +1,13 @@
 <?php
 
 /**
- * @link              https://github.com/livan2r
+ * @link              https://github.com/AlfaomegaGrupoEditor/alfaomega-ebooks
  * @since             1.0.0
  * @package           Alfaomega_Ebooks
  *
  * @wordpress-plugin
  * Plugin Name:       Alfaomega eBooks
- * Plugin URI:        https://www.bnbcomputerservices.com/wordpress/alfaomega-ebooks
+ * Plugin URI:        https://github.com/AlfaomegaGrupoEditor/alfaomega-ebooks
  * Description:       Alfaomega eBooks Manager to import, update, and synchronize digital eBooks with WooCommerce products.
  * Version:           1.0.0
  * Author:            B&B Computer Services Corp.

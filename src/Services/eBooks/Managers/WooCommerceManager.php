@@ -13,10 +13,12 @@ use Automattic\WooCommerce\Client;
 
 class WooCommerceManager extends AbstractManager
 {
-    const bool WOOCOMMERCE_WP_API = true;
-    const string WOOCOMMERCE_VERSION = 'wc/v3';
-    const bool WOOCOMMERCE_VERIFY_SSL = false;
-    const int WOOCOMMERCE_TIMEOUT = 180; // 3 minutes
+    const WOOCOMMERCE_WP_API = true;
+    const WOOCOMMERCE_VERSION = 'wc/v3';
+    const WOOCOMMERCE_VERIFY_SSL = false;
+    const WOOCOMMERCE_TIMEOUT = 180; // 3 minutes
+    protected string $WOOCOMMERCE_API_KEY;
+    protected string $WOOCOMMERCE_API_SECRET;
 
     /**
      * @var Client|null $woocommerce
@@ -32,6 +34,13 @@ class WooCommerceManager extends AbstractManager
      * It is used to interact with the WooCommerce product attributes.
      */
     protected Attribute $format;
+
+    /**
+     * @var Attribute $ebook
+     * This protected property holds an instance of the Attribute class.
+     * It is used to interact with the WooCommerce product attributes.
+     */
+    protected Attribute $ebook;
 
     /**
      * @var Tag $tag
@@ -79,6 +88,12 @@ class WooCommerceManager extends AbstractManager
         );
         $this->linkProduct = new LinkProduct($settings, $this->product);
         $this->linkEbook = new LinkEbook($settings, $this->product);
+
+        $woocommerce = $this->getWoocommerceConstants();
+        if (!empty($woocommerce)) {
+            $this->WOOCOMMERCE_API_KEY = $woocommerce['WOOCOMMERCE_API_KEY'];
+            $this->WOOCOMMERCE_API_SECRET = $woocommerce['WOOCOMMERCE_API_SECRET'];
+        }
     }
 
     /**
@@ -89,8 +104,8 @@ class WooCommerceManager extends AbstractManager
     public function init(): self {
         $this->client = new Client(
             get_site_url(),
-            WOOCOMMERCE_API_KEY,
-            WOOCOMMERCE_API_SECRET,
+            $this->WOOCOMMERCE_API_KEY,
+            $this->WOOCOMMERCE_API_SECRET,
             [
                 'wp_api'           => self::WOOCOMMERCE_WP_API,
                 'version'          => self::WOOCOMMERCE_VERSION,
@@ -113,6 +128,19 @@ class WooCommerceManager extends AbstractManager
     public function format(): Attribute
     {
         return $this->format;
+    }
+
+    /**
+     * Get the ebook attribute.
+     *
+     * This method is used to get the ebook attribute of the WooCommerce product.
+     * The format attribute is an instance of the Attribute class and is used to interact with the WooCommerce product attributes.
+     *
+     * @return Attribute The ebook attribute of the WooCommerce product.
+     */
+    public function ebook(): Attribute
+    {
+        return $this->ebook;
     }
 
     /**

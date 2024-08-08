@@ -59,6 +59,26 @@ class SettingsManager
     }
 
     /**
+     * Check the existence of the eBook attribute.
+     * @return void
+     * @throws \Exception
+     */
+    public function checkEbookAttr(): void
+    {
+        $ebookAttribute = Service::make()
+            ->wooCommerce()
+            ->ebook()
+            ->updateOrCreate('pa_ebook', [
+                'name' => 'eBook',
+                'slug' => 'pa_ebook'
+            ]);
+
+        if (empty($ebookAttribute)) {
+            throw new \Exception('The ebook attribute could not be created.');
+        }
+    }
+
+    /**
      * Check the settings.
      *
      * This method checks the settings values and updates them if necessary.
@@ -67,7 +87,7 @@ class SettingsManager
      * @return bool True if the settings are valid, false otherwise.
      * @throws \Exception If the format attribute could not be created.
      */
-    public function check(array $values = []): array
+    public function checkFormatAttr(array $values = []): array
     {
         // check if the format attribute was configured already
         if (isset($this->values['alfaomega_ebooks_format_attr_id']) &&
