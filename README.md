@@ -1,52 +1,52 @@
 # Alfaomega eBooks
-- **Contributors**: livan2r@alfaomega.com.mx
-- **Tags**: Alfaomega, Libros digitales, eBooks, WooCommerce
-- Requires at least **WordPress: 5.8** and **WooCommerce 5.5**
-- Tested up to: **6.2.6**
-- **License**: GPLv2 or later
-- **License URI**: http://www.gnu.org/licenses/gpl-2.0.html
+- **Contributors**: livan2r@alfaomega.com.mx 
+- **Tags**: Alfaomega, Libros digitales, eBooks, WooCommerce 
+- Requires at least **WordPress: 5.8** and **WooCommerce 5.5** 
+- Tested up to: **6.2.6** 
+- **License**: GPLv2 or later 
+- **License URI**: http://www.gnu.org/licenses/gpl-2.0.html 
 
-**Alfaomega eBooks** Manager to import, update, and synchronize **digital eBooks** with **WooCommerce products**.
+**Administrador de eBooks de Alfaomega** para importar, actualizar y sincronizar **eBooks digitales** con **productos WooCommerce**.
 
-##  Description
+##  Descripción
 
-Alfaomega eBooks Manager provides a way to synchronize WooCommerce products to the **Alfaomega eBooks Platform**.
+Alfaomega eBooks Manager proporciona una forma de sincronizar los productos de WooCommerce con la **Plataforma de libros electrónicos Alfaomega**.  
 
-The plugin offers the following features to the WordPress admin:
-- **Import** eBooks from Alfaomega eBooks Platform to WooCommerce products. Given a WooCommerce product, the plugin will search for the corresponding eBook in the Alfaomega eBooks Platform, **import** it, and **convert the single product into a variable product**, with the buying options: **Printed**, **Digital**, and the combo **Printed + Digital**.
-- Plugin **configuration** to manage and connect the WP site with the Alfaomega eBooks Platform.
-  - **General configuration**: `Username`, `password`, `notifications`, and `import limits`
-  - **eBooks Platform**: App setup to connect with Alfaomega eBooks Platform
-  - **API Settings**: `Token Url`, `API server`, `Client ID`, and `Client secret` provided by **Alfaomega Grupo Editor**.
-  - **Product Options**: Setup `Format` attribute and option prices. The printed price is the base price, and the digital and combo prices are calculated based on the printed price and the percentage configured.
-  - **Queue Import and Refresh eBooks products**: It is possible to import and synchronize Alfaomega eBooks one by one from the Products list, but also the plugin provides a **batch import** to automatically grab all new eBooks available for your account in the Alfaomega Platform, **link to existed products** and **create the respective product variants** with the configured price. Furthermore, the plugin provides a way to **refresh the eBooks** products to update the eBook information.
+El plugin ofrece las siguientes características al administrador de WordPress:
+- **Importar** eBooks desde la Plataforma Alfaomega eBooks a productos WooCommerce. Dado un producto WooCommerce, el plugin buscará el eBook correspondiente en la Plataforma Alfaomega eBooks, lo **importará** y **convertirá el producto simple en un producto variable**, con las opciones de compra: **Impreso**, **Digital** y el combo **Impreso + Digital**.
+- **Configuración** del plugin para administrar y conectar el sitio WP con la Plataforma Alfaomega eBooks.
+- **Configuración general**: `Usuario`, `contraseña`, `notificaciones` y `límites de importación`.
+- **Plataforma eBooks**: Configuración de la aplicación para conectar con la Plataforma Alfaomega eBooks
+- **Configuración API**: `Token Url`, `API server`, `Client ID` y `Client secret` proporcionados por **Alfaomega Grupo Editor**.
+- **Opciones del producto**: Configurar precio de cada opción y el atributo formato. El precio del libro impreso es el precio base, y los precios digitales y combo se calculan en base al precio impreso y el porcentaje configurado.
+- **Importación y actualización de productos de libros electrónicos en cola**: es posible importar y sincronizar los libros electrónicos de Alfaomega uno por uno desde la lista de productos, pero el complemento también proporciona una **importación por lotes** para importar automáticamente todos los nuevos libros electrónicos disponibles para su cuenta en la plataforma Alfaomega, **vincularlos a productos existentes** y **crear las variantes de producto** respectivas con el precio configurado. Además, el complemento proporciona una forma de actualizar los productos de libros electrónicos ya importados para **actualizar la información de los libros electrónicos**.
 
-For the customer, **Alfaomega eBooks** adds the following features to the WooCommerce store:
-- **Add the buying options**: `Printed`, `Digital`, or the combo `Printed + Digital` to the product page.
-- If the customer buys the combo `Printed + Digital`, or `digital` the plugin will **add to the invoice** notification email a **link to download the eBook PDF**. Complementary to the offline digital version the customer will be able to **read online** the acquired eBook on the **Alfaomega eBook Platform**.
-- The **download link** will be also **added** to the customer's Download list on his account page.
-- All the eBooks the customer bought will be **accessible through the myEbooks digital library** for online read.
+Para el cliente, **Alfaomega eBooks** añade las siguientes características a la tienda WooCommerce:
+- **Añade las opciones de compra**: `Impreso`, `Digital` o el combo `Impreso + Digital` a la página del producto.
+- Si el cliente compra el combo `Impreso + Digital` o solo `digital`, el plugin añadirá al email de notificación de factura un **enlace para descargar el PDF** del eBook. Como complemento a la versión digital offline, el cliente podrá **leer online** el eBook adquirido en la **Plataforma de eBooks Alfaomega**.
+- El **enlace de descarga** también se añadirá a la lista de **Descargas del cliente** en la página de su cuenta.
+- Todos los eBooks que el cliente haya comprado estarán **accesibles a través de la biblioteca digital myEbooks** para su lectura online.
 
-##  Requirements
+##  Requisitos
 - PHP 7.4 or higher
 - WordPress 5.8 or higher
 - WooCommerce 5.5 or higher
 - WooCommerce REST API v3 or higher
 - WooCommerce API Key
-- Alfaomega eBooks account
+- Cuenta en Alfaomega eBooks
 
-##  Installation
+##  Instalación
 
-1. Upload `alfaomega-ebooks` to the `/wp-content/plugins/` directory. The recommended way is to use the WordPress plugin [WP Pusher](https://wppusher.com/) and set up the GitHub repository [Alfaomega eBooks](https://github.com/AlfaomegaGrupoEditor/alfaomega-ebooks) on branch `Main` in order to receive the code updates automatically.
-2. Setup in the WordPress `wp-config.php` file the WooCommerce API credentials. If you don't have the `WooCommerce API keys`, you can generate them in the `WooCommerce settings`. You can find more information in the [WooCommerce REST API documentation](https://woocommerce.github.io/woocommerce-rest-api-docs/#authentication).
+1. Copiar `alfaomega-ebooks` al directorio `/wp-content/plugins/`. La forma recomendada es usar el plugin de WordPress [WP Pusher](https://wppusher.com/) y configurar el repositorio de GitHub [Alfaomega eBooks](https://github.com/AlfaomegaGrupoEditor/alfaomega-ebooks) en la rama `Main` para recibir las actualizaciones del código automáticamente.
+2. Configura en el archivo `wp-config.php` de WordPress las credenciales de la API de WooCommerce. Si no tienes las `claves de la API de WooCommerce`, puedes generarlas en la `configuración de WooCommerce`. Puedes encontrar más información en la [documentación de la API REST de WooCommerce](https://woocommerce.github.io/woocommerce-rest-api-docs/#authentication).
 ```PHP
 /** WooCommerce API keys */
 define( 'WOOCOMMERCE_API_KEY', 'ck_*************************');
 define( 'WOOCOMMERCE_API_SECRET', 'cs_*************************');
 define( 'WCPAY_DEV_MODE', false );
 ```
-3. Activate the plugin through the `Plugins` menu in WordPress.
-4. Go to the plugin settings page and configure the plugin options. The `username`, `password`, `panel client`, `client id` and `client secret` are provided by `Alfaomega Grupo Editor`. Please contact them to get the credentials. 
-5. Make sure your site has configured Permalinks to Post name. `Go to Settings > Permalinks and select Post name`.
+3. Activa el complemento a través del menú «Complementos» en WordPress.
+4. Go to the plugin settings page and configure the plugin options. The `username`, `password`, `panel client`, `client id`, and `client secret` are provided by `Alfaomega Grupo Editor`. Please contact them to get the credentials. 
+5. Asegúrese de que su sitio haya configurado enlaces permanentes en el nombre de la publicación. Vaya a Configuración > Enlaces permanentes y seleccione Nombre de la entrada.
 
-## How to use
+## Cómo utilizar
