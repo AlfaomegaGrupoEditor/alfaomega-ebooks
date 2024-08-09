@@ -213,4 +213,39 @@ class Alfaomega_Ebooks_Admin {
 
         return $actions;
     }
+
+    /**
+     * Adds custom fields to the WooCommerce product editor.
+     *
+     * This method adds a custom text input field to the WooCommerce product editor. The field is used to store the ISBN of an eBook.
+     */
+    public function woocommerce_product_custom_fields(): void
+    {
+        global $woocommerce, $post;
+        echo '<div class=" product_custom_field ">';
+        woocommerce_wp_text_input(
+            array(
+                'id' => 'alfaomega_ebooks_ebook_isbn',
+                'placeholder' => 'NUMERO ISBN',
+                'label' => __('eBook ISBN', 'woocommerce'),
+                'desc_tip' => 'true'
+            )
+        );
+        echo '</div>';
+    }
+
+    /**
+     * Saves the custom fields for the WooCommerce product editor.
+     *
+     * This method saves the custom field data for the WooCommerce product editor. It saves the ISBN of an eBook.
+     *
+     * @param int $post_id The ID of the post being saved.
+     */
+    public function woocommerce_product_custom_fields_save($post_id): void
+    {
+        $woocommerce_alfaomega_ebooks_ebook_isbn = $_POST['alfaomega_ebooks_ebook_isbn'];
+        if (!empty($woocommerce_alfaomega_ebooks_ebook_isbn)) {
+            update_post_meta($post_id, 'alfaomega_ebooks_ebook_isbn', esc_attr($woocommerce_alfaomega_ebooks_ebook_isbn));
+        }
+    }
 }
