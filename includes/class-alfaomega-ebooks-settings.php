@@ -35,10 +35,18 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
          */
         public function __construct()
         {
-            self::$generalOptions = get_option('alfaomega_ebooks_general_options');
-            self::$platformOptions = get_option('alfaomega_ebooks_platform_options');
-            self::$apiOptions = get_option('alfaomega_ebooks_api_options');
-            self::$productOptions = get_option('alfaomega_ebooks_product_options');
+            if ($generalOptions= get_option('alfaomega_ebooks_general_options')) {
+                self::$generalOptions = $generalOptions;
+            }
+            if ($platformOptions = get_option('alfaomega_ebooks_platform_options')) {
+                self::$platformOptions = $platformOptions;
+            }
+            if ($apiOptions = get_option('alfaomega_ebooks_api_options')) {
+                self::$apiOptions = $apiOptions;
+            }
+            if ($productOptions = get_option('alfaomega_ebooks_product_options')) {
+                self::$productOptions = $productOptions;
+            }
 
             add_action( 'admin_init', array( $this, 'admin_init' ) );
         }
