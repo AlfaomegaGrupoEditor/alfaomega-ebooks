@@ -60,22 +60,31 @@ class SettingsManager
 
     /**
      * Check the existence of the eBook attribute.
-     * @return void
+     * @param array $values
+     *
+     * @return array
      * @throws \Exception
      */
-    public function checkEbookAttr(): void
+    public function checkEbookAttr(array $values = []): array
     {
-        $ebookAttribute = Service::make()
-            ->wooCommerce()
-            ->ebook()
-            ->updateOrCreate('pa_ebook', [
-                'name' => 'eBook',
-                'slug' => 'pa_ebook'
-            ]);
+        if (isset($values['alfaomega_ebooks_ebook_attr_id']) &&
+            empty($values['alfaomega_ebooks_ebook_attr_id']) ) {
+            $ebookAttribute = Service::make()
+                ->wooCommerce()
+                ->ebook()
+                ->updateOrCreate('pa_ebook', [
+                    'name' => 'eBook',
+                    'slug' => 'pa_ebook'
+                ]);
 
-        if (empty($ebookAttribute)) {
-            throw new \Exception('The ebook attribute could not be created.');
+            if (empty($ebookAttribute)) {
+                throw new \Exception('The ebook attribute could not be created.');
+            }
+
+            $values['alfaomega_ebooks_ebook_attr_id'] = $ebookAttribute->id;
         }
+
+        return $values;
     }
 
     /**
@@ -90,8 +99,8 @@ class SettingsManager
     public function checkFormatAttr(array $values = []): array
     {
         // check if the format attribute was configured already
-        if (isset($this->values['alfaomega_ebooks_format_attr_id']) &&
-            empty($this->values['alfaomega_ebooks_format_attr_id']) ) {
+        if (isset($values['alfaomega_ebooks_format_attr_id']) &&
+            empty($values['alfaomega_ebooks_format_attr_id']) ) {
             $formatAttribute = Service::make()
                 ->wooCommerce()
                 ->format()

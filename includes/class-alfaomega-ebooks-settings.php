@@ -78,8 +78,9 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
             } else {
                 self::$productOptions = [
                     'alfaomega_ebooks_format_attr_id' => $_ENV['AO_EBOOK_FORMAT_ATTR_ID'] ?? '0',
+                    'alfaomega_ebooks_ebook_attr_id' => $_ENV['AO_EBOOK_EBOOK_ATTR_ID'] ?? '0',
                     'alfaomega_ebooks_price' => $_ENV['AO_EBOOK_PRICE'] ?? 80,
-                    'alfaomega_ebooks_printed_digital_price' => $_ENV['AO_EBOOK_PRINTED_DIGITAL_PRICE'] ?? 130
+                    'alfaomega_ebooks_printed_digital_price' => $_ENV['AO_EBOOK_COMBO_PRICE'] ?? 130
                 ];
             }
 
@@ -277,7 +278,16 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 [$this, 'alfaomega_ebooks_format_attr_id_callback'],
                 'alfaomega_ebooks_page5',
                 'alfaomega_ebooks_fifth_section',
-                ['label_for' => 'alfaomega_ebooks_price']
+                ['label_for' => 'alfaomega_ebooks_format_attr_id']
+            );
+
+            add_settings_field(
+                'alfaomega_ebooks_ebook_attr_id',
+                esc_html__('eBook Attribute Id', 'alfaomega-ebooks'),
+                [$this, 'alfaomega_ebooks_ebook_attr_id_callback'],
+                'alfaomega_ebooks_page5',
+                'alfaomega_ebooks_fifth_section',
+                ['label_for' => 'alfaomega_ebooks_ebook_attr_id']
             );
 
             add_settings_field(
@@ -609,7 +619,27 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 size="50"
                 value="<?php echo isset(self::$productOptions['alfaomega_ebooks_format_attr_id']) ? esc_attr(self::$productOptions['alfaomega_ebooks_format_attr_id']) : ''; ?>"
             >
-            <p class="description"> <? esc_html_e("Attribute Id to create the product variants. Left empty to create automatically.", 'alfaomega-ebooks') ?> </p>
+            <p class="description"> <? esc_html_e("Attribute Id to create the product variants. Left empty to create automatically on save.", 'alfaomega-ebooks') ?> </p>
+            <?php
+        }
+
+        /**
+         * Render the client field
+         * @return void
+         * @since 1.0.0
+         * @access public
+         */
+        public function alfaomega_ebooks_ebook_attr_id_callback(): void
+        {
+            ?>
+            <input
+                type="number"
+                name="alfaomega_ebooks_product_options[alfaomega_ebooks_ebook_attr_id]"
+                id="alfaomega_ebooks_price"
+                size="50"
+                value="<?php echo isset(self::$productOptions['alfaomega_ebooks_ebook_attr_id']) ? esc_attr(self::$productOptions['alfaomega_ebooks_ebook_attr_id']) : ''; ?>"
+            >
+            <p class="description"> <? esc_html_e("Attribute Id to link products to eBooks. Left empty to create automatically on save.", 'alfaomega-ebooks') ?> </p>
             <?php
         }
 
@@ -656,7 +686,12 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                     'alfaomega_ebooks_api' => esc_url_raw($value),
                     default => sanitize_text_field($value),
                 };
-                if (empty($value) && !in_array($key, ['alfaomega_ebooks_active', 'alfaomega_ebooks_format_attr_id'])) {
+                if (empty($value) && !in_array($key, [
+                        'alfaomega_ebooks_active',
+                        'alfaomega_ebooks_import_from_latest',
+                        'alfaomega_ebooks_format_attr_id' ,
+                        'alfaomega_ebooks_ebook_attr_id'
+                    ])) {
                     add_settings_error(
                         'alfaomega_ebook_options',
                         'alfaomega_ebook_message',
@@ -666,11 +701,14 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                     return [];
                 }
             }
+
             // Check if the ebook attribute was configured already
-            SettingsManager::make()->checkEbookAttr();
+            $new_input = SettingsManager::make()->checkEbookAttr($new_input);
 
             // Check if the format attribute was configured already
-            return SettingsManager::make()->checkFormatAttr($new_input);
+            $new_input = SettingsManager::make()->checkFormatAttr($new_input);
+
+            return $new_input;
         }
     }
 }
