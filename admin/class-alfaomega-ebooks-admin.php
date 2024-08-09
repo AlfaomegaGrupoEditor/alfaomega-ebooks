@@ -248,4 +248,37 @@ class Alfaomega_Ebooks_Admin {
             update_post_meta($post_id, 'alfaomega_ebooks_ebook_isbn', esc_attr($woocommerce_alfaomega_ebooks_ebook_isbn));
         }
     }
+
+    /**
+     * Adds a custom column to the WooCommerce product list table.
+     *
+     * This method adds a custom column to the WooCommerce product list table. The custom column displays the ISBN of an eBook.
+     *
+     * @param array $columns An array of existing columns in the product list table.
+     * @return array The modified array of columns.
+     */
+    public function cs_set_custom_columns($columns): array
+    {
+        $columns['ebook_isbn'] = __('eBook', 'cs-text');
+
+        return $columns;
+    }
+
+    /**
+     * Displays the content of the custom column in the WooCommerce product list table.
+     *
+     * This method displays the content of the custom column in the WooCommerce product list table. The custom column displays the ISBN of an eBook.
+     *
+     * @param string $column The name of the custom column.
+     * @param int $post_id The ID of the post being displayed.
+     */
+    function cs_custom_column( $column, $post_id ): void
+    {
+        switch ( $column ) {
+            case 'ebook_isbn' : // This has to match to the defined column in function above
+                $get_ebook_isbn = get_field('alfaomega_ebooks_ebook_isbn', $post_id);
+                echo !empty($get_ebook_isbn) ? "<span>$get_ebook_isbn</span>" : '';
+                break;
+        }
+    }
 }
