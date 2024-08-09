@@ -10,6 +10,7 @@ class ComposerStaticInitcd53d4cc421fe0b70226223f299ac0ad
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
     );
 
@@ -18,12 +19,22 @@ class ComposerStaticInitcd53d4cc421fe0b70226223f299ac0ad
         array (
             'Symfony\\Polyfill\\Php80\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
+            'Symfony\\Polyfill\\Ctype\\' => 23,
             'Symfony\\Contracts\\Translation\\' => 30,
             'Symfony\\Component\\Translation\\' => 30,
         ),
         'P' => 
         array (
             'Psr\\Clock\\' => 10,
+            'PhpOption\\' => 10,
+        ),
+        'G' => 
+        array (
+            'GrahamCampbell\\ResultType\\' => 26,
+        ),
+        'D' => 
+        array (
+            'Dotenv\\' => 7,
         ),
         'C' => 
         array (
@@ -46,6 +57,10 @@ class ComposerStaticInitcd53d4cc421fe0b70226223f299ac0ad
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
         ),
+        'Symfony\\Polyfill\\Ctype\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
         'Symfony\\Contracts\\Translation\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/translation-contracts',
@@ -57,6 +72,18 @@ class ComposerStaticInitcd53d4cc421fe0b70226223f299ac0ad
         'Psr\\Clock\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/clock/src',
+        ),
+        'PhpOption\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption',
+        ),
+        'GrahamCampbell\\ResultType\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/graham-campbell/result-type/src',
+        ),
+        'Dotenv\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
         ),
         'Carbon\\Doctrine\\' => 
         array (
