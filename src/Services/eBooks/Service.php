@@ -6,6 +6,7 @@ use AlfaomegaEbooks\Services\eBooks\Managers\EbookManager;
 use AlfaomegaEbooks\Services\eBooks\Managers\QueueManager;
 use AlfaomegaEbooks\Services\eBooks\Managers\SettingsManager;
 use AlfaomegaEbooks\Services\eBooks\Managers\WooCommerceManager;
+use Dotenv\Dotenv;
 
 /**
  * eBooks service.
@@ -52,6 +53,7 @@ class Service
         $this->ebooksManager = new EbookManager($this->api, $settings);
         $this->queueManager = new QueueManager($this->api, $settings);
         $this->wooCommerceManager = new WooCommerceManager($this->api, $settings);
+        $this->loadEnv();
     }
 
     /**
@@ -86,5 +88,24 @@ class Service
     public function wooCommerce(): WooCommerceManager
     {
         return $this->wooCommerceManager;
+    }
+
+    protected function loadEnv(): void
+    {
+        $dotenv = Dotenv::createImmutable(ABSPATH . "/wp-content/plugins/alfaomega-ebooks");
+        $dotenv->load();
+    }
+
+    /**
+     * Get the environment variable.
+     *
+     * @param string $key The key of the environment variable.
+     * @param mixed $default The default value of the environment variable.
+     *
+     * @return mixed The value of the environment variable.
+     */
+    public function env(string $key, mixed $default = null): mixed
+    {
+        return $_ENV[$key] ?? $default;
     }
 }

@@ -35,17 +35,52 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
          */
         public function __construct()
         {
+            // General settings
             if ($generalOptions= get_option('alfaomega_ebooks_general_options')) {
                 self::$generalOptions = $generalOptions;
+            } else {
+                self::$generalOptions = [
+                    'alfaomega_ebooks_active' => $_ENV['AO_EBOOK_ACTIVE'] === 'true',
+                    'alfaomega_ebooks_username' => $_ENV['AO_EBOOK_USERNAME'] ?? 'username',
+                    'alfaomega_ebooks_password' => $_ENV['AO_EBOOK_PASSWORD'] ?? 'password',
+                    'alfaomega_ebooks_notify_to' => $_ENV['AO_EBOOK_NOTIFY_TO'] ?? 'your_email@domain.com',
+                    'alfaomega_ebooks_import_limit' => $_ENV['AO_EBOOK_IMPORT_LIMIT'] ?? 1000,
+                    'alfaomega_ebooks_import_from_latest' => $_ENV['AO_EBOOK_IMPORT_FROM_LATEST'] === 'true'
+                ];
             }
+
+            // Platform settings
             if ($platformOptions = get_option('alfaomega_ebooks_platform_options')) {
                 self::$platformOptions = $platformOptions;
+            } else {
+                self::$platformOptions = [
+                    'alfaomega_ebooks_reader' => $_ENV['AO_EBOOK_READER'] ?? 'https://reader.alfaomega.com.mx',
+                    'alfaomega_ebooks_panel' => $_ENV['AO_EBOOK_PANEL'] ?? 'https://panel.alfaomega.com.mx',
+                    'alfaomega_ebooks_client' => $_ENV['AO_EBOOK_CLIENT'] ?? 'client'
+                ];
             }
+
+            // API settings
             if ($apiOptions = get_option('alfaomega_ebooks_api_options')) {
                 self::$apiOptions = $apiOptions;
+            } else {
+                self::$apiOptions = [
+                    'alfaomega_ebooks_token' => $_ENV['AO_EBOOK_API_TOKEN'] ?? 'https://api.alfaomega.com.mx/oauth/token',
+                    'alfaomega_ebooks_api' => $_ENV['AO_EBOOK_API'] ?? 'https://api.alfaomega.com.mx',
+                    'alfaomega_ebooks_client_id' => $_ENV['AO_EBOOK_CLIENT_ID'] ?? 'client_id',
+                    'alfaomega_ebooks_client_secret' => $_ENV['AO_EBOOK_CLIENT_SECRET'] ?? 'client_secret'
+                ];
             }
+
+            // Product settings
             if ($productOptions = get_option('alfaomega_ebooks_product_options')) {
                 self::$productOptions = $productOptions;
+            } else {
+                self::$productOptions = [
+                    'alfaomega_ebooks_format_attr_id' => $_ENV['AO_EBOOK_FORMAT_ATTR_ID'] ?? '0',
+                    'alfaomega_ebooks_price' => $_ENV['AO_EBOOK_PRICE'] ?? 80,
+                    'alfaomega_ebooks_printed_digital_price' => $_ENV['AO_EBOOK_PRINTED_DIGITAL_PRICE'] ?? 130
+                ];
             }
 
             add_action( 'admin_init', array( $this, 'admin_init' ) );
