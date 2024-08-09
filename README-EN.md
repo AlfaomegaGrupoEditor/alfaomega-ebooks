@@ -38,7 +38,7 @@ For the customer, **Alfaomega eBooks** adds the following features to the WooCom
 ##  Installation
 
 1. Upload `alfaomega-ebooks` to the `/wp-content/plugins/` directory. The recommended way is to use the WordPress plugin [WP Pusher](https://wppusher.com/) and set up the GitHub repository [Alfaomega eBooks](https://github.com/AlfaomegaGrupoEditor/alfaomega-ebooks) on branch `Main` in order to receive the code updates automatically.
-2. Setup in the WordPress `wp-config.php` file the WooCommerce API credentials. If you don't have the `WooCommerce API keys`, you can generate them in the `WooCommerce settings`. You can find more information in the [WooCommerce REST API documentation](https://woocommerce.github.io/woocommerce-rest-api-docs/#authentication).
+2. Setup in the WordPress `wp-config.php` file the WooCommerce API credentials. If you don't have the `WooCommerce API keys`, you can generate them in the `WooCommerce settings`. You can find more information in the [WooCommerce REST API documentation](https://woocommerce.github.io/woocommerce-rest-api-docs/#authentication). Make sure to give **read and write** permissions. Copy the generated keys to the WordPress `wp-config.php` file in the root of the website.
 ```PHP
 /** WooCommerce API keys */
 define( 'WOOCOMMERCE_API_KEY', 'ck_*************************');
@@ -46,7 +46,7 @@ define( 'WOOCOMMERCE_API_SECRET', 'cs_*************************');
 define( 'WCPAY_DEV_MODE', false );
 ```
 3. Activate the plugin through the `Plugins` menu in WordPress.
-4. Go to the plugin settings page and configure the plugin options. The `username`, `password`, `panel client`, `client id` and `client secret` are provided by `Alfaomega Grupo Editor`. Please contact them to get the credentials. 
-5. Make sure your site has configured Permalinks to Post name. `Go to Settings > Permalinks and select Post name`.
+4. Go to the plugin settings page and configure the plugin options. The `username`, `password`, `panel client`, `client id` and `client secret` are provided by `Alfaomega Grupo Editor`. Please contact them to get the credentials. By default, some values will be loaded from the environment variables, but you can override them in the plugin settings. **Important:** Once the configuration is saved for the first time, verify that the value of the format attribute id is a number greater than zero and that the attribute was created in the WooCommerce product settings.
+5. Make sure your site has configured Permalinks to Post name. `Go to Settings` > `Permalinks` and select `Post name`.
 
 ## How to use

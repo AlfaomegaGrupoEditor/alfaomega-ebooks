@@ -38,7 +38,7 @@ Para el cliente, **Alfaomega eBooks** añade las siguientes características a l
 ##  Instalación
 
 1. Copiar `alfaomega-ebooks` al directorio `/wp-content/plugins/`. La forma recomendada es usar el plugin de WordPress [WP Pusher](https://wppusher.com/) y configurar el repositorio de GitHub [Alfaomega eBooks](https://github.com/AlfaomegaGrupoEditor/alfaomega-ebooks) en la rama `Main` para recibir las actualizaciones del código automáticamente.
-2. Configura en el archivo `wp-config.php` de WordPress las credenciales de la API de WooCommerce. Si no tienes las `claves de la API de WooCommerce`, puedes generarlas en la `configuración de WooCommerce`. Puedes encontrar más información en la [documentación de la API REST de WooCommerce](https://woocommerce.github.io/woocommerce-rest-api-docs/#authentication).
+2. Configura en el archivo `wp-config.php` de WordPress las credenciales de la API de WooCommerce. Si no tienes las `claves de la API de WooCommerce`, puedes generarlas en la `configuración de WooCommerce`. Puedes encontrar más información en la [documentación de la API REST de WooCommerce](https://woocommerce.github.io/woocommerce-rest-api-docs/#authentication). Asegúrese de dar permisos de **lectura y escritura**. Copie las claves generadas en el archivo `wp-config.php` de WordPress en la raiz del sitio web.
 ```PHP
 /** WooCommerce API keys */
 define( 'WOOCOMMERCE_API_KEY', 'ck_*************************');
@@ -46,7 +46,7 @@ define( 'WOOCOMMERCE_API_SECRET', 'cs_*************************');
 define( 'WCPAY_DEV_MODE', false );
 ```
 3. Activa el complemento a través del menú «Complementos» en WordPress.
-4. Go to the plugin settings page and configure the plugin options. The `username`, `password`, `panel client`, `client id`, and `client secret` are provided by `Alfaomega Grupo Editor`. Please contact them to get the credentials. 
-5. Asegúrese de que su sitio haya configurado enlaces permanentes en el nombre de la publicación. Vaya a Configuración > Enlaces permanentes y seleccione Nombre de la entrada.
+4. Go to the plugin settings page and configure the plugin options. The `username`, `password`, `panel client`, `client id`, and `client secret` are provided by `Alfaomega Grupo Editor`. Please contact them to get the credentials. De forma predeterminada, se cargarán algunos valores desde las variables de entorno, pero puedes sobreescribirlos en la configuración del complemento. **Importante:** Una vez que se salve la configuración por primera vez verifique que el valor del id del attributo formato es un número mayor que cero y que se creó el atributo en la configuración de productos de WooCommerce. 
+5. Asegúrese de que su sitio haya configurado enlaces permanentes en el nombre de la publicación. Vaya a `Configuración` > `Enlaces permanentes` y seleccione `Nombre de la entrada`.
 
 ## Cómo utilizar
