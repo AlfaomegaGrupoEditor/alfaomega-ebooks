@@ -89,6 +89,7 @@ class WooCommerceManager extends AbstractManager
         $this->init($woocommerceCredentials);
 
         $this->format = new Attribute($this->client, $settings);
+        $this->ebook = new Attribute($this->client, $settings);
         $this->tag = new Tag($this->client, $settings);
         $this->product = new Product(
             $this->client,
