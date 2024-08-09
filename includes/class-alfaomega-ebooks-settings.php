@@ -639,7 +639,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Settings' )){
                 size="50"
                 value="<?php echo isset(self::$productOptions['alfaomega_ebooks_ebook_attr_id']) ? esc_attr(self::$productOptions['alfaomega_ebooks_ebook_attr_id']) : ''; ?>"
             >
-            <p class="description"> <? esc_html_e("Attribute Id to link products to eBooks. Left empty to create automatically on save.", 'alfaomega-ebooks') ?> </p>
+            <p class="description"> <? esc_html_e("Attribute Id to specify if the product has an eBooks available. Left empty to create automatically on save.", 'alfaomega-ebooks') ?> </p>
             <?php
         }
 

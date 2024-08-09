@@ -75,6 +75,9 @@ class SettingsManager
                 ->updateOrCreate('pa_ebook', [
                     'name' => 'eBook',
                     'slug' => 'pa_ebook'
+                ], [
+                    ['name' => 'Si', 'description' => 'eBook disponible'],
+                    ['name' => 'No', 'description' => 'eBook no disponible'],
                 ]);
 
             if (empty($ebookAttribute)) {
