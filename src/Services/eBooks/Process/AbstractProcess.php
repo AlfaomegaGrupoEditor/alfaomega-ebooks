@@ -4,7 +4,6 @@ namespace AlfaomegaEbooks\Services\eBooks\Process;
 
 /**
  * AbstractProcess Class
- *
  * This abstract class provides a blueprint for creating specific eBook processing classes.
  * It implements the ProcessContract interface, which ensures that all child classes have the required methods for processing eBooks.
  * The class also provides a property and a method for controlling whether a product should be updated during the processing of an eBook.

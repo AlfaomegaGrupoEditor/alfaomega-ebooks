@@ -109,7 +109,7 @@ class WooCommerceManager extends AbstractManager
      */
     public function init(array $credentials): self {
         $this->client = new Client(
-            get_site_url(),
+            get_site_url(scheme: 'https'),
             $credentials['WOOCOMMERCE_API_KEY'],
             $credentials['WOOCOMMERCE_API_SECRET'],
             [

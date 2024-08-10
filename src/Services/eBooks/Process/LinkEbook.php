@@ -51,13 +51,28 @@ class LinkEbook extends AbstractProcess implements ProcessContract
     public function batch(array $data = []): array
     {
         foreach ($data as $productId) {
-            $product = $this->entity->get($productId);
+            // get the ebook reference for each product
+            $product = wc_get_product($productId);
+            if ($product) {
+                $isbn = $product->get_sku();
+                $ebookIsbn = $product->get_meta('alfaomega_ebooks_ebook_isbn') ?? null;
+
+                // check if the ebook already exists to get the ebook_isbn
+                $service = Service::make()->ebooks()->ebookPost();
+                $ebookPost = $service->search($ebookIsbn);
+                if (empty($ebookPost)) {
+                    $ebooks = $service->index([$ebookIsbn]);
+
+                    // create the ebook post
+                }
+
+                // link the ebook post to the product
+            }
+
+
         }
-        // get the ebook reference for each product
-        // check if the ebook already exists to get the ebook_isbn
-        // call the API to get the ebook information
-        // create the ebook post
-        // link the ebook post to the product
+
+
         return [];
     }
 }

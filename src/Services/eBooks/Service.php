@@ -47,13 +47,13 @@ class Service
      * @throws \Exception
      */
     public function __construct() {
+        $this->loadEnv();
         $settings = SettingsManager::make()->get();
         $this->api = new Api($settings);
 
         $this->ebooksManager = new EbookManager($this->api, $settings);
         $this->queueManager = new QueueManager($this->api, $settings);
         $this->wooCommerceManager = new WooCommerceManager($this->api, $settings);
-        $this->loadEnv();
     }
 
     /**
