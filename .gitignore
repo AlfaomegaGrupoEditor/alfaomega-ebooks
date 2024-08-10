@@ -1,2 +1,3 @@
 /downloads/*.acsm
 .env
+.phpunit.result.cache
