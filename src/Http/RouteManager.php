@@ -25,7 +25,7 @@ class RouteManager
      *
      * @var string
      */
-    public const string ROUTE_NAMESPACE = 'alfaomega-ebooks/v1';
+    public const ROUTE_NAMESPACE = 'alfaomega-ebooks/v1';
 
     /**
      * @var array $routes
