@@ -61,9 +61,11 @@ class LinkEbook extends AbstractProcess implements ProcessContract
                 $service = Service::make()->ebooks()->ebookPost();
                 $ebookPost = $service->search($ebookIsbn);
                 if (empty($ebookPost)) {
-                    $ebooks = $service->index([$ebookIsbn]);
+                    $response = $service->index([$ebookIsbn]);
+                    if ($response) {
+                        // create the ebook post
 
-                    // create the ebook post
+                    }
                 }
 
                 // link the ebook post to the product

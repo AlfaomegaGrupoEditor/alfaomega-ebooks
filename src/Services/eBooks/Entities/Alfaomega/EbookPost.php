@@ -251,14 +251,15 @@ class EbookPost extends AbstractEntity implements EbookPostEntity
      * Retrieves eBooks information from Alfaomega.
      * This method sends a POST request to the Alfaomega API to retrieve information about eBooks.
      * The eBooks are identified by their ISBNs, which are passed as an array.
-     * The method throws an exception if the API response code is not 200 or if the status of the content is not 'success'.
+     * The method throws an exception if the API response code is not 200 or if the status of the content is not
+     * 'success'.
      *
      * @param array $isbns An array of ISBNs of the eBooks to retrieve information for.
      *
-     * @return array Returns an associative array containing the eBooks information.
-     * @throws Exception Throws an exception if the API response code is not 200 or if the status of the content is not 'success'.
+     * @return array|null Returns an associative array containing the eBooks information.
+     * @throws \Exception
      */
-    public function index(array $isbns): array
+    public function index(array $isbns): ?array
     {
         // get eBooks info from Alfaomega
         $response = $this->api->post("/book/index", ['isbns' => $isbns]);
@@ -268,7 +269,7 @@ class EbookPost extends AbstractEntity implements EbookPostEntity
 
         $content = json_decode($response['body'], true);
         if ($content['status'] !== 'success') {
-            throw new Exception($content['message']);
+            return null;
         }
 
         return json_decode($response['body'], true)['data'];
