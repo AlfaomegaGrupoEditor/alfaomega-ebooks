@@ -2,6 +2,8 @@
 
 namespace AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce;
 
+use WC_Product;
+
 interface ProductEntity
 {
     /**
@@ -52,5 +54,5 @@ interface ProductEntity
      *
      * @return array|null Returns an associative array containing the updated product data if the product type is updated, or null if the product type is not updated.
      */
-    public function updateType(array $product, string $type = 'variable'): ?array;
+    public function updateType(WC_Product $product, string $type = 'variable'): ?array;
 }

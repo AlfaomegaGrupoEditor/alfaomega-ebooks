@@ -51,7 +51,7 @@ class LinkEbook extends AbstractProcess implements ProcessContract
     public function batch(array $data = []): ?array
     {
         $products = [];
-        $service = Service::make()->ebooks()->ebookPost();
+        $ebookService = Service::make()->ebooks()->ebookPost();
         $isbns = [];
 
         // get products isbn and ebook_isbn
@@ -60,7 +60,7 @@ class LinkEbook extends AbstractProcess implements ProcessContract
             if ($product) {
                 $isbn = $product->get_sku();
                 $ebookIsbn = $product->get_meta('alfaomega_ebooks_ebook_isbn') ?? null;
-                $ebookPost = $service->search($ebookIsbn);
+                $ebookPost = $ebookService->search($ebookIsbn);
                 if (empty($ebookPost)) {
                     $isbns[$ebookIsbn ?? $product->get_sku()] = $productId;
                     $ebookPost = null;
@@ -68,7 +68,7 @@ class LinkEbook extends AbstractProcess implements ProcessContract
                 $products[$productId] = [
                     'isbn'      => $isbn,
                     'ebookIsbn' => $ebookIsbn,
-                    'ebookPost' => $ebookPost,
+                    'ebookPost' => array_merge($ebookPost, ['product_id' => $productId]),
                 ];
             }
         }
@@ -78,7 +78,7 @@ class LinkEbook extends AbstractProcess implements ProcessContract
 
         // get ebook information from API
         if (!empty($isbns)) {
-            $ebooks = $service->index(array_keys($isbns));
+            $ebooks = $ebookService->index(array_keys($isbns));
             if ($ebooks) {
                 foreach ($ebooks as $ebook) {
                     if (!empty($isbns[$ebook['isbn']])) {
@@ -86,13 +86,17 @@ class LinkEbook extends AbstractProcess implements ProcessContract
                     } else {
                         $productId = $isbns[$ebook['printed_isbn']] ?? null;
                     }
-                    $products[$productId]['ebookPost'] = $service->updateOrCreate(null, $ebook);
+                    $ebookPost = $ebookService->updateOrCreate(null, $ebook);
+                    $products[$productId]['ebookPost'] = array_merge($ebookPost, ['product_id' => $productId]);
                 }
             }
         }
 
-        // link the ebook post to the product
-
+        // link the ebook posts to each product
+        $productService = Service::make()->wooCommerce()->linkProduct();
+        foreach ($products as $product) {
+            $productService->single($product['ebookPost'], false);
+        }
 
         return [];
     }

@@ -3,6 +3,7 @@ namespace AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce;
 
 use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\ProductEntity;
 use Automattic\WooCommerce\Client;
+use WC_Product;
 
 class Product extends WooAbstractEntity implements ProductEntity
 {
@@ -125,12 +126,12 @@ class Product extends WooAbstractEntity implements ProductEntity
      *
      * @return array|null Returns an associative array containing the updated product data if the product type is updated, or null if the product type is not updated.
      */
-    public function updateType(array $product, string $type = 'variable'): ?array
+    public function updateType(WC_Product $product, string $type = 'variable'): ?array
     {
-        if ($product['type'] !== $type) {
-            $regularPrice = $product['regular_price'];
-            $salePrice = $product['sale_price'];
-            $product = (array) $this->client->put("products/{$product['id']}", [
+        if ($product->get_type() !== $type) {
+            $regularPrice = $product->get_regular_price();
+            $salePrice = $product->sale_price;
+            $product = (array) $this->client->put("products/{$product->get_id()}", [
                 'type' => $type,
             ]);
 

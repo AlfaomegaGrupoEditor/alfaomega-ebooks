@@ -45,7 +45,7 @@ class LinkProduct extends AbstractProcess implements ProcessContract
      */
     public function single(array $eBook, bool $throwError=false, int $postId = null): void
     {
-        $product = $this->entity->get($eBook['tag_id'], $eBook['title']);
+        $product = wc_get_product($eBook['product_id']);
         if (empty($product)) {
             if ($throwError) {
                 throw new Exception("Products with digital ISBN {$eBook['isbn']} not found");
@@ -53,8 +53,7 @@ class LinkProduct extends AbstractProcess implements ProcessContract
             return;
         }
 
-        $product = $this->entity
-            ->updateType($product);
+        $product = $this->entity->updateType($product);
         $prices = [
             'regular_price' => $product['regular_price'],
             'sale_price'    => $product['sale_price'],
@@ -63,14 +62,12 @@ class LinkProduct extends AbstractProcess implements ProcessContract
             throw new Exception("Product type not supported");
         }
 
-        $product = $this->entity
-            ->updateFormats($product);
+        $product = $this->entity->updateFormats($product);
         if (empty($product)) {
             throw new Exception("Product formats failed");
         }
 
-        $product = $this->entity->variant()
-            ->update($product, $prices, $eBook);
+        $product = $this->entity->variant()->update($product, $prices, $eBook);
         if (empty($product)) {
             throw new Exception("Product variants failed");
         }
