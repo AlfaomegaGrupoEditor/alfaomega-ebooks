@@ -24,34 +24,18 @@ class Product extends WooAbstractEntity implements ProductEntity
     /**
      * Retrieves a product from WooCommerce.
      *
-     * This method retrieves a product from WooCommerce by searching for the product with the specified tag ID and title.
-     * If the product is not found, it searches for the product with the specified title.
-     * If the product is still not found, it searches for the product with the specified tag ID.
-     * If the product is still not found, it searches for the product with the specified title and creates a new product if the title is not empty.
+     * This method retrieves a product from WooCommerce by searching for the product with the specified tag ID.
+     * If the product is not found, it returns null.
      *
-     * @param int $tagId The tag ID to search for.
-     * @param string $title The title to search for. Default is an empty string.
+     * @param int $postId The tag ID to search for.
      *
      * @return array|null Returns an associative array containing the product data if the product is found, or null if the product is not found.
      */
-    public function get(int $tagId, string $title): ?array
+    public function get(int $postId): ?array
     {
-        $products = (array) $this->client->get("products", [
-                'tag'=> $tagId,
-            ]);
+        $product = (array) $this->client->get("products/$postId");
 
-        if (count($products) === 1) {
-            return (array) $products[0];
-        }
-
-        if (count($products) === 0 || !empty($title)) {
-            $product = $this->find($title, $tagId);
-            if (!empty($product)) {
-                return $product;
-            }
-        }
-
-        return null;
+        return !empty($product) ? $product : null;
     }
 
     /**

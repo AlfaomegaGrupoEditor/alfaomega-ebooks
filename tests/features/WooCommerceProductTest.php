@@ -17,7 +17,7 @@ class WooCommerceProductTest extends WordpressTest
      * @throws \Exception
      */
     #[DataProvider('productProvider')]
-    public function test_link_ebook(int $postId)
+    public function testMassLinkEbook(int $postId)
     {
         $result = Service::make()
             ->wooCommerce()

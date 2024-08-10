@@ -1,1 +1,1 @@
-{"version":1,"defects":[],"times":{"SomeClassTest::test_shouldWork":0.001}}
+{"version":1,"defects":{"tests\\features\\WooCommerceProductTest::testMassLinkEbook#An\u00e1lisis y miner\u00eda de textos con Python":8},"times":{"SomeClassTest::test_shouldWork":0.001,"tests\\features\\WooCommerceProductTest::testMassLinkEbook#An\u00e1lisis y miner\u00eda de textos con Python":42.877}}

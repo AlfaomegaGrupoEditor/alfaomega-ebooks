@@ -49,10 +49,10 @@ class SettingsManager
         }
 
         $this->values = array_merge(
-            (array) get_option('alfaomega_ebooks_general_options'),
-            (array) get_option('alfaomega_ebooks_platform_options'),
-            (array) get_option('alfaomega_ebooks_api_options'),
-            (array) get_option('alfaomega_ebooks_product_options')
+            $this->getOption('alfaomega_ebooks_general_options'),
+            $this->getOption('alfaomega_ebooks_platform_options'),
+            $this->getOption('alfaomega_ebooks_api_options'),
+            $this->getOption('alfaomega_ebooks_product_options')
         );
 
         return $this->values;
@@ -124,5 +124,49 @@ class SettingsManager
         }
 
         return $values;
+    }
+
+    /**
+     * Get the option values from the database or from the environment variables.
+     * @param string $option
+     *
+     * @return array
+     */
+    public function getOption(string $option): array
+    {
+        $value = get_option($option);
+
+        return match ($option) {
+            'alfaomega_ebooks_general_options' => $value
+                ?: [
+                    'alfaomega_ebooks_active'             => $_ENV['AO_EBOOK_ACTIVE'] === 'true',
+                    'alfaomega_ebooks_username'           => $_ENV['AO_EBOOK_USERNAME'] ?? 'username',
+                    'alfaomega_ebooks_password'           => $_ENV['AO_EBOOK_PASSWORD'] ?? 'password',
+                    'alfaomega_ebooks_notify_to'          => $_ENV['AO_EBOOK_NOTIFY_TO'] ?? 'your_email@domain.com',
+                    'alfaomega_ebooks_import_limit'       => $_ENV['AO_EBOOK_IMPORT_LIMIT'] ?? 1000,
+                    'alfaomega_ebooks_import_from_latest' => $_ENV['AO_EBOOK_IMPORT_FROM_LATEST'] === 'true',
+                ],
+            'alfaomega_ebooks_platform_options' => $value
+                ?: [
+                    'alfaomega_ebooks_reader' => $_ENV['AO_EBOOK_READER'] ?? 'https://reader.alfaomega.com.mx',
+                    'alfaomega_ebooks_panel'  => $_ENV['AO_EBOOK_PANEL'] ?? 'https://panel.alfaomega.com.mx',
+                    'alfaomega_ebooks_client' => $_ENV['AO_EBOOK_CLIENT'] ?? 'client',
+                ],
+            'alfaomega_ebooks_api_options' => $value
+                ?: [
+                    'alfaomega_ebooks_token'         => $_ENV['AO_EBOOK_API_TOKEN'] ?? 'https://api.alfaomega.com.mx/oauth/token',
+                    'alfaomega_ebooks_api'           => $_ENV['AO_EBOOK_API'] ?? 'https://api.alfaomega.com.mx',
+                    'alfaomega_ebooks_client_id'     => $_ENV['AO_EBOOK_CLIENT_ID'] ?? 'client_id',
+                    'alfaomega_ebooks_client_secret' => $_ENV['AO_EBOOK_CLIENT_SECRET'] ?? 'client_secret',
+                ],
+            'alfaomega_ebooks_product_options' => $value
+                ?: [
+                    'alfaomega_ebooks_format_attr_id'        => $_ENV['AO_EBOOK_FORMAT_ATTR_ID'] ?? '0',
+                    'alfaomega_ebooks_ebook_attr_id'         => $_ENV['AO_EBOOK_EBOOK_ATTR_ID'] ?? '0',
+                    'alfaomega_ebooks_price'                 => $_ENV['AO_EBOOK_PRICE'] ?? 80,
+                    'alfaomega_ebooks_printed_digital_price' => $_ENV['AO_EBOOK_COMBO_PRICE'] ?? 130,
+                ],
+            default => [],
+        };
     }
 }

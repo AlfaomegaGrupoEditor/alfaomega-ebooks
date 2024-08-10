@@ -50,7 +50,14 @@ class LinkEbook extends AbstractProcess implements ProcessContract
      */
     public function batch(array $data = []): array
     {
-        // TODO: Working here
+        foreach ($data as $productId) {
+            $product = $this->entity->get($productId);
+        }
+        // get the ebook reference for each product
+        // check if the ebook already exists to get the ebook_isbn
+        // call the API to get the ebook information
+        // create the ebook post
+        // link the ebook post to the product
         return [];
     }
 }
