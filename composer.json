@@ -9,7 +9,8 @@
     },
     "autoload": {
         "psr-4": {
-            "AlfaomegaEbooks\\": "src/"
+            "AlfaomegaEbooks\\": "src/",
+            "Tests\\": "tests/"
         }
     },
     "require-dev": {
