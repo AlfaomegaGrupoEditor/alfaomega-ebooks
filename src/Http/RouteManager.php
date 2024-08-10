@@ -167,8 +167,9 @@ class RouteManager
             return $redirect_url;
         }
 
-        $controller = new $this->massActions[$action][0];
-        return $controller->{$this->massActions[$action][1]}($post_ids);
+        [$class, $endpoint] = $this->massActions[$action];
+        $controller = new $class;
+        return $controller->{$endpoint}($post_ids, $redirect_url);
     }
 
     /**

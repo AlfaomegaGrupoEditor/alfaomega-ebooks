@@ -26,7 +26,8 @@ class EbooksMassActionsController
     {
         try {
             $redirectUrl = remove_query_arg('link-product', $redirectUrl);
-            $result = Service::make()->ebooks()
+            $result = Service::make()
+                ->ebooks()
                 ->refreshEbook()
                 ->batch($postIds);
             $redirectUrl = add_query_arg('updated-meta', $result['data']['refreshed'], $redirectUrl);
@@ -57,7 +58,8 @@ class EbooksMassActionsController
     {
         try {
             $redirectUrl = remove_query_arg('updated-meta', $redirectUrl);
-            $result = Service::make()->wooCommerce()
+            $result = Service::make()
+                ->wooCommerce()
                 ->linkProduct()
                 ->batch($postIds);
             $redirectUrl = add_query_arg('link-product', $result['data']['linked'], $redirectUrl);
@@ -87,8 +89,8 @@ class EbooksMassActionsController
     public function massLinkEbooks(array $postIds, string $redirectUrl): string
     {
         try {
-            //$redirectUrl = remove_query_arg('link-product', $redirectUrl);
-            $result = Service::make()->wooCommerce()
+            $result = Service::make()
+                ->wooCommerce()
                 ->linkEbook()
                 ->batch($postIds);
 
