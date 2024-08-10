@@ -8,6 +8,7 @@ use \Automattic\WooCommerce\Client;
  * @package    Alfaomega_Ebooks
  * @subpackage Alfaomega_Ebooks/includes
  * @author     Livan Rodriguez <livan2r@gmail.com>
+ * @deprecated
  */
 if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
     class Alfaomega_Ebooks_Service{

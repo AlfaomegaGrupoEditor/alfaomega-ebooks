@@ -13,8 +13,8 @@
  * @package    Alfaomega_Ebooks
  * @subpackage Alfaomega_Ebooks/includes
  * @author     Livan Rodriguez <livan2r@gmail.com>
+ * @deprecated
  */
-
 use AlfaomegaEbooks\Services\eBooks\Service;
 
 if( ! class_exists( 'Alfaomega_Ebooks_Controller' )){
