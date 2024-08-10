@@ -128,7 +128,7 @@ class EbookPost extends AbstractEntity implements EbookPostEntity
      * @return array Returns an associative array containing the updated post metadata.
      * @throws Exception Throws an exception if unable to create post.
      */
-    public function update(?int $postId, array $data): array
+    public function updateOrCreate(?int $postId, array $data): array
     {
         if (empty($postId)) {
             $post = $this->search($data['isbn']);

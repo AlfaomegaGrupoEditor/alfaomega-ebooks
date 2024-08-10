@@ -12,13 +12,15 @@ class WooCommerceProductTest extends WordpressTest
      * Test linking an ebook to a product
      *
      * @param int $postId
+     * @param int $userId
      *
      * @return void
      * @throws \Exception
      */
     #[DataProvider('productProvider')]
-    public function testMassLinkEbook(int $postId)
+    public function testMassLinkEbook(int $postId, int $userId)
     {
+        wp_set_current_user($userId);
         $result = Service::make()
             ->wooCommerce()
             ->linkEbook()
@@ -34,8 +36,14 @@ class WooCommerceProductTest extends WordpressTest
     public static function productProvider(): array
     {
         return [
-            'Informática para bachillerato' => [ 34842 ],
-//            'Análisis y minería de textos con Python' => [ 32168 ],
+            'Informática para bachillerato'           => [
+                'postId' => 34842,
+                'userId' => 1,
+            ],
+            /*'Análisis y minería de textos con Python' => [
+                'postId' => 32168,
+                'userId' => 1,
+            ],*/
         ];
     }
 }

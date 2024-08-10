@@ -59,7 +59,7 @@ interface EbookPostEntity
      * @return array Returns an associative array containing the updated post metadata.
      * @throws Exception Throws an exception if unable to create post.
      */
-    public function update(?int $postId, array $data): array;
+    public function updateOrCreate(?int $postId, array $data): array;
 
     /**
      * Searches for a post of type 'alfaomega-ebook' by ISBN.

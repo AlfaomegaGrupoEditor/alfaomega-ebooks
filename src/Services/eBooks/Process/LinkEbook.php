@@ -61,10 +61,8 @@ class LinkEbook extends AbstractProcess implements ProcessContract
                 $isbn = $product->get_sku();
                 $ebookIsbn = $product->get_meta('alfaomega_ebooks_ebook_isbn') ?? null;
                 $ebookPost = $service->search($ebookIsbn);
-                if (!empty($ebookPost)) {
-                    $ebookPost = $service->search($ebookIsbn);
-                } else {
-                    $isbns[] = $ebookIsbn ?? $product->get_sku();
+                if (empty($ebookPost)) {
+                    $isbns[$ebookIsbn ?? $product->get_sku()] = $productId;
                     $ebookPost = null;
                 }
                 $products[$productId] = [
@@ -80,10 +78,15 @@ class LinkEbook extends AbstractProcess implements ProcessContract
 
         // get ebook information from API
         if (!empty($isbns)) {
-            $ebooks = $service->index($isbns);
+            $ebooks = $service->index(array_keys($isbns));
             if ($ebooks) {
                 foreach ($ebooks as $ebook) {
-                    // TODO: create the ebook post
+                    if (!empty($isbns[$ebook['isbn']])) {
+                        $productId = $isbns[$ebook['isbn']];
+                    } else {
+                        $productId = $isbns[$ebook['printed_isbn']] ?? null;
+                    }
+                    $products[$productId]['ebookPost'] = $service->updateOrCreate(null, $ebook);
                 }
             }
         }
