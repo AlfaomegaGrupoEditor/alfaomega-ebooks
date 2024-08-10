@@ -34,7 +34,8 @@ class WooCommerceProductTest extends WordpressTest
     public static function productProvider(): array
     {
         return [
-            'Análisis y minería de textos con Python' => [ 32168 ],
+            'Informática para bachillerato' => [ 34842 ],
+//            'Análisis y minería de textos con Python' => [ 32168 ],
         ];
     }
 }

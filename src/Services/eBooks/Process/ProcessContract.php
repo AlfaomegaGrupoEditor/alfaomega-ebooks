@@ -35,8 +35,8 @@ interface ProcessContract
      *
      * @param array $data An optional array of eBook data. If provided, the method will process only these eBooks.
      *
-     * @return array An array with the results of the batch processing. The specific structure of this array depends on
+     * @return array|null An array with the results of the batch processing. The specific structure of this array depends on
      *               the class that implements this interface.
      */
-    public function batch(array $data = []): array;
+    public function batch(array $data = []): ?array;
 }

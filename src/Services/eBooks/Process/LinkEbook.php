@@ -45,34 +45,50 @@ class LinkEbook extends AbstractProcess implements ProcessContract
      *
      * @param array $data The data.
      *
-     * @return array
+     * @return array|null
      * @throws \Exception
      */
-    public function batch(array $data = []): array
+    public function batch(array $data = []): ?array
     {
+        $products = [];
+        $service = Service::make()->ebooks()->ebookPost();
+        $isbns = [];
+
+        // get products isbn and ebook_isbn
         foreach ($data as $productId) {
-            // get the ebook reference for each product
             $product = wc_get_product($productId);
             if ($product) {
                 $isbn = $product->get_sku();
                 $ebookIsbn = $product->get_meta('alfaomega_ebooks_ebook_isbn') ?? null;
-
-                // check if the ebook already exists to get the ebook_isbn
-                $service = Service::make()->ebooks()->ebookPost();
                 $ebookPost = $service->search($ebookIsbn);
-                if (empty($ebookPost)) {
-                    $response = $service->index([$ebookIsbn]);
-                    if ($response) {
-                        // create the ebook post
-
-                    }
+                if (!empty($ebookPost)) {
+                    $ebookPost = $service->search($ebookIsbn);
+                } else {
+                    $isbns[] = $ebookIsbn ?? $product->get_sku();
+                    $ebookPost = null;
                 }
-
-                // link the ebook post to the product
+                $products[$productId] = [
+                    'isbn'      => $isbn,
+                    'ebookIsbn' => $ebookIsbn,
+                    'ebookPost' => $ebookPost,
+                ];
             }
-
-
         }
+        if (empty($products)) {
+            return null;
+        }
+
+        // get ebook information from API
+        if (!empty($isbns)) {
+            $ebooks = $service->index($isbns);
+            if ($ebooks) {
+                foreach ($ebooks as $ebook) {
+                    // TODO: create the ebook post
+                }
+            }
+        }
+
+        // link the ebook post to the product
 
 
         return [];
