@@ -257,7 +257,7 @@ class Alfaomega_Ebooks_Admin {
      * @param array $columns An array of existing columns in the product list table.
      * @return array The modified array of columns.
      */
-    public function cs_set_custom_columns($columns): array
+    public function woocommerce_product_post_set_columns($columns): array
     {
         $columns['ebook_isbn'] = __('eBook', 'cs-text');
 
@@ -272,7 +272,7 @@ class Alfaomega_Ebooks_Admin {
      * @param string $column The name of the custom column.
      * @param int $post_id The ID of the post being displayed.
      */
-    function cs_custom_column( $column, $post_id ): void
+    public function woocommerce_product_post_custom_column($column, $post_id ): void
     {
         switch ( $column ) {
             case 'ebook_isbn' : // This has to match to the defined column in function above
@@ -280,5 +280,23 @@ class Alfaomega_Ebooks_Admin {
                 echo !empty($get_ebook_isbn) ? "<span>$get_ebook_isbn</span>" : '';
                 break;
         }
+    }
+
+    /**
+     * Makes the custom column in the WooCommerce product list table sortable.
+     * @param $columns
+     *
+     * @return array
+     */
+    public function woocommerce_product_column_sortable($columns): array
+    {
+        $columns['ebook_isbn'] = __('eBook', 'cs-text');
+        return $columns;
+    }
+
+    public function woocommerce_product_column_ebook($columns): array
+    {
+        $columns['ebook_isbn'] = __('eBook', 'cs-text');
+        return array_slice( $columns, 0, 4, true ) + array( 'ebook_isbn' => __('eBook', 'cs-text') ) + array_slice( $columns, 4, count( $columns ) - 3, true );
     }
 }

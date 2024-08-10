@@ -1245,6 +1245,6 @@ table.wp-list-table .column-date {
 .ebook_isbn span{
     background-color: #1C6EA4;
     color: #FFFFFF;
-    padding: 3px;
-    border-radius: 3px;
+    padding: 3px 5px;
+    border-radius: 5px;
 }

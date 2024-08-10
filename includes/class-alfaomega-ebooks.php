@@ -205,9 +205,11 @@ class Alfaomega_Ebooks {
         // product custom fields
         $this->loader->add_action( 'woocommerce_product_options_general_product_data', $plugin_admin, 'woocommerce_product_custom_fields' );
         $this->loader->add_action( 'woocommerce_process_product_meta', $plugin_admin, 'woocommerce_product_custom_fields_save' );
-        $this->loader->add_filter( 'manage_product_posts_columns', $plugin_admin, 'cs_set_custom_columns');
-        $this->loader->add_action( 'manage_product_posts_custom_column', $plugin_admin , 'cs_custom_column', 10, 2 );
-	}
+        $this->loader->add_filter( 'manage_product_posts_columns', $plugin_admin, 'woocommerce_product_post_set_columns');
+        $this->loader->add_action( 'manage_product_posts_custom_column', $plugin_admin, 'woocommerce_product_post_custom_column', 10, 2);
+        $this->loader->add_filter( 'manage_edit-product_sortable_columns', $plugin_admin, 'woocommerce_product_column_sortable' );
+        $this->loader->add_filter( 'manage_edit-product_columns', $plugin_admin, 'woocommerce_product_column_ebook', 9999 );
+    }
 
 	/**
 	 * Register all of the hooks related to the public-facing functionality
