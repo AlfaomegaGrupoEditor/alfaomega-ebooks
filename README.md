@@ -58,3 +58,19 @@ Para el cliente, **Alfaomega eBooks** añade las siguientes características a l
 6. Asegúrese de que su sitio haya configurado enlaces permanentes en el nombre de la publicación. Vaya a `Configuración` > `Enlaces permanentes` y seleccione `Nombre de la entrada`.
 
 ## Cómo utilizar
+
+### Administrar productos y eBooks
+
+- Vincular productos de WooCommerce con eBooks de Alfaomega.
+- Configurar eBook de un producto vinculado.
+
+### Administrar eBooks
+- Listar eBooks importados.
+- Vincular eBooks con productos de WooCommerce.
+- Actualizar eBooks importados.
+- Importar nuevos eBooks de Alfaomega.
+
+### Gestión de procesos por lotes
+- Importar nuevos eBooks.
+- Actualizar eBooks importados.
+- Vincular eBooks con productos en WooCommerce.
