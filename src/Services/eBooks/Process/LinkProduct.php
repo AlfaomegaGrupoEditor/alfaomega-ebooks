@@ -45,7 +45,6 @@ class LinkProduct extends AbstractProcess implements ProcessContract
      */
     public function single(array $eBook, bool $throwError=false, int $postId = null): void
     {
-        //$product = wc_get_product($eBook['product_id']);
         $product = $this->entity->get($eBook['product_id']);
         if (empty($product)) {
             if ($throwError) {
