@@ -71,6 +71,12 @@ class LinkProduct extends AbstractProcess implements ProcessContract
         if (empty($product)) {
             throw new Exception("Product variants failed");
         }
+
+        update_post_meta(
+            $eBook['product_id'],
+            'alfaomega_ebooks_ebook_isbn',
+            $eBook['isbn']
+        );
     }
 
     /**
