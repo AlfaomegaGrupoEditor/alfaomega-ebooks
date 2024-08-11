@@ -60,28 +60,30 @@ class EbooksQuickActionsController
     }
 
     /**
-     * Performs a mass linking of eBooks for a set of products.
+     * Link an ebook to a product.
+     * @param int $postId
+     * @param string $redirectUrl
      *
-     * This method takes an array of post IDs and a redirect URL as parameters. It attempts to link the eBooks
-     * for each post ID in the array by calling the `linkEbook` method on the WooCommerce service. The number of eBooks
-     * successfully linked is then added to the redirect URL as a query parameter.
-     *
-     * If an exception occurs during the linking process, the exception message is logged using the `error_log` function,
-     * and 'fail' is added to the redirect URL as a query parameter.
-     *
-     * @param array $postIds An array of post IDs for which to link the eBooks.
-     * @param string $redirectUrl The URL to which the user should be redirected after the linking process is complete.
-     * @return string The redirect URL with the result of the linking process added as a query parameter.
-     * @throws Exception If an error occurs during the linking process.
+     * @return string
      */
-    public function quickLinkEbook(int $postId): void
+    public function quickLinkEbook(int $postId, string $redirectUrl): string
     {
         try {
-            Service::make()->wooCommerce()
+            $result = Service::make()
+                ->wooCommerce()
                 ->linkEbook()
                 ->batch([$postId]);
+
+            $links = count($result);
+            if ($links === 0) {
+                throw new Exception("Can't find the related ebook, please add the eBook ISBN to the product.");
+            }
+
+            $redirectUrl = add_query_arg('link-ebook', $links, $redirectUrl);
         } catch (Exception $exception) {
             error_log($exception->getMessage());
+            $redirectUrl = add_query_arg('link-ebook', 'fail', $redirectUrl);
         }
+        return $redirectUrl;
     }
 }

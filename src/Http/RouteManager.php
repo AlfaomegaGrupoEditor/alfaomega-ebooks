@@ -198,8 +198,10 @@ class RouteManager
             return;
         }
 
-        $controller = new $this->quickActions[$action][0];
-        $controller->{$this->quickActions[$action][1]}($_GET['post']);
-        wp_redirect(remove_query_arg($action));
+        [$class, $endpoint] = $this->quickActions[$action];
+        $controller = new $class;
+        $redirectUrl = $controller->{$endpoint}($_GET['post'], $_SERVER['HTTP_REFERER']);
+
+        wp_redirect($redirectUrl);
     }
 }

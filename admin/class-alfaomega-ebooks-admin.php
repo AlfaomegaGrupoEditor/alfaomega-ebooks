@@ -158,7 +158,7 @@ class Alfaomega_Ebooks_Admin {
         } elseif (!empty($_REQUEST['link-ebook'])) {
             if ($_REQUEST['link-ebook'] === 'fail') {
                 $class = 'notice notice-error is-dismissible';
-                $message = esc_html__('Link eBook failed! Please check the product ISBN tag.', 'alfaomega-ebooks');
+                $message = esc_html__('Link eBook failed! Please check the product ebook ISBN.', 'alfaomega-ebooks');
             } else {
                 $linkEbook = intval($_REQUEST['link-ebook']);
                 $class = 'notice notice-success is-dismissible';

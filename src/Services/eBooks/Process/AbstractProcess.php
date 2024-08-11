@@ -70,15 +70,20 @@ abstract class AbstractProcess implements ProcessContract
             if ($product) {
                 $isbn = $product->get_sku();
                 $ebookIsbn = $product->get_meta('alfaomega_ebooks_ebook_isbn') ?? null;
-                $ebookPost = $ebookService->search($ebookIsbn);
-                if (empty($ebookPost)) {
-                    $isbns[$ebookIsbn ?? $product->get_sku()] = $productId;
-                    $ebookPost = null;
+                $ebookPost = null;
+                if (!empty($ebookIsbn)) {
+                    $ebookPost = $ebookService->search($ebookIsbn);
+                    if (empty($ebookPost)) {
+                        $isbns[$ebookIsbn] = $productId;
+                    }
+                } else {
+                    $isbns[$isbn] = $productId;
                 }
+
                 $products[$productId] = [
                     'isbn'      => $isbn,
                     'ebookIsbn' => $ebookIsbn,
-                    'ebookPost' => array_merge($ebookPost, ['product_id' => $productId]),
+                    'ebookPost' => $ebookPost ? array_merge($ebookPost, ['product_id' => $productId]) : null,
                 ];
             }
         }
@@ -129,11 +134,19 @@ abstract class AbstractProcess implements ProcessContract
      * @return void
      * @throws \Exception
      */
-    protected function linkProductEbooks(array $products): void
+    protected function linkProductEbooks(array $products): array
     {
         $productService = Service::make()->wooCommerce()->linkProduct();
+        $updated = [];
         foreach ($products as $product) {
+            if (empty($product['ebookPost'])) {
+                continue;
+            }
+
             $productService->single($product['ebookPost'], false);
+            $updated[] = $product['ebookPost']['product_id'];
         }
+
+        return $updated;
     }
 }

@@ -51,8 +51,6 @@ class LinkEbook extends AbstractProcess implements ProcessContract
     public function batch(array $data = []): ?array
     {
         $products = $this->getProductEbooks($data);
-        $this->linkProductEbooks($products);
-
-        return $products;
+        return $this->linkProductEbooks($products);
     }
 }
