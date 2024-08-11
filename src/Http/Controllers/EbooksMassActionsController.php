@@ -94,6 +94,11 @@ class EbooksMassActionsController
                 ->linkEbook()
                 ->batch($postIds);
 
+            $links = count($result);
+            if ($links === 0) {
+                throw new Exception("Can't find the related ebook, please add the eBook ISBN to the product.");
+            }
+
             $redirectUrl = add_query_arg('link-ebook', $result['data']['linked'], $redirectUrl);
         } catch (Exception $exception) {
             error_log($exception->getMessage());
