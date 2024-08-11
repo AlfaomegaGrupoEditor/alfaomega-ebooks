@@ -62,12 +62,15 @@ class LinkProduct extends AbstractProcess implements ProcessContract
             throw new Exception("Product type not supported");
         }
 
-        $product = $this->entity->updateFormats($product);
+        $product = $this->entity->updateFormatsAttr($product);
         if (empty($product)) {
-            throw new Exception("Product formats failed");
+            throw new Exception("Product formats attribute update failed");
         }
 
-        // todo update ebook attribute
+        $product = $this->entity->updateEbookAttr($product);
+        if (empty($product)) {
+            throw new Exception("Product eBook attribute update failed");
+        }
 
         $product = $this->entity->variant()->update($product, $prices, $eBook);
         if (empty($product)) {

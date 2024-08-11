@@ -41,7 +41,15 @@ interface ProductEntity
      *
      * @return array|null Returns an associative array containing the updated product data if the product formats are updated, or null if the product formats are not updated.
      */
-    public function updateFormats(array $product): ?array;
+    public function updateFormatsAttr(array $product): ?array;
+
+    /**
+     * Updates the ebook product attribute in WooCommerce.
+     * @param array $product
+     *
+     * @return array|null
+     */
+    public function updateEbookAttr(array $product): ?array;
 
     /**
      * Updates the product type in WooCommerce.

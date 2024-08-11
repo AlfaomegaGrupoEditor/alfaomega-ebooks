@@ -58,4 +58,36 @@ class Attribute extends WooAbstractEntity
 
         return $attribute;
     }
+
+    /**
+     * Set the attribute value.
+     *
+     * @param array $product
+     * @param array $value
+     *
+     * @return array|null
+     */
+    public function setValue(array $product, array $value): ?array
+    {
+        $found = false;
+        $attributes = [];
+        foreach ($product['attributes'] as $attribute) {
+            if ($attribute->slug === $value['slug']) {
+                $attributes[] = array_merge((array) $attributes, $value);
+                $found = true;
+            } else {
+                $attributes[] = (array) $attribute;
+            }
+        }
+        if (!$found) {
+            $attributes[] = $value;
+        }
+
+        $product = (array) $this->client
+            ->put("products/{$product['id']}", [
+                'attributes' => $attributes,
+            ]);
+
+        return !empty($product) ? $product : null;
+    }
 }

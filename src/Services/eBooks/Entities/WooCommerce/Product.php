@@ -2,6 +2,7 @@
 namespace AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce;
 
 use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\ProductEntity;
+use AlfaomegaEbooks\Services\eBooks\Service;
 use Automattic\WooCommerce\Client;
 use WC_Product;
 
@@ -78,7 +79,7 @@ class Product extends WooAbstractEntity implements ProductEntity
      *
      * @return array|null Returns an associative array containing the updated product data if the product formats are updated, or null if the product formats are not updated.
      */
-    public function updateFormats(array $product): ?array
+    public function updateFormatsAttr(array $product): ?array
     {
         $formats = [
             'id'        => $this->settings['alfaomega_ebooks_format_attr_id'],
@@ -93,26 +94,35 @@ class Product extends WooAbstractEntity implements ProductEntity
                 'Impreso + Digital',
             ],
         ];
-        $found = false;
-        $attributes = [];
-        foreach ($product['attributes'] as $attribute) {
-            if ($attribute->slug === 'pa_book-format') {
-                $attributes[] = array_merge((array) $attributes, $formats);
-                $found = true;
-            } else {
-                $attributes[] = (array) $attributes;
-            }
-        }
-        if (!$found) {
-            $attributes[] = $formats;
-        }
 
-        $product = (array) $this->client
-            ->put("products/{$product['id']}", [
-                'attributes' => $attributes,
-            ]);
+        return Service::make()
+            ->wooCommerce()
+            ->format()
+            ->setValue($product, $formats);
+    }
 
-        return !empty($product) ? $product : null;
+    /**
+     * Updates the ebook product attribute in WooCommerce.
+     * @param array $product
+     *
+     * @return array|null
+     */
+    public function updateEbookAttr(array $product): ?array
+    {
+        $ebook = [
+            'id'        => $this->settings['alfaomega_ebooks_ebook_attr_id'],
+            'name'      => 'eBook',
+            'slug'      => 'pa_ebook',
+            'position'  => 1,
+            'visible'   => false,
+            'variation' => false,
+            'options'   => ['Si'],
+        ];
+
+        return Service::make()
+            ->wooCommerce()
+            ->ebook()
+            ->setValue($product, $ebook);
     }
 
     /**
