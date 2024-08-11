@@ -140,11 +140,12 @@ class EbookPost extends AbstractEntity implements EbookPostEntity
         $user = wp_get_current_user();
 
         $newPost = [
-            'post_title'   => $data['title'],
-            'post_content' => $data['description'],
-            'post_status'  => 'publish',
-            'post_author'  => $user->ID,
-            'post_type'    => 'alfaomega-ebook',
+            'post_title'       => $data['title'],
+            'post_content'     => $data['description'],
+            'post_status'      => 'publish',
+            'post_author'      => $user->ID,
+            'post_type'        => 'alfaomega-ebook',
+            'post_product_sku' => $data['printed_isbn'] ?? 'UNKNOWN',
         ];
 
         if (!empty($postId)) {
@@ -219,7 +220,7 @@ class EbookPost extends AbstractEntity implements EbookPostEntity
             ],
             'alfaomega_ebook_product_sku' => [
                 'old'     => get_post_meta($postId, 'alfaomega_ebook_product_sku', true),
-                'new'     => ! empty($data['printed_isbn']) ?  $data['printed_isbn'] : '',
+                'new'     => ! empty($data['printed_isbn']) ?  $data['printed_isbn'] : 'UNKNOWN',
                 'default' => '',
             ],
         ];

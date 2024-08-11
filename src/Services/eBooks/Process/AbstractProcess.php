@@ -118,6 +118,7 @@ abstract class AbstractProcess implements ProcessContract
                     } else {
                         $productId = $isbns[$ebook['printed_isbn']] ?? null;
                     }
+                    $ebook['printed_isbn'] = $products[$productId]['isbn'];
                     $ebookPost = $ebookService->updateOrCreate(null, $ebook);
                     $products[$productId]['ebookPost'] = array_merge($ebookPost, ['product_id' => $productId]);
                 }
