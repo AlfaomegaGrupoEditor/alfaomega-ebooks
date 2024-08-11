@@ -81,7 +81,7 @@ class EbookPost extends AbstractEntity implements EbookPostEntity
             'pdf_id'    => get_post_meta($postId, 'alfaomega_ebook_id', true),
             'ebook_url' => get_post_meta($postId, 'alfaomega_ebook_url', true),
             'date'      => $post->post_date,
-            'tag_id'    => intval(get_post_meta($postId, 'alfaomega_ebook_tag_id', true)),
+            'tag_id'    => intval(get_post_meta($postId, 'alfaomega_ebook_product_sku', true)),
         ];
 
         return $this->meta;
@@ -201,14 +201,6 @@ class EbookPost extends AbstractEntity implements EbookPostEntity
      */
     public function save(int $postId, array $data): array
     {
-        $tag = null;
-        if (!empty($data['isbn'])) {
-            $tag = Service::make()
-                ->wooCommerce()
-                ->tag()
-                ->find($data['isbn']);
-        }
-
         $fields = [
             'alfaomega_ebook_isbn'   => [
                 'old'     => get_post_meta($postId, 'alfaomega_ebook_isbn', true),
@@ -225,9 +217,9 @@ class EbookPost extends AbstractEntity implements EbookPostEntity
                 'new'     => ! empty($data['html_ebook']) ? $data['html_ebook'] : '',
                 'default' => '',
             ],
-            'alfaomega_ebook_tag_id' => [
-                'old'     => get_post_meta($postId, 'alfaomega_ebook_tag_id', true),
-                'new'     => ! empty($tag) ?  $tag->id : '',
+            'alfaomega_ebook_product_sku' => [
+                'old'     => get_post_meta($postId, 'alfaomega_ebook_product_sku', true),
+                'new'     => ! empty($data['printed_isbn']) ?  $data['printed_isbn'] : '',
                 'default' => '',
             ],
         ];

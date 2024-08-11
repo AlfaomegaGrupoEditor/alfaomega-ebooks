@@ -74,7 +74,7 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
                 'alfaomega_ebook_isbn'   => esc_html__('Digital ISBN', 'alfaomega-ebook'),
                 'alfaomega_ebook_id'     => esc_html__('PDF Id', 'alfaomega-ebook'),
                 'alfaomega_ebook_url'    => esc_html__('HTML Url', 'alfaomega-ebook'),
-                'alfaomega_ebook_tag_id' => esc_html__('Tag Id', 'alfaomega-ebook'),
+                'alfaomega_ebook_product_sku' => esc_html__('Product SKU', 'alfaomega-ebook'),
                 'date'                   => esc_html__('Date', 'alfaomega-ebook'),
             ];
         }
@@ -99,8 +99,8 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
                 case 'alfaomega_ebook_url':
                     echo esc_url( get_post_meta( $post_id, 'alfaomega_ebook_url', true ) );
                     break;
-                case 'alfaomega_ebook_tag_id':
-                    echo esc_html( get_post_meta( $post_id, 'alfaomega_ebook_tag_id', true ) );
+                case 'alfaomega_ebook_product_sku':
+                    echo esc_html( get_post_meta( $post_id, 'alfaomega_ebook_product_sku', true ) );
                     break;
             }
         }
@@ -117,7 +117,7 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
             $columns['alfaomega_ebook_isbn'] = 'alfaomega_ebook_isbn';
             $columns['alfaomega_ebook_id'] = 'alfaomega_ebook_id';
             $columns['alfaomega_ebook_url'] = 'alfaomega_ebook_url';
-            $columns['alfaomega_ebook_tag_id'] = 'alfaomega_ebook_tag_id';
+            $columns['alfaomega_ebook_product_sku'] = 'alfaomega_ebook_product_sku';
             return $columns;
         }
 
@@ -152,7 +152,7 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
             $isbn = get_post_meta( $post->ID, 'alfaomega_ebook_isbn', true );
             $id = get_post_meta( $post->ID, 'alfaomega_ebook_id', true );
             $url = get_post_meta( $post->ID, 'alfaomega_ebook_url', true );
-            $tag_id = get_post_meta( $post->ID, 'alfaomega_ebook_tag_id', true );
+            $tag_id = get_post_meta( $post->ID, 'alfaomega_ebook_product_sku', true );
             require_once( ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_metabox.php' );
         }
 
@@ -207,8 +207,8 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
                         'new'     => $_POST['alfaomega_ebook_url'],
                         'default' => '',
                     ],
-                    'alfaomega_ebook_tag_id'  => [
-                        'old'     => get_post_meta($post_id, 'alfaomega_ebook_tag_id', true),
+                    'alfaomega_ebook_product_sku'  => [
+                        'old'     => get_post_meta($post_id, 'alfaomega_ebook_product_sku', true),
                         'new'     => $_POST['alfaomega_ebook_url'],
                         'default' => '',
                     ],

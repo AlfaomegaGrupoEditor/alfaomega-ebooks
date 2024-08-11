@@ -67,6 +67,8 @@ class LinkProduct extends AbstractProcess implements ProcessContract
             throw new Exception("Product formats failed");
         }
 
+        // todo update ebook attribute
+
         $product = $this->entity->variant()->update($product, $prices, $eBook);
         if (empty($product)) {
             throw new Exception("Product variants failed");

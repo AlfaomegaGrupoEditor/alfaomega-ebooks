@@ -53,15 +53,15 @@
     </tr>
     <tr>
         <th>
-            <label for="alfaomega_ebook_tag_id">
+            <label for="alfaomega_ebook_product_sku">
                 <?php esc_html_e( 'Tag Id', 'alfaomega-ebook' ); ?>
             </label>
         </th>
         <td>
             <input
                 type="text"
-                name="alfaomega_ebook_tag_id"
-                id="alfaomega_ebook_tag_id"
+                name="alfaomega_ebook_product_sku"
+                id="alfaomega_ebook_product_sku"
                 class="regular-text tag_id"
                 value="<?php echo ( isset( $tag_id ) ) ? esc_attr( $tag_id ) : ''; ?>"
                 required
