@@ -62,7 +62,8 @@ Para el cliente, **Alfaomega eBooks** añade las siguientes características a l
 ### Administrar productos y eBooks
 
 - Vincular productos de WooCommerce con eBooks de Alfaomega.
- - Agrgear el eBook del ISBN al producto al producto simple en General > eBook ISBN   
+ - Agregar el eBook del ISBN al producto al producto simple en General > eBook ISBN (opcional)
+ - Usar el attribute eBook para habilitar o deshabilitar las opciones de compra de eBooks.
 - Configurar eBook de un producto vinculado.
 
 ### Administrar eBooks
