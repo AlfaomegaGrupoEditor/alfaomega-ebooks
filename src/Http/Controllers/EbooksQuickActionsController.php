@@ -38,7 +38,7 @@ class EbooksQuickActionsController
             $redirectUrl = add_query_arg('updated-meta', $eBooks, $redirectUrl);
         } catch (Exception $exception) {
             error_log($exception->getMessage());
-            $redirectUrl = add_query_arg('updated-met', 'fail', $redirectUrl);
+            $redirectUrl = add_query_arg('updated-meta', 'fail', $redirectUrl);
         }
 
         return $redirectUrl;
@@ -59,7 +59,7 @@ class EbooksQuickActionsController
      * @return string The redirect URL with the result of the linking process added as a query parameter.
      * @throws Exception If an error occurs during the linking process.
      */
-    public function quickLinkProduct(int $postId, string $redirectUrl): void
+    public function quickLinkProduct(int $postId, string $redirectUrl): string
     {
         try {
             $result = Service::make()->wooCommerce()
@@ -71,10 +71,13 @@ class EbooksQuickActionsController
                 throw new Exception("Can't find the related ebook, please add the eBook ISBN to the product.");
             }
 
-            $redirectUrl = add_query_arg('updated-meta', $eBooks, $redirectUrl);
+            $redirectUrl = add_query_arg('link-product', $eBooks, $redirectUrl);
         } catch (Exception $exception) {
             error_log($exception->getMessage());
+            $redirectUrl = add_query_arg('link-product', 'fail', $redirectUrl);
         }
+
+        return $redirectUrl;
     }
 
     /**
