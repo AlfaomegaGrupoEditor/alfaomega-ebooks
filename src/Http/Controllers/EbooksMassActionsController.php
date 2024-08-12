@@ -30,6 +30,7 @@ class EbooksMassActionsController
                 ->ebooks()
                 ->refreshEbook()
                 ->batch($postIds);
+
             $redirectUrl = add_query_arg('updated-meta', $result['data']['refreshed'], $redirectUrl);
         } catch (Exception $exception) {
             error_log($exception->getMessage());

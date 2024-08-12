@@ -22,15 +22,26 @@ class EbooksQuickActionsController
      * @return string The redirect URL with the result of the update process added as a query parameter.
      * @throws Exception If an error occurs during the update process.
      */
-    public function quickUpdateMeta(int $postId): void
+    public function quickUpdateMeta(int $postId, string $redirectUrl): string
     {
         try {
-            Service::make()->ebooks()
+            $result = Service::make()
+                ->ebooks()
                 ->refreshEbook()
                 ->batch([$postId]);
+
+            $eBooks = count($result);
+            if ($eBooks === 0) {
+                throw new Exception("Can't update specified ebook, please add the eBook ISBN to the product.");
+            }
+
+            $redirectUrl = add_query_arg('updated-meta', $eBooks, $redirectUrl);
         } catch (Exception $exception) {
             error_log($exception->getMessage());
+            $redirectUrl = add_query_arg('updated-met', 'fail', $redirectUrl);
         }
+
+        return $redirectUrl;
     }
 
     /**
@@ -48,12 +59,19 @@ class EbooksQuickActionsController
      * @return string The redirect URL with the result of the linking process added as a query parameter.
      * @throws Exception If an error occurs during the linking process.
      */
-    public function quickLinkProduct(int $postId): void
+    public function quickLinkProduct(int $postId, string $redirectUrl): void
     {
         try {
-            Service::make()->wooCommerce()
+            $result = Service::make()->wooCommerce()
                 ->linkProduct()
                 ->batch([$postId]);
+
+            $eBooks = count($result);
+            if ($eBooks === 0) {
+                throw new Exception("Can't find the related ebook, please add the eBook ISBN to the product.");
+            }
+
+            $redirectUrl = add_query_arg('updated-meta', $eBooks, $redirectUrl);
         } catch (Exception $exception) {
             error_log($exception->getMessage());
         }
