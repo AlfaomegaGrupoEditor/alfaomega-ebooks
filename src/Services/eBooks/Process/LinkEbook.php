@@ -39,8 +39,10 @@ class LinkEbook extends AbstractProcess implements ProcessContract
      */
     public function single(array $eBook, bool $throwError=false, int $postId = null): int
     {
-        $this->getEbookEntity()
-            ->updateOrCreate(null, $eBook);
+        $post = $this->getEbookEntity()
+            ->updateOrCreate($postId, $eBook);
+
+        return !empty($post) ? $post['id'] : 0;
     }
 
     /**
@@ -67,6 +69,8 @@ class LinkEbook extends AbstractProcess implements ProcessContract
             $ebookPost = $this->searchEbook($isbn, $sku);
             if (empty($ebookPost)) {
                 $isbns[$isbn ?? $sku] = $productId;
+            } else {
+                $products[$productId] = array_merge($products[$productId], $ebookPost);
             }
         }
 
@@ -90,7 +94,7 @@ class LinkEbook extends AbstractProcess implements ProcessContract
         // Recommended for quick and bulk actions
         if (!$async) {
             foreach ($products as $eBook) {
-                $this->single($eBook);
+                $this->single($eBook, postId: $eBook['id'] ?? null);
             }
         }
 
@@ -111,12 +115,12 @@ class LinkEbook extends AbstractProcess implements ProcessContract
     protected function searchEbook(?string $isbn, ?string $sku): ?array
     {
         if (!empty($sku)) {
-            return $this->ebookEntity
+            return $this->getEbookEntity()
                 ->search($sku, 'alfaomega_ebook_product_sku');
         }
 
         if (!empty($isbn)) {
-            return $this->ebookEntity
+            return $this->getEbookEntity()
                 ->search($isbn);
         }
 

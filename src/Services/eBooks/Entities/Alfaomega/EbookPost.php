@@ -74,14 +74,14 @@ class EbookPost extends AbstractEntity implements EbookPostEntity
         }
 
         $this->meta = [
-            'id'        => $postId,
-            'title'     => $post->post_title,
-            'author'    => $post->post_author,
-            'isbn'      => get_post_meta($postId, 'alfaomega_ebook_isbn', true),
-            'pdf_id'    => get_post_meta($postId, 'alfaomega_ebook_id', true),
-            'ebook_url' => get_post_meta($postId, 'alfaomega_ebook_url', true),
-            'date'      => $post->post_date,
-            'tag_id'    => intval(get_post_meta($postId, 'alfaomega_ebook_product_sku', true)),
+            'id'          => $postId,
+            'title'       => $post->post_title,
+            'author'      => $post->post_author,
+            'isbn'        => get_post_meta($postId, 'alfaomega_ebook_isbn', true),
+            'pdf_id'      => get_post_meta($postId, 'alfaomega_ebook_id', true),
+            'ebook_url'   => get_post_meta($postId, 'alfaomega_ebook_url', true),
+            'date'        => $post->post_date,
+            'product_sku' => intval(get_post_meta($postId, 'alfaomega_ebook_product_sku', true)),
         ];
 
         return $this->meta;
@@ -138,6 +138,9 @@ class EbookPost extends AbstractEntity implements EbookPostEntity
         }
 
         $user = wp_get_current_user();
+        if (empty($data['printed_isbn']) && ! empty($data['product_sku'])) {
+            $data['printed_isbn'] = $data['product_sku'];
+        }
 
         $newPost = [
             'post_title'       => $data['title'],
