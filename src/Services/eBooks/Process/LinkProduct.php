@@ -43,14 +43,14 @@ class LinkProduct extends AbstractProcess implements ProcessContract
      * @throws \Exception If there is an error during the processing of the eBook.
      * @return void
      */
-    public function single(array $eBook, bool $throwError=false, int $postId = null): void
+    public function single(array $eBook, bool $throwError=false, int $postId = null): int
     {
         $product = $this->entity->get($eBook['product_id']);
         if (empty($product)) {
             if ($throwError) {
                 throw new Exception("Products with digital ISBN {$eBook['isbn']} not found");
             }
-            return;
+            return 1;
         }
 
         $product = $this->entity->updateType($product);
@@ -96,7 +96,7 @@ class LinkProduct extends AbstractProcess implements ProcessContract
      * @throws \Exception If there is an error during the processing of the eBooks.
      * @return array An array with the total number of eBooks linked.
      */
-    public function batch(array $data = []): array
+    public function batch(array $data = [], bool $async = false): array
     {
         $linked = 0;
         $ebookPost = Service::make()->ebooks()->ebookPost();

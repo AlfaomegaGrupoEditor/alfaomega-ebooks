@@ -23,9 +23,9 @@ interface ProcessContract
      * @param int|null $postId The post ID of the eBook. If provided, the method will process only this eBook.
      *
      * @throws \Exception If there is an error during the processing of the eBook.
-     * @return void
+     * @return int
      */
-    public function single(array $eBook, bool $throwError=false, int $postId = null): void;
+    public function single(array $eBook, bool $throwError=false, int $postId = null): int;
 
     /**
      * Processes a batch of eBooks.
@@ -34,9 +34,10 @@ interface ProcessContract
      * of this method should determine how to retrieve the eBooks to be processed.
      *
      * @param array $data An optional array of eBook data. If provided, the method will process only these eBooks.
+     *                bool $async
      *
      * @return array|null An array with the results of the batch processing. The specific structure of this array depends on
      *               the class that implements this interface.
      */
-    public function batch(array $data = []): ?array;
+    public function batch(array $data = [], bool $async = false): ?array;
 }

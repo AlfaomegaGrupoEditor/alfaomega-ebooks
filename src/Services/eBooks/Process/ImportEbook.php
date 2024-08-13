@@ -44,7 +44,7 @@ class ImportEbook extends AbstractProcess implements ProcessContract
      * @throws \Exception
      * @return void
      */
-    public function single(array $eBook, bool $throwError=false, int $postId = null): void
+    public function single(array $eBook, bool $throwError=false, int $postId = null): int
     {
         $eBook = $this->entity->update(null, $eBook);
 
@@ -72,7 +72,7 @@ class ImportEbook extends AbstractProcess implements ProcessContract
      * @throws \Exception If the enqueuing of the import action fails.
      * @return array An array with the total number of eBooks imported.
      */
-    public function batch(array $data = []): array
+    public function batch(array $data = [], bool $async = false): array
     {
         $isbn = '';
         if ($this->settings['alfaomega_ebooks_import_from_latest']) {

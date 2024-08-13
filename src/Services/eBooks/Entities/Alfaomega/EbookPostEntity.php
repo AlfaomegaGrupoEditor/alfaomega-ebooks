@@ -66,12 +66,13 @@ interface EbookPostEntity
      * This method searches for a post of type 'alfaomega-ebook' in the WordPress database by ISBN.
      * It retrieves the post metadata if a post is found.
      *
-     * @param string $isbn The ISBN to search for.
+     * @param string $value field value.
+     * @param string $field field to search by.
      *
      * @return array|null Returns an associative array containing the post metadata if a post is found, or null if no post is found.
      * @throws \Exception
      */
-    public function search($isbn): ?array;
+    public function search(string $value, string $field = 'alfaomega_ebook_isbn'): ?array;
 
     /**
      * Saves the post metadata.

@@ -40,14 +40,16 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
      * @return void
      * @throws \Exception
      */
-    public function single(array $eBook, bool $throwError=false, int $postId = null): void
+    public function single(array $eBook, bool $throwError=false, int $postId = null): int
     {
-        $eBook = $this->entity->update($postId, $eBook);
+        $eBook = $this->entity
+            ->updateOrCreate($postId, $eBook);
 
         if ($this->updateProduct) {
-            Service::make()->wooCommerce()
+            Service::make()
+                ->wooCommerce()
                 ->linkProduct()
-                ->single($eBook, false);
+                ->single($eBook);
         }
     }
 
@@ -71,19 +73,21 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
      * @throws \Exception If the enqueuing of the refresh action fails.
      * @return array An array with the total number of eBooks refreshed.
      */
-    public function batch(array $data = []): array
+    public function batch(array $data = [], bool $async = false): array
     {
-        $postsPerPage = 5;
-        $page = 0;
-        $args = [
-            'posts_per_page' => $postsPerPage,
-            'post_type'      => 'alfaomega-ebook',
-            'orderby'        => 'ID',
-            'order'          => 'ASC',
-        ];
         $total = 0;
+        $isbns = [];
 
         if (empty($data)) {
+            // TODO: test this
+            $postsPerPage = 5;
+            $page = 0;
+            $args = [
+                'posts_per_page' => $postsPerPage,
+                'post_type'      => 'alfaomega-ebook',
+                'orderby'        => 'ID',
+                'order'          => 'ASC',
+            ];
             do {
                 $args['offset'] = $postsPerPage * $page;
                 $posts = get_posts($args);
@@ -104,15 +108,13 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
                 $total += count($isbns);
             } while (count($posts) === $postsPerPage);
         } else {
-            foreach ($data as $postId) {
-                $isbn = get_post_meta($postId, 'alfaomega_ebook_isbn', true);
-                $isbns[$isbn] = $postId;
+            $result = $this->getEbooksInformation($data);
+            if (empty($result)) {
+                return [ 'refreshed' => $total ];
             }
-            $eBooks = Service::make()->ebooks()
-                ->ebookPost()
-                ->index(array_keys($isbns));
-            foreach ($eBooks as $eBook) {
-                $this->single($eBook, false, $isbns[$eBook['isbn']]);
+
+            foreach ($result['ebooks'] as $eBook) {
+                $this->single($eBook, postId: $result['isbns'][$eBook['isbn']]);
                 $total++;
             }
         }
@@ -151,5 +153,36 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
                 throw new Exception('Refresh queue failed');
             }
         }
+    }
+
+    /**
+     * Retrieves the eBook information.
+     * This method takes an array of post IDs as input and returns an array with the eBook data associated with these
+     * post IDs.
+     *
+     * @param array $data An array of post IDs.
+     *
+     * @return array|null An array with the eBook data. If no data is found, it returns null.
+     * @throws \Exception
+     */
+    protected function getEbooksInformation(array $data): ?array
+    {
+        foreach ($data as $postId) {
+            $isbn = get_post_meta($postId, 'alfaomega_ebook_isbn', true);
+            if (!empty($isbn)) {
+                $isbns[$isbn] = $postId;
+            }
+        }
+        if (!empty($isbns)) {
+            return [
+                'isbns'  => $isbns,
+                'ebooks' => Service::make()
+                    ->ebooks()
+                    ->ebookPost()
+                    ->index(array_keys($isbns)),
+            ];
+        }
+
+        return null;
     }
 }

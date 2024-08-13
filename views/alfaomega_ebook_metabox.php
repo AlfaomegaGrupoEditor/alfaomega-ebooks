@@ -54,7 +54,7 @@
     <tr>
         <th>
             <label for="alfaomega_ebook_product_sku">
-                <?php esc_html_e( 'Tag Id', 'alfaomega-ebook' ); ?>
+                <?php esc_html_e( 'Product SKU', 'alfaomega-ebook' ); ?>
             </label>
         </th>
         <td>
