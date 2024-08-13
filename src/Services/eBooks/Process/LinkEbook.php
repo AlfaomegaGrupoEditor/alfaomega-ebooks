@@ -39,10 +39,16 @@ class LinkEbook extends AbstractProcess implements ProcessContract
      */
     public function single(array $eBook, bool $throwError=false, int $postId = null): int
     {
-        $post = $this->getEbookEntity()
-            ->updateOrCreate($postId, $eBook);
+        try {
+            $post = $this->getEbookEntity()
+                ->updateOrCreate($postId, $eBook);
 
-        return !empty($post) ? $post['id'] : 0;
+            return !empty($post) ? $post['id'] : 0;
+        } catch (\Exception $e) {
+            if ($throwError) {
+                throw $e;
+            }
+        }
     }
 
     /**
@@ -95,6 +101,10 @@ class LinkEbook extends AbstractProcess implements ProcessContract
         $processed = [];
         if (!$async) {
             foreach ($products as $eBook) {
+                if (empty($ebook['printed_isbn'])) {
+                    continue;
+                }
+
                 $result = $this->single($eBook, postId: $eBook['id'] ?? null);
                 if ($result > 0) {
                     $processed[] = $result;

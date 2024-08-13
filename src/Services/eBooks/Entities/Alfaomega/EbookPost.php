@@ -142,6 +142,10 @@ class EbookPost extends AbstractEntity implements EbookPostEntity
             $data['printed_isbn'] = $data['product_sku'];
         }
 
+        if (empty($data['printed_isbn'])) {
+            throw new Exception(esc_html__('Printed ISBN is required.', 'alfaomega-ebook'));
+        }
+
         $newPost = [
             'post_title'       => $data['title'],
             'post_content'     => $data['description'],
