@@ -20,14 +20,11 @@ class LinkEbook extends AbstractProcess implements ProcessContract
      * @throws \Exception
      */
     public function __construct(
-        array $settings,
-        protected ProductEntity $entity,
-        protected EbookPostEntity $ebookEntity)
+        array                      $settings,
+        protected ProductEntity    $entity,
+        protected ?EbookPostEntity $ebookEntity = null)
     {
         parent::__construct($settings);
-        $this->ebookEntity = Service::make()
-            ->ebooks()
-            ->ebookPost();
     }
 
     /**
@@ -42,7 +39,7 @@ class LinkEbook extends AbstractProcess implements ProcessContract
      */
     public function single(array $eBook, bool $throwError=false, int $postId = null): int
     {
-        $this->ebookEntity
+        $this->getEbookEntity()
             ->updateOrCreate(null, $eBook);
     }
 
@@ -50,6 +47,7 @@ class LinkEbook extends AbstractProcess implements ProcessContract
      * Gather the information required to perform the process on each object.
      *
      * @param array $data Array of products id.
+     * @param bool $async
      *
      * @return array|null
      * @throws \Exception
@@ -73,7 +71,7 @@ class LinkEbook extends AbstractProcess implements ProcessContract
         }
 
         if (!empty($isbns)) {
-            $ebooks = $this->ebookEntity->index(array_keys($isbns));
+            $ebooks = $this->getEbookEntity()->index(array_keys($isbns));
             if (!empty($ebooks)) {
                 foreach ($ebooks as $ebook) {
                     if (!empty($isbns[$ebook['isbn']])) {
@@ -89,13 +87,15 @@ class LinkEbook extends AbstractProcess implements ProcessContract
             }
         }
 
+        // Recommended for quick and bulk actions
         if (!$async) {
             foreach ($products as $eBook) {
                 $this->single($eBook);
             }
         }
 
-        // queue the process
+        // Recommended for big amount of records
+        // TODO: queue the process
 
         return $products;
     }
@@ -121,5 +121,22 @@ class LinkEbook extends AbstractProcess implements ProcessContract
         }
 
         return null;
+    }
+
+    /**
+     * Get the eBook entity.
+     *
+     * @return EbookPostEntity
+     * @throws \Exception
+     */
+    protected function getEbookEntity(): EbookPostEntity
+    {
+        if (empty($this->ebookEntity)) {
+            $this->ebookEntity = Service::make()
+                ->ebooks()
+                ->ebookPost();
+        }
+
+        return $this->ebookEntity;
     }
 }
