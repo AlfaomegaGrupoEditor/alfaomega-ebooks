@@ -18,8 +18,25 @@ class WooCommerceProductTest extends WordpressTest
      * @throws \Exception
      */
     #[DataProvider('productProvider')]
-    public function testMassLinkEbook(int $postId, int $userId)
-    {
+    public function testMassLinkEbook(int $postId,
+                                      int $userId,
+                                      bool $delete
+    ): void {
+        // delete the eBook
+        if ($delete) {
+            $product = wc_get_product($postId);
+            $this->assertNotNull($product);
+            $service = Service::make()->ebooks()->ebookPost();
+            $eBook = $service->search(
+                $product->get_sku(),
+                'alfaomega_ebook_product_sku'
+            );
+            if ($eBook) {
+                $success = $service->delete($eBook['id']);
+                $this->assertTrue($success);
+            }
+        }
+
         wp_set_current_user($userId);
         $result = Service::make()
             ->wooCommerce()
@@ -36,14 +53,16 @@ class WooCommerceProductTest extends WordpressTest
     public static function productProvider(): array
     {
         return [
-            'Informática para bachillerato'           => [
+            'update' => [
                 'postId' => 34842,
                 'userId' => 1,
+                'delete' => false,
             ],
-            /*'Análisis y minería de textos con Python' => [
-                'postId' => 32168,
+            'create' => [
+                'postId' => 34778,
                 'userId' => 1,
-            ],*/
+                'delete' => true,
+            ],
         ];
     }
 }
