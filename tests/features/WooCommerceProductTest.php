@@ -13,6 +13,7 @@ class WooCommerceProductTest extends WordpressTest
      *
      * @param int $postId
      * @param int $userId
+     * @param bool $delete
      *
      * @return void
      * @throws \Exception
