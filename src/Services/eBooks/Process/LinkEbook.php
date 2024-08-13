@@ -92,16 +92,20 @@ class LinkEbook extends AbstractProcess implements ProcessContract
         }
 
         // Recommended for quick and bulk actions
+        $processed = [];
         if (!$async) {
             foreach ($products as $eBook) {
-                $this->single($eBook, postId: $eBook['id'] ?? null);
+                $result = $this->single($eBook, postId: $eBook['id'] ?? null);
+                if ($result > 0) {
+                    $processed[] = $result;
+                }
             }
         }
 
         // Recommended for big amount of records
         // TODO: queue the process
 
-        return $products;
+        return $processed;
     }
 
     /**
