@@ -50,6 +50,7 @@ class LinkProduct extends AbstractProcess implements ProcessContract
             if (empty($product)) {
                 throw new Exception("Products with digital ISBN {$eBook['isbn']} not found");
             }
+            $originalProduct = $product;
 
             $prices = [
                 'regular_price' => $product['regular_price'],
@@ -87,8 +88,8 @@ class LinkProduct extends AbstractProcess implements ProcessContract
 
             return $product['id'];
         } catch (\Exception $e) {
-            if (!empty($product)) {
-                $this->entity->updateType($product, 'simple');
+            if (!empty($originalProduct)) {
+                $this->entity->updateType($originalProduct, 'simple');
             }
 
             if ($throwError) {

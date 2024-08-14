@@ -141,9 +141,17 @@ class Product extends WooAbstractEntity implements ProductEntity
         if ($product['type'] !== $type) {
             $regularPrice = $product['regular_price'];
             $salePrice = $product['sale_price'];
-            $product = (array) $this->client->put("products/{$product['id']}", [
-                'type' => $type,
-            ]);
+            if ($type === 'variable') {
+                $product = (array) $this->client->put("products/{$product['id']}", [
+                    'type' => $type,
+                ]);
+            } else {
+                $product = (array) $this->client->put("products/{$product['id']}", [
+                    'type'          => $type,
+                    'regular_price' => $regularPrice,
+                    'sale_price'    => $salePrice,
+                ]);
+            }
 
             if (empty($product)) {
                 return null;
