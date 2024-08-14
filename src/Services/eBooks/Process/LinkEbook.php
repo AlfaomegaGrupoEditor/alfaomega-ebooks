@@ -42,19 +42,28 @@ class LinkEbook extends AbstractProcess implements ProcessContract
         try {
             $post = $this->getEbookEntity()
                 ->updateOrCreate($postId, $eBook);
+            if (empty($post)) {
+                throw new \Exception('Error updating or creating the eBook post.');
+            }
 
+            $eBook['id'] = $post['id'];
             if ($this->updateProduct) {
-                Service::make()
+                $productId = Service::make()
                     ->wooCommerce()
                     ->linkProduct()
                     ->single($eBook);
+
+                if (empty($productId)) {
+                    throw new \Exception('Error linking the eBook with the product.');
+                }
             }
 
-            return !empty($post) ? $post['id'] : 0;
+            return $post['id'];
         } catch (\Exception $e) {
             if ($throwError) {
                 throw $e;
             }
+            return 0;
         }
     }
 

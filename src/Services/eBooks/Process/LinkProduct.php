@@ -45,45 +45,53 @@ class LinkProduct extends AbstractProcess implements ProcessContract
      */
     public function single(array $eBook, bool $throwError=false, int $postId = null): int
     {
-        $product = $this->entity->get($eBook['product_id']);
-        if (empty($product)) {
-            if ($throwError) {
+        try {
+            $product = $this->entity->get($eBook['product_id']);
+            if (empty($product)) {
                 throw new Exception("Products with digital ISBN {$eBook['isbn']} not found");
+            }
+
+            $prices = [
+                'regular_price' => $product['regular_price'],
+                'sale_price'    => $product['sale_price'],
+            ];
+            if (empty($prices['regular_price'])) {
+                throw new Exception("Product price not specified");
+            }
+
+            $product = $this->entity->updateType($product);
+            if (empty($product)) {
+                throw new Exception("Product type not supported");
+            }
+
+            $product = $this->entity->updateFormatsAttr($product);
+            if (empty($product)) {
+                throw new Exception("Product formats attribute update failed");
+            }
+
+            $product = $this->entity->updateEbookAttr($product);
+            if (empty($product)) {
+                throw new Exception("Product eBook attribute update failed");
+            }
+
+            $product = $this->entity->variant()->update($product, $prices, $eBook);
+            if (empty($product)) {
+                throw new Exception("Product variants failed");
+            }
+
+            update_post_meta(
+                $eBook['product_id'],
+                'alfaomega_ebooks_ebook_isbn',
+                $eBook['isbn']
+            );
+
+            return $product['id'];
+        } catch (\Exception $e) {
+            if ($throwError) {
+                throw $e;
             }
             return 0;
         }
-
-        $product = $this->entity->updateType($product);
-        $prices = [
-            'regular_price' => $product['regular_price'],
-            'sale_price'    => $product['sale_price'],
-        ];
-        if (empty($product)) {
-            throw new Exception("Product type not supported");
-        }
-
-        $product = $this->entity->updateFormatsAttr($product);
-        if (empty($product)) {
-            throw new Exception("Product formats attribute update failed");
-        }
-
-        $product = $this->entity->updateEbookAttr($product);
-        if (empty($product)) {
-            throw new Exception("Product eBook attribute update failed");
-        }
-
-        $product = $this->entity->variant()->update($product, $prices, $eBook);
-        if (empty($product)) {
-            throw new Exception("Product variants failed");
-        }
-
-        update_post_meta(
-            $eBook['product_id'],
-            'alfaomega_ebooks_ebook_isbn',
-            $eBook['isbn']
-        );
-
-        return $product['id'];
     }
 
     /**
