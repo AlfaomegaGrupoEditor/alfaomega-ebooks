@@ -87,6 +87,10 @@ class LinkProduct extends AbstractProcess implements ProcessContract
 
             return $product['id'];
         } catch (\Exception $e) {
+            if (!empty($product)) {
+                $this->entity->updateType($product, 'simple');
+            }
+
             if ($throwError) {
                 throw $e;
             }
