@@ -28,7 +28,7 @@ class LinkEbook extends AbstractProcess implements ProcessContract
     }
 
     /**
-     * Do the process on synchronously on a single object.
+     * Link a product to an eBook.
      *
      * @param array $eBook: eBook attributes
      * @param bool $throwError: Whether to throw an error or not.
@@ -68,7 +68,8 @@ class LinkEbook extends AbstractProcess implements ProcessContract
     }
 
     /**
-     * Gather the information required to perform the process on each object.
+     * Gather the related eBook information for each specified products. Also,
+     * call the async or sync methods to link the product to the eBook.
      *
      * @param array $data Array of products id.
      * @param bool $async
