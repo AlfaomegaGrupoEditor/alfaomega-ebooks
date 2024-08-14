@@ -50,7 +50,7 @@ class LinkProduct extends AbstractProcess implements ProcessContract
             if ($throwError) {
                 throw new Exception("Products with digital ISBN {$eBook['isbn']} not found");
             }
-            return 1;
+            return 0;
         }
 
         $product = $this->entity->updateType($product);
@@ -82,6 +82,8 @@ class LinkProduct extends AbstractProcess implements ProcessContract
             'alfaomega_ebooks_ebook_isbn',
             $eBook['isbn']
         );
+
+        return $product['id'];
     }
 
     /**
