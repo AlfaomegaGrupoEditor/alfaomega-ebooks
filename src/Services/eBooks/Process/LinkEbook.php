@@ -117,25 +117,9 @@ class LinkEbook extends AbstractProcess implements ProcessContract
             }
         }
 
-        // Recommended for quick and bulk actions
-        $processed = [];
-        if (!$async) {
-            foreach ($products as $productId => $ebook) {
-                if (empty($ebook['printed_isbn'])) {
-                    continue;
-                }
-                $ebook['product_id'] = $productId;
-                $result = $this->single($ebook, postId: $ebook['id'] ?? null);
-                if ($result > 0) {
-                    $processed[] = $result;
-                }
-            }
-        }
-
-        // Recommended for big amount of records
-        // TODO: queue the process
-
-        return $processed;
+        return $async
+            ? $this->queueProcess($products)
+            : $this->doProcess($products);
     }
 
     /**
@@ -176,5 +160,51 @@ class LinkEbook extends AbstractProcess implements ProcessContract
         }
 
         return $this->ebookEntity;
+    }
+
+    /**
+     * Link the products to the ebooks synchronously.
+     * @param array $products
+     *
+     * @return array|null
+     * @throws \Exception
+     */
+    protected function doProcess(array $products): ?array
+    {
+        $processed = [];
+        foreach ($products as $productId => $ebook) {
+            if (empty($ebook['printed_isbn'])) {
+                continue;
+            }
+            $ebook['product_id'] = $productId;
+            $result = $this->single($ebook, postId: $ebook['id'] ?? null);
+            if ($result > 0) {
+                $processed[] = $result;
+            }
+        }
+
+        return $processed;
+    }
+
+    /**
+     * Queue the process to link the products to the ebooks asynchronously.
+     * @param array $products
+     *
+     * @return array|null
+     */
+    protected function queueProcess(array $products): ?array
+    {
+        $queued = [];
+        foreach ($products as $productId => $ebook) {
+            if (empty($ebook['printed_isbn'])) {
+                continue;
+            }
+            $ebook['product_id'] = $productId;
+            //TODO: queue the process
+            //$result = $this->single($ebook, postId: $ebook['id'] ?? null);
+
+            $queued[] = $productId;
+        }
+        return $queued;
     }
 }
