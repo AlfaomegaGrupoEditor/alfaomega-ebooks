@@ -144,7 +144,7 @@ class LinkEbook extends AbstractProcess implements ProcessContract
         }
 
         // clear the eBook field value
-        //update_post_meta($product['id'], 'alfaomega_ebooks_ebook_isbn', '');
+        update_post_meta($product['id'], 'alfaomega_ebooks_ebook_isbn', '');
 
         return 1;
     }
