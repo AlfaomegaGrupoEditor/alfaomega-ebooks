@@ -76,10 +76,11 @@ class Product extends WooAbstractEntity implements ProductEntity
      * If the format is already in the product attributes, it returns the product data.
      *
      * @param array $product The product data to update.
+     * @param array $value|null Value to set.
      *
      * @return array|null Returns an associative array containing the updated product data if the product formats are updated, or null if the product formats are not updated.
      */
-    public function updateFormatsAttr(array $product): ?array
+    public function updateFormatsAttr(array $product, ?array $value=null): ?array
     {
         $formats = [
             'id'        => $this->settings['alfaomega_ebooks_format_attr_id'],
@@ -88,11 +89,13 @@ class Product extends WooAbstractEntity implements ProductEntity
             'position'  => 0,
             'visible'   => false,
             'variation' => true,
-            'options'   => [
-                'Impreso',
-                'Digital',
-                'Impreso + Digital',
-            ],
+            'options'   => is_null($value)
+                ? [
+                    'Impreso',
+                    'Digital',
+                    'Impreso + Digital',
+                ]
+                : $value,
         ];
 
         return Service::make()
@@ -103,11 +106,13 @@ class Product extends WooAbstractEntity implements ProductEntity
 
     /**
      * Updates the ebook product attribute in WooCommerce.
+     *
      * @param array $product
+     * @param array $value|null Value to set.
      *
      * @return array|null
      */
-    public function updateEbookAttr(array $product): ?array
+    public function updateEbookAttr(array $product, ?array $value=null): ?array
     {
         $ebook = [
             'id'        => $this->settings['alfaomega_ebooks_ebook_attr_id'],
@@ -116,7 +121,7 @@ class Product extends WooAbstractEntity implements ProductEntity
             'position'  => 1,
             'visible'   => false,
             'variation' => false,
-            'options'   => ['Si'],
+            'options'   => is_null($value) ? ['Si'] : $value,
         ];
 
         return Service::make()

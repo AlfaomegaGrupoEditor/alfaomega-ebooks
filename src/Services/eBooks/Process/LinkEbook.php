@@ -103,23 +103,48 @@ class LinkEbook extends AbstractProcess implements ProcessContract
             ->variant()
             ->list($product->get_id());
 
-        $productPrice = 0;
+        $productPrice = null;
         foreach ($variations as $variation) {
             if ($variation['description'] === 'Libro impreso') {
-                $productPrice = $variation['regular_price'];
+                $productPrice = [
+                    'regular_price' => $variation['regular_price'],
+                    'sale_price'    => $variation['sale_price'],
+                ];
             }
-            $this->entity
+            $result = $this->entity
                 ->variant()
                 ->delete($product->get_id(), $variation['id']);
+            if (empty($result)) {
+                throw new \Exception("Variation deletion failed");
+            }
+        }
+        if (empty($productPrice)) {
+            throw new \Exception("Product price not available");
         }
 
         // restore the product type
-
-        // restore the product price
+        $result = $this->entity->updateType(
+            array_merge(['id' => $product->get_id()], $productPrice),
+            'simple'
+        );
+        if (empty($result)) {
+            throw new \Exception("Restoring product type failed");
+        }
 
         // remove the attributes
+        $product = $this->entity->get($product->get_id());
+        $product = $this->entity->updateFormatsAttr($product, []);
+        if (empty($product)) {
+            throw new \Exception("Product formats attribute update failed");
+        }
+
+        $product = $this->entity->updateEbookAttr($product, ['No']);
+        if (empty($product)) {
+            throw new \Exception("Product eBook attribute update failed");
+        }
 
         // clear the eBook field value
+        //update_post_meta($product['id'], 'alfaomega_ebooks_ebook_isbn', '');
 
         return 1;
     }

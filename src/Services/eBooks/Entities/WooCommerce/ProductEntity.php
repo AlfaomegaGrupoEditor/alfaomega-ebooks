@@ -2,8 +2,6 @@
 
 namespace AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce;
 
-use WC_Product;
-
 interface ProductEntity
 {
     /**
@@ -38,18 +36,21 @@ interface ProductEntity
      * If the format is already in the product attributes, it returns the product data.
      *
      * @param array $product The product data to update.
+     * @param array $value|null Value to set.
      *
      * @return array|null Returns an associative array containing the updated product data if the product formats are updated, or null if the product formats are not updated.
      */
-    public function updateFormatsAttr(array $product): ?array;
+    public function updateFormatsAttr(array $product, ?array $value=null): ?array;
 
     /**
      * Updates the ebook product attribute in WooCommerce.
+     *
      * @param array $product
+     * @param array $value|null Value to set.
      *
      * @return array|null
      */
-    public function updateEbookAttr(array $product): ?array;
+    public function updateEbookAttr(array $product, ?array $value=null): ?array;
 
     /**
      * Updates the product type in WooCommerce.
