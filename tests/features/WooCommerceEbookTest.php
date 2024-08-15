@@ -18,7 +18,7 @@ class WooCommerceEbookTest extends WordpressTest
      * @throws \Exception
      */
     #[DataProvider('ebookProvider')]
-    public function testMassUpdateMeta(int $postId, int $userId)
+    public function testUpdateMetaAction(int $postId, int $userId)
     {
         // modify the post
         $postId = wp_insert_post([
@@ -47,6 +47,28 @@ class WooCommerceEbookTest extends WordpressTest
     }
 
     /**
+     * Test update ebook metadata
+     *
+     * @param int $postId
+     * @param int $userId
+     *
+     * @return void
+     * @throws \Exception
+     */
+    #[DataProvider('ebookProvider')]
+    public function testLinkAction(int $postId, int $userId)
+    {
+        // call the method to test
+        wp_set_current_user($userId);
+        $result = Service::make()
+            ->ebooks()
+            ->importEbook()
+            ->batch([$postId]);
+
+        $this->assertNotNull($result);
+    }
+
+    /**
      * Data provider for test_product_attributes
      * @return array[]
      */
@@ -54,7 +76,7 @@ class WooCommerceEbookTest extends WordpressTest
     {
         return [
             'LEAN MANUFACTURING STEP BY STEP'           => [
-                'postId' => 34895,
+                'postId' => 34900,
                 'userId' => 1,
             ],
             /*'Análisis y minería de textos con Python' => [

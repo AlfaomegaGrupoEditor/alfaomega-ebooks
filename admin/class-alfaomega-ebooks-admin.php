@@ -107,7 +107,7 @@ class Alfaomega_Ebooks_Admin {
     public function bulk_actions_alfaomega_ebooks($bulk_actions): array
     {
         $bulk_actions['update-meta'] = __('Update meta', 'alfaomega-ebooks');
-        $bulk_actions['link-product'] = __('Link product', 'alfaomega-ebooks');
+        //$bulk_actions['link-product'] = __('Link product', 'alfaomega-ebooks');
         return $bulk_actions;
     }
 
@@ -223,11 +223,11 @@ class Alfaomega_Ebooks_Admin {
                         '<a href="%s">%s</a>',
                         esc_url(add_query_arg(['ebook_action' => 'update-meta', 'post' => $post->ID], 'admin-post.php')),
                         esc_html__('Update', 'alfaomega-ebooks')),
-                    'link-product' => sprintf(
+                    /*'link-product' => sprintf(
                         '<a href="%s">%s</a>',
                         esc_url(add_query_arg(['ebook_action' => 'link-product', 'post' => $post->ID], 'admin-post.php')),
                         esc_html__('Link', 'alfaomega-ebooks')
-                    ),
+                    ),*/
                 ], $actions);
         }
 

@@ -74,6 +74,10 @@ class ImportEbook extends AbstractProcess implements ProcessContract
      */
     public function batch(array $data = [], bool $async = false): array
     {
+        if (empty($data)) {
+            return $this->chunk();
+        }
+
         $isbn = '';
         if ($this->settings['alfaomega_ebooks_import_from_latest']) {
             $latestBook = $this->entity->latest();
