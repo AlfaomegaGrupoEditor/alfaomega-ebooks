@@ -83,6 +83,48 @@ class LinkEbook extends AbstractProcess implements ProcessContract
     }
 
     /**
+     * Remove the product link to the ebook and restores the simple product type.
+     *
+     * @param int $postId
+     *
+     * @return int
+     * @throws \Exception
+     */
+    public function remove(int $postId): int
+    {
+        // get the product
+        $product = wc_get_product($postId);
+        if ($product->get_type() !== 'variable') {
+            throw new \Exception("Product type not supported");
+        }
+
+        // remove the variations
+        $variations = $this->entity
+            ->variant()
+            ->list($product->get_id());
+
+        $productPrice = 0;
+        foreach ($variations as $variation) {
+            if ($variation['description'] === 'Libro impreso') {
+                $productPrice = $variation['regular_price'];
+            }
+            $this->entity
+                ->variant()
+                ->delete($product->get_id(), $variation['id']);
+        }
+
+        // restore the product type
+
+        // restore the product price
+
+        // remove the attributes
+
+        // clear the eBook field value
+
+        return 1;
+    }
+
+    /**
      * Link the products to the ebooks synchronously.
      * @param array $entities
      *

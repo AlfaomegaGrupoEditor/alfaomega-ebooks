@@ -177,4 +177,42 @@ class Variant extends WooAbstractEntity
             ],
         };
     }
+
+    /**
+     * List the variants of a product.
+     *
+     * This method is used to list the variants of a product in WooCommerce.
+     * It returns an array with the variants of the product.
+     *
+     * @param int $productId The ID of the product to list the variants for.
+     * @return array The variants of the product.
+     */
+    public function list(int $productId): array
+    {
+        $variations = (array) $this->client
+            ->get("products/{$productId}/variations");
+
+        if (empty($variations)) {
+            return [];
+        }
+
+        return (array) $variations;
+    }
+
+    /**
+     * Delete a variant of a product.
+     *
+     * This method is used to delete a variant of a product in WooCommerce.
+     * It takes the product ID and the variant ID as parameters.
+     * It returns an array with the result of the deletion.
+     *
+     * @param int $productId The ID of the product to delete the variant from.
+     * @param int $variationId The ID of the variant to delete.
+     * @return array The result of the deletion.
+     */
+    public function delete(int $productId, int $variationId): array
+    {
+        return (array) $this->client
+            ->delete("products/{$productId}/variations/{$variationId}", ['force' => true]);
+    }
 }

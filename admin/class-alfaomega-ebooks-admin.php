@@ -166,6 +166,17 @@ class Alfaomega_Ebooks_Admin {
             }
 
             printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
+        } elseif (!empty($_REQUEST['unlink-ebook'])) {
+            if ($_REQUEST['unlink-ebook'] === 'fail') {
+                $class = 'notice notice-error is-dismissible';
+                $message = esc_html__('Unlink eBook failed!', 'alfaomega-ebooks');
+            } else {
+                $linkEbook = intval($_REQUEST['unlink-ebook']);
+                $class = 'notice notice-success is-dismissible';
+                $message = sprintf(esc_html__('Ebook unlinked successfully', 'alfaomega-ebooks'));
+            }
+
+            printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
         }
     }
 
@@ -186,11 +197,20 @@ class Alfaomega_Ebooks_Admin {
     {
         switch ($post->post_type) {
             case 'product':
-                $actions['link-ebook'] = sprintf(
-                    '<a href="%s">%s</a>',
-                    esc_url(add_query_arg(['ebook_action' => 'link-ebook', 'post' => $post->ID], 'admin-post.php')),
-                    esc_html__('Link eBook', 'alfaomega-ebooks')
-                );
+                $product = wc_get_product($post->ID);
+                if ($product->get_type() === 'simple') {
+                    $actions['link-ebook'] = sprintf(
+                        '<a href="%s">%s</a>',
+                        esc_url(add_query_arg(['ebook_action' => 'link-ebook', 'post' => $post->ID], 'admin-post.php')),
+                        esc_html__('Link eBook', 'alfaomega-ebooks')
+                    );
+                } else {
+                    $actions['unlink-ebook'] = sprintf(
+                        '<a href="%s">%s</a>',
+                        esc_url(add_query_arg(['ebook_action' => 'unlink-ebook', 'post' => $post->ID], 'admin-post.php')),
+                        esc_html__('Unlink eBook', 'alfaomega-ebooks')
+                    );
+                }
                 break;
 
             case 'alfaomega-ebook':

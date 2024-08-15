@@ -107,4 +107,31 @@ class EbooksQuickActionsController
         }
         return $redirectUrl;
     }
+
+    /**
+     * Link an ebook to a product.
+     * @param int $postId
+     * @param string $redirectUrl
+     *
+     * @return string
+     */
+    public function quickUnlinkEbook(int $postId, string $redirectUrl): string
+    {
+        try {
+            $unlinked = Service::make()
+                ->wooCommerce()
+                ->linkEbook()
+                ->remove($postId);
+
+            if ($unlinked === 0) {
+                throw new Exception("Can't remove the link to the ebook.");
+            }
+
+            $redirectUrl = add_query_arg('unlink-ebook', $unlinked, $redirectUrl);
+        } catch (Exception $exception) {
+            error_log($exception->getMessage());
+            $redirectUrl = add_query_arg('unlink-ebook', 'fail', $redirectUrl);
+        }
+        return $redirectUrl;
+    }
 }

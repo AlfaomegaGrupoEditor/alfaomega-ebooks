@@ -121,6 +121,7 @@ class RouteManager
         'update-meta'  => [EbooksQuickActionsController::class, 'quickUpdateMeta'],
         'link-product' => [EbooksQuickActionsController::class, 'quickLinkProduct'],
         'link-ebook'   => [EbooksQuickActionsController::class, 'quickLinkEbook'],
+        'unlink-ebook' => [EbooksQuickActionsController::class, 'quickUnlinkEbook'],
     ];
 
     /**
