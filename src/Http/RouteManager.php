@@ -119,7 +119,7 @@ class RouteManager
      */
     protected array $quickActions = [
         'update-meta'  => [EbooksQuickActionsController::class, 'quickUpdateMeta'],
-        'link-product' => [EbooksQuickActionsController::class, 'quickLinkProduct'],
+        'find-product' => [EbooksQuickActionsController::class, 'quickFindProduct'],
         'link-ebook'   => [EbooksQuickActionsController::class, 'quickLinkEbook'],
         'unlink-ebook' => [EbooksQuickActionsController::class, 'quickUnlinkEbook'],
     ];

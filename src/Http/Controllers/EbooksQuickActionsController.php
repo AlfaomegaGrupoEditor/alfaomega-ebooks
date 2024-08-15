@@ -59,22 +59,25 @@ class EbooksQuickActionsController
      * @return string The redirect URL with the result of the linking process added as a query parameter.
      * @throws Exception If an error occurs during the linking process.
      */
-    public function quickLinkProduct(int $postId, string $redirectUrl): string
+    public function quickFindProduct(int $postId, string $redirectUrl): string
     {
         try {
-            $result = Service::make()->wooCommerce()
-                ->linkProduct()
-                ->batch([$postId]);
+            $product = Service::make()
+                ->wooCommerce()
+                ->linkEbook()
+                ->product($postId);
 
-            $eBooks = count($result);
-            if ($eBooks === 0) {
+            if (empty($product)) {
                 throw new Exception("Can't find the related ebook, please add the eBook ISBN to the product.");
             }
 
-            $redirectUrl = add_query_arg('link-product', $eBooks, $redirectUrl);
+            $parsed_url = parse_url($redirectUrl);
+            $redirectUrl = $parsed_url['scheme'] . '://' . $parsed_url['host'] . '/wp-admin/post.php';
+            $redirectUrl = add_query_arg('post', $product->get_id(), $redirectUrl);
+            $redirectUrl = add_query_arg('action', 'edit', $redirectUrl);
         } catch (Exception $exception) {
             error_log($exception->getMessage());
-            $redirectUrl = add_query_arg('link-product', 'fail', $redirectUrl);
+            $redirectUrl = add_query_arg('find-product', 'fail', $redirectUrl);
         }
 
         return $redirectUrl;

@@ -154,6 +154,25 @@ class LinkEbook extends AbstractProcess implements ProcessContract
     }
 
     /**
+     * Get the linked product
+     *
+     * @param array $ebook
+     * @param int|null $postId
+     *
+     * @return int
+     * @throws \Exception
+     */
+    public function product(int $postId): \WC_Product|null
+    {
+        $productSku = get_post_meta($postId, 'alfaomega_ebook_product_sku', true);
+        if (empty($productSku)) {
+            return null;
+        }
+        $productId = wc_get_product_id_by_sku($productSku);
+        return wc_get_product($productId);
+    }
+
+    /**
      * Link the products to the ebooks synchronously.
      * @param array $entities
      *

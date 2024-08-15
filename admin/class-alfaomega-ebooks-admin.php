@@ -144,14 +144,13 @@ class Alfaomega_Ebooks_Admin {
             }
 
             printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
-        } elseif (!empty($_REQUEST['link-product'])) {
-            if ($_REQUEST['link-product'] === 'fail') {
+        } elseif (!empty($_REQUEST['find-product'])) {
+            if ($_REQUEST['find-product'] === 'fail') {
                 $class = 'notice notice-error is-dismissible';
-                $message = esc_html__('Link product failed!', 'alfaomega-ebooks');
+                $message = esc_html__('Product not found', 'alfaomega-ebooks');
             } else {
-                $linkProduct = intval($_REQUEST['link-product']);
                 $class = 'notice notice-success is-dismissible';
-                $message = sprintf(esc_html__('%u products linked successfully', 'alfaomega-ebooks'), $linkProduct);
+                $message = esc_html__('Showing the related eBook product', 'alfaomega-ebooks');
             }
 
             printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
@@ -223,11 +222,11 @@ class Alfaomega_Ebooks_Admin {
                         '<a href="%s">%s</a>',
                         esc_url(add_query_arg(['ebook_action' => 'update-meta', 'post' => $post->ID], 'admin-post.php')),
                         esc_html__('Update', 'alfaomega-ebooks')),
-                    /*'link-product' => sprintf(
+                    'find-product' => sprintf(
                         '<a href="%s">%s</a>',
-                        esc_url(add_query_arg(['ebook_action' => 'link-product', 'post' => $post->ID], 'admin-post.php')),
-                        esc_html__('Link', 'alfaomega-ebooks')
-                    ),*/
+                        esc_url(add_query_arg(['ebook_action' => 'find-product', 'post' => $post->ID], 'admin-post.php')),
+                        esc_html__('Product', 'alfaomega-ebooks')
+                    ),
                 ], $actions);
         }
 
