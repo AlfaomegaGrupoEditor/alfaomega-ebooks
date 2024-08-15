@@ -79,6 +79,7 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
             }
         }
 
+        // delete ebooks not valid
         if (!empty($toDelete)) {
             foreach ($toDelete as $postId) {
                 $this->getEbookEntity()->delete($postId);
@@ -87,9 +88,14 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
 
         $modified = [];
         if (!empty($isbns)) {
+            $notFound = $isbns;
             $ebooks = $this->getEbookEntity()->index(array_keys($isbns));
             if (!empty($ebooks)) {
                 foreach ($ebooks as $ebook) {
+                    $key = array_search($ebook['isbn'], $notFound);
+                    if ($key !== false) {
+                        unset($notFound[$key]);
+                    }
                     $ebookPost = $isbns[$ebook['isbn']] ?? null;
                     if (empty($ebookPost) || (
                         $ebook['title'] === $ebookPost['title'] &&
@@ -102,6 +108,13 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
 
                     $modified[] = array_merge($ebookPost, $ebook);
                 }
+            }
+        }
+
+        // delete ebooks not valid
+        if (!empty($notFound)) {
+            foreach ($notFound as $ebook) {
+                $this->getEbookEntity()->delete($ebook['id']);
             }
         }
 
