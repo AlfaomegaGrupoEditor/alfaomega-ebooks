@@ -88,7 +88,7 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
 
         $modified = [];
         if (!empty($isbns)) {
-            $notFound = $isbns;
+            $notFound = array_keys($isbns);
             $ebooks = $this->getEbookEntity()->index(array_keys($isbns));
             if (!empty($ebooks)) {
                 foreach ($ebooks as $ebook) {
