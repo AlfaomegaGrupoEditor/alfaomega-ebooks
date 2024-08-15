@@ -2,6 +2,7 @@
 
 namespace AlfaomegaEbooks\Services\eBooks\Process;
 
+use AlfaomegaEbooks\Services\eBooks\Entities\Alfaomega\EbookPostEntity;
 use AlfaomegaEbooks\Services\eBooks\Service;
 
 /**
@@ -21,6 +22,7 @@ abstract class AbstractProcess implements ProcessContract
      * By default, this property is set to true, meaning the product will be updated.
      */
     protected bool $updateProduct = true;
+    protected ?EbookPostEntity $ebookEntity = null;
 
     /**
      * AbstractProcess constructor.
@@ -32,6 +34,62 @@ abstract class AbstractProcess implements ProcessContract
     public function __construct(
         protected array $settings
     ) {}
+
+    /**
+     * Link a product to an eBook.
+     *
+     * @param array $eBook: eBook attributes
+     * @param bool $throwError: Whether to throw an error or not.
+     * @param int|null $postId: eBook post ID.
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function single(array $eBook, bool $throwError=false, int $postId=null): int
+    {
+        try {
+            $post = $this->getEbookEntity()
+                ->updateOrCreate($postId, $eBook);
+            if (empty($post)) {
+                throw new \Exception('Error updating or creating the eBook post.');
+            }
+
+            $eBook['id'] = $post['id'];
+            if ($this->updateProduct) {
+                $productId = Service::make()
+                    ->wooCommerce()
+                    ->linkProduct()
+                    ->single($eBook);
+
+                if (empty($productId)) {
+                    throw new \Exception('Error linking the eBook with the product.');
+                }
+            }
+
+            return $post['id'];
+        } catch (\Exception $e) {
+            if ($throwError) {
+                throw $e;
+            }
+            return 0;
+        }
+    }
+
+    /**
+     * Gather the related eBook information for each specified products. Also,
+     * call the async or sync methods to link the product to the eBook.
+     *
+     * @param array $data Array of products id.
+     * @param bool $async
+     *
+     * @return array|null
+     * @throws \Exception
+     */
+    public function batch(array $data = [], bool $async = false): ?array
+    {
+        // Todo: implement the batch method
+        return null;
+    }
 
     /**
      * Set the value of the $updateProduct property.
@@ -46,5 +104,45 @@ abstract class AbstractProcess implements ProcessContract
     {
         $this->updateProduct = $updateProduct;
         return $this;
+    }
+
+    /**
+     * Search the eBook by ISBN or product SKU.
+     * @param string|null $isbn
+     * @param string|null $sku
+     *
+     * @return array|null
+     * @throws \Exception
+     */
+    protected function searchEbook(?string $isbn, ?string $sku): ?array
+    {
+        if (!empty($sku)) {
+            return $this->getEbookEntity()
+                ->search($sku, 'alfaomega_ebook_product_sku');
+        }
+
+        if (!empty($isbn)) {
+            return $this->getEbookEntity()
+                ->search($isbn);
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the eBook entity.
+     *
+     * @return EbookPostEntity
+     * @throws \Exception
+     */
+    protected function getEbookEntity(): EbookPostEntity
+    {
+        if (empty($this->ebookEntity)) {
+            $this->ebookEntity = Service::make()
+                ->ebooks()
+                ->ebookPost();
+        }
+
+        return $this->ebookEntity;
     }
 }

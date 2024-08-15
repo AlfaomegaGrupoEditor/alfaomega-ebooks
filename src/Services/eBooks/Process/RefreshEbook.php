@@ -42,14 +42,31 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
      */
     public function single(array $eBook, bool $throwError=false, int $postId = null): int
     {
-        $eBook = $this->entity
-            ->updateOrCreate($postId, $eBook);
+        try {
+            $post = $this->entity
+                ->updateOrCreate($postId, $eBook);
+            if (empty($post)) {
+                throw new \Exception('Error updating or creating the eBook post.');
+            }
 
-        if ($this->updateProduct) {
-            Service::make()
-                ->wooCommerce()
-                ->linkProduct()
-                ->single($eBook);
+            $eBook['id'] = $post['id'];
+            if ($this->updateProduct) {
+                $productId = Service::make()
+                    ->wooCommerce()
+                    ->linkProduct()
+                    ->single($eBook);
+
+                if (empty($productId)) {
+                    throw new \Exception('Error linking the eBook with the product.');
+                }
+            }
+            return $post['id'];
+
+        } catch (\Exception $e) {
+            if ($throwError) {
+                throw $e;
+            }
+            return 0;
         }
     }
 

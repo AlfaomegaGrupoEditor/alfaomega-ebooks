@@ -2,9 +2,7 @@
 
 namespace AlfaomegaEbooks\Services\eBooks\Process;
 
-use AlfaomegaEbooks\Services\eBooks\Entities\Alfaomega\EbookPostEntity;
 use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\ProductEntity;
-use AlfaomegaEbooks\Services\eBooks\Service;
 
 /**
  * Link ebooks process.
@@ -19,52 +17,10 @@ class LinkEbook extends AbstractProcess implements ProcessContract
      *
      * @throws \Exception
      */
-    public function __construct(
-        array                      $settings,
-        protected ProductEntity    $entity,
-        protected ?EbookPostEntity $ebookEntity = null)
-    {
+    public function __construct(array $settings,
+                                protected ProductEntity $entity
+    ){
         parent::__construct($settings);
-    }
-
-    /**
-     * Link a product to an eBook.
-     *
-     * @param array $eBook: eBook attributes
-     * @param bool $throwError: Whether to throw an error or not.
-     * @param int|null $postId: eBook post ID.
-     *
-     * @return void
-     * @throws \Exception
-     */
-    public function single(array $eBook, bool $throwError=false, int $postId=null): int
-    {
-        try {
-            $post = $this->getEbookEntity()
-                ->updateOrCreate($postId, $eBook);
-            if (empty($post)) {
-                throw new \Exception('Error updating or creating the eBook post.');
-            }
-
-            $eBook['id'] = $post['id'];
-            if ($this->updateProduct) {
-                $productId = Service::make()
-                    ->wooCommerce()
-                    ->linkProduct()
-                    ->single($eBook);
-
-                if (empty($productId)) {
-                    throw new \Exception('Error linking the eBook with the product.');
-                }
-            }
-
-            return $post['id'];
-        } catch (\Exception $e) {
-            if ($throwError) {
-                throw $e;
-            }
-            return 0;
-        }
     }
 
     /**
@@ -121,46 +77,6 @@ class LinkEbook extends AbstractProcess implements ProcessContract
         return $async
             ? $this->queueProcess($products)
             : $this->doProcess($products);
-    }
-
-    /**
-     * Search the eBook by ISBN or product SKU.
-     * @param string|null $isbn
-     * @param string|null $sku
-     *
-     * @return array|null
-     * @throws \Exception
-     */
-    protected function searchEbook(?string $isbn, ?string $sku): ?array
-    {
-        if (!empty($sku)) {
-            return $this->getEbookEntity()
-                ->search($sku, 'alfaomega_ebook_product_sku');
-        }
-
-        if (!empty($isbn)) {
-            return $this->getEbookEntity()
-                ->search($isbn);
-        }
-
-        return null;
-    }
-
-    /**
-     * Get the eBook entity.
-     *
-     * @return EbookPostEntity
-     * @throws \Exception
-     */
-    protected function getEbookEntity(): EbookPostEntity
-    {
-        if (empty($this->ebookEntity)) {
-            $this->ebookEntity = Service::make()
-                ->ebooks()
-                ->ebookPost();
-        }
-
-        return $this->ebookEntity;
     }
 
     /**
