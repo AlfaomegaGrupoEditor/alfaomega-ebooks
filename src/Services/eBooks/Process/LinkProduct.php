@@ -140,4 +140,32 @@ class LinkProduct extends AbstractProcess implements ProcessContract
         // call $this->batch($data, true) with the chunk
         return null;
     }
+
+    /**
+     * Link the products to the ebooks synchronously.
+     *
+     * @param array $entities
+     *
+     * @return array|null
+     * @throws \Exception
+     */
+    protected function doProcess(array $entities): ?array
+    {
+        $processed = [];
+
+        return $processed;
+    }
+
+    /**
+     * Queue the process to link the products to the ebooks asynchronously.
+     *
+     * @param array $entities
+     *
+     * @return array|null
+     */
+    protected function queueProcess(array $entities): ?array
+    {
+        // TODO: Implement queueProcess() method.
+        return null;
+    }
 }

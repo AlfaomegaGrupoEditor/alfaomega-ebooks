@@ -130,6 +130,7 @@ class EbookPost extends AbstractEntity implements EbookPostEntity
      */
     public function updateOrCreate(?int $postId, array $data): array
     {
+        // search by isbn to get the post id
         if (empty($postId)) {
             $post = $this->search($data['isbn']);
             if (!empty($post)) {

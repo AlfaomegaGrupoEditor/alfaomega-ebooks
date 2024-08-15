@@ -20,6 +20,23 @@ class WooCommerceEbookTest extends WordpressTest
     #[DataProvider('ebookProvider')]
     public function testMassUpdateMeta(int $postId, int $userId)
     {
+        // modify the post
+        $postId = wp_insert_post([
+            'ID'           => $postId,
+            'post_title'   => 'Test Product',
+            'post_content' => 'Test Product Content',
+            'post_status'  => 'publish',
+            'post_author'  => $userId,
+            'post_type'    => 'alfaomega-ebook',
+        ]);
+        Service::make()
+            ->ebooks()
+            ->ebookPost()
+            ->save($postId, [
+                'printed_isbn' => ''
+            ]);
+
+        // call the method to test
         wp_set_current_user($userId);
         $result = Service::make()
             ->ebooks()
@@ -37,7 +54,7 @@ class WooCommerceEbookTest extends WordpressTest
     {
         return [
             'LEAN MANUFACTURING STEP BY STEP'           => [
-                'postId' => 34896,
+                'postId' => 34895,
                 'userId' => 1,
             ],
             /*'Análisis y minería de textos con Python' => [

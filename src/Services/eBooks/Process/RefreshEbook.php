@@ -48,53 +48,128 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
      */
     public function batch(array $data = [], bool $async = false): array
     {
-        $total = 0;
-        $isbns = [];
-
         if (empty($data)) {
-            // TODO: test this
-            $postsPerPage = 5;
-            $page = 0;
-            $args = [
-                'posts_per_page' => $postsPerPage,
-                'post_type'      => 'alfaomega-ebook',
-                'orderby'        => 'ID',
-                'order'          => 'ASC',
-            ];
-            do {
-                $args['offset'] = $postsPerPage * $page;
-                $posts = get_posts($args);
-                $isbns = [];
-                foreach ($posts as $post) {
-                    $isbn = get_post_meta($post->ID, 'alfaomega_ebook_isbn', true);
-                    $isbns[$isbn] = $post->ID;
-                }
+            return $this->chunk();
+        }
 
-                $result = as_enqueue_async_action(
-                    'alfaomega_ebooks_queue_refresh_list',
-                    [ $isbns ]
-                );
-                if ($result === 0) {
-                    throw new Exception('Refresh list queue failed');
+        $isbns = [];
+        $toDelete = [];
+        foreach ($data as $postId) {
+            $post = get_post($postId);
+            $meta = get_post_meta($postId, single: true);
+            if (!empty($post) && !empty($meta)) {
+                $sku = $meta['alfaomega_ebook_product_sku'][0] ?? '';
+                $ebook = [
+                    'id'           => $postId,
+                    'isbn'         => $meta['alfaomega_ebook_isbn'][0] ?? '',
+                    'title'        => $post->post_title,
+                    'description'  => $post->post_content,
+                    'adobe'        => $meta['alfaomega_ebook_id'][0] ?? '',
+                    'html_ebook'   => $meta['alfaomega_ebook_url'][0] ?? '',
+                    'printed_isbn' => $sku,
+                    'product_sku'  => $sku,
+                    'product_id'   => !empty($sku) ? wc_get_product_id_by_sku($sku) : 0,
+                ];
+                $isbn = empty($ebook['isbn']) ? $ebook['printed_isbn'] : $ebook['isbn'];
+                if (empty($isbn)) {
+                    $toDelete[] = $postId;
+                } else {
+                    $isbns[$isbn] = $ebook;
                 }
-                $page++;
-                $total += count($isbns);
-            } while (count($posts) === $postsPerPage);
-        } else {
-            $result = $this->getEbooksInformation($data);
-            if (empty($result)) {
-                return [ 'refreshed' => $total ];
-            }
-
-            foreach ($result['ebooks'] as $eBook) {
-                $this->single($eBook, postId: $result['isbns'][$eBook['isbn']]);
-                $total++;
             }
         }
 
-        return [
-            'refreshed' => $total,
-        ];
+        if (!empty($toDelete)) {
+            foreach ($toDelete as $postId) {
+                $this->getEbookEntity()->delete($postId);
+            }
+        }
+
+        $modified = [];
+        if (!empty($isbns)) {
+            $ebooks = $this->getEbookEntity()->index(array_keys($isbns));
+            if (!empty($ebooks)) {
+                foreach ($ebooks as $ebook) {
+                    $ebookPost = $isbns[$ebook['isbn']] ?? null;
+                    if (empty($ebookPost) || (
+                        $ebook['title'] === $ebookPost['title'] &&
+                        $ebook['description'] === $ebookPost['description'] &&
+                        $ebook['adobe'] === $ebookPost['adobe'] &&
+                        $ebook['html_ebook'] === $ebookPost['html_ebook'] &&
+                        $ebook['printed_isbn'] === $ebookPost['printed_isbn'] )) {
+                        continue;
+                    }
+
+                    $modified[] = array_merge($ebookPost, $ebook);
+                }
+            }
+        }
+
+        if (empty($modified)) {
+            return array_keys($isbns);
+        }
+
+        return $async
+            ? $this->queueProcess($modified)
+            : $this->doProcess($modified);
+    }
+
+    /**
+     * Link the products to the ebooks synchronously.
+     *
+     * @param array $entities
+     *
+     * @return array|null
+     * @throws \Exception
+     */
+    protected function doProcess(array $entities): ?array
+    {
+        $processed = [];
+        foreach ($entities as $eBook) {
+            $result = $this->single($eBook, postId: $eBook['id']);
+            $processed[] = $result;
+        }
+
+        return $processed;
+    }
+
+    /**
+     * Queue the process to link the products to the ebooks asynchronously.
+     *
+     * @param array $entities
+     *
+     * @return array|null
+     */
+    protected function queueProcess(array $entities): ?array
+    {
+        // TODO: Implement queueProcess() method.
+        return null;
+    }
+
+    /**
+     * Get the eBook entity.
+     *
+     * @return EbookPostEntity
+     * @throws \Exception
+     */
+    protected function getEbookEntity(): EbookPostEntity
+    {
+        return $this->entity;
+    }
+
+    /**
+     * Check if the eBook information matches the configuration in Alfaomega
+     * Retrieve a chunk of data to process.
+     * This method should be implemented by child classes to retrieve a chunk of data to process.
+     * The method should return an array of data to process, or null if there is no more data to process.
+     *
+     * @return array|null An array of data to process, or null if there is no more data to process.
+     */
+    protected function chunk(): ?array
+    {
+        // get all ebooks by chunks of 100
+        // call $this->batch($data, true) with the chunk
+        return null;
     }
 
     public function __batch(array $data = [], bool $async = false): array
@@ -146,93 +221,5 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
         return [
             'refreshed' => $total,
         ];
-    }
-
-    /**
-     * Processes a batch of eBooks by their ISBNs.
-     *
-     * This method takes an array of ISBNs as input. It retrieves the eBook data associated with these ISBNs
-     * and enqueues an asynchronous action to refresh each eBook.
-     *
-     * The method uses the 'alfaomega_ebooks_queue_refresh' action to refresh each eBook. This action takes
-     * the post ID of the eBook and the eBook data as arguments.
-     *
-     * If the enqueuing of the action fails, the method throws an Exception with the message 'Refresh queue failed'.
-     *
-     * @param array $isbns An array of ISBNs of the eBooks to be processed. The keys are the ISBNs and the values are the post IDs.
-     * @throws \Exception If the enqueuing of the refresh action fails.
-     * @return void
-     */
-    public function batchByIsbn(array $isbns): void
-    {
-        $eBooks = Service::make()->ebooks()
-            ->ebookPost()
-            ->index(array_keys($isbns));
-        foreach ($eBooks as $eBook) {
-            $result = as_enqueue_async_action(
-                'alfaomega_ebooks_queue_refresh',
-                [ $isbns[$eBook['isbn']], $eBook ]
-            );
-            if ($result === 0) {
-                throw new Exception('Refresh queue failed');
-            }
-        }
-    }
-
-    /**
-     * Retrieves the eBook information.
-     * This method takes an array of post IDs as input and returns an array with the eBook data associated with these
-     * post IDs.
-     *
-     * @param array $data An array of post IDs.
-     *
-     * @return array|null An array with the eBook data. If no data is found, it returns null.
-     * @throws \Exception
-     */
-    protected function getEbooksInformation(array $data): ?array
-    {
-        foreach ($data as $postId) {
-            $isbn = get_post_meta($postId, 'alfaomega_ebook_isbn', true);
-            if (!empty($isbn)) {
-                $isbns[$isbn] = $postId;
-            }
-        }
-        if (!empty($isbns)) {
-            return [
-                'isbns'  => $isbns,
-                'ebooks' => Service::make()
-                    ->ebooks()
-                    ->ebookPost()
-                    ->index(array_keys($isbns)),
-            ];
-        }
-
-        return null;
-    }
-
-    /**
-     * Get the eBook entity.
-     *
-     * @return EbookPostEntity
-     * @throws \Exception
-     */
-    protected function getEbookEntity(): EbookPostEntity
-    {
-        return $this->entity;
-    }
-
-    /**
-     * Check if the eBook information matches the configuration in Alfaomega
-     * Retrieve a chunk of data to process.
-     * This method should be implemented by child classes to retrieve a chunk of data to process.
-     * The method should return an array of data to process, or null if there is no more data to process.
-     *
-     * @return array|null An array of data to process, or null if there is no more data to process.
-     */
-    protected function chunk(): ?array
-    {
-        // get all ebooks by chunks of 100
-        // call $this->batch($data, true) with the chunk
-        return null;
     }
 }

@@ -88,16 +88,6 @@ abstract class AbstractProcess implements ProcessContract
     abstract public function batch(array $data = [], bool $async = false): ?array;
 
     /**
-     * Retrieve a chunk of data to process.
-     *
-     * This method should be implemented by child classes to retrieve a chunk of data to process.
-     * The method should return an array of data to process, or null if there is no more data to process.
-     *
-     * @return array|null An array of data to process, or null if there is no more data to process.
-     */
-    abstract protected function chunk(): ?array;
-
-    /**
      * Set the value of the $updateProduct property.
      *
      * This method allows you to control whether the product should be updated or not.
@@ -151,4 +141,31 @@ abstract class AbstractProcess implements ProcessContract
 
         return $this->ebookEntity;
     }
+
+    /**
+     * Retrieve a chunk of data to process.
+     *
+     * This method should be implemented by child classes to retrieve a chunk of data to process.
+     * The method should return an array of data to process, or null if there is no more data to process.
+     *
+     * @return array|null An array of data to process, or null if there is no more data to process.
+     */
+    abstract protected function chunk(): ?array;
+
+    /**
+     * Link the products to the ebooks synchronously.
+     * @param array $entities
+     *
+     * @return array|null
+     * @throws \Exception
+     */
+    abstract protected function doProcess(array $entities): ?array;
+
+    /**
+     * Queue the process to link the products to the ebooks asynchronously.
+     * @param array $entities
+     *
+     * @return array|null
+     */
+    abstract protected function queueProcess(array $entities): ?array;
 }

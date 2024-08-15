@@ -84,15 +84,15 @@ class LinkEbook extends AbstractProcess implements ProcessContract
 
     /**
      * Link the products to the ebooks synchronously.
-     * @param array $products
+     * @param array $entities
      *
      * @return array|null
      * @throws \Exception
      */
-    protected function doProcess(array $products): ?array
+    protected function doProcess(array $entities): ?array
     {
         $processed = [];
-        foreach ($products as $productId => $ebook) {
+        foreach ($entities as $productId => $ebook) {
             if (empty($ebook['printed_isbn'])) {
                 continue;
             }
@@ -108,14 +108,14 @@ class LinkEbook extends AbstractProcess implements ProcessContract
 
     /**
      * Queue the process to link the products to the ebooks asynchronously.
-     * @param array $products
+     * @param array $entities
      *
      * @return array|null
      */
-    protected function queueProcess(array $products): ?array
+    protected function queueProcess(array $entities): ?array
     {
         $queued = [];
-        foreach ($products as $productId => $ebook) {
+        foreach ($entities as $productId => $ebook) {
             if (empty($ebook['printed_isbn'])) {
                 continue;
             }
