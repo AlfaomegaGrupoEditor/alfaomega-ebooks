@@ -26,6 +26,8 @@ class Service
      */
     protected WooCommerceManager $wooCommerceManager;
 
+    protected Helper $helper;
+
     /**
      * @var Api
      */
@@ -54,6 +56,7 @@ class Service
         $this->ebooksManager = new EbookManager($this->api, $settings);
         $this->queueManager = new QueueManager($this->api, $settings);
         $this->wooCommerceManager = new WooCommerceManager($this->api, $settings);
+        $this->helper = new Helper();
     }
 
     /**
@@ -107,5 +110,15 @@ class Service
     public function env(string $key, mixed $default = null): mixed
     {
         return $_ENV[$key] ?? $default;
+    }
+
+    /**
+     * Get the helper library.
+     *
+     * @return Helper
+     */
+    public function helper(): Helper
+    {
+        return $this->helper;
     }
 }

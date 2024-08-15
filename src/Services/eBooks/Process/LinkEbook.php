@@ -3,6 +3,7 @@
 namespace AlfaomegaEbooks\Services\eBooks\Process;
 
 use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\ProductEntity;
+use AlfaomegaEbooks\Services\eBooks\Service;
 
 /**
  * Link ebooks process.
@@ -104,16 +105,19 @@ class LinkEbook extends AbstractProcess implements ProcessContract
             ->list($product->get_id());
 
         $productPrice = null;
+        $helper = Service::make()->helper();
+
         foreach ($variations as $variation) {
-            if ($variation['description'] === 'Libro impreso') {
+            $format = $helper->getQueryParam($variation->permalink, 'attribute_pa_book-format');
+            if ($format === "impreso") {
                 $productPrice = [
-                    'regular_price' => $variation['regular_price'],
-                    'sale_price'    => $variation['sale_price'],
+                    'regular_price' => $variation->regular_price,
+                    'sale_price'    => $variation->sale_price,
                 ];
             }
             $result = $this->entity
                 ->variant()
-                ->delete($product->get_id(), $variation['id']);
+                ->delete($product->get_id(), $variation->id);
             if (empty($result)) {
                 throw new \Exception("Variation deletion failed");
             }
