@@ -137,7 +137,7 @@ class LinkEbook extends AbstractProcess implements ProcessContract
 
         // remove the attributes
         $product = $this->entity->get($product->get_id());
-        $product = $this->entity->updateFormatsAttr($product, []);
+        $product = $this->entity->updateFormatsAttr($product, ['Impreso']);
         if (empty($product)) {
             throw new \Exception("Product formats attribute update failed");
         }
