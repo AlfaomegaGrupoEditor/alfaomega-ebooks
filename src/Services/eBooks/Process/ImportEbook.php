@@ -101,4 +101,16 @@ class ImportEbook extends AbstractProcess implements ProcessContract
             'imported' => $imported,
         ];
     }
+
+    /**
+     * Retrieve a chunk of data to process.
+     * This method should be implemented by child classes to retrieve a chunk of data to process.
+     * The method should return an array of data to process, or null if there is no more data to process.
+     *
+     * @return array|null An array of data to process, or null if there is no more data to process.
+     */protected function chunk(): ?array
+    {
+        // TODO: Implement chunk() method.
+        return null;
+    }
 }

@@ -35,6 +35,9 @@ class LinkEbook extends AbstractProcess implements ProcessContract
      */
     public function batch(array $data = [], bool $async = false): ?array
     {
+        if (empty($data)) {
+            return $this->chunk();
+        }
         $products = []; // products to be updated
         $isbns = [];    // eBooks to be imported
         foreach ($data as $productId) {
@@ -123,5 +126,20 @@ class LinkEbook extends AbstractProcess implements ProcessContract
             $queued[] = $productId;
         }
         return $queued;
+    }
+
+    /**
+     * Link products not yet linked to an eBook.
+     * Retrieve a chunk of data to process.
+     * This method should be implemented by child classes to retrieve a chunk of data to process.
+     * The method should return an array of data to process, or null if there is no more data to process.
+     *
+     * @return array|null An array of data to process, or null if there is no more data to process.
+     */
+    protected function chunk(): ?array
+    {
+        // get all products of type 'simple' by chunks of 100
+        // call $this->batch($data, true) with the chunk
+        return null;
     }
 }

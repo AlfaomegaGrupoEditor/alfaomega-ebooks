@@ -125,4 +125,19 @@ class LinkProduct extends AbstractProcess implements ProcessContract
             'linked' => $linked,
         ];
     }
+
+    /**
+     * Pull new eBooks to the system.
+     * Retrieve a chunk of data to process.
+     * This method should be implemented by child classes to retrieve a chunk of data to process.
+     * The method should return an array of data to process, or null if there is no more data to process.
+     *
+     * @return array|null An array of data to process, or null if there is no more data to process.
+     */
+    protected function chunk(): ?array
+    {
+        // Gather all new eBooks from Alfaomega by chunks of 100
+        // call $this->batch($data, true) with the chunk
+        return null;
+    }
 }

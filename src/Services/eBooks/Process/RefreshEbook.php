@@ -97,6 +97,57 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
         ];
     }
 
+    public function __batch(array $data = [], bool $async = false): array
+    {
+        $total = 0;
+        $isbns = [];
+
+        if (empty($data)) {
+            // TODO: test this
+            $postsPerPage = 5;
+            $page = 0;
+            $args = [
+                'posts_per_page' => $postsPerPage,
+                'post_type'      => 'alfaomega-ebook',
+                'orderby'        => 'ID',
+                'order'          => 'ASC',
+            ];
+            do {
+                $args['offset'] = $postsPerPage * $page;
+                $posts = get_posts($args);
+                $isbns = [];
+                foreach ($posts as $post) {
+                    $isbn = get_post_meta($post->ID, 'alfaomega_ebook_isbn', true);
+                    $isbns[$isbn] = $post->ID;
+                }
+
+                $result = as_enqueue_async_action(
+                    'alfaomega_ebooks_queue_refresh_list',
+                    [ $isbns ]
+                );
+                if ($result === 0) {
+                    throw new Exception('Refresh list queue failed');
+                }
+                $page++;
+                $total += count($isbns);
+            } while (count($posts) === $postsPerPage);
+        } else {
+            $result = $this->getEbooksInformation($data);
+            if (empty($result)) {
+                return [ 'refreshed' => $total ];
+            }
+
+            foreach ($result['ebooks'] as $eBook) {
+                $this->single($eBook, postId: $result['isbns'][$eBook['isbn']]);
+                $total++;
+            }
+        }
+
+        return [
+            'refreshed' => $total,
+        ];
+    }
+
     /**
      * Processes a batch of eBooks by their ISBNs.
      *
@@ -168,5 +219,20 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
     protected function getEbookEntity(): EbookPostEntity
     {
         return $this->entity;
+    }
+
+    /**
+     * Check if the eBook information matches the configuration in Alfaomega
+     * Retrieve a chunk of data to process.
+     * This method should be implemented by child classes to retrieve a chunk of data to process.
+     * The method should return an array of data to process, or null if there is no more data to process.
+     *
+     * @return array|null An array of data to process, or null if there is no more data to process.
+     */
+    protected function chunk(): ?array
+    {
+        // get all ebooks by chunks of 100
+        // call $this->batch($data, true) with the chunk
+        return null;
     }
 }

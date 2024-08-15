@@ -23,6 +23,7 @@ abstract class AbstractProcess implements ProcessContract
      */
     protected bool $updateProduct = true;
     protected ?EbookPostEntity $ebookEntity = null;
+    protected int $chunkSize = 50;
 
     /**
      * AbstractProcess constructor.
@@ -84,11 +85,17 @@ abstract class AbstractProcess implements ProcessContract
      * @return array|null
      * @throws \Exception
      */
-    public function batch(array $data = [], bool $async = false): ?array
-    {
-        // Todo: implement the batch method
-        return null;
-    }
+    abstract public function batch(array $data = [], bool $async = false): ?array;
+
+    /**
+     * Retrieve a chunk of data to process.
+     *
+     * This method should be implemented by child classes to retrieve a chunk of data to process.
+     * The method should return an array of data to process, or null if there is no more data to process.
+     *
+     * @return array|null An array of data to process, or null if there is no more data to process.
+     */
+    abstract protected function chunk(): ?array;
 
     /**
      * Set the value of the $updateProduct property.
