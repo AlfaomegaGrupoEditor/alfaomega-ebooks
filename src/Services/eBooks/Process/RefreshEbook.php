@@ -20,54 +20,10 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
      * @param array $settings The settings for the RefreshEbook process. These settings can include various configuration options.
      * @param EbookPostEntity $entity The eBook entity to be processed. This entity represents an eBook in the system.
      */
-    public function __construct(
-        array $settings,
-        protected EbookPostEntity $entity)
-    {
+    public function __construct(array $settings,
+                                protected EbookPostEntity $entity
+    ){
         parent::__construct($settings);
-    }
-
-    /**
-     * Processes a single eBook.
-     * This method takes an eBook array, a boolean indicating whether to throw an error, and an optional post ID as input.
-     * It updates the eBook entity with the provided post ID and eBook data.
-     * If the 'updateProduct' property is true, it also links the eBook to a WooCommerce product.
-     *
-     * @param array $eBook     The eBook data.
-     * @param bool $throwError Indicates whether to throw an error.
-     * @param int|null $postId The post ID of the eBook. If provided, the method will process only this eBook.
-     *
-     * @return void
-     * @throws \Exception
-     */
-    public function single(array $eBook, bool $throwError=false, int $postId = null): int
-    {
-        try {
-            $post = $this->entity
-                ->updateOrCreate($postId, $eBook);
-            if (empty($post)) {
-                throw new \Exception('Error updating or creating the eBook post.');
-            }
-
-            $eBook['id'] = $post['id'];
-            if ($this->updateProduct) {
-                $productId = Service::make()
-                    ->wooCommerce()
-                    ->linkProduct()
-                    ->single($eBook);
-
-                if (empty($productId)) {
-                    throw new \Exception('Error linking the eBook with the product.');
-                }
-            }
-            return $post['id'];
-
-        } catch (\Exception $e) {
-            if ($throwError) {
-                throw $e;
-            }
-            return 0;
-        }
     }
 
     /**
@@ -201,5 +157,16 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
         }
 
         return null;
+    }
+
+    /**
+     * Get the eBook entity.
+     *
+     * @return EbookPostEntity
+     * @throws \Exception
+     */
+    protected function getEbookEntity(): EbookPostEntity
+    {
+        return $this->entity;
     }
 }

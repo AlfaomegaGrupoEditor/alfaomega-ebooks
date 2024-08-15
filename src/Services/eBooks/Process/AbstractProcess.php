@@ -31,9 +31,8 @@ abstract class AbstractProcess implements ProcessContract
      *
      * @param array $settings The settings for the process. These settings can include various configuration options.
      */
-    public function __construct(
-        protected array $settings
-    ) {}
+    public function __construct(protected array $settings)
+    {}
 
     /**
      * Link a product to an eBook.
