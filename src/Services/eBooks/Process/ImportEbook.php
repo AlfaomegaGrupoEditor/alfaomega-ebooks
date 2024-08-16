@@ -118,7 +118,7 @@ class ImportEbook extends AbstractProcess implements ProcessContract
     {
         // Gather all new eBooks from Alfaomega by chunks of 100
         // call $this->batch($data, true) with the chunk
-        return null;
+        return [];
     }
 
     /**

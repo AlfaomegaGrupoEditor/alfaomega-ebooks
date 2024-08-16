@@ -69,6 +69,22 @@ class WooCommerceEbookTest extends WordpressTest
     }
 
     /**
+     * Test import ebooks
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function testImportEbooks()
+    {
+        $result = Service::make()
+            ->ebooks()
+            ->importEbook()
+            ->batch();
+
+        $this->assertNotNull($result);
+    }
+
+    /**
      * Data provider for test_product_attributes
      * @return array[]
      */
