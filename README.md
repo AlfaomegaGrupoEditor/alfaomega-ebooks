@@ -60,30 +60,22 @@ Para el cliente, **Alfaomega eBooks** añade las siguientes características a l
 ## Cómo utilizar
 
 ### Administrar productos y eBooks
+Para editar los eBooks de un producto contamos con las siguientes opciones en el adminsitraor de WordPress:
 
-- Vincular productos de WooCommerce con eBooks de Alfaomega.
- - Agregar el eBook del ISBN al producto al producto simple en General > eBook ISBN (opcional)
- - Usar el attribute eBook para habilitar o deshabilitar las opciones de compra de eBooks.
- - En la pestaña de productos:
-   - Acciones en lote:
-     - Link eBook: Vincular producto con eBook.
-   - Acciones rápidas:
-     - Link eBook: Vincular producto con eBook.
-     - Unlink eBook: Desvincular producto con eBook.
- - En la pestaña de eBooks:
-   - Acciones en lote:
-     - Update meta: Actualiza los metadatod del eBook y el enlace con el producto correspondiente.
-   - Acciones rápidas:
-     - Update: Actualiza los metadatod del eBook y el enlace con el producto correspondiente.
-- Configurar eBook de un producto vinculado.
+#### Editar producto
+- **Agregar el ISBN del eBook** al producto al producto simple en General > eBook ISBN (opcional). Este campo es usado como referencia para conocer que eBook corresponde a un producto.
+- Usar el attribute eBook para **habilitar o deshabilitar las opciones de compra de eBooks**. Si para el atributo eBook se selecciona `Sí`, se mostrarán las opciones de compra de eBooks en la página del producto. Si se selecciona `No`, se desactivan las opciones de compra de eBooks (Digital y Digital + Impreso) en la página del producto. 
+- **Editar las opciones de compra** de producto vinculado a un eBook, tales como Precio, Formato, etc. Por defecto el precio de los opciones de compra se calcula en base al precio del libro impreso y el porcentaje configurado en la configuración del plugin, pero es posible modificar el precio de cada opción de compra directamente en el producto.
 
-### Administrar eBooks
-- Listar eBooks importados.
-- Vincular eBooks con productos de WooCommerce.
-- Actualizar eBooks importados.
-- Importar nuevos eBooks de Alfaomega.
+#### Acciones rápidas y por lotes en la lista de productos
+- **Enlazar un producto** con el correspondiente eBook. Utilizando el ISBN del libro impreso, el plugin buscará el eBook correspondiente en la Plataforma Alfaomega eBooks, descarga la información necesaria, crea el registro del eBook y lo vinculará al producto. Una vez que el producto este vinculado a un eBook el producto se convierte en un producto variable con las opciones de compra: Impreso, Digital y el combo Impreso + Digital.
+- **Desvincular un producto** del eBook. Con esta opción se elimina la vinculación entre el producto y el eBook, el producto se convierte en un producto simple y se eliminan las opciones de compra de eBooks.
 
-### Gestión de procesos por lotes
-- Importar nuevos eBooks.
-- Actualizar eBooks importados.
-- Vincular eBooks con productos en WooCommerce.
+#### Acciones rápidas y por lotes en la lista de eBook
+- **Actualizar los metadatos** del eBook y el enlace con el producto correspondiente. Comprueba que la vinculación entre el eBook y el producto es correcta y actualiza la información del eBook.
+- **Mostrar el producto** vinculado al eBook. Muestra el producto vinculado al eBook en la lista de productos.
+
+#### Pocesamiento en cola. 
+- **Agregar nuevos eBooks**. A partir del último libro importado descarga información sobre los libros nuevos disponibles en la plataforma Alfaomega eBooks, los importa a la tienda WooCommerce como eBooks y intenta vincularlos a productos existentes usando el ISBN del libro impreso.
+- **Actualizar eBooks importados**. Revisa todos los eBooks importados y que estan vinculados a un producto, para ello descarga nueva información sobre el eBook y comprueba que la vinculación es correcta.
+- **Vincular eBooks con productos**. Obtiene la lista de eBooks importados, no vinculados a un producto e intenta los vincularlo con un producto existente usando el ISBN del libro impreso.
