@@ -32,30 +32,6 @@ class ImportEbook extends AbstractProcess implements ProcessContract
     }
 
     /**
-     * Processes a single eBook.
-     *
-     * This method takes an eBook array, a boolean indicating whether to throw an error, and an optional post ID as input.
-     * It updates the eBook entity with the provided eBook data.
-     * If the 'updateProduct' property is true, it also links the eBook to a WooCommerce product.
-     *
-     * @param array $eBook The eBook data.
-     * @param bool $throwError Indicates whether to throw an error.
-     * @param int|null $postId The post ID of the eBook. If provided, the method will process only this eBook.
-     * @throws \Exception
-     * @return void
-     */
-    public function single(array $eBook, bool $throwError=false, int $postId = null): int
-    {
-        $eBook = $this->entity->update(null, $eBook);
-
-        if ($this->updateProduct) {
-            Service::make()->wooCommerce()
-                ->linkProduct()
-                ->single($eBook, false);
-        }
-    }
-
-    /**
      * Processes a batch of eBooks.
      *
      * This method takes an optional array of eBook data as input. If no array is provided, it retrieves a list of eBooks
@@ -78,32 +54,9 @@ class ImportEbook extends AbstractProcess implements ProcessContract
             return $this->chunk();
         }
 
-        $isbn = '';
-        if ($this->settings['alfaomega_ebooks_import_from_latest']) {
-            $latestBook = $this->entity->latest();
-            $isbn = empty($latestBook) ? '' : $latestBook['isbn'];
-        }
-        $countPerPage = intval($this->settings['alfaomega_ebooks_import_limit']);
-        $imported = 0;
-        do {
-            $eBooks = $this->entity->retrieve($isbn, $countPerPage);
-            foreach ($eBooks as $eBook) {
-                $result = as_enqueue_async_action(
-                    'alfaomega_ebooks_queue_import',
-                    [ $eBook ]
-                );
-                if ($result === 0) {
-                    throw new Exception("Import queue failed");
-                }
-                $imported++;
-            }
-            $last = end($eBooks);
-            $isbn = $last['isbn'];
-        } while (count($eBooks) === $countPerPage);
-
-        return [
-            'imported' => $imported,
-        ];
+        return $async
+            ? $this->queueProcess($data)
+            : $this->doProcess($data);
     }
 
     /**
@@ -113,12 +66,25 @@ class ImportEbook extends AbstractProcess implements ProcessContract
      * The method should return an array of data to process, or null if there is no more data to process.
      *
      * @return array|null An array of data to process, or null if there is no more data to process.
+     * @throws \Exception
      */
     protected function chunk(): ?array
     {
-        // Gather all new eBooks from Alfaomega by chunks of 100
-        // call $this->batch($data, true) with the chunk
-        return [];
+        $isbn = '';
+        $onQueue = [];
+        if ($this->settings['alfaomega_ebooks_import_from_latest']) {
+            $latest = $this->getEbookEntity()->latest();
+            $isbn = $latest['isbn'] ?? '';
+        }
+        do {
+            $ebooks = $this->getEbookEntity()
+                ->retrieve($isbn, 25);
+
+            $onQueue = array_merge($onQueue, $this->batch($ebooks, true));
+            $isbn = end($ebooks)['isbn'] ?? null;
+        } while (count($ebooks) > 0);
+
+        return $onQueue;
     }
 
     /**
@@ -132,6 +98,22 @@ class ImportEbook extends AbstractProcess implements ProcessContract
     protected function doProcess(array $entities): ?array
     {
         $processed = [];
+        foreach ($entities as $ebook) {
+            if (empty($ebook['printed_isbn'])) {
+                continue;
+            }
+
+            $productId = wc_get_product_id_by_sku($ebook['printed_isbn']);
+            if (empty($productId)) {
+                continue;
+            }
+
+            $ebook['product_id'] = $productId;
+            $result = $this->single($ebook);
+            if ($result !== 0) {
+                $processed[] = $productId;
+            }
+        }
 
         return $processed;
     }
@@ -145,7 +127,23 @@ class ImportEbook extends AbstractProcess implements ProcessContract
      */
     protected function queueProcess(array $entities): ?array
     {
-        // TODO: Implement queueProcess() method.
-        return null;
+        $onQueue = [];
+        foreach ($entities as $ebook) {
+            if (empty($ebook['printed_isbn'])) {
+                continue;
+            }
+
+            $productId = wc_get_product_id_by_sku($ebook['printed_isbn']);
+            if (empty($productId)) {
+                continue;
+            }
+
+            $ebook['product_id'] = $productId;
+            $result = as_enqueue_async_action('alfaomega_ebooks_queue_import', [$ebook]);
+            if ($result !== 0) {
+                $onQueue[] = $productId;
+            }
+        }
+        return $onQueue;
     }
 }
