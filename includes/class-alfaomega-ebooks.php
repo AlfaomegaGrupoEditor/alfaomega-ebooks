@@ -159,16 +159,16 @@ class Alfaomega_Ebooks {
 
 	}
 
-	/**
-	 * Register all of the hooks related to the admin area functionality
-	 * of the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
+    /**
+     * Register all of the hooks related to the admin area functionality
+     * of the plugin.
+     *
+     * @throws \Exception
+     * @since    1.0.0
+     * @access   private
+     */
 	private function define_admin_hooks()
     {
-
 		$plugin_admin = new Alfaomega_Ebooks_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
@@ -196,7 +196,7 @@ class Alfaomega_Ebooks {
 
         // queue actions
         $service = Service::make()->ebooks();
-        $this->loader->add_action('alfaomega_ebooks_queue_import', $service->importEbook()->setUpdateProduct(false), 'single');
+        $this->loader->add_action('alfaomega_ebooks_queue_import', $service->importEbook()->setUpdateProduct(), 'single');
         // Todo: work on this
         $this->loader->add_action('alfaomega_ebooks_queue_refresh_list', $service->refreshEbook(), 'batch');
         // Todo: work on this
