@@ -79,3 +79,9 @@ Para editar los eBooks de un producto contamos con las siguientes opciones en el
 - **Agregar nuevos eBooks**. A partir del último libro importado descarga información sobre los libros nuevos disponibles en la plataforma Alfaomega eBooks, los importa a la tienda WooCommerce como eBooks y intenta vincularlos a productos existentes usando el ISBN del libro impreso.
 - **Actualizar eBooks importados**. Revisa todos los eBooks importados y que estan vinculados a un producto, para ello descarga nueva información sobre el eBook y comprueba que la vinculación es correcta.
 - **Vincular eBooks con productos**. Obtiene la lista de eBooks importados, no vinculados a un producto e intenta los vincularlo con un producto existente usando el ISBN del libro impreso.
+
+### Comprar eBooks, descarga y lectura en línea.
+Cuando un cliente selecciona una opción de compra que incluye un libro digital (Digital o Digital + Impreso), el plugin añadirá un enlace de descarga al email de notificación de factura. El cliente podrá descargar el PDF del eBook desde el enlace proporcionado. Además, el enlace de descarga también se añadirá a la lista de Descargas del cliente en la página de su cuenta.
+
+### Generación de accesos de muestras.
+El plugin ofrece también la opción de que un administrador pueda generar accesos de muestra para los eBooks. El código de accesso es enviado por correo electrónico al cliente. Este código puede ser agregado en la biblioteca digital myEbooks del usuario para acceder a la lectura del libro durante el tiempo configurado para la muestra.
