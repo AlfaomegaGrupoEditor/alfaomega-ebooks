@@ -1,5 +1,7 @@
 <div class="wrap">
-    <h1><?php esc_html_e("Import eBook", 'alfaomega-ebooks'); ?></h1>
+    <h1><?php use AlfaomegaEbooks\Services\eBooks\Service;
+
+        esc_html_e("Import eBook", 'alfaomega-ebooks'); ?></h1>
     <div class="alfaomega_ebooks-about-text">
         <p>
             <?php esc_html_e("Pull new eBooks from the Publisher Panel, update the list of eBooks and search the relative product for the new ebooks to create a link using the Digital ISBN.", 'alfaomega-ebooks') ?>
@@ -7,12 +9,14 @@
     </div>
 
     <?php
-        $service = new Alfaomega_Ebooks_Service(false);
-        $queueStatus = $service->queueStatus('alfaomega_ebooks_queue_import');
+        $queueStatus = Service::make()->queue()
+            ->status('alfaomega_ebooks_queue_import');
     ?>
     <div class="alfaomega_ebooks-pagebody">
-        <div class="alfaomega_ebooks-success-msg" style="display: none;"></div>
-        <div class="alfaomega_ebooks-error-msg" style="display: none;"></div>
+        <div style="min-height: 60px;">
+            <div class="alfaomega_ebooks-success-msg" style="display: none;"></div>
+            <div class="alfaomega_ebooks-error-msg" style="display: none;"></div>
+        </div>
         <form method="post"
               id="alfaomega_ebooks_form"
               class="alfaomega_ebooksCol-9"
