@@ -76,13 +76,16 @@ class ImportEbook extends AbstractProcess implements ProcessContract
             $latest = $this->getEbookEntity()->latest();
             $isbn = $latest['isbn'] ?? '';
         }
+        $limit = intval($this->settings['alfaomega_ebooks_import_limit']) ?? 1000;
+        $countPerPage = 25;
         do {
+            $countPerPage = min($limit, $countPerPage);
             $ebooks = $this->getEbookEntity()
-                ->retrieve($isbn, 25);
+                ->retrieve($isbn, $countPerPage);
 
             $onQueue = array_merge($onQueue, $this->batch($ebooks, true));
             $isbn = end($ebooks)['isbn'] ?? null;
-        } while (count($ebooks) > 0);
+        } while (count($ebooks) > 0 && count($onQueue) < $limit);
 
         return $onQueue;
     }
