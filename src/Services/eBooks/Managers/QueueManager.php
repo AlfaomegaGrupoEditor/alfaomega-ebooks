@@ -2,9 +2,6 @@
 
 namespace AlfaomegaEbooks\Services\eBooks\Managers;
 
-use AlfaomegaEbooks\Services\Alfaomega\Api;
-use AlfaomegaEbooks\Services\eBooks\Service;
-
 class QueueManager extends AbstractManager
 {
     /**
