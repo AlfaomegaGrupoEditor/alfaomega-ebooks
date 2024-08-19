@@ -76,10 +76,11 @@ Para editar los eBooks de un producto contamos con las siguientes opciones en el
 - **Mostrar el producto** vinculado al eBook. Muestra el producto vinculado al eBook en la lista de productos.
 
 #### Pocesamiento en cola. 
-- **Agregar nuevos eBooks**. A partir del último libro importado descarga información sobre los libros nuevos disponibles en la plataforma Alfaomega eBooks, los importa a la tienda WooCommerce como eBooks y intenta vincularlos a productos existentes usando el ISBN del libro impreso.
+- **Agregar nuevos eBooks**. A partir del último libro importado descarga información sobre los libros nuevos disponibles en la plataforma Alfaomega eBooks, los importa a la tienda WooCommerce como eBooks y intenta vincularlos a productos existentes usando el ISBN del libro impreso. Para acceder a esta opción puede hacerlo desde el menú `Alfaomega eBooks > Importar nuevos Libros` o desde la página principal del complemento.
   > **Notas:**    
   > 1. La importación de eBooks en cola se realiza en segundo plano, por lo que es posible que tarde unos minutos en completarse, para chequear el estado del procesamiento acceda a `WooCommerce > Estado > Scheduled Actions`, y busque por `alfaomega_ebooks_queue_import` y el filtro del estado que desea revisar, por ejemplo `Pending` para ver los procesos de importatión todavía en cola.
   > 2. Ajuste en la configuración del complemento `AO eBooks > Configuraciones > configuración General > Import Limit`, el límite de nuevos eBooks a agregar a la cola de tareas de importación, el valor por defecto es 1000.
+  > 3. En la página principal del complemento encontará la opción `Importar nuevos Libros`, que le permitirá agregar nuevos libros a la cola de tareas de importación, asi como obtener un resumen de los libros importados y los errores que se hayan presentado.
 
 - **Actualizar eBooks importados**. Revisa todos los eBooks importados y que estan vinculados a un producto, para ello descarga nueva información sobre el eBook y comprueba que la vinculación es correcta.
 - **Vincular eBooks con productos**. Obtiene la lista de eBooks importados, no vinculados a un producto e intenta los vincularlo con un producto existente usando el ISBN del libro impreso.
