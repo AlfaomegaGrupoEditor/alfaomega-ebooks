@@ -5,6 +5,13 @@ namespace AlfaomegaEbooks\Services\eBooks\Managers;
 class QueueManager extends AbstractManager
 {
     /**
+     * The table name.
+     *
+     * @var string
+     */
+    protected string $table = 'actionscheduler_actions';
+
+    /**
      * Retrieves the status of a queue.
      * This method retrieves the status of a queue by querying the WordPress actionscheduler_actions table.
      * It retrieves the number of actions with the specified queue name and status.
@@ -17,9 +24,8 @@ class QueueManager extends AbstractManager
     public function status(string $queue): array
     {
         global $wpdb;
-        global $table_prefix;
 
-        $table = $table_prefix . "actionscheduler_actions";
+        $table = $this->getTable();
         $results = $wpdb->get_results("
                 SELECT status, count(*) as 'count'
                 FROM $table a
@@ -51,13 +57,28 @@ class QueueManager extends AbstractManager
     public function clear(): array
     {
         global $wpdb;
+
+        $table = $this->getTable();
         $wpdb->get_results("
                 DELETE
-                FROM wp_actionscheduler_actions
+                FROM $table
                 WHERE hook like '%alfaomega_ebooks_queue%'
                     AND status not in ('pending', 'in-process');
             ");
 
         return [];
+    }
+
+    /**
+     * Retrieves the table name.
+     *
+     * @return string The table name.
+     */
+    public function getTable(): string
+    {
+        global $table_prefix;
+        $this->table = $table_prefix . $this->table;
+
+        return $this->table;
     }
 }
