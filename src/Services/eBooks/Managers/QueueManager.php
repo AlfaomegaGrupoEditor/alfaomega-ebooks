@@ -2,6 +2,9 @@
 
 namespace AlfaomegaEbooks\Services\eBooks\Managers;
 
+use AlfaomegaEbooks\Services\Alfaomega\Api;
+use AlfaomegaEbooks\Services\eBooks\Service;
+
 class QueueManager extends AbstractManager
 {
     /**
@@ -17,9 +20,12 @@ class QueueManager extends AbstractManager
     public function status(string $queue): array
     {
         global $wpdb;
+        global $table_prefix;
+
+        $table = $table_prefix . "actionscheduler_actions";
         $results = $wpdb->get_results("
                 SELECT status, count(*) as 'count'
-                FROM wp_actionscheduler_actions a
+                FROM $table a
                 WHERE (a.hook like '$queue%' OR
                        (a.extended_args IS NULL AND a.args like '$queue%') OR
                        a.extended_args like '$queue%')

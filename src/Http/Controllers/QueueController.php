@@ -26,7 +26,9 @@ class QueueController
 
             return new WP_REST_Response([
                 'status'  => 'success',
-                'data' => Service::make()->queue()->status($queue),
+                'data' => Service::make()
+                    ->queue()
+                    ->status($queue),
             ]);
         } catch (\Exception $exception) {
             return new WP_REST_Response([
