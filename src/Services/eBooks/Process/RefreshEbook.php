@@ -108,7 +108,7 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
                     if (!empty($productId)) {
                         $product = wc_get_product($productId);
                         if ($product->get_type() === 'simple' &&
-                            $product->get_attribute('pa_ebook') === 'Si') {
+                            $product->get_attribute('pa_ebook') !== 'Desactivado') {
                             $modified[] = array_merge($ebookPost, $ebook);
                             continue; // product not linked, update needed
                         }

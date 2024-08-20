@@ -19,8 +19,9 @@ class LinkEbook extends AbstractProcess implements ProcessContract
      * @throws \Exception
      */
     public function __construct(array $settings,
-                                protected ProductEntity $entity
-    ){
+                                protected ProductEntity $entity,
+                                protected bool $forceEbook = true)
+    {
         parent::__construct($settings);
     }
 
@@ -37,6 +38,7 @@ class LinkEbook extends AbstractProcess implements ProcessContract
     public function batch(array $data = [], bool $async = false): ?array
     {
         if (empty($data)) {
+            $this->forceEbook = false;
             return $this->chunk();
         }
 
@@ -44,9 +46,17 @@ class LinkEbook extends AbstractProcess implements ProcessContract
         $isbns = [];    // eBooks to be imported
         foreach ($data as $productId) {
             $product = wc_get_product($productId);
-            if (empty($product) || $product->get_attribute('pa_ebook') === 'No') {
+            if (empty($product)) {
                 continue;
             }
+
+            // do not link products if eBook attr is `No`, if the batch is global ($data=[])
+            if (!$this->forceEbook &&
+                !empty($configEbook = $product->get_attribute('pa_ebook')) &&
+                $configEbook === 'Desactivado') {
+                continue;
+            }
+
             $isbn = $product->get_meta('alfaomega_ebooks_ebook_isbn') ?? null;
             $sku = $product->get_sku();
             $products[$productId] = [
@@ -56,7 +66,9 @@ class LinkEbook extends AbstractProcess implements ProcessContract
             ];
             $ebookPost = $this->searchEbook($isbn, $sku);
             if (empty($ebookPost)) {
-                $isbns[empty($isbn) ? $sku : $isbn] = $productId;
+                if ($this->forceEbook) {
+                    $isbns[empty($isbn) ? $sku : $isbn] = $productId;
+                }
             } else {
                 $products[$productId] = array_merge($products[$productId], $ebookPost);
             }
@@ -207,7 +219,7 @@ class LinkEbook extends AbstractProcess implements ProcessContract
     {
         $onQueue = [];
         foreach ($entities as $productId => $ebook) {
-            if (empty($ebook['printed_isbn'])) {
+            if (empty($ebook['printed_isbn']) || empty($ebook['isbn'])) {
                 continue;
             }
             $ebook['product_id'] = $productId;
@@ -250,7 +262,7 @@ class LinkEbook extends AbstractProcess implements ProcessContract
                 break;
             }
 
-            $products = array_column($posts, 'ID');
+            $products = array_column($posts, 'id');
             $onQueue = array_merge($onQueue, $this->batch($products, true));
             $page++;
         } while (count($posts) === $this->chunkSize && count($onQueue) < $limit);

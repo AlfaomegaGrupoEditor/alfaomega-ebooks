@@ -78,6 +78,7 @@ class SettingsManager
                 ], [
                     ['name' => 'Si', 'description' => 'eBook disponible'],
                     ['name' => 'No', 'description' => 'eBook no disponible'],
+                    ['name' => 'Desactivado', 'description' => 'eBook desactivado'],
                 ]);
 
             if (empty($ebookAttribute)) {
