@@ -6,7 +6,7 @@ use AlfaomegaEbooks\Services\eBooks\Service;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\WordpressTest;
 
-class WooCommerceEbookTest extends WordpressTest
+class AlfaomegaEbookTest extends WordpressTest
 {
     /**
      * Test update ebook metadata
@@ -64,6 +64,22 @@ class WooCommerceEbookTest extends WordpressTest
             ->ebooks()
             ->importEbook()
             ->batch([$postId]);
+
+        $this->assertNotNull($result);
+    }
+
+    /**
+     * Test import ebooks
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function testImportEbooks()
+    {
+        $result = Service::make()
+            ->ebooks()
+            ->importEbook()
+            ->batch();
 
         $this->assertNotNull($result);
     }

@@ -26,7 +26,17 @@ class Service
      */
     protected WooCommerceManager $wooCommerceManager;
 
+    /**
+     * Helper library.
+     * @var Helper
+     */
     protected Helper $helper;
+
+    /**
+     * Action Scheduler High Volume Setup.
+     * @var ActionSchedulerSetup
+     */
+    protected ActionSchedulerSetup $actionSchedulerSetup;
 
     /**
      * @var Api
@@ -57,6 +67,7 @@ class Service
         $this->queueManager = new QueueManager($this->api, $settings);
         $this->wooCommerceManager = new WooCommerceManager($this->api, $settings);
         $this->helper = new Helper();
+        $this->actionSchedulerSetup = new ActionSchedulerSetup();
     }
 
     /**
@@ -120,5 +131,15 @@ class Service
     public function helper(): Helper
     {
         return $this->helper;
+    }
+
+    /**
+     * Get the Action Scheduler High Volume Setup.
+     *
+     * @return ActionSchedulerSetup
+     */
+    public function actionSchedulerSetup(): ActionSchedulerSetup
+    {
+        return $this->actionSchedulerSetup;
     }
 }

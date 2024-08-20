@@ -138,10 +138,14 @@ a.alfaomega_ebooks-btn.alfaomega_ebooks-btnRed:hover {
     background: #6d184b
 }
 
-.alfaomega_ebooks-error-msg, .alfaomega_ebooks-info-msg, .alfaomega_ebooks-success-msg, .alfaomega_ebooks-warning-msg {
+.alfaomega_ebooks-error-msg,
+.alfaomega_ebooks-info-msg,
+.alfaomega_ebooks-success-msg,
+.alfaomega_ebooks-warning-msg {
     margin: 10px 0;
     padding: 10px;
-    border-radius: 3px
+    border-radius: 3px;
+    min-height: 30px;
 }
 
 .alfaomega_ebooks-info-msg {
