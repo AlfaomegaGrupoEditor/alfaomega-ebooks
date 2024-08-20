@@ -23,8 +23,8 @@ class EbooksController
                 ->importEbook()
                 ->batch();
 
-            $message = $response['imported'] > 0
-                ? str_replace('%s', $response['imported'], esc_html__("%s new ebooks were added to the import scheduler successfully!", 'alfaomega-ebooks'))
+            $message = count($response) > 0
+                ? str_replace('%s', count($response), esc_html__("%s new ebooks were added to the import scheduler successfully!", 'alfaomega-ebooks'))
                 : esc_html__('No new eBooks to import', 'alfaomega-ebooks');
 
             return new WP_REST_Response([

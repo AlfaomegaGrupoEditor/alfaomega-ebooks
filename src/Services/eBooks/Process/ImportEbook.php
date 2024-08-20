@@ -16,7 +16,7 @@ use Exception;
  */
 class ImportEbook extends AbstractProcess implements ProcessContract
 {
-    protected const QUEUE_MAX_SIZE = 5;
+    protected const QUEUE_MAX_SIZE = 25;
 
     /**
      * ImportEbook constructor.
