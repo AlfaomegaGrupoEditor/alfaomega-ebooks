@@ -25,7 +25,7 @@ class EbooksController
                 ->batch();
 
             $message = count($response) > 0
-                ? str_replace('%s', count($response), esc_html__("%s new ebooks were added to the import scheduler successfully!", 'alfaomega-ebooks'))
+                ? str_replace('%s', count($response), esc_html__("Scheduled to import %s new ebooks successfully!", 'alfaomega-ebooks'))
                 : esc_html__('No new eBooks to import', 'alfaomega-ebooks');
 
             return new WP_REST_Response([
@@ -103,7 +103,7 @@ class EbooksController
                 ->batch();
 
             $message = count($response) > 0
-                ? str_replace('%s', count($response), esc_html__("Linked %s products successfully!", 'alfaomega-ebooks'))
+                ? str_replace('%s', count($response), esc_html__("Scheduled to link %s products successfully!", 'alfaomega-ebooks'))
                 : esc_html__('No products found to link', 'alfaomega-ebooks');
 
             return new WP_REST_Response([
