@@ -16,8 +16,6 @@ use Exception;
  */
 class ImportEbook extends AbstractProcess implements ProcessContract
 {
-    protected const QUEUE_MAX_SIZE = 25;
-
     /**
      * ImportEbook constructor.
      *
@@ -79,7 +77,7 @@ class ImportEbook extends AbstractProcess implements ProcessContract
             $isbn = $latest['isbn'] ?? '';
         }
         $limit = intval($this->settings['alfaomega_ebooks_import_limit']) ?? 1000;
-        $countPerPage = self::QUEUE_MAX_SIZE;
+        $countPerPage = $this->chunkSize;
         do {
             $countPerPage = min($limit, $countPerPage);
             $ebooks = $this->getEbookEntity()

@@ -32,7 +32,7 @@
                 </div>
                 <div class="divTableBody">
                     <div class="divTableRow">
-                        <div class="divTableCell"><?php esc_html_e("Completed", 'alfaomega-ebooks'); ?></div>
+                        <div class="divTableCell"><?php esc_html_e("Complete", 'alfaomega-ebooks'); ?></div>
                         <div id="queue-complete" class="divTableCell">
                             <?php echo $queueStatus['complete'] ?>
                         </div>
@@ -51,10 +51,10 @@
                     </div>
                 </div>
             </div>
-            
+
             <input class="alfaomega_ebooks-btn btnFade alfaomega_ebooks-btnBlueGreen alfaomega_ebooks_refresh_ebooks"
-                   id="form_submit"
                    type="submit"
+                   id="form_submit"
                     <?php echo $queueStatus['pending'] > 0 ? 'disabled="disabled"' : ''; ?>
                    name="alfaomega_ebooks_refresh_ebooks"
                    value="<?php esc_html_e("Refresh eBooks", 'alfaomega-ebooks') ?>"

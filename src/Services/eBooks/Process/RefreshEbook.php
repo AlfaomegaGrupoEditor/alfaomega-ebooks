@@ -147,7 +147,7 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
     }
 
     /**
-     * Queue the process to link the products to the ebooks asynchronously.
+     * Queue the process to update ebooks.
      *
      * @param array $entities
      *
@@ -155,8 +155,17 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
      */
     protected function queueProcess(array $entities): ?array
     {
-        // TODO: Implement queueProcess() method.
-        return null;
+        $onQueue = [];
+        foreach ($entities as $ebook) {
+            $result = as_enqueue_async_action(
+                'alfaomega_ebooks_queue_refresh',
+                [$ebook, true, $ebook['id']]
+            );
+            if ($result !== 0) {
+                $onQueue[] = $result;
+            }
+        }
+        return $onQueue;
     }
 
     /**
@@ -177,12 +186,36 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
      * The method should return an array of data to process, or null if there is no more data to process.
      *
      * @return array|null An array of data to process, or null if there is no more data to process.
+     * @throws \Exception
      */
     protected function chunk(): ?array
     {
-        // get all ebooks by chunks of 100
-        // call $this->batch($data, true) with the chunk
-        return null;
+        $onQueue = [];
+        $limit = intval($this->settings['alfaomega_ebooks_import_limit']) ?? 1000;
+        $countPerPage = $this->chunkSize;
+
+        $page = 0;
+        do {
+            $countPerPage = min($limit, $countPerPage);
+            $args = [
+                'posts_per_page' => $countPerPage,
+                'post_type'      => 'alfaomega-ebook',
+                'orderby'        => 'ID',
+                'order'          => 'ASC',
+                'offset'         => $countPerPage * $page,
+            ];
+            $posts = get_posts($args);
+            if (empty($posts)) {
+                break;
+            }
+
+            $ebooks = array_column((array)$posts, 'ID');
+            $onQueue = array_merge($onQueue, $this->batch($ebooks, true));
+            $page++;
+        } while (count($posts) === $this->chunkSize && count($onQueue) < $limit);
+
+
+        return $onQueue;
     }
 
     public function __batch(array $data = [], bool $async = false): array

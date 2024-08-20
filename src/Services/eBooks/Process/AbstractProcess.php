@@ -23,7 +23,7 @@ abstract class AbstractProcess implements ProcessContract
      */
     protected bool $updateProduct = true;
     protected ?EbookPostEntity $ebookEntity = null;
-    protected int $chunkSize = 50;
+    protected int $chunkSize = 25;
 
     /**
      * AbstractProcess constructor.

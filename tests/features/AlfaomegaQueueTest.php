@@ -32,7 +32,8 @@ class AlfaomegaQueueTest extends WordpressTest
     public static function queueProvider(): array
     {
         return [
-            ['queue' => 'alfaomega_ebooks_queue_import'],
+            'import'  => ['queue' => 'alfaomega_ebooks_queue_import'],
+            'refresh' => ['queue' => 'alfaomega_ebooks_queue_refresh'],
         ];
     }
 }
