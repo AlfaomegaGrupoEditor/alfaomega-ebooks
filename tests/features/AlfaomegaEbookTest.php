@@ -6,7 +6,7 @@ use AlfaomegaEbooks\Services\eBooks\Service;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\WordpressTest;
 
-class WooCommerceEbookTest extends WordpressTest
+class AlfaomegaEbookTest extends WordpressTest
 {
     /**
      * Test update ebook metadata
