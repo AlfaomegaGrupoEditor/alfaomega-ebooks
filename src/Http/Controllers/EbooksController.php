@@ -99,7 +99,7 @@ class EbooksController
         try {
             $response = Service::make()
                 ->wooCommerce()
-                ->linkProduct()
+                ->linkEbook()
                 ->batch();
 
             $message = count($response) > 0

@@ -39,11 +39,12 @@ class LinkEbook extends AbstractProcess implements ProcessContract
         if (empty($data)) {
             return $this->chunk();
         }
+
         $products = []; // products to be updated
         $isbns = [];    // eBooks to be imported
         foreach ($data as $productId) {
             $product = wc_get_product($productId);
-            if (empty($product)) {
+            if (empty($product) || $product->get_attribute('pa_ebook') === 'No') {
                 continue;
             }
             $isbn = $product->get_meta('alfaomega_ebooks_ebook_isbn') ?? null;
@@ -204,18 +205,21 @@ class LinkEbook extends AbstractProcess implements ProcessContract
      */
     protected function queueProcess(array $entities): ?array
     {
-        $queued = [];
+        $onQueue = [];
         foreach ($entities as $productId => $ebook) {
             if (empty($ebook['printed_isbn'])) {
                 continue;
             }
             $ebook['product_id'] = $productId;
-            //TODO: queue the process
-            //$result = $this->single($ebook, postId: $ebook['id'] ?? null);
-
-            $queued[] = $productId;
+            $result = as_enqueue_async_action(
+                'alfaomega_ebooks_queue_link',
+                [$ebook, true, $ebook['id']]
+            );
+            if ($result !== 0) {
+                $onQueue[] = $result;
+            }
         }
-        return $queued;
+        return $onQueue;
     }
 
     /**
@@ -225,11 +229,32 @@ class LinkEbook extends AbstractProcess implements ProcessContract
      * The method should return an array of data to process, or null if there is no more data to process.
      *
      * @return array|null An array of data to process, or null if there is no more data to process.
+     * @throws \Exception
      */
     protected function chunk(): ?array
     {
-        // get all products of type 'simple' by chunks of 100
-        // call $this->batch($data, true) with the chunk
-        return null;
+        $onQueue = [];
+        $limit = 10000; // TODO: setup a limit if required
+        $countPerPage = $this->chunkSize;
+
+        $page = 1;
+        do {
+            $countPerPage = min($limit, $countPerPage);
+            $args = [
+                'limit' => $countPerPage,
+                'page'  => $page,
+                'type'  => 'simple',
+            ];
+            $posts = wc_get_products($args);
+            if (empty($posts)) {
+                break;
+            }
+
+            $products = array_column($posts, 'ID');
+            $onQueue = array_merge($onQueue, $this->batch($products, true));
+            $page++;
+        } while (count($posts) === $this->chunkSize && count($onQueue) < $limit);
+
+        return $onQueue;
     }
 }
