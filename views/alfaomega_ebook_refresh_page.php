@@ -1,5 +1,10 @@
 <div class="wrap">
-<h1><?php esc_html_e("Refresh eBooks", 'alfaomega-ebooks'); ?></h1>
+    <h1>
+        <?php
+            use AlfaomegaEbooks\Services\eBooks\Service;
+            esc_html_e("Refresh eBooks", 'alfaomega-ebooks');
+        ?>
+    </h1>
     <div class="alfaomega_ebooks-about-text">
         <p>
             <?php esc_html_e("Resfresh the eBooks information pulling the current eBook data in Publisher Panel and search the relative product to create a link using the Digital ISBN.", 'alfaomega-ebooks') ?>
@@ -7,8 +12,8 @@
     </div>
 
     <?php
-        $service = new Alfaomega_Ebooks_Service(false);
-        $queueStatus = $service->queueStatus('alfaomega_ebooks_queue_refresh');
+        $queueStatus = Service::make()->queue()
+            ->status('alfaomega_ebooks_queue_refresh');
     ?>
 
     <div class="alfaomega_ebooks-pagebody">
@@ -32,7 +37,7 @@
                 </div>
                 <div class="divTableBody">
                     <div class="divTableRow">
-                        <div class="divTableCell"><?php esc_html_e("Completed", 'alfaomega-ebooks'); ?></div>
+                        <div class="divTableCell"><?php esc_html_e("Complete", 'alfaomega-ebooks'); ?></div>
                         <div id="queue-complete" class="divTableCell">
                             <?php echo $queueStatus['complete'] ?>
                         </div>
@@ -51,10 +56,10 @@
                     </div>
                 </div>
             </div>
-            
+
             <input class="alfaomega_ebooks-btn btnFade alfaomega_ebooks-btnBlueGreen alfaomega_ebooks_refresh_ebooks"
-                   id="form_submit"
                    type="submit"
+                   id="form_submit"
                     <?php echo $queueStatus['pending'] > 0 ? 'disabled="disabled"' : ''; ?>
                    name="alfaomega_ebooks_refresh_ebooks"
                    value="<?php esc_html_e("Refresh eBooks", 'alfaomega-ebooks') ?>"

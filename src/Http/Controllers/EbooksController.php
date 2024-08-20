@@ -19,7 +19,8 @@ class EbooksController
     public function importEbooks(WP_REST_Request $request): WP_REST_Response
     {
         try {
-            $response = Service::make()->ebooks()
+            $response = Service::make()
+                ->ebooks()
                 ->importEbook()
                 ->batch();
 
@@ -57,12 +58,13 @@ class EbooksController
     public function refreshEbooks(WP_REST_Request $request): WP_REST_Response
     {
         try {
-            $response = Service::make()->ebooks()
+            $response = Service::make()
+                ->ebooks()
                 ->refreshEbook()
                 ->batch();
 
-            $message = $response['refreshed'] > 0
-                ? str_replace('%s', $response['refreshed'], esc_html__("Scheduled to refresh %s ebooks successfully!", 'alfaomega-ebooks'))
+            $message = count($response) > 0
+                ? str_replace('%s', count($response), esc_html__("Scheduled to refresh %s ebooks successfully!", 'alfaomega-ebooks'))
                 : esc_html__('No eBooks found to refresh', 'alfaomega-ebooks');
 
             return new WP_REST_Response([
