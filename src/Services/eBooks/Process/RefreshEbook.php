@@ -96,14 +96,31 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
                     if ($key !== false) {
                         unset($notFound[$key]);
                     }
+
+                    // check eBook post exists
                     $ebookPost = $isbns[$ebook['isbn']] ?? null;
-                    if (empty($ebookPost) || (
-                        $ebook['title'] === $ebookPost['title'] &&
+                    if (empty($ebookPost)) {
+                        continue; // eBook post not found update not needed
+                    }
+
+                    // check product linked
+                    $productId = $isbns[$ebook['isbn']]['product_id'];
+                    if (!empty($productId)) {
+                        $product = wc_get_product($productId);
+                        if ($product->get_type() === 'simple' &&
+                            $product->get_attribute('pa_ebook') === 'Si') {
+                            $modified[] = array_merge($ebookPost, $ebook);
+                            continue; // product not linked, update needed
+                        }
+                    }
+
+                    // check if eBook changed
+                    if ($ebook['title'] === $ebookPost['title'] &&
                         $ebook['description'] === $ebookPost['description'] &&
                         $ebook['adobe'] === $ebookPost['adobe'] &&
                         $ebook['html_ebook'] === $ebookPost['html_ebook'] &&
-                        $ebook['printed_isbn'] === $ebookPost['printed_isbn'] )) {
-                        continue;
+                        $ebook['printed_isbn'] === $ebookPost['printed_isbn'] ) {
+                        continue; // didn't change anything, no update needed
                     }
 
                     $modified[] = array_merge($ebookPost, $ebook);
