@@ -113,17 +113,13 @@ class LinkProduct extends AbstractProcess implements ProcessContract
      */
     public function batch(array $data = [], bool $async = false): array
     {
-        $linked = 0;
-        $ebookPost = Service::make()->ebooks()->ebookPost();
-
-        foreach ($data as $postId) {
-            $this->single($ebookPost->get($postId));
-            $linked++;
+        if (empty($data)) {
+            return $this->chunk();
         }
 
-        return [
-            'linked' => $linked,
-        ];
+        return $async
+            ? $this->queueProcess($data)
+            : $this->doProcess($data);
     }
 
     /**
@@ -151,9 +147,14 @@ class LinkProduct extends AbstractProcess implements ProcessContract
      */
     protected function doProcess(array $entities): ?array
     {
-        $processed = [];
+        $linked = [];
+        $ebookPost = Service::make()->ebooks()->ebookPost();
 
-        return $processed;
+        foreach ($entities as $postId) {
+            $linked[] = $this->single($ebookPost->get($postId));
+        }
+
+        return $linked;
     }
 
     /**
@@ -165,7 +166,8 @@ class LinkProduct extends AbstractProcess implements ProcessContract
      */
     protected function queueProcess(array $entities): ?array
     {
-        // TODO: Implement queueProcess() method.
+        // TODO: find all simple products whit eBook <> 'No'
+        // call $this->batch($data, false) with the chunk
         return null;
     }
 }

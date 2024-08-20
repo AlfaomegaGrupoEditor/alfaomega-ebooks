@@ -19,8 +19,9 @@ class LinkEbook extends AbstractProcess implements ProcessContract
      * @throws \Exception
      */
     public function __construct(array $settings,
-                                protected ProductEntity $entity
-    ){
+                                protected ProductEntity $entity,
+                                protected bool $forceEbook = true)
+    {
         parent::__construct($settings);
     }
 
@@ -37,8 +38,10 @@ class LinkEbook extends AbstractProcess implements ProcessContract
     public function batch(array $data = [], bool $async = false): ?array
     {
         if (empty($data)) {
+            $this->forceEbook = false;
             return $this->chunk();
         }
+
         $products = []; // products to be updated
         $isbns = [];    // eBooks to be imported
         foreach ($data as $productId) {
@@ -46,6 +49,14 @@ class LinkEbook extends AbstractProcess implements ProcessContract
             if (empty($product)) {
                 continue;
             }
+
+            // do not link products if eBook attr is `No`, if the batch is global ($data=[])
+            if (!$this->forceEbook &&
+                !empty($configEbook = $product->get_attribute('pa_ebook')) &&
+                $configEbook === 'Desactivado') {
+                continue;
+            }
+
             $isbn = $product->get_meta('alfaomega_ebooks_ebook_isbn') ?? null;
             $sku = $product->get_sku();
             $products[$productId] = [
@@ -55,7 +66,9 @@ class LinkEbook extends AbstractProcess implements ProcessContract
             ];
             $ebookPost = $this->searchEbook($isbn, $sku);
             if (empty($ebookPost)) {
-                $isbns[empty($isbn) ? $sku : $isbn] = $productId;
+                if ($this->forceEbook) {
+                    $isbns[empty($isbn) ? $sku : $isbn] = $productId;
+                }
             } else {
                 $products[$productId] = array_merge($products[$productId], $ebookPost);
             }
@@ -204,18 +217,21 @@ class LinkEbook extends AbstractProcess implements ProcessContract
      */
     protected function queueProcess(array $entities): ?array
     {
-        $queued = [];
+        $onQueue = [];
         foreach ($entities as $productId => $ebook) {
-            if (empty($ebook['printed_isbn'])) {
+            if (empty($ebook['printed_isbn']) || empty($ebook['isbn'])) {
                 continue;
             }
             $ebook['product_id'] = $productId;
-            //TODO: queue the process
-            //$result = $this->single($ebook, postId: $ebook['id'] ?? null);
-
-            $queued[] = $productId;
+            $result = as_enqueue_async_action(
+                'alfaomega_ebooks_queue_link',
+                [$ebook, true, $ebook['id']]
+            );
+            if ($result !== 0) {
+                $onQueue[] = $result;
+            }
         }
-        return $queued;
+        return $onQueue;
     }
 
     /**
@@ -225,11 +241,32 @@ class LinkEbook extends AbstractProcess implements ProcessContract
      * The method should return an array of data to process, or null if there is no more data to process.
      *
      * @return array|null An array of data to process, or null if there is no more data to process.
+     * @throws \Exception
      */
     protected function chunk(): ?array
     {
-        // get all products of type 'simple' by chunks of 100
-        // call $this->batch($data, true) with the chunk
-        return null;
+        $onQueue = [];
+        $limit = 10000; // TODO: setup a limit if required
+        $countPerPage = $this->chunkSize;
+
+        $page = 1;
+        do {
+            $countPerPage = min($limit, $countPerPage);
+            $args = [
+                'limit' => $countPerPage,
+                'page'  => $page,
+                'type'  => 'simple',
+            ];
+            $posts = wc_get_products($args);
+            if (empty($posts)) {
+                break;
+            }
+
+            $products = array_column($posts, 'id');
+            $onQueue = array_merge($onQueue, $this->batch($products, true));
+            $page++;
+        } while (count($posts) === $this->chunkSize && count($onQueue) < $limit);
+
+        return $onQueue;
     }
 }

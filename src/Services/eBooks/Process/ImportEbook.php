@@ -142,7 +142,10 @@ class ImportEbook extends AbstractProcess implements ProcessContract
             }
 
             $ebook['product_id'] = $productId;
-            $result = as_enqueue_async_action('alfaomega_ebooks_queue_import', [$ebook]);
+            $result = as_enqueue_async_action(
+                'alfaomega_ebooks_queue_import',
+                [$ebook, true]
+            );
             if ($result !== 0) {
                 $onQueue[] = $productId;
             }
