@@ -84,7 +84,7 @@ Para editar los eBooks de un producto contamos con las siguientes opciones en el
 
 - **Actualizar eBooks importados**. Actualiza la información de todos los eBooks importados, si hay algún cambio en el ISBN impreso actualiza también el vínculo al correspondiente producto. Para acceder a esta opción puede hacerlo desde el menú `Alfaomega eBooks > Actualizar eBooks` o desde la página principal del complemento.
   > **Importante!**
-  > 1. La actualización de los eBooks se realiza a través de una cola en segundo plano, por lo que es posible que tarde varios minutos en procesarse todos las tareas de importación, para chequear el estado del procesamiento acceda a `WooCommerce > Estado > Scheduled Actions`, y busque por `alfaomega_ebooks_queue_update` y el filtro del estado que desea revisar, por ejemplo `Pending` para ver los procesos de importatión todavía en cola.
+  > 1. La actualización de los eBooks se realiza a través de una cola en segundo plano, por lo que es posible que tarde varios minutos en procesarse todos las tareas de actualización, para chequear el estado del procesamiento acceda a `WooCommerce > Estado > Scheduled Actions`, y busque por `alfaomega_ebooks_queue_update` y el filtro del estado que desea revisar, por ejemplo `Pending` para ver los procesos de importatión todavía en cola.
   > 2. En la página principal del complemento encontará la opción `Actualizar eBooks`, que le permitirá actualizar la información de los eBooks ya importados, asi como obtener un resumen historico del estado del procesamiendo en segundo plano de esta cola de tareas. 
 - **Vincular eBooks con productos**. Obtiene la lista de eBooks importados, no vinculados a un producto e intenta los vincularlo con un producto existente usando el ISBN del libro impreso.
 
