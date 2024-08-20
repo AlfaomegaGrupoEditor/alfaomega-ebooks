@@ -17,8 +17,10 @@
     ?>
 
     <div class="alfaomega_ebooks-pagebody">
-        <div class="alfaomega_ebooks-success-msg" style="display: none;"></div>
-        <div class="alfaomega_ebooks-error-msg" style="display: none;"></div>
+        <div style="min-height: 60px;">
+            <div class="alfaomega_ebooks-success-msg" style="display: none;"></div>
+            <div class="alfaomega_ebooks-error-msg" style="display: none;"></div>
+        </div>
         <form method="post"
               id="alfaomega_ebooks_form"
               class="alfaomega_ebooksCol-9"
