@@ -161,7 +161,7 @@
 					case 'refresh-ebooks':
 						queue = 'alfaomega_ebooks_queue_refresh';
 						break;
-					case 'link-ebooks':
+					case 'link-products':
 						queue = 'alfaomega_ebooks_queue_link';
 						break;
 				}

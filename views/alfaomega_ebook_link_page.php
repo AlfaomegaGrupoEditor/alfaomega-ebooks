@@ -1,5 +1,10 @@
 <div class="wrap">
-    <h1><?php esc_html_e("Link Products", 'alfaomega-ebooks'); ?></h1>
+    <h1>
+        <?php
+            use AlfaomegaEbooks\Services\eBooks\Service;
+            esc_html_e("Link Products", 'alfaomega-ebooks');
+        ?>
+    </h1>
     <div class="alfaomega_ebooks-about-text">
         <p>
             <?php esc_html_e("Using the list of eBooks already imported search the relative product to create a link using the Digital ISBN.", 'alfaomega-ebooks') ?>
@@ -7,19 +12,23 @@
     </div>
 
     <?php
-        $service = new Alfaomega_Ebooks_Service(false);
-        $queueStatus = $service->queueStatus('alfaomega_ebooks_queue_link_products')
+        $queueStatus = Service::make()->queue()
+            ->status('alfaomega_ebooks_queue_link');
     ?>
-
     <div class="alfaomega_ebooks-pagebody">
-        <div class="alfaomega_ebooks-success-msg" style="display: none;"></div>
-        <div class="alfaomega_ebooks-error-msg" style="display: none;"></div>
+        <div style="min-height: 60px;">
+            <div class="alfaomega_ebooks-success-msg" style="display: none;"></div>
+            <div class="alfaomega_ebooks-error-msg" style="display: none;"></div>
+        </div>
         <form method="post"
               id="alfaomega_ebooks_form"
               class="alfaomega_ebooksCol-9"
         >
             <input type="hidden" name="endpoint" value="link-products" />
-            <h2><?php esc_html_e("Queue status", 'alfaomega-ebooks'); ?></h2>
+            <h2>
+                <?php esc_html_e("Queue status", 'alfaomega-ebooks'); ?>
+                <span id="queue_status"><?php echo $queueStatus['pending'] > 0 ? esc_html__("Working", 'alfaomega-ebooks') : esc_html__("Idle", 'alfaomega-ebooks'); ?></span>
+            </h2>
             <div class="divTable blueTable">
                 <div class="divTableHeading">
                     <div class="divTableRow">
@@ -29,23 +38,31 @@
                 </div>
                 <div class="divTableBody">
                     <div class="divTableRow">
-                        <div class="divTableCell"><?php esc_html_e("Completed", 'alfaomega-ebooks'); ?></div>
-                        <div id="queue-link-completed" class="divTableCell">0</div>
+                        <div class="divTableCell"><?php esc_html_e("Complete", 'alfaomega-ebooks'); ?></div>
+                        <div id="queue-complete" class="divTableCell">
+                            <?php echo $queueStatus['complete'] ?>
+                        </div>
                     </div>
                     <div class="divTableRow">
                         <div class="divTableCell"><?php esc_html_e("Failed", 'alfaomega-ebooks'); ?></div>
-                        <div id="queue-link-failed" class="divTableCell">0</div>
+                        <div id="queue-failed" class="divTableCell">
+                            <?php echo $queueStatus['failed'] ?>
+                        </div>
                     </div>
                     <div class="divTableRow">
                         <div class="divTableCell"><?php esc_html_e("Pending", 'alfaomega-ebooks'); ?></div>
-                        <div id="queue-link-scheduled" class="divTableCell">0</div>
+                        <div id="queue-pending" class="divTableCell">
+                            <?php echo $queueStatus['pending'] ?>
+                        </div>
                     </div>
                 </div>
             </div>
-            
+
             <input class="alfaomega_ebooks-btn btnFade alfaomega_ebooks-btnBlueGreen alfaomega_ebooks_link_products"
                    type="submit"
-                   name="alfaomega_ebooks_link_ebooks"
+                   id="form_submit"
+                   <?php echo $queueStatus['pending'] > 0 ? 'disabled="disabled"' : ''; ?>
+                   name="alfaomega_ebooks_link_products"
                    value="<?php esc_html_e("Link Products", 'alfaomega-ebooks') ?>"
             >
 

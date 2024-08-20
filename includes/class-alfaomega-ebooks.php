@@ -201,9 +201,7 @@ class Alfaomega_Ebooks {
             ->setUpdateProduct();
         $this->loader->add_action('alfaomega_ebooks_queue_import', $service, 'single');
         $this->loader->add_action('alfaomega_ebooks_queue_refresh', $service, 'single', 20, 3);
-
-        // Todo: work on this
-        //$this->loader->add_action('alfaomega_ebooks_queue_refresh_list', $service->refreshEbook(), 'batch');
+        $this->loader->add_action('alfaomega_ebooks_queue_link', Service::make()->wooCommerce()->linkProduct(), 'single');
 
         // product custom fields
         $this->loader->add_action( 'woocommerce_product_options_general_product_data', $plugin_admin, 'woocommerce_product_custom_fields' );
