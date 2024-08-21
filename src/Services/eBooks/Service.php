@@ -106,6 +106,11 @@ class Service
 
     protected function loadEnv(): void
     {
+        if (!file_exists(ABSPATH . "/wp-content/plugins/alfaomega-ebooks/.env")) {
+            error_log('No .env file found in the plugin directory, please duplicate the .env.example file and rename it to .env and setup the environment variables.');
+            return;
+        }
+
         $dotenv = Dotenv::createImmutable(ABSPATH . "/wp-content/plugins/alfaomega-ebooks");
         $dotenv->load();
     }
