@@ -219,12 +219,12 @@ class EbookPost extends AbstractEntity implements EbookPostEntity
             ],
             'alfaomega_ebook_id'     => [
                 'old'     => get_post_meta($postId, 'alfaomega_ebook_id', true),
-                'new'     => ! empty($data['adobe']) ? $data['adobe'] : '',
+                'new'     => ! empty($data['adobe']) ? $data['adobe'] : ($data['pdf_id'] ?? ''),
                 'default' => '',
             ],
             'alfaomega_ebook_url'    => [
                 'old'     => get_post_meta($postId, 'alfaomega_ebook_url', true),
-                'new'     => ! empty($data['html_ebook']) ? $data['html_ebook'] : '',
+                'new'     => ! empty($data['html_ebook']) ? $data['html_ebook'] : ($data['ebook_url'] ?? ''),
                 'default' => '',
             ],
             'alfaomega_ebook_product_sku' => [
@@ -233,6 +233,12 @@ class EbookPost extends AbstractEntity implements EbookPostEntity
                 'default' => '',
             ],
         ];
+
+        foreach ($fields as $field => $value) {
+            if (empty($value['new'])) {
+                throw new Exception("Field value '$field' is required.");
+            }
+        }
 
         wp_publish_post($postId);
         foreach ($fields as $field => $data) {
