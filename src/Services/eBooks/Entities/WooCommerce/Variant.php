@@ -67,7 +67,7 @@ class Variant extends WooAbstractEntity
 
         $formatOptions = ['impreso', 'digital', 'impreso-digital'];
         foreach ($formatOptions as $format) {
-            $data = $this->getData($product, $format, $prices, $ebook['id']);
+            $data = $this->getData($product, $format, $prices, $ebook['id'], $ebook['isbn']);
             $variation = empty($variationIds[$format])
                 ? $this->client->post("products/{$product['id']}/variations", $data)
                 : $this->client->put("products/{$product['id']}/variations/{$variationIds[$format]}", $data);
@@ -105,9 +105,10 @@ class Variant extends WooAbstractEntity
      * @param string $format The format to get the variant data for.
      * @param array $prices The prices to set for the variant.
      * @param int $ebookId The ID of the ebook related to the product.
+     * @param string $ebookIsbn The ISBN of the ebook related to the product.
      * @return array The data for the variant.
      */
-    public function getData(array $product, string $format, array $prices, int $ebookId): array
+    public function getData(array $product, string $format, array $prices, int $ebookId, string $ebookIsbn): array
     {
         $uploads = wp_get_upload_dir();
         $ebooksDir = $uploads['baseurl'] . '/woocommerce_uploads/alfaomega_ebooks/';
@@ -115,7 +116,7 @@ class Variant extends WooAbstractEntity
         return match ($format) {
             'impreso' => [
                 'description'     => 'Libro impreso',
-                'sku'             => $product['id'] . '_printed',
+                'sku'             => $product['sku'] . ' (impreso)',
                 'regular_price'   => $prices['regular_price'],
                 'status'          => 'publish',
                 'virtual'         => false,
@@ -133,7 +134,7 @@ class Variant extends WooAbstractEntity
             ],
             'digital' => [
                 'description'     => 'Libro digital para lectura en línea y descarga del PDF con DRM',
-                'sku'             => $product['id'] . '_digital',
+                'sku'             => $ebookIsbn . ' (digital)',
                 'regular_price'   => number_format($prices['regular_price']
                                                    * ($this->settings['alfaomega_ebooks_price'] / 100), 0),
                 'status'          => 'publish',
@@ -154,7 +155,7 @@ class Variant extends WooAbstractEntity
             ],
             'impreso-digital' => [
                 'description'     => 'Libro impreso y libro digital para lectura en línea y descarga del PDF con DRM',
-                'sku'             => $product['id'] . '_printed_digital',
+                'sku'             => $product['sku'] . ' (impreso), ' . $ebookIsbn . ' (digital)',
                 'regular_price'   => number_format($prices['regular_price'] * ($this->settings['alfaomega_ebooks_printed_digital_price'] / 100), 0),
                 'status'          => 'publish',
                 'virtual'         => true,
