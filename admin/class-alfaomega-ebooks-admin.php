@@ -405,4 +405,14 @@ class Alfaomega_Ebooks_Admin {
         }
 
     }
+
+    /**
+     * Save product meta data
+     * @param $product
+     *
+     * @return void
+     */
+    function action_save_product_meta( $product ) {
+        $product->update_meta_data( 'alfaomega_ebooks_ebook_isbn', $_POST['alfaomega_ebooks_ebook_isbn'] ?? '' );
+    }
 }
