@@ -211,6 +211,7 @@ class Alfaomega_Ebooks {
         $this->loader->add_action( 'manage_product_posts_custom_column', $plugin_admin, 'woocommerce_product_post_custom_column', 10, 2);
         $this->loader->add_filter( 'manage_edit-product_sortable_columns', $plugin_admin, 'woocommerce_product_column_sortable' );
         $this->loader->add_filter( 'manage_edit-product_columns', $plugin_admin, 'woocommerce_product_column_ebook', 9999 );
+        $this->loader->add_action( 'woocommerce_admin_process_product_object', $plugin_admin, 'action_save_product_meta' );
 
         //Action Scheduler High Volume
         $actionSchedulerSetup = Service::make()->actionSchedulerSetup();
