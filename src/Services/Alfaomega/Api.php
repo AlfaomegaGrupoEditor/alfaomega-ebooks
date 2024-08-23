@@ -51,12 +51,13 @@ class Api
 
     /**
      * Saves the authentication data to a file.
-     *
-     * This method takes the authentication data as input, decodes it from JSON format, and adds an expiration date to it.
-     * The expiration date is set to 360 days from the current date. The data is then encoded back to JSON format and written to a file.
+     * This method takes the authentication data as input, decodes it from JSON format, and adds an expiration date to
+     * it. The expiration date is set to 360 days from the current date. The data is then encoded back to JSON format
+     * and written to a file.
      *
      * @param mixed $data The authentication data.
      *
+     * @throws \Exception
      * @since 1.0
      */
     public function saveAuthToFile($data): void
@@ -64,7 +65,10 @@ class Api
         $data = json_decode($data);
         $nextYear = date('Y-m-d', strtotime('+360 days'));
         $data->expires_in = date_timestamp_get(date_create($nextYear));
-        file_put_contents($this->token_filename, json_encode($data));
+        $success = file_put_contents($this->token_filename, json_encode($data));
+        if (!$success) {
+            throw new Exception(esc_html__('Error saving token', 'alfaomega-ebooks'));
+        }
     }
 
     /**
