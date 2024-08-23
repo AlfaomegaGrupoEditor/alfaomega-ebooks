@@ -129,4 +129,37 @@ class Alfaomega_Ebooks_Public {
             esc_html_e( 'Not available', 'alfaomega-ebooks' );
         }
     }
+
+    /**
+     * Modify the product attributes when the eBook is not enabled.
+     *
+     * @param array $args The original arguments.
+     * @return array The modified arguments.
+     */
+    public function product_get_attributes(array $args): array {
+        if ($args['attribute'] !== 'pa_book-format' ||
+            $args['product']->get_type() !== 'variable' ||
+            $args['product']->get_attribute('pa_ebook') === 'Si') {
+            return $args;
+        }
+
+        $args['options'] = array_filter($args['options'], function($option) {
+            return $option === 'impreso';
+        });
+
+        return $args;
+    }
+
+    /**
+     * Modify the product attributes dropdown when the eBook is not enabled.
+     *
+     * @param array $args The original arguments.
+     * @return array The modified arguments.
+     */
+    public function dropdown_variation_attribute_options_html(string $html): string {
+        $printed = '<select id="pa_book-format" class="" name="attribute_pa_book-format" data-attribute_name="attribute_pa_book-format" data-show_option_none="yes"><option value="">Elige una opción</option><option value="impreso" >Impreso</option></select>';
+        $printedSelected = '<select id="pa_book-format" class="" name="attribute_pa_book-format" data-attribute_name="attribute_pa_book-format" data-show_option_none="yes"><option value="">Elige una opción</option><option value="impreso" selected="selected">Impreso</option></select>';
+
+        return $html === $printed ? $printedSelected : $html;
+    }
 }
