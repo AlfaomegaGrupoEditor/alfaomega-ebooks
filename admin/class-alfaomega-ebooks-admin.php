@@ -182,11 +182,12 @@ class Alfaomega_Ebooks_Admin {
     /**
      * Adds custom quick actions to the WordPress admin dashboard for 'product' and 'alfaomega-ebook' post types.
      *
-     * This method takes an array of existing actions and a post object as parameters. It checks the post type of the given post,
-     * and based on the post type, it removes the default quick actions and adds custom quick actions.
+     * This method takes an array of existing actions and a post object as parameters. It checks the post type of the
+     * given post, and based on the post type, it removes the default quick actions and adds custom quick actions.
      *
      * For 'product' post type, it adds a 'Link' quick action which links the product to an eBook.
-     * For 'alfaomega-ebook' post type, it adds 'Update' and 'Link' quick actions which update the eBook metadata and link the eBook to a product respectively.
+     * For 'alfaomega-ebook' post type, it adds 'Update' and 'Link' quick actions which update the eBook metadata and
+     * link the eBook to a product respectively.
      *
      * @param array $actions An array of existing quick actions.
      * @param WP_Post $post The post object for which to add the quick actions.
@@ -236,7 +237,8 @@ class Alfaomega_Ebooks_Admin {
     /**
      * Adds custom fields to the WooCommerce product editor.
      *
-     * This method adds a custom text input field to the WooCommerce product editor. The field is used to store the ISBN of an eBook.
+     * This method adds a custom text input field to the WooCommerce product editor. The field is used to store the
+     * ISBN of an eBook.
      */
     public function woocommerce_product_custom_fields(): void
     {
@@ -247,7 +249,7 @@ class Alfaomega_Ebooks_Admin {
                 'id' => 'alfaomega_ebooks_ebook_isbn',
                 'placeholder' => 'NUMERO ISBN',
                 'label' => __('eBook ISBN', 'woocommerce'),
-                'desc_tip' => 'true'
+                'desc_tip' => 'true',
             )
         );
         echo '</div>';
@@ -271,7 +273,8 @@ class Alfaomega_Ebooks_Admin {
     /**
      * Adds a custom column to the WooCommerce product list table.
      *
-     * This method adds a custom column to the WooCommerce product list table. The custom column displays the ISBN of an eBook.
+     * This method adds a custom column to the WooCommerce product list table. The custom column displays the ISBN of
+     * an eBook.
      *
      * @param array $columns An array of existing columns in the product list table.
      * @return array The modified array of columns.
@@ -286,7 +289,8 @@ class Alfaomega_Ebooks_Admin {
     /**
      * Displays the content of the custom column in the WooCommerce product list table.
      *
-     * This method displays the content of the custom column in the WooCommerce product list table. The custom column displays the ISBN of an eBook.
+     * This method displays the content of the custom column in the WooCommerce product list table. The custom column
+     * displays the ISBN of an eBook.
      *
      * @param string $column The name of the custom column.
      * @param int $post_id The ID of the post being displayed.
@@ -317,5 +321,81 @@ class Alfaomega_Ebooks_Admin {
     {
         $columns['ebook_isbn'] = __('eBook', 'cs-text');
         return array_slice( $columns, 0, 4, true ) + array( 'ebook_isbn' => __('eBook', 'cs-text') ) + array_slice( $columns, 4, count( $columns ) - 3, true );
+    }
+
+    /**
+     * Filter products by eBook synchronization status
+     * @param $post_type
+     *
+     * @return void
+     */
+    public function ebooks_product_filters($post_type)
+    {
+        $value1 = '';
+        $value2 = '';
+        $value3 = '';
+        if (isset($_GET['ebooks_filter'])) {
+            switch ($_GET['ebooks_filter']) {
+                case 'all':
+                    $value1 = ' selected';
+                    break;
+                case 'sync':
+                    $value2 = ' selected';
+                    break;
+                case 'un_sync':
+                    $value3 = ' selected';
+                    break;
+            }
+        }
+
+        // Check this is the products screen
+        if ($post_type == 'product') {
+            echo '<select name="ebooks_filter">';
+            echo '  <option value>' . esc_html__('Filter by eBook', 'alfaomega_ebooks') . '</option>';
+            echo '  <option value="all"' . $value1 . '>' . esc_html__('All eBooks', 'alfaomega_ebooks') . '</option>';
+            echo '  <option value="sync"' . $value2 . '>' . esc_html__('eBook Linked', 'alfaomega_ebooks') . '</option>';
+            echo '  <option value="un_sync"' . $value3 . '>' . esc_html__('eBook Unlinked', 'alfaomega_ebooks') . '</option>';
+            echo '</select>';
+        }
+    }
+
+    function apply_ebooks_product_filters( $query ) {
+        global $pagenow;
+        // Ensure it is an edit.php admin page, the filter exists and has a value, and that it's the products page
+        if ( $query->is_admin &&
+             $pagenow == 'edit.php' &&
+             isset( $_GET['ebooks_filter'] )
+             && $_GET['ebooks_filter'] != ''
+             && $_GET['post_type'] == 'product' ) {
+
+            switch (esc_attr($_GET['ebooks_filter'])) {
+                case 'sync':
+                    $query->set('tax_query', [
+                        [
+                            'taxonomy' => 'product_type',
+                            'field'    => 'slug',
+                            'terms'    => 'variable',
+                        ],
+                    ]);
+                    break;
+                case 'un_sync':
+                    $query->set('tax_query', [
+                        [
+                            'taxonomy' => 'product_type',
+                            'field'    => 'slug',
+                            'terms'    => 'simple',
+                        ],
+                    ]);
+                    break;
+            }
+            $query->set('meta_query', [
+                [
+                    'key'     => 'alfaomega_ebooks_ebook_isbn',
+                    'value'   => '',
+                    'compare' => '!=',
+                ],
+            ]);
+        }
+
     }
 }

@@ -223,6 +223,10 @@ class Alfaomega_Ebooks {
             //$this->loader->add_action( 'wp_ajax_nopriv_ashp_create_additional_runners', $actionSchedulerSetup, 'ashp_create_additional_runners', 0 );
             $this->loader->add_filter( 'action_scheduler_queue_runner_time_limit', $actionSchedulerSetup, 'ashp_increase_time_limit' );
         }
+
+        // ebook product filter
+        $this->loader->add_action( 'restrict_manage_posts', $plugin_admin, 'ebooks_product_filters' );
+        $this->loader->add_action( 'pre_get_posts', $plugin_admin, 'apply_ebooks_product_filters' );
     }
 
 	/**
