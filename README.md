@@ -8,6 +8,7 @@
 
 **Administrador de eBooks de Alfaomega** para importar, actualizar y sincronizar **eBooks digitales** con **productos WooCommerce**.
 
+test
 ##  Descripción
 
 Alfaomega eBooks Manager proporciona una forma de sincronizar los productos de WooCommerce con la **Plataforma de libros electrónicos Alfaomega**.  
