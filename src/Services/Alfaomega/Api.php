@@ -81,27 +81,6 @@ class Api
      */
     public function authenticate(): mixed
     {
-        // FIXME
-        /*$response = wp_remote_post($this->getTokenUrl(), [
-            'headers' => ['content-type' => 'application/json'],
-            'body'    => [
-                "client_id"     => $this->getClientId(),
-                "client_secret" => $this->getSecret(),
-                "grant_type"    => "password",
-                "username"      => $this->getUsername(),
-                "password"      => $this->getPassword(),
-                "scope"         => "",
-            ],
-        ]);
-        if ( is_wp_error( $response ) ||  $response['code'] !== 200) {
-            $body = json_decode($response['body'], true);
-            if (!empty($body['error'])) {
-                throw new \Exception(esc_html__('Authentication error', 'alfaomega-ebooks') . "- " . $body['error']);
-            }
-
-            throw new \Exception(esc_html__('Authentication error', 'alfaomega-ebooks'));
-        }*/
-
         $response = $this->curlPost($this->getTokenUrl(), [
             "client_id"     => $this->getClientId(),
             "client_secret" => $this->getSecret(),
@@ -110,6 +89,11 @@ class Api
             "password"      => $this->getPassword(),
             "scope"         => "",
         ]);
+
+        $data = json_decode($response);
+        if (!empty($data->error)) {
+            throw new \Exception(esc_html__('Authentication error', 'alfaomega-ebooks') . "- " . $data->error);
+        }
 
         $this->saveAuthToFile($response);
 
