@@ -196,7 +196,9 @@ class LinkEbook extends AbstractProcess implements ProcessContract
     {
         $processed = [];
         foreach ($entities as $productId => $ebook) {
-            if (empty($ebook['printed_isbn'])) {
+            if (empty($ebook['printed_isbn']) ||
+                empty($ebook['isbn']) ||
+                empty($ebook['title'])) {
                 continue;
             }
             $ebook['product_id'] = $productId;
@@ -219,7 +221,9 @@ class LinkEbook extends AbstractProcess implements ProcessContract
     {
         $onQueue = [];
         foreach ($entities as $productId => $ebook) {
-            if (empty($ebook['printed_isbn']) || empty($ebook['isbn'])) {
+            if (empty($ebook['printed_isbn']) ||
+                empty($ebook['isbn']) ||
+                empty($ebook['title'])) {
                 continue;
             }
             $ebook['product_id'] = $productId;
