@@ -350,11 +350,18 @@ class Alfaomega_Ebooks_Admin {
 
         // Check this is the products screen
         if ($post_type == 'product') {
-            echo '<select name="ebooks_filter">';
+            /*echo '<select name="ebooks_filter">';
             echo '  <option value>' . esc_html__('Filter by eBook', 'alfaomega_ebooks') . '</option>';
             echo '  <option value="all"' . $value1 . '>' . esc_html__('All eBooks', 'alfaomega_ebooks') . '</option>';
             echo '  <option value="sync"' . $value2 . '>' . esc_html__('eBook Linked', 'alfaomega_ebooks') . '</option>';
             echo '  <option value="un_sync"' . $value3 . '>' . esc_html__('eBook Unlinked', 'alfaomega_ebooks') . '</option>';
+            echo '</select>';*/
+
+            echo '<select name="ebooks_filter">';
+            echo '  <option value>' . esc_html__('Filtrar por eBook', 'alfaomega_ebooks') . '</option>';
+            echo '  <option value="all"' . $value1 . '>' . esc_html__('Todos los eBooks', 'alfaomega_ebooks') . '</option>';
+            echo '  <option value="sync"' . $value2 . '>' . esc_html__('eBook Vinculado', 'alfaomega_ebooks') . '</option>';
+            echo '  <option value="un_sync"' . $value3 . '>' . esc_html__('eBook Desvinculado', 'alfaomega_ebooks') . '</option>';
             echo '</select>';
         }
     }
