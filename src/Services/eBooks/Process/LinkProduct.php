@@ -90,6 +90,11 @@ class LinkProduct extends AbstractProcess implements ProcessContract
         } catch (\Exception $e) {
             if (!empty($originalProduct)) {
                 $this->entity->updateType($originalProduct, 'simple');
+                update_post_meta(
+                    $eBook['product_id'],
+                    'alfaomega_ebooks_ebook_isbn',
+                    ''
+                );
             }
 
             if ($throwError) {
