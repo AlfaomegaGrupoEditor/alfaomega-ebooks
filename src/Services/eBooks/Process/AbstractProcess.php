@@ -59,7 +59,7 @@ abstract class AbstractProcess implements ProcessContract
                 $productId = Service::make()
                     ->wooCommerce()
                     ->linkProduct()
-                    ->single($eBook);
+                    ->single($eBook, $throwError);
 
                 if (empty($productId)) {
                     throw new \Exception('Error linking the eBook with the product.');

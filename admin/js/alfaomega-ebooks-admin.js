@@ -47,7 +47,8 @@
 				error: function(error) {
 					// Remove loading indicator and show error message on error
 					$('.alfaomega_ebooksLoading').remove();
-					showError(error?.responseJSON?.error ? error?.responseJSON?.error : '');
+					showError(error?.responseJSON?.message ? error?.responseJSON?.message : 'Something goes wrong!');
+					checkQueue(true);
 				},
 				success: function(response) {
 					// Remove loading indicator and show success or error message on success
