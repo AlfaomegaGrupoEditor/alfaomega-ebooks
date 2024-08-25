@@ -317,6 +317,12 @@ class Alfaomega_Ebooks_Admin {
         return $columns;
     }
 
+    /**
+     * Adds the eBook column to the WooCommerce product list table.
+     * @param $columns
+     *
+     * @return array
+     */
     public function woocommerce_product_column_ebook($columns): array
     {
         $columns['ebook_isbn'] = __('eBook', 'cs-text');
@@ -334,6 +340,8 @@ class Alfaomega_Ebooks_Admin {
         $value1 = '';
         $value2 = '';
         $value3 = '';
+        $value4 = '';
+        $value5 = '';
         if (isset($_GET['ebooks_filter'])) {
             switch ($_GET['ebooks_filter']) {
                 case 'all':
@@ -344,6 +352,12 @@ class Alfaomega_Ebooks_Admin {
                     break;
                 case 'un_sync':
                     $value3 = ' selected';
+                    break;
+                case 'none':
+                    $value4 = ' selected';
+                    break;
+                case 'disabled':
+                    $value5 = ' selected';
                     break;
             }
         }
@@ -359,13 +373,21 @@ class Alfaomega_Ebooks_Admin {
 
             echo '<select name="ebooks_filter">';
             echo '  <option value>' . esc_html__('Filtrar por eBook', 'alfaomega_ebooks') . '</option>';
+            echo '  <option value="none"' . $value4 . '>' . esc_html__('Producto simple', 'alfaomega_ebooks') . '</option>';
             echo '  <option value="all"' . $value1 . '>' . esc_html__('Todos los eBooks', 'alfaomega_ebooks') . '</option>';
-            echo '  <option value="sync"' . $value2 . '>' . esc_html__('eBook Vinculado', 'alfaomega_ebooks') . '</option>';
-            echo '  <option value="un_sync"' . $value3 . '>' . esc_html__('eBook Desvinculado', 'alfaomega_ebooks') . '</option>';
+            echo '  <option value="sync"' . $value2 . '>' . esc_html__('Vinculado', 'alfaomega_ebooks') . '</option>';
+            echo '  <option value="un_sync"' . $value3 . '>' . esc_html__('Desvinculado', 'alfaomega_ebooks') . '</option>';
+            echo '  <option value="disabled"' . $value5 . '>' . esc_html__('Desactivado', 'alfaomega_ebooks') . '</option>';
             echo '</select>';
         }
     }
 
+    /**
+     * Applies the selected eBook filter
+     * @param $query
+     *
+     * @return void
+     */
     function apply_ebooks_product_filters( $query ) {
         global $pagenow;
         // Ensure it is an edit.php admin page, the filter exists and has a value, and that it's the products page
@@ -376,16 +398,20 @@ class Alfaomega_Ebooks_Admin {
              && $_GET['post_type'] == 'product' ) {
 
             switch (esc_attr($_GET['ebooks_filter'])) {
-                case 'sync':
-                    $query->set('tax_query', [
+                // all products without ebook isbn and type is simple
+                case 'none':
+                    $query->set('meta_query', [
+                        'relation' => 'OR',
                         [
-                            'taxonomy' => 'product_type',
-                            'field'    => 'slug',
-                            'terms'    => 'variable',
+                            'key'     => 'alfaomega_ebooks_ebook_isbn',
+                            'compare' => 'NOT EXISTS',
+                        ],
+                        [
+                            'key'     => 'alfaomega_ebooks_ebook_isbn',
+                            'value'   => '',
+                            'compare' => '=',
                         ],
                     ]);
-                    break;
-                case 'un_sync':
                     $query->set('tax_query', [
                         [
                             'taxonomy' => 'product_type',
@@ -394,14 +420,79 @@ class Alfaomega_Ebooks_Admin {
                         ],
                     ]);
                     break;
+                // all products with ebook isbn no matter the type
+                case 'all':
+                    $query->set('meta_query', [
+                        [
+                            'key'     => 'alfaomega_ebooks_ebook_isbn',
+                            'value'   => '',
+                            'compare' => '!=',
+                        ],
+                    ]);
+                    break;
+                // all products with ebook isbn and type is variable and attribute ebook is `Si`
+                case 'sync':
+                    $query->set('meta_query', [
+                        [
+                            'key'     => 'alfaomega_ebooks_ebook_isbn',
+                            'value'   => '',
+                            'compare' => '!=',
+                        ],
+                    ]);
+                    $query->set('tax_query', [
+                        [
+                            'taxonomy' => 'product_type',
+                            'field'    => 'slug',
+                            'terms'    => 'variable',
+                        ],
+                        [
+                            'taxonomy' => 'pa_ebook',
+                            'field'    => 'slug',
+                            'terms'    => 'si',
+                        ],
+                    ]);
+                    break;
+                // all products with ebook isbn and type is simple
+                case 'un_sync':
+                    $query->set('meta_query', [
+                        [
+                            'key'     => 'alfaomega_ebooks_ebook_isbn',
+                            'value'   => '',
+                            'compare' => '!=',
+                        ],
+                    ]);
+                    $query->set('tax_query', [
+                        [
+                            'taxonomy' => 'product_type',
+                            'field'    => 'slug',
+                            'terms'    => 'simple',
+                        ],
+                    ]);
+                    break;
+                // all products with ebook isbn and type is variable and attribute ebook is not `Si`
+                case 'disabled':
+                    $query->set('meta_query', [
+                        [
+                            'key'     => 'alfaomega_ebooks_ebook_isbn',
+                            'value'   => '',
+                            'compare' => '!=',
+                        ],
+                    ]);
+                    $query->set('tax_query', [
+                        [
+                            'taxonomy' => 'product_type',
+                            'field'    => 'slug',
+                            'terms'    => 'variable',
+                        ],
+                        [
+                            'taxonomy' => 'pa_ebook',
+                            'field'    => 'slug',
+                            'terms'    => ['no', 'desactivado'],
+                            'compare' => 'IN',
+                        ],
+                    ]);
+                    break;
             }
-            $query->set('meta_query', [
-                [
-                    'key'     => 'alfaomega_ebooks_ebook_isbn',
-                    'value'   => '',
-                    'compare' => '!=',
-                ],
-            ]);
         }
 
     }

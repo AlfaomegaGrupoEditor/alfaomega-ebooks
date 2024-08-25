@@ -72,6 +72,14 @@ Para editar los eBooks de un producto contamos con las siguientes opciones en el
 - **Enlazar un producto** con el correspondiente eBook. Utilizando el ISBN del libro impreso, el plugin buscará el eBook correspondiente en la Plataforma Alfaomega eBooks, descarga la información necesaria, crea el registro del eBook y lo vinculará al producto. Una vez que el producto este vinculado a un eBook el producto se convierte en un producto variable con las opciones de compra: Impreso, Digital y el combo Impreso + Digital.
 - **Desvincular un producto** del eBook. Con esta opción se elimina la vinculación entre el producto y el eBook, el producto se convierte en un producto simple y se eliminan las opciones de compra de eBooks.
 
+#### Filtrar listado de productos
+Con respecto a la vinculación con el correspondiente eBook, los productos en la tienda WooCommerce, pueden encontrarse en diferentes durante el proceso de configuración y sincronización con la Plataforma Alfaomega eBooks. Para facilitar la administración de los productos, el plugin ofrece la posibilidad de filtrar los productos en la lista de productos de WooCommerce según su estado de vinculación con el eBook correspondiente. Los estados posibles son:
+- **Producto simple**: El producto es del tipo `Simple` y el valor del metadato `eBook` es vacio. (Productos sin procesar aún)
+- **Todos los eBooks**: El producto es del tipo `Variable` o el metadato `eBook` apunta al ISBN de libro digital. (Productos con eBook vinculado o desvinculado)
+- **Vinculado**: El producto es del tipo `Variable`, el metadato `eBook` apunta al ISBN de libro digital y el valor del attributo eBook es `Si` y el atributo `Formato` contiene los formatos en los que esta disponible el libro para la compra: `Impreso`, `Digital` o `Impreso + Digital`. Las variaciones del producto se crean automáticamente con los valores del atributo `Formato`. (Productos con eBook vinculado, listos para la venta)
+- **Desvinculado**: El producto es del tipo `Simple` y el metadato `eBook` apunta al ISBN del libro digital. (Productos con un ISBN asignado manualmente pero las opciones de compra aún no están disponibles)
+- **Desactivado**: El producto es del tipo `Variable`, el metadato `eBook` apunta al ISBN de libro digital y el valor del attributo eBook es `No` o `Desacivado`. (Productos con eBook vinculado pero las opciones de compra de eBooks (Digital o Digital + Impreso) están desactivadas)
+
 #### Acciones rápidas y por lotes en la lista de eBook
 - **Actualizar los metadatos** del eBook y el enlace con el producto correspondiente. Comprueba que la vinculación entre el eBook y el producto es correcta y actualiza la información del eBook.
 - **Mostrar el producto** vinculado al eBook. Muestra el producto vinculado al eBook en la lista de productos.
