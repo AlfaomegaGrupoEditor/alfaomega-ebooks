@@ -1,5 +1,7 @@
 <?php
 
+use AlfaomegaEbooks\Services\eBooks\Service;
+
 /**
  * Class Alfaomega_Ebooks_Public
  *
@@ -92,8 +94,11 @@ class Alfaomega_Ebooks_Public {
         }
 
         try {
-            $service = new Alfaomega_Ebooks_Service();
-            return $service->downloadEbook($eBookId, $downloadId);
+            /*$service = new Alfaomega_Ebooks_Service();
+            return $service->downloadEbook($eBookId, $downloadId);*/
+            return Service::make()->ebooks()
+                ->download($eBookId, $downloadId);
+
         } catch (Exception $exception) {
             return $file_path;
         }
