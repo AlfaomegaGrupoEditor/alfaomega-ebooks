@@ -101,7 +101,45 @@ Con respecto a la vinculación con el correspondiente eBook, los productos en la
   > 2. En la página principal del complemento encontará la opción `Vincular Products`, que le permitirá vincular los productos con sus correspondientes eBooks, asi como obtener un resumen historico del estado del procesamiendo en segundo plano de esta cola de tareas.
 
 ### Comprar eBooks, descarga y lectura en línea.
-Cuando un cliente selecciona una opción de compra que incluye un libro digital (Digital o Digital + Impreso), el plugin añadirá un enlace de descarga al email de notificación de factura. El cliente podrá descargar el PDF del eBook desde el enlace proporcionado. Además, el enlace de descarga también se añadirá a la lista de Descargas del cliente en la página de su cuenta.
+Cuando un cliente selecciona una opción de compra que incluye un libro digital (Digital o Digital + Impreso), para la lectura sin conexión, el plugin añadirá un enlace de descarga al email de notificación de factura. El cliente podrá descargar el PDF del eBook desde el enlace proporcionado y agregarlo hasta 6 dispositivos. Además, el enlace de descarga se añadirá a la lista de Descargas del cliente en la página de su cuenta.
+Complementario al acceso offline, el cliente podrá leer online el eBook adquirido en la Plataforma de eBooks Alfaomega. Para acceder a la lectura online, el cliente deberá acceder a la biblioteca digital myEbooks, donde encontrará todos los eBooks que ha comprado. Al hacer clic sobre el libro seleccionado se abrirá el lector en línea para acceder a los contenidos del mismo.
+
+#### Habilitar el registro e inicio de sesión de los clientes
+1. En la configuración de WooCommerce, en la pestaña `Cuentas y privacidad`, asegúrese de que la opción `Permitir a los clientes crear una cuenta en la página de pago` esté habilitada.
+2. Agregar la opción `Mi Cuenta` al menú de navegación de la tienda WooCommerce. En la configuración de Menús, seleccionar el menú `Classic Shop Top Secondary Menu` y en la sección `Páginas`, seleccione la página `Mi Cuenta` y añádala al menú de navegación. 
+3. Cambiar el título de la página `My Account` por `Mi cuenta` y guardar los cambios.
+
+
+#### Configuración del modo de pago en sitios de prueba (No necesario en producción)
+1. Instalar y activar el plugin de WooCommerce Payments. (Cambiar la dirección de la tienda a USA)
+2. Habilitar el modo de pruebas. 
+3. Configurar el método de pago de WooCommerce Payments.
+
+Para realizar pagos de prueba exitosos utilizar estos números de tarjeta con cualquier fecha de expiración y código de seguridad:
+> - **Tarjeta de crédito Visa**: 4242 4242 4242 4242
+> - **Tarjeta de crédito MasterCard**: 5555 5555 5555 4444
+> - **Tarjeta de crédito American Express**: 3782 822463 10005
+
+Para simular pagos declinados utilizar estos números de tarjeta:
+> - **Declinado genérico**: 4000 0000 0000 0002
+> - **Insuficientes fondos**: 4000 0000 0000 9995
+
+>**Nota:** Realizar compras de prueba con el método de pago de WooPay.
+
+Más información en [Testing in WooCommerce](https://woocommerce.com/document/woopayments/testing-and-troubleshooting/testing/#:~:text=with%20manual%20capture%3A-,Go%20to%20Payments%20%3E%20Settings%20in%20your%20site's%20dashboard.,test%20order%20as%20explained%20here.)
+
+#### Configuración del servidor de correos electrónicos por SMTP (No necesario en producción)
+ > - Correo: `e-commerce.test@alfaomegaeditor.com.mx`
+ > - Servicio de envío de correos: `Otro SMTP`
+ > - Servidor SMTP: `live.smtp.mailtrap.io`
+ > - Cifrado: `TLS`
+ > - Puerto SMTP: `587`
+ > - Nombre de usuario: `api`
+ > - Contraseña: `*************`
 
 ### Generación de accesos de muestras.
 El plugin ofrece también la opción de que un administrador pueda generar accesos de muestra para los eBooks. El código de accesso es enviado por correo electrónico al cliente. Este código puede ser agregado en la biblioteca digital myEbooks del usuario para acceder a la lectura del libro durante el tiempo configurado para la muestra.
+
+## Solución de problemas frecuentes
+1. Si no se muestran los iconos correctamente despues de migrar el Website, puede ser necesario [limpiar la caché de Avada](https://avada.com/faq-items/icons-not-showing/).
+2. Si el website no carga en url donde esta alojado verificar que se cambiaron correctamente las urls del sitio en la base datos de WordPress, puede ser necesario [actualizar las urls del sitio](https://wordpress.org/support/article/changing-the-site-url/).
