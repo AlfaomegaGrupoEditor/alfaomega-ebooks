@@ -221,7 +221,7 @@ class Alfaomega_Ebooks {
             $this->loader->add_filter( 'action_scheduler_timeout_period', $actionSchedulerSetup, 'ashp_increase_timeout' );
             $this->loader->add_filter( 'action_scheduler_failure_period', $actionSchedulerSetup, 'ashp_increase_timeout' );
             $this->loader->add_action( 'action_scheduler_run_queue', $actionSchedulerSetup, 'ashp_request_additional_runners', 0 );
-            //$this->loader->add_action( 'wp_ajax_nopriv_ashp_create_additional_runners', $actionSchedulerSetup, 'ashp_create_additional_runners', 0 );
+            $this->loader->add_action( 'wp_ajax_nopriv_ashp_create_additional_runners', $actionSchedulerSetup, 'ashp_create_additional_runners', 0 );
             $this->loader->add_filter( 'action_scheduler_queue_runner_time_limit', $actionSchedulerSetup, 'ashp_increase_time_limit' );
         }
 
