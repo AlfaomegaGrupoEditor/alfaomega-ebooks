@@ -125,11 +125,12 @@ class ActionSchedulerSetup
      */
     function retry_past_due_tasks() {
         $past_due_actions = as_get_scheduled_actions([
-            'status' => 'pending',
-            'per_page' => -1,
+            'hook'     => 'alfaomega_ebooks_queue_import',
+            'status'   => ActionScheduler_Store::STATUS_PENDING,
+            'per_page' => 10,
         ]);
 
-        foreach ($past_due_actions as $actionId => $action) {
+        foreach ($past_due_actions as $action) {
             as_enqueue_async_action($action->get_hook(), $action->get_args(), $action->get_group());
             as_unschedule_action($action->get_hook(), $action->get_args(), $action->get_group());
         }
