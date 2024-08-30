@@ -18,7 +18,7 @@ class ActionSchedulerSetup
     protected const ACTION_SCHEDULER_BATCH_SIZE = 20;
     protected const ACTION_SCHEDULER_CONCURRENT_BATCHES = 5;
     protected const ACTION_SCHEDULER_TIMEOUT = 3;
-    protected const ACTION_SCHEDULER_TIME_LIMIT = 120;
+    protected const ACTION_SCHEDULER_TIME_LIMIT = 360;
 
     /**
      * Action scheduler claims a batch of actions to process in each request. It keeps the batch
