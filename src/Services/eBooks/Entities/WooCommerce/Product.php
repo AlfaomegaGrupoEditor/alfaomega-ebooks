@@ -144,26 +144,23 @@ class Product extends WooAbstractEntity implements ProductEntity
     public function updateType(array $product, string $type = 'variable'): ?array
     {
         if ($product['type'] !== $type) {
-            $regularPrice = $product['regular_price'];
-            $salePrice = $product['sale_price'];
             if ($type === 'variable') {
                 $product = (array) $this->client->put("products/{$product['id']}", [
                     'type' => $type,
                 ]);
             } else {
-                $product = (array) $this->client->put("products/{$product['id']}", [
-                    'type'          => $type,
-                    'regular_price' => $regularPrice,
-                    'sale_price'    => $salePrice,
-                ]);
+                if (!empty($product['regular_price'])) {
+                    $product = (array) $this->client->put("products/{$product['id']}", [
+                        'type'          => $type,
+                        'regular_price' => $product['regular_price'],
+                        'sale_price'    => $product['sale_price'] ?? '',
+                    ]);
+                }
             }
 
             if (empty($product)) {
                 return null;
             }
-
-            $product['regular_price'] = $regularPrice;
-            $product['sale_price'] = $salePrice;
 
             return $product;
         }

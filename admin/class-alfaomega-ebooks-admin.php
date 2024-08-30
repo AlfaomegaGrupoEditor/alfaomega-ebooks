@@ -375,7 +375,7 @@ class Alfaomega_Ebooks_Admin {
             echo '  <option value>' . esc_html__('Filtrar por eBook', 'alfaomega_ebooks') . '</option>';
             echo '  <option value="none"' . $value4 . '>' . esc_html__('Producto simple', 'alfaomega_ebooks') . '</option>';
             echo '  <option value="all"' . $value1 . '>' . esc_html__('Todos los eBooks', 'alfaomega_ebooks') . '</option>';
-            echo '  <option value="sync"' . $value2 . '>' . esc_html__('Vinculado', 'alfaomega_ebooks') . '</option>';
+            echo '  <option value="sync"' . $value2 . '>' . esc_html__('Vinculado correctamente', 'alfaomega_ebooks') . '</option>';
             echo '  <option value="un_sync"' . $value3 . '>' . esc_html__('Desvinculado', 'alfaomega_ebooks') . '</option>';
             echo '  <option value="disabled"' . $value5 . '>' . esc_html__('Desactivado', 'alfaomega_ebooks') . '</option>';
             echo '</select>';

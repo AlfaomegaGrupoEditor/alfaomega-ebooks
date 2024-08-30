@@ -60,6 +60,11 @@ class LinkProduct extends AbstractProcess implements ProcessContract
                 if (empty($prices['regular_price'])) {
                     throw new Exception("Product price not specified");
                 }
+                update_post_meta(
+                    $eBook['product_id'],
+                    '_ao_price_backup',
+                    json_encode($prices)
+                );
 
                 $product = $this->entity->updateType($product);
                 if (empty($product)) {
