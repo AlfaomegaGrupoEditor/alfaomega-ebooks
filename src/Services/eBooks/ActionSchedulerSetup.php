@@ -14,7 +14,7 @@ namespace AlfaomegaEbooks\Services\eBooks;
  */
 class ActionSchedulerSetup
 {
-    protected const ACTION_SCHEDULER_ENABLED = true;
+    protected const ACTION_SCHEDULER_ENABLED = false;
     protected const ACTION_SCHEDULER_BATCH_SIZE = 20;
     protected const ACTION_SCHEDULER_CONCURRENT_BATCHES = 5;
     protected const ACTION_SCHEDULER_TIMEOUT = 3;
