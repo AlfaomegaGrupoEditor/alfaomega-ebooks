@@ -15,8 +15,8 @@ namespace AlfaomegaEbooks\Services\eBooks;
 class ActionSchedulerSetup
 {
     protected const ACTION_SCHEDULER_ENABLED = true;
-    protected const ACTION_SCHEDULER_BATCH_SIZE = 4;
-    protected const ACTION_SCHEDULER_CONCURRENT_BATCHES = 2;
+    protected const ACTION_SCHEDULER_BATCH_SIZE = 20;
+    protected const ACTION_SCHEDULER_CONCURRENT_BATCHES = 5;
     protected const ACTION_SCHEDULER_TIMEOUT = 3;
     protected const ACTION_SCHEDULER_TIME_LIMIT = 120;
 
@@ -117,5 +117,22 @@ class ActionSchedulerSetup
     public function enabled(): bool
     {
         return self::ACTION_SCHEDULER_ENABLED;
+    }
+
+    /**
+     * Retry past due tasks.
+     * @return void
+     */
+    function retry_past_due_tasks() {
+        $past_due_actions = as_get_scheduled_actions([
+            'status' => 'pending',
+            'per_page' => -1,
+        ]);
+
+        foreach ($past_due_actions as $action) {
+            $action_id = $action->get_id();
+            as_enqueue_async_action($action->get_hook(), $action->get_args(), $action->get_group());
+            as_unschedule_action($action->get_hook(), $action->get_args(), $action->get_group());
+        }
     }
 }
