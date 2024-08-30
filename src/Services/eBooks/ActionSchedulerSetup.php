@@ -129,8 +129,7 @@ class ActionSchedulerSetup
             'per_page' => -1,
         ]);
 
-        foreach ($past_due_actions as $action) {
-            $action_id = $action->get_id();
+        foreach ($past_due_actions as $actionId => $action) {
             as_enqueue_async_action($action->get_hook(), $action->get_args(), $action->get_group());
             as_unschedule_action($action->get_hook(), $action->get_args(), $action->get_group());
         }
