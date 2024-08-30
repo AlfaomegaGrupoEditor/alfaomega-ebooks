@@ -169,12 +169,12 @@ class Product extends WooAbstractEntity implements ProductEntity
                 ]);
             }
 
-            if (empty($product)) {
+            if (empty($product) || empty($prices)) {
                 return null;
             }
 
-            $product['regular_price'] = $regularPrice;
-            $product['sale_price'] = $salePrice;
+            $product['regular_price'] = $prices['regular_price'];
+            $product['sale_price'] = $prices['sale_price'];
 
             return $product;
         }
