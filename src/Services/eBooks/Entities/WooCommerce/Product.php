@@ -150,31 +150,17 @@ class Product extends WooAbstractEntity implements ProductEntity
                 ]);
             } else {
                 if (!empty($product['regular_price'])) {
-                    $prices = [
+                    $product = (array) $this->client->put("products/{$product['id']}", [
+                        'type'          => $type,
                         'regular_price' => $product['regular_price'],
-                        'sale_price'    => $product['sale_price'],
-                    ];
-                } else {
-                    $product = wc_get_product($product['id']);
-                    $prices = $product->get_meta('_ao_price_backup') ?? null;
-                    if (empty($prices)) {
-                        return null;
-                    }
-                    $prices = json_decode($prices, true);
+                        'sale_price'    => $product['sale_price'] ?? '',
+                    ]);
                 }
-                $product = (array) $this->client->put("products/{$product['id']}", [
-                    'type'          => $type,
-                    'regular_price' => $prices['regular_price'],
-                    'sale_price'    => $prices['sale_price'],
-                ]);
             }
 
-            if (empty($product) || empty($prices)) {
+            if (empty($product)) {
                 return null;
             }
-
-            $product['regular_price'] = $prices['regular_price'];
-            $product['sale_price'] = $prices['sale_price'];
 
             return $product;
         }

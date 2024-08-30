@@ -136,7 +136,11 @@ class LinkEbook extends AbstractProcess implements ProcessContract
             }
         }
         if (empty($productPrice)) {
-            throw new \Exception("Product price not available");
+            $prices = $product->get_meta('_ao_price_backup') ?? null;
+            if (empty($prices)) {
+                throw new \Exception("Product price not available");
+            }
+            $productPrice = json_decode($prices, true);
         }
 
         // restore the product type
