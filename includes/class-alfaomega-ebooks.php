@@ -69,7 +69,7 @@ class Alfaomega_Ebooks {
         $this->define_public_hooks();
 
         $Alfaomega_Ebooks_Post_Type = new Alfaomega_Ebooks_Post_Type();
-        $Alfaomega_Ebooks_Post_Type = new Alfaomega_Ebooks_Post_Type();
+        $Alfaomega_Ebook_Access_Post_Type = new Alfaomega_Ebooks_Access_Post_Type();
         $Alfaomega_Ebooks_Settings = new Alfaomega_Ebooks_Settings();
         add_action( 'admin_menu', [$this, 'add_menu'] );
     }
@@ -108,6 +108,7 @@ class Alfaomega_Ebooks {
          * The class responsible for defining the Custom Post Type alfaomega-ebook.
          */
         require_once plugin_dir_path(dirname(__FILE__)) . 'post_types/class-alfaomega-ebooks-post-type.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'post_types/class-alfaomega-ebooks-access-post-type.php';
 
         /**
          * The class responsible for defining the settings page.
@@ -333,6 +334,16 @@ class Alfaomega_Ebooks {
             esc_html__('List', 'alfaomega-ebooks'),
             'install_plugins',
             'edit.php?post_type=alfaomega-ebook',
+            null,
+            null
+        );
+
+        add_submenu_page(
+            'alfaomega_ebooks_admin',
+            esc_html__('eBook Access', 'alfaomega-ebooks'),
+            esc_html__('Access List', 'alfaomega-ebooks'),
+            'install_plugins',
+            'edit.php?post_type=alfaomega-ebook-access',
             null,
             null
         );
