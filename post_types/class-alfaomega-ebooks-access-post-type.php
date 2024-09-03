@@ -166,6 +166,8 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
             $cover = get_post_meta( $post->ID, 'alfaomega_access_cover', true );
             $isbn = get_post_meta( $post->ID, 'alfaomega_access_isbn', true );
             $type = get_post_meta( $post->ID, 'alfaomega_access_type', true );
+            $order_id = get_post_meta( $post->ID, 'alfaomega_access_order_id', true );
+            $sample_id = get_post_meta( $post->ID, 'alfaomega_access_sample_id', true );
             $status = get_post_meta( $post->ID, 'alfaomega_access_status', true );
             $read = get_post_meta( $post->ID, 'alfaomega_access_read', true );
             $download = get_post_meta( $post->ID, 'alfaomega_access_download', true );
@@ -223,6 +225,16 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
                         'old'     => get_post_meta($post_id, 'alfaomega_access_type', true),
                         'new'     => $_POST['alfaomega_access_type'],
                         'default' => 'purchase',
+                    ],
+                    'alfaomega_access_order_id'   => [
+                        'old'     => get_post_meta($post_id, 'alfaomega_access_order_id', true),
+                        'new'     => $_POST['alfaomega_access_order_id'],
+                        'default' => '',
+                    ],
+                    'alfaomega_access_sample_id'   => [
+                        'old'     => get_post_meta($post_id, 'alfaomega_access_sample_id', true),
+                        'new'     => $_POST['alfaomega_access_sample_id'],
+                        'default' => '',
                     ],
                     'alfaomega_access_status'  => [
                         'old'     => get_post_meta($post_id, 'alfaomega_access_status', true),

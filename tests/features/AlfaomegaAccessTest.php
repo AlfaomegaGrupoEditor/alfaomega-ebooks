@@ -11,18 +11,18 @@ class AlfaomegaAccessTest extends WordpressTest
     /**
      * Create access post.
      *
-     * @param int $postId
+     * @param int $post_id
      * @param array $payload
      * @return void
      * @throws \Exception
      */
     #[DataProvider('ebookProvider')]
-    public function testCreateAccess(int $postId, array $payload): void {
+    public function testCreateAccess(?int $post_id, array $payload): void {
 
         $accessPost = Service::make()
             ->ebooks()
             ->accessPost()
-            ->updateOrCreate($postId, $payload);
+            ->updateOrCreate($post_id, $payload);
 
         $this->assertNotNull($accessPost);
     }

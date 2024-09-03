@@ -52,6 +52,8 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             'isbn'        => get_post_meta($postId, 'alfaomega_access_isbn', true),
             'cover'       => get_post_meta($postId, 'alfaomega_access_cover', true),
             'type'        => get_post_meta($postId, 'alfaomega_access_type', true),
+            'order_id'    => get_post_meta($postId, 'alfaomega_access_order_id', true),
+            'sample_id'   => get_post_meta($postId, 'alfaomega_access_sample_id', true),
             'status'      => get_post_meta($postId, 'alfaomega_access_status', true),
             'read'        => get_post_meta($postId, 'alfaomega_access_read', true),
             'download'    => get_post_meta($postId, 'alfaomega_access_download', true),
@@ -85,16 +87,38 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             }
         }
 
-        // TODO: find post_parent, post_title, post_content, post_category, thumbnail, isbn
-        //   from post
+        $ebookService = Service::make()->ebooks()->ebookPost();
+        $ebook = $ebookService->get($data['ebook_id']);
+        if (empty($ebook)) {
+            throw new Exception(esc_html__('Ebook not found.', 'alfaomega-ebook'));
+        }
+
+        $access = [
+            'user_id'     => $data['user_id'],
+            'ebook_id'    => $data['ebook_id'],
+            'isbn'        => $ebook['isbn'],
+            'cover'       => $ebook['cover'],
+            'title'       => $ebook['title'],
+            'description' => $ebook['description'],
+            'categories'  => $ebook['categories'],
+            'type'        => $data['access']['type'] ?? 'purchase',
+            'order_id'    => $data['access']['order_id'] ?? '',
+            'sample_id'   => $data['access']['sample_id'] ?? '',
+            'status'      => $data['access']['status'] ?? 'created',
+            'read'        => $data['access']['read'] ?? 1,
+            'download'    => $data['access']['download'] ?? 1,
+            'due_date'    => $data['access']['due_date'] ?? '',
+            'download_at' => $data['access']['download_at'] ?? '',
+            'read_at'     => $data['access']['read_at'] ?? '',
+        ];
 
         $newPost = [
-            'post_title'       => $data['title'],
-            'post_content'     => $data['description'],
+            'post_title'       => $ebook['title'],
+            'post_content'     => $ebook['description'],
             'post_status'      => 'publish',
             'post_author'      => $data['user_id'],
             'post_type'        => 'alfaomega-access',
-            'post_category'    => [$data['category_id']],
+            'post_category'    => $ebook['categories'],
             'post_parent'      => $data['ebook_id'],
         ];
 
@@ -145,6 +169,16 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                 'old'     => get_post_meta($postId, 'alfaomega_access_type', true),
                 'new'     => $data['type'],
                 'default' => 'purchase',
+            ],
+            'alfaomega_order_id'   => [
+                'old'     => get_post_meta($postId, 'alfaomega_access_order_id', true),
+                'new'     => $data['order_id'],
+                'default' => '',
+            ],
+            'alfaomega_sample_id'   => [
+                'old'     => get_post_meta($postId, 'alfaomega_access_sample_id', true),
+                'new'     => $data['sample_id'],
+                'default' => '',
             ],
             'alfaomega_access_status'  => [
                 'old'     => get_post_meta($postId, 'alfaomega_access_status', true),
