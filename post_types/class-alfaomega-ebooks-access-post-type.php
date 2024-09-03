@@ -55,7 +55,7 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
                     ],
                     'map_meta_cap'        => true,
                     //'register_meta_box_cb'  =>  array( $this, 'add_meta_boxes' )
-                    //'taxonomies'          => ['product_cat'],
+                    'taxonomies'          => ['product_cat'],
                 ]
             );
             flush_rewrite_rules();
