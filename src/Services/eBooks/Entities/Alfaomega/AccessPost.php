@@ -43,19 +43,21 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         }
 
         $this->meta = [
-            'id'           => $postId,
-            'title'        => $post->post_title,
-            'description'  => $post->post_content,
-            'ebook_id'     => $post->post_parent,
-            'user_id'      => $post->post_author,
-            'category_id'  => $post->post_category,
-            'isbn'         => get_post_meta($postId, 'alfaomega_access_isbn', true),
-            'cover'        => get_post_meta($postId, 'alfaomega_access_cover', true),
-            'type'         => get_post_meta($postId, 'alfaomega_access_type', true),
-            'status'       => get_post_meta($postId, 'alfaomega_access_status', true),
-            'read'         => get_post_meta($postId, 'alfaomega_access_read', true),
-            'download'     => get_post_meta($postId, 'alfaomega_access_download', true),
-            'access_until' => get_post_meta($postId, 'alfaomega_access_until', true),
+            'id'          => $postId,
+            'title'       => $post->post_title,
+            'description' => $post->post_content,
+            'ebook_id'    => $post->post_parent,
+            'user_id'     => $post->post_author,
+            'category_id' => $post->post_category,
+            'isbn'        => get_post_meta($postId, 'alfaomega_access_isbn', true),
+            'cover'       => get_post_meta($postId, 'alfaomega_access_cover', true),
+            'type'        => get_post_meta($postId, 'alfaomega_access_type', true),
+            'status'      => get_post_meta($postId, 'alfaomega_access_status', true),
+            'read'        => get_post_meta($postId, 'alfaomega_access_read', true),
+            'download'    => get_post_meta($postId, 'alfaomega_access_download', true),
+            'due_date'    => get_post_meta($postId, 'alfaomega_access_due_date', true),
+            'download_at' => get_post_meta($postId, 'alfaomega_access_download_at', true),
+            'read_at'     => get_post_meta($postId, 'alfaomega_access_read_at', true),
         ];
 
         return $this->meta;
@@ -156,9 +158,19 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                 'new'     => $data['download'],
                 'default' => 1,
             ],
-            'alfaomega_access_until'  => [
-                'old'     => get_post_meta($postId, 'alfaomega_access_until', true),
-                'new'     => $data['access_until'],
+            'alfaomega_access_due_date'  => [
+                'old'     => get_post_meta($postId, 'alfaomega_access_due_date', true),
+                'new'     => $data['due_date'],
+                'default' => '',
+            ],
+            'alfaomega_access_download_at'  => [
+                'old'     => get_post_meta($postId, 'alfaomega_access_download_at', true),
+                'new'     => $data['download_at'],
+                'default' => '',
+            ],
+            'alfaomega_access_read_at'  => [
+                'old'     => get_post_meta($postId, 'alfaomega_access_read_at', true),
+                'new'     => $data['read_at'],
                 'default' => '',
             ],
         ];

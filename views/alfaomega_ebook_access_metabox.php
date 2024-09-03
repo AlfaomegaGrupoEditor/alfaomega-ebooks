@@ -104,17 +104,37 @@
     </tr>
     <tr>
         <th>
-            <label for="alfaomega_access_until">
-                <?php esc_html_e( 'Access until', 'alfaomega-ebook' ); ?>
+            <label for="alfaomega_access_due_date">
+                <?php esc_html_e( 'Due date', 'alfaomega-ebook' ); ?>
             </label>
         </th>
         <td>
             <input
                 type="text"
-                name="alfaomega_access_until"
-                id="alfaomega_access_until"
+                name="alfaomega_access_due_date"
+                id="alfaomega_access_due_date"
                 class="regular-text until"
-                value="<?php echo ( isset( $access_until ) ) ? esc_attr( $access_until ) : ''; ?>"
+                value="<?php echo ( isset( $due_date ) ) ? esc_attr( $due_date ) : ''; ?>"
+                required
+            >
+        </td>
+        <td>
+            <input
+                type="text"
+                name="alfaomega_access_download_at"
+                id="alfaomega_access_download_at"
+                class="regular-text download_at"
+                value="<?php echo ( isset( $download_at ) ) ? esc_attr( $download_at ) : ''; ?>"
+                required
+            >
+        </td>
+        <td>
+            <input
+                type="text"
+                name="alfaomega_access_read_at"
+                id="alfaomega_access_read_at"
+                class="regular-text read_at"
+                value="<?php echo ( isset( $read_at ) ) ? esc_attr( $read_at ) : ''; ?>"
                 required
             >
         </td>

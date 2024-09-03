@@ -80,7 +80,7 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
                 'alfaomega_access_read'     => esc_html__('Read', 'alfaomega-ebook'),
                 'alfaomega_access_download' => esc_html__('Download', 'alfaomega-ebook'),
                 'author'                    => esc_html__('Usuario', 'alfaomega-ebook'),
-                'alfaomega_access_until'    => esc_html__('Access until', 'alfaomega-ebook'),
+                'alfaomega_access_due_date' => esc_html__('Due date', 'alfaomega-ebook'),
             ];
         }
 
@@ -113,8 +113,8 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
                 case 'alfaomega_access_download':
                     echo esc_html( get_post_meta( $post_id, 'alfaomega_access_download', true ) );
                     break;
-                case 'alfaomega_access_until':
-                    echo esc_html( get_post_meta( $post_id, 'alfaomega_access_until', true ) );
+                case 'alfaomega_access_due_date':
+                    echo esc_html( get_post_meta( $post_id, 'alfaomega_access_due_date', true ) );
                     break;
             }
         }
@@ -130,7 +130,7 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
         {
             //$columns['alfaomega_access_type'] = 'alfaomega_access_type';
             $columns['alfaomega_access_status'] = 'alfaomega_access_status';
-            $columns['alfaomega_access_until'] = 'alfaomega_access_until';
+            $columns['alfaomega_access_due_date'] = 'alfaomega_access_due_date';
             $columns['author'] = 'author';
             return $columns;
         }
@@ -169,7 +169,7 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
             $status = get_post_meta( $post->ID, 'alfaomega_access_status', true );
             $read = get_post_meta( $post->ID, 'alfaomega_access_read', true );
             $download = get_post_meta( $post->ID, 'alfaomega_access_download', true );
-            $access_until = get_post_meta( $post->ID, 'alfaomega_access_until', true );
+            $due_date = get_post_meta( $post->ID, 'alfaomega_access_due_date', true );
             require_once( ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_access_metabox.php' );
         }
 
@@ -239,9 +239,19 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
                         'new'     => $_POST['alfaomega_access_download'],
                         'default' => 1,
                     ],
-                    'alfaomega_access_until'  => [
-                        'old'     => get_post_meta($post_id, 'alfaomega_access_until', true),
-                        'new'     => $_POST['alfaomega_access_until'],
+                    'alfaomega_access_due_date'  => [
+                        'old'     => get_post_meta($post_id, 'alfaomega_access_due_date', true),
+                        'new'     => $_POST['alfaomega_access_due_date'],
+                        'default' => '',
+                    ],
+                    'alfaomega_access_download_at'  => [
+                        'old'     => get_post_meta($post_id, 'alfaomega_access_download_at', true),
+                        'new'     => $_POST['alfaomega_access_download_at'],
+                        'default' => '',
+                    ],
+                    'alfaomega_access_read_at'  => [
+                        'old'     => get_post_meta($post_id, 'alfaomega_access_read_at', true),
+                        'new'     => $_POST['alfaomega_access_read_at'],
                         'default' => '',
                     ],
                 ];
