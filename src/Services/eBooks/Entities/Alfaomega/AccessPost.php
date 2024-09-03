@@ -42,13 +42,14 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             throw new Exception("Post $postId not found");
         }
 
+        $categories = get_the_terms($postId, 'product_cat');
         $this->meta = [
             'id'          => $postId,
             'title'       => $post->post_title,
             'description' => $post->post_content,
             'ebook_id'    => $post->post_parent,
             'user_id'     => $post->post_author,
-            'category_id' => $post->post_category,
+            'categories'  => !empty($categories) ? wp_list_pluck($categories, 'term_id') : [],
             'isbn'        => get_post_meta($postId, 'alfaomega_access_isbn', true),
             'cover'       => get_post_meta($postId, 'alfaomega_access_cover', true),
             'type'        => get_post_meta($postId, 'alfaomega_access_type', true),
@@ -131,7 +132,7 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             throw new Exception(esc_html__('Unable to create post.', 'alfaomega-ebook'));
         }
 
-        return $this->save($postId, $data);
+        return $this->save($postId, $access);
     }
 
     /**
@@ -149,12 +150,6 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
     public function save(int $postId, array $data): array
     {
         $fields = [
-            'alfaomega_ebook_isbn'   => [
-                'old'     => get_post_meta($postId, 'alfaomega_ebook_isbn', true),
-                'new'     => $data['isbn'],
-                'default' => '',
-            ],
-
             'alfaomega_access_cover' => [
                 'old'     => get_post_meta($postId, 'alfaomega_access_cover', true),
                 'new'     => $data['cover'],
@@ -170,12 +165,12 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                 'new'     => $data['type'],
                 'default' => 'purchase',
             ],
-            'alfaomega_order_id'   => [
+            'alfaomega_access_order_id'   => [
                 'old'     => get_post_meta($postId, 'alfaomega_access_order_id', true),
                 'new'     => $data['order_id'],
                 'default' => '',
             ],
-            'alfaomega_sample_id'   => [
+            'alfaomega_access_sample_id'   => [
                 'old'     => get_post_meta($postId, 'alfaomega_access_sample_id', true),
                 'new'     => $data['sample_id'],
                 'default' => '',
@@ -211,12 +206,6 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                 'default' => '',
             ],
         ];
-
-        foreach ($fields as $field => $value) {
-            if (empty($value['new'])) {
-                throw new Exception("Field value '$field' is required.");
-            }
-        }
 
         wp_publish_post($postId);
         foreach ($fields as $field => $data) {

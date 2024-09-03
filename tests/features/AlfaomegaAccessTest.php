@@ -16,7 +16,7 @@ class AlfaomegaAccessTest extends WordpressTest
      * @return void
      * @throws \Exception
      */
-    #[DataProvider('ebookProvider')]
+    #[DataProvider('accessProvider')]
     public function testCreateAccess(?int $post_id, array $payload): void {
 
         $accessPost = Service::make()
@@ -28,7 +28,25 @@ class AlfaomegaAccessTest extends WordpressTest
     }
 
     /**
-     * Data provider for test_product_attributes
+     * Get access post.
+     *
+     * @param int $post_id
+     * @return void
+     * @throws \Exception
+     */
+    #[DataProvider('accessProvider')]
+    public function testGetAccessPost(int $post_id): void {
+
+        $accessPost = Service::make()
+            ->ebooks()
+            ->accessPost()
+            ->get($post_id);
+
+        $this->assertNotNull($accessPost);
+    }
+
+    /**
+     * Data provider
      * @return array[]
      */
     public static function ebookProvider(): array
@@ -52,6 +70,17 @@ class AlfaomegaAccessTest extends WordpressTest
                     ],
                 ],
             ],
+        ];
+    }
+
+    /**
+     * Data provider
+     * @return array[]
+     */
+    public static function accessProvider(): array
+    {
+        return [
+            'purchase' => [ 'post_id' => 35031 ],
         ];
     }
 }
