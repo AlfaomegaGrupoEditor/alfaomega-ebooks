@@ -13,9 +13,9 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
             add_action('init', [$this, 'create_post_type']);
             add_action('add_meta_boxes', [$this, 'add_meta_boxes']);
             add_action( 'save_post', array( $this, 'save_post' ), 10, 3 );
-            add_filter( 'manage_alfaomega-ebook-access_posts_columns', [$this, 'alfaomega_ebook_access_cpt_columns'] );
-            add_action( 'manage_alfaomega-ebook-access_posts_custom_column', [$this, 'alfaomega_ebook_access_custom_columns'], 10, 2 );
-            add_filter( 'manage_edit-alfaomega-ebook-access_sortable_columns', [$this, 'alfaomega_ebook_access_sortable_columns'] );
+            add_filter( 'manage_alfaomega-access_posts_columns', [$this, 'alfaomega_ebook_access_cpt_columns'] );
+            add_action( 'manage_alfaomega-access_posts_custom_column', [$this, 'alfaomega_ebook_access_custom_columns'], 10, 2 );
+            add_filter( 'manage_edit-alfaomega-access_sortable_columns', [$this, 'alfaomega_ebook_access_sortable_columns'] );
         }
 
         /**
@@ -55,7 +55,7 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
                     ],
                     'map_meta_cap'        => true,
                     //'register_meta_box_cb'  =>  array( $this, 'add_meta_boxes' )
-                    'taxonomies'          => ['category'],
+                    //'taxonomies'          => ['product_cat'],
                 ]
             );
             flush_rewrite_rules();
@@ -72,13 +72,14 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
         {
             return [
                 'cb'                        => $columns['cb'],
-                'thumbnail'                 => "Image",
+                'thumbnail'                 => "Cover",
                 'title'                     => esc_html__('Title', 'alfaomega-ebook'),
-                'alfaomega_access_isbn'     => esc_html__('Digital ISBN', 'alfaomega-ebook'),
-                'alfaomega_access_type'     => esc_html__('Type', 'alfaomega-ebook'),
+                //'alfaomega_access_isbn'     => esc_html__('ISBN', 'alfaomega-ebook'),
+                //'alfaomega_access_type'     => esc_html__('Type', 'alfaomega-ebook'),
                 'alfaomega_access_status'   => esc_html__('Status', 'alfaomega-ebook'),
                 'alfaomega_access_read'     => esc_html__('Read', 'alfaomega-ebook'),
                 'alfaomega_access_download' => esc_html__('Download', 'alfaomega-ebook'),
+                'author'                    => esc_html__('Usuario', 'alfaomega-ebook'),
                 'alfaomega_access_until'    => esc_html__('Access until', 'alfaomega-ebook'),
             ];
         }
@@ -124,9 +125,10 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
          */
         public function alfaomega_ebook_access_sortable_columns( $columns ): array
         {
-            $columns['alfaomega_access_type'] = 'alfaomega_access_type';
+            //$columns['alfaomega_access_type'] = 'alfaomega_access_type';
             $columns['alfaomega_access_status'] = 'alfaomega_access_status';
             $columns['alfaomega_access_until'] = 'alfaomega_access_until';
+            $columns['author'] = 'author';
             return $columns;
         }
 
