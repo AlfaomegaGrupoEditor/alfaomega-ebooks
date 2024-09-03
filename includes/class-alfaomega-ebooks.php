@@ -69,6 +69,7 @@ class Alfaomega_Ebooks {
         $this->define_public_hooks();
 
         $Alfaomega_Ebooks_Post_Type = new Alfaomega_Ebooks_Post_Type();
+        $Alfaomega_Ebooks_Post_Type = new Alfaomega_Ebooks_Post_Type();
         $Alfaomega_Ebooks_Settings = new Alfaomega_Ebooks_Settings();
         add_action( 'admin_menu', [$this, 'add_menu'] );
     }
