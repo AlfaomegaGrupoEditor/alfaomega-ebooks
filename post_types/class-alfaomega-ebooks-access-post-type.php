@@ -71,7 +71,7 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
         {
             return [
                 'cb'                        => $columns['cb'],
-                'thumbnail'                 => "",
+                'thumbnail'                 => "Image",
                 'title'                     => esc_html__('Title', 'alfaomega-ebook'),
                 'alfaomega_access_isbn'     => esc_html__('Digital ISBN', 'alfaomega-ebook'),
                 'alfaomega_access_type'     => esc_html__('Type', 'alfaomega-ebook'),
