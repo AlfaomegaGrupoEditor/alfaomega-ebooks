@@ -46,7 +46,7 @@ define( 'ALFAOMEGA_EBOOKS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'ALFAOMEGA_EBOOKS_VERSION', '1.0.0' );
 define( 'ALFAOMEGA_EBOOKS_NAME', 'alfaomega-ebooks' );
 define( 'ALFAOMEGA_EBOOKS_POST_TYPE', 'alfaomega-ebook' );
-define( 'ALFAOMEGA_EBOOKS_ACCESS_POST_TYPE', 'alfaomega-ebook-access' );
+define( 'ALFAOMEGA_EBOOKS_ACCESS_POST_TYPE', 'alfaomega-access' );
 define( 'ALFAOMEGA_SECURITY_PATH', plugin_dir_path( __FILE__ ) . 'security' );
 
 if (!function_exists('is_plugin_active')) {

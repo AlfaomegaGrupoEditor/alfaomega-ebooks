@@ -343,7 +343,7 @@ class Alfaomega_Ebooks {
             esc_html__('eBook Access', 'alfaomega-ebooks'),
             esc_html__('Access List', 'alfaomega-ebooks'),
             'install_plugins',
-            'edit.php?post_type=alfaomega-ebook-access',
+            'edit.php?post_type=alfaomega-access',
             null,
             null
         );

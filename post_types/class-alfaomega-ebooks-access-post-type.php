@@ -32,7 +32,7 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
                     'label'               => esc_html__('AO eBook Access', 'alfaomega-ebook'),
                     'description'         => esc_html__('Alfaomega eBook Access', 'alfaomega-ebook'),
                     'labels'              => [
-                        'name'          => esc_html__('AO eBook Access', 'alfaomega-ebook'),
+                        'name'          => esc_html__('Alfaomega eBook Access', 'alfaomega-ebook'),
                         'singular_name' => esc_html__('AO eBook Access', 'alfaomega-ebook'),
                     ],
                     'public'              => true,
@@ -190,7 +190,7 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
             }
 
             // 3. Check if user has permissions to save data
-            if( isset( $_POST['post_type'] ) && $_POST['post_type'] === 'alfaomega-ebook-access' ){
+            if( isset( $_POST['post_type'] ) && $_POST['post_type'] === 'alfaomega-access' ){
                 if( ! current_user_can( 'edit_page', $post_id ) ){
                     return;
                 }elseif( ! current_user_can( 'edit_post', $post_id ) ){
