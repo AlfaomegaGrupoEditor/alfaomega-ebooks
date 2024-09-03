@@ -43,14 +43,19 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         }
 
         $this->meta = [
-            'id'          => $postId,
-            'title'       => $post->post_title,
-            'author'      => $post->post_author,
-            'isbn'        => get_post_meta($postId, 'alfaomega_ebook_isbn', true),
-            'pdf_id'      => get_post_meta($postId, 'alfaomega_ebook_id', true),
-            'ebook_url'   => get_post_meta($postId, 'alfaomega_ebook_url', true),
-            'date'        => $post->post_date,
-            'product_sku' => intval(get_post_meta($postId, 'alfaomega_ebook_product_sku', true)),
+            'id'           => $postId,
+            'title'        => $post->post_title,
+            'description'  => $post->post_content,
+            'ebook_id'     => $post->post_parent,
+            'user_id'      => $post->post_author,
+            'category_id'  => $post->post_category,
+            'isbn'         => get_post_meta($postId, 'alfaomega_access_isbn', true),
+            'cover'        => get_post_meta($postId, 'alfaomega_access_cover', true),
+            'type'         => get_post_meta($postId, 'alfaomega_access_type', true),
+            'status'       => get_post_meta($postId, 'alfaomega_access_status', true),
+            'read'         => get_post_meta($postId, 'alfaomega_access_read', true),
+            'download'     => get_post_meta($postId, 'alfaomega_access_download', true),
+            'access_until' => get_post_meta($postId, 'alfaomega_access_until', true),
         ];
 
         return $this->meta;
@@ -71,30 +76,21 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
      */
     public function updateOrCreate(?int $postId, array $data): array
     {
-        // search by isbn to get the post id
-        if (empty($postId)) {
-            $post = $this->search($data['isbn']);
-            if (!empty($post)) {
-                $postId = $post['id'];
+        if (!empty($postId)) {
+            $post = get_post($postId);
+            if (empty($post)) {
+                throw new Exception(esc_html__('Post not found.', 'alfaomega-ebook'));
             }
-        }
-
-        $user = wp_get_current_user();
-        if (empty($data['printed_isbn']) && ! empty($data['product_sku'])) {
-            $data['printed_isbn'] = $data['product_sku'];
-        }
-
-        if (empty($data['printed_isbn'])) {
-            throw new Exception(esc_html__('Printed ISBN is required.', 'alfaomega-ebook'));
         }
 
         $newPost = [
             'post_title'       => $data['title'],
             'post_content'     => $data['description'],
             'post_status'      => 'publish',
-            'post_author'      => $user->ID,
-            'post_type'        => 'alfaomega-ebook',
-            'post_product_sku' => $data['printed_isbn'] ?? 'UNKNOWN',
+            'post_author'      => $data['user_id'],
+            'post_type'        => 'alfaomega-access',
+            'post_category'    => [$data['category_id']],
+            'post_parent'      => $data['ebook_id'],
         ];
 
         if (!empty($postId)) {
@@ -129,19 +125,40 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                 'new'     => $data['isbn'],
                 'default' => '',
             ],
-            'alfaomega_ebook_id'     => [
-                'old'     => get_post_meta($postId, 'alfaomega_ebook_id', true),
-                'new'     => ! empty($data['adobe']) ? $data['adobe'] : ($data['pdf_id'] ?? ''),
+
+            'alfaomega_access_cover' => [
+                'old'     => get_post_meta($postId, 'alfaomega_access_cover', true),
+                'new'     => $data['cover'],
                 'default' => '',
             ],
-            'alfaomega_ebook_url'    => [
-                'old'     => get_post_meta($postId, 'alfaomega_ebook_url', true),
-                'new'     => ! empty($data['html_ebook']) ? $data['html_ebook'] : ($data['ebook_url'] ?? ''),
-                'default' => '',
+            'alfaomega_access_isbn' => [
+                'old'     => get_post_meta($postId, 'alfaomega_access_isbn', true),
+                'new'     => $data['isbn'],
+                'default' => 'ISBN',
             ],
-            'alfaomega_ebook_product_sku' => [
-                'old'     => get_post_meta($postId, 'alfaomega_ebook_product_sku', true),
-                'new'     => ! empty($data['printed_isbn']) ?  $data['printed_isbn'] : 'UNKNOWN',
+            'alfaomega_access_type'   => [
+                'old'     => get_post_meta($postId, 'alfaomega_access_type', true),
+                'new'     => $data['type'],
+                'default' => 'purchase',
+            ],
+            'alfaomega_access_status'  => [
+                'old'     => get_post_meta($postId, 'alfaomega_access_status', true),
+                'new'     => $data['status'],
+                'default' => 'created',
+            ],
+            'alfaomega_access_read'  => [
+                'old'     => get_post_meta($postId, 'alfaomega_access_read', true),
+                'new'     => $data['read'],
+                'default' => 1,
+            ],
+            'alfaomega_access_download'  => [
+                'old'     => get_post_meta($postId, 'alfaomega_access_download', true),
+                'new'     => $data['download'],
+                'default' => 1,
+            ],
+            'alfaomega_access_until'  => [
+                'old'     => get_post_meta($postId, 'alfaomega_access_until', true),
+                'new'     => $data['access_until'],
                 'default' => '',
             ],
         ];

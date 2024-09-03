@@ -2,13 +2,30 @@
     <input type="hidden" name="alfaomega_ebook_nonce" value="<?php echo wp_create_nonce( "alfaomega_ebook_access_nonce" ); ?>">
     <tr>
         <th>
-            <label for="alfaomega_access_isbn">
-                <?php esc_html_e( 'ISBN Digital', 'alfaomega-ebook' ); ?>
+            <label for="alfaomega_access_Cover">
+                <?php esc_html_e( 'Cover', 'alfaomega-ebook' ); ?>
             </label>
         </th>
         <td>
             <input 
                 type="text" 
+                name="alfaomega_ebook_cover"
+                id="alfaomega_ebook_cover"
+                class="regular-text cover"
+                value="<?php echo ( isset( $cover ) ) ? esc_attr( $cover ) : ''; ?>"
+                required
+            >
+        </td>
+    </tr>
+    <tr>
+        <th>
+            <label for="alfaomega_access_isbn">
+                <?php esc_html_e( 'ISBN Digital', 'alfaomega-ebook' ); ?>
+            </label>
+        </th>
+        <td>
+            <input
+                type="text"
                 name="alfaomega_ebook_isbn"
                 id="alfaomega_ebook_isbn"
                 class="regular-text isbn"

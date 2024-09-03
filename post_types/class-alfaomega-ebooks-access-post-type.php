@@ -72,7 +72,7 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
         {
             return [
                 'cb'                        => $columns['cb'],
-                'thumbnail'                 => "Cover",
+                'alfaomega_access_cover'    => "Cover",
                 'title'                     => esc_html__('Title', 'alfaomega-ebook'),
                 //'alfaomega_access_isbn'     => esc_html__('ISBN', 'alfaomega-ebook'),
                 //'alfaomega_access_type'     => esc_html__('Type', 'alfaomega-ebook'),
@@ -95,6 +95,9 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
         public function alfaomega_ebook_access_custom_columns( $column, $post_id ): void
         {
             switch( $column ){
+                case 'alfaomega_ebook_cover':
+                    echo esc_html( get_post_meta( $post_id, 'alfaomega_access_cover', true ) );
+                    break;
                 case 'alfaomega_ebook_isbn':
                     echo esc_html( get_post_meta( $post_id, 'alfaomega_access_isbn', true ) );
                 break;
@@ -160,6 +163,7 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
         public function add_inner_meta_boxes( $post ): void
         {
             //$meta = get_post_meta( $post->ID );
+            $cover = get_post_meta( $post->ID, 'alfaomega_access_cover', true );
             $isbn = get_post_meta( $post->ID, 'alfaomega_access_isbn', true );
             $type = get_post_meta( $post->ID, 'alfaomega_access_type', true );
             $status = get_post_meta( $post->ID, 'alfaomega_access_status', true );
@@ -205,6 +209,11 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
             if ( isset( $_POST['action'] ) && $_POST['action'] == 'editpost' ) {
                 // Populate an array with the fields we want to save
                 $fields = [
+                    'alfaomega_access_cover' => [
+                        'old'     => get_post_meta($post_id, 'alfaomega_access_cover', true),
+                        'new'     => $_POST['alfaomega_access_cover'],
+                        'default' => '',
+                    ],
                     'alfaomega_access_isbn' => [
                         'old'     => get_post_meta($post_id, 'alfaomega_access_isbn', true),
                         'new'     => $_POST['alfaomega_access_isbn'],
