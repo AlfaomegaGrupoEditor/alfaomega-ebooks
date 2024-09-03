@@ -58,6 +58,7 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
                     'taxonomies'          => ['category'],
                 ]
             );
+            flush_rewrite_rules();
         }
 
         /**

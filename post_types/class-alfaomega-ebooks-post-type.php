@@ -57,6 +57,7 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
                     //'register_meta_box_cb'  =>  array( $this, 'add_meta_boxes' )
                 ]
             );
+            flush_rewrite_rules();
         }
 
         /**
