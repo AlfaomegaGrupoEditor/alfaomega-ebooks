@@ -27,8 +27,10 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
      */
     public function __construct(
         protected Api $api,
-        protected array $meta = []
-    ) {}
+        array $meta = []
+    ) {
+        parent::__construct($meta);
+    }
 
     /**
      * Get the latest post.

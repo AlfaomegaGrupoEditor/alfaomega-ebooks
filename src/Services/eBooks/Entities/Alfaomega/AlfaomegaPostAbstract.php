@@ -2,10 +2,21 @@
 
 namespace AlfaomegaEbooks\Services\eBooks\Entities\Alfaomega;
 
+use AlfaomegaEbooks\Services\Alfaomega\Api;
 use AlfaomegaEbooks\Services\eBooks\Entities\AbstractEntity;
 
 abstract class AlfaomegaPostAbstract extends AbstractEntity
 {
+    /**
+     * The EbookPost constructor.
+     *
+     * @param Api $api The API.
+     * @param array $meta The metadata.
+     */
+    public function __construct(
+        protected array $meta = []
+    ) {}
+
     /**
      * Delete a post.
      * This method is used to delete a post from the WordPress database.

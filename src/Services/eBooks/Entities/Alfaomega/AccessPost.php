@@ -20,16 +20,6 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
     }
 
     /**
-     * The EbookPost constructor.
-     *
-     * @param Api $api The API.
-     * @param array $meta The metadata.
-     */
-    public function __construct(
-        protected array $meta = []
-    ) {}
-
-    /**
      * Get the metadata of a specific post or the current metadata.
      * This method is used to get the metadata of a specific post or the current metadata if no post ID is provided.
      * If a post ID is provided, it fetches the post and its metadata, assigns them to the $meta property, and returns
