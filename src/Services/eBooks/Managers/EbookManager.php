@@ -3,6 +3,7 @@
 namespace AlfaomegaEbooks\Services\eBooks\Managers;
 
 use AlfaomegaEbooks\Services\Alfaomega\Api;
+use AlfaomegaEbooks\Services\eBooks\Entities\Alfaomega\AccessPost;
 use AlfaomegaEbooks\Services\eBooks\Entities\Alfaomega\EbookPost;
 use AlfaomegaEbooks\Services\eBooks\Process\ImportEbook;
 use AlfaomegaEbooks\Services\eBooks\Process\RefreshEbook;
@@ -36,6 +37,13 @@ class EbookManager extends AbstractManager
     protected EbookPost $ebookPost;
 
     /**
+     * The AccessPost instance.
+     *
+     * @var EbookPost
+     */
+    protected AccessPost $accessPost;
+
+    /**
      * The EbookManager constructor.
      *
      * @param Api $api The API.
@@ -45,6 +53,7 @@ class EbookManager extends AbstractManager
         parent::__construct($api, $settings);
 
         $this->ebookPost = EbookPost::make($api);
+        $this->accessPost = AccessPost::make();
         $this->importEbook = new ImportEbook($settings, $this->ebookPost);
         $this->refreshEbook = new RefreshEbook($settings, $this->ebookPost);
     }
@@ -77,6 +86,16 @@ class EbookManager extends AbstractManager
     public function ebookPost(): EbookPost
     {
         return $this->ebookPost;
+    }
+
+    /**
+     * Get the AccessPost instance.
+     *
+     * @return EbookPost
+     */
+    public function accessPost(): AccessPost
+    {
+        return $this->accessPost;
     }
 
     /**

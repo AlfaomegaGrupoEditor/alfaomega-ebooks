@@ -85,6 +85,9 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             }
         }
 
+        // TODO: find post_parent, post_title, post_content, post_category, thumbnail, isbn
+        //   from post
+
         $newPost = [
             'post_title'       => $data['title'],
             'post_content'     => $data['description'],
