@@ -74,8 +74,8 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
                 'cb'                        => $columns['cb'],
                 'alfaomega_access_cover'    => "Cover",
                 'title'                     => esc_html__('Title', 'alfaomega-ebook'),
-                //'alfaomega_access_isbn'     => esc_html__('ISBN', 'alfaomega-ebook'),
-                //'alfaomega_access_type'     => esc_html__('Type', 'alfaomega-ebook'),
+                'alfaomega_access_isbn'     => esc_html__('ISBN', 'alfaomega-ebook'),
+                'alfaomega_access_type'     => esc_html__('Type', 'alfaomega-ebook'),
                 'alfaomega_access_status'   => esc_html__('Status', 'alfaomega-ebook'),
                 'alfaomega_access_read'     => esc_html__('Read', 'alfaomega-ebook'),
                 'alfaomega_access_download' => esc_html__('Download', 'alfaomega-ebook'),
@@ -95,17 +95,21 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
         public function alfaomega_ebook_access_custom_columns( $column, $post_id ): void
         {
             switch( $column ){
-                case 'alfaomega_ebook_cover':
-                    echo esc_html( get_post_meta( $post_id, 'alfaomega_access_cover', true ) );
+                case 'alfaomega_access_cover':
+                    // echo esc_html( get_post_meta( $post_id, 'alfaomega_access_cover', true ) );
+                    echo '<a href="' . get_site_url() . '/wp-admin/post.php?post=' . $post_id .'&action=edit">';
+                    echo '  <img width="100" height="120" src="' . get_post_meta( $post_id, 'alfaomega_access_cover', true ) . '"';
+                    echo '    class="attachment-thumbnail size-thumbnail" alt="" decoding="async"';
+                    echo '</a>';
                     break;
-                case 'alfaomega_ebook_isbn':
+                case 'alfaomega_access_isbn':
                     echo esc_html( get_post_meta( $post_id, 'alfaomega_access_isbn', true ) );
                 break;
                 case 'alfaomega_access_type':
-                    echo esc_url( get_post_meta( $post_id, 'alfaomega_access_type', true ) );
+                    echo esc_html( get_post_meta( $post_id, 'alfaomega_access_type', true ) );
                 break;
                 case 'alfaomega_access_status':
-                    echo esc_url( get_post_meta( $post_id, 'alfaomega_access_status', true ) );
+                    echo esc_html( get_post_meta( $post_id, 'alfaomega_access_status', true ) );
                     break;
                 case 'alfaomega_access_read':
                     echo esc_html( get_post_meta( $post_id, 'alfaomega_access_read', true ) );
