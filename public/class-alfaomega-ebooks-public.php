@@ -165,4 +165,18 @@ class Alfaomega_Ebooks_Public {
 
         return $html === $printed ? $printedSelected : $html;
     }
+
+    /**
+     * Update the access post when the order is complete.
+     *
+     * @param int $order_id The ID of the order.
+     *
+     * @throws \Exception
+     */
+    public function on_order_complete($order_id): void {
+        Service::make()
+            ->wooCommerce()
+            ->order()
+            ->onComplete($order_id);
+    }
 }

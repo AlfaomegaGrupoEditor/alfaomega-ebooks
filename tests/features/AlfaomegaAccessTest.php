@@ -46,6 +46,29 @@ class AlfaomegaAccessTest extends WordpressTest
     }
 
     /**
+     * Order complete access.
+     *
+     * @param int $order_id
+     * @param int $user_id
+     *
+     * @return void
+     * @throws \Exception
+     */
+    #[DataProvider('orderProvider')]
+    public function testOrderCompleteAccess(int $order_id, int $user_id): void {
+
+        $user = wp_set_current_user($user_id);
+        $this->assertNotNull($user);
+
+        $orders = Service::make()
+            ->wooCommerce()
+            ->order()
+            ->onComplete($order_id);
+
+        $this->assertNotNull($orders);
+    }
+
+    /**
      * Data provider
      * @return array[]
      */
@@ -81,6 +104,20 @@ class AlfaomegaAccessTest extends WordpressTest
     {
         return [
             'purchase' => [ 'post_id' => 35031 ],
+        ];
+    }
+
+    /**
+     * Order provider
+     * @return array[]
+     */
+    public static function orderProvider(): array
+    {
+        return [
+            'purchase' => [
+                'order_id' => 35141,
+                'user_id'  => 10001, //1630
+            ],
         ];
     }
 }

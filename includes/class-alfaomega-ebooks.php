@@ -256,6 +256,7 @@ class Alfaomega_Ebooks {
         $this->loader->add_filter('woocommerce_dropdown_variation_attribute_options_args', $plugin_public, 'product_get_attributes', 10, 2);
         $this->loader->add_filter('woocommerce_dropdown_variation_attribute_options_html', $plugin_public, 'dropdown_variation_attribute_options_html', 10, 2);
 
+        $this->loader->add_action( 'woocommerce_order_status_completed', $plugin_public, 'on_order_complete' );
     }
 
 	/**
