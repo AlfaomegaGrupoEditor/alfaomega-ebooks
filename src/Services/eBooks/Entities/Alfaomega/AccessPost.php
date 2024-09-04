@@ -119,7 +119,6 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             'post_status'      => 'publish',
             'post_author'      => $data['user_id'],
             'post_type'        => 'alfaomega-access',
-            'post_category'    => $ebook['categories'],
             'post_parent'      => $data['ebook_id'],
         ];
 
@@ -130,6 +129,15 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         $postId = wp_insert_post($newPost);
         if (empty($postId)) {
             throw new Exception(esc_html__('Unable to create post.', 'alfaomega-ebook'));
+        }
+
+        // Set the post categories
+        if (!is_array($ebook['categories'])) {
+            $ebook['categories'] = [$ebook['categories']];
+        }
+        $result = wp_set_post_terms( $postId, $ebook['categories'], 'product_cat', false );
+        if (is_wp_error($result)) {
+            throw new Exception($result->get_error_message());
         }
 
         return $this->save($postId, $access);

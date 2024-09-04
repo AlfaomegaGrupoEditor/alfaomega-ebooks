@@ -16,7 +16,7 @@ class AlfaomegaAccessTest extends WordpressTest
      * @return void
      * @throws \Exception
      */
-    #[DataProvider('accessProvider')]
+    #[DataProvider('ebookProvider')]
     public function testCreateAccess(?int $post_id, array $payload): void {
 
         $accessPost = Service::make()
@@ -53,7 +53,7 @@ class AlfaomegaAccessTest extends WordpressTest
     {
         return [
             'purchase' => [
-                'post_id' => null,
+                'post_id' => 35031, // null,
                 'payload' => [
                     'ebook_id' => 34968, // post_parent, post_title, post_content, post_category, thumbnail, isbn
                     'user_id'  => 10001, // post_author
