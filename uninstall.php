@@ -32,7 +32,7 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 
 delete_option( 'alfaomega_ebooks_slider_options' );
 
-$posts = get_posts(
+$eBookPosts = get_posts(
     array(
         'post_type' => ALFAOMEGA_EBOOKS_POST_TYPE,
         'number_posts'  => -1,
@@ -40,6 +40,18 @@ $posts = get_posts(
     )
 );
 
-foreach( $posts as $post ){
+foreach( $eBookPosts as $post ){
+    wp_delete_post( $post->ID, true );
+}
+
+$accessPosts = get_posts(
+    array(
+        'post_type' => ALFAOMEGA_EBOOKS_ACCESS_POST_TYPE,
+        'number_posts'  => -1,
+        'post_status'   => 'any'
+    )
+);
+
+foreach( $accessPosts as $post ){
     wp_delete_post( $post->ID, true );
 }

@@ -7,7 +7,7 @@ use AlfaomegaEbooks\Services\eBooks\Entities\AbstractEntity;
 use AlfaomegaEbooks\Services\eBooks\Service;
 use Exception;
 
-class EbookPost extends AbstractEntity implements EbookPostEntity
+class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
 {
     /**
      * Make a new instance of the class.
@@ -27,8 +27,10 @@ class EbookPost extends AbstractEntity implements EbookPostEntity
      */
     public function __construct(
         protected Api $api,
-        protected array $meta = []
-    ) {}
+        array $meta = []
+    ) {
+        parent::__construct($meta);
+    }
 
     /**
      * Get the latest post.
@@ -73,15 +75,32 @@ class EbookPost extends AbstractEntity implements EbookPostEntity
             throw new Exception("Post $postId not found");
         }
 
+        $thumbnail_url = '';
+        $product_sku = get_post_meta($postId, 'alfaomega_ebook_product_sku', true);
+        if (!empty($product_sku)) {
+            $product_id = wc_get_product_id_by_sku($product_sku);
+            if (!empty($product_id)) {
+                $thumbnail_url = get_the_post_thumbnail_url($product_id, 'full');
+                $categories = get_the_terms($product_id, 'product_cat');
+                if (is_wp_error($categories) || empty($categories)) {
+                    $categories = null;
+                } else {
+                    $categories = wp_list_pluck($categories, 'term_id');
+                }
+            }
+        }
         $this->meta = [
             'id'          => $postId,
             'title'       => $post->post_title,
             'author'      => $post->post_author,
+            'description' => $post->post_content,
             'isbn'        => get_post_meta($postId, 'alfaomega_ebook_isbn', true),
             'pdf_id'      => get_post_meta($postId, 'alfaomega_ebook_id', true),
             'ebook_url'   => get_post_meta($postId, 'alfaomega_ebook_url', true),
             'date'        => $post->post_date,
-            'product_sku' => intval(get_post_meta($postId, 'alfaomega_ebook_product_sku', true)),
+            'product_sku' => $product_sku,
+            'cover'       => $thumbnail_url,
+            'categories'  => $categories ?? [],
         ];
 
         return $this->meta;
@@ -281,20 +300,5 @@ class EbookPost extends AbstractEntity implements EbookPostEntity
         }
 
         return json_decode($response['body'], true)['data'];
-    }
-
-    /**
-     * Delete a post.
-     * This method is used to delete a post from the WordPress database.
-     * It takes the post ID as an argument and uses the wp_delete_post() function to delete the post.
-     *
-     * @param int $postId The ID of the post to delete.
-     *
-     * @return bool True if the post is deleted, false otherwise.
-     */
-    public function delete(int $postId): bool
-    {
-        $result = wp_delete_post($postId, true);
-        return !empty($result);
     }
 }

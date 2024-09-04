@@ -26,6 +26,7 @@ class Alfaomega_Ebooks_Deactivator {
 
         // Unregisters the post type
         unregister_post_type( ALFAOMEGA_EBOOKS_POST_TYPE );
+        unregister_post_type( ALFAOMEGA_EBOOKS_ACCESS_POST_TYPE );
 	}
 
 }
