@@ -72,16 +72,16 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
         {
             return [
                 'cb'                        => $columns['cb'],
-                'alfaomega_access_cover'    => "Cover",
-                'title'                     => esc_html__('Title', 'alfaomega-ebook'),
-                'alfaomega_access_isbn'     => esc_html__('ISBN', 'alfaomega-ebook'),
-                'alfaomega_access_type'     => esc_html__('Type', 'alfaomega-ebook'),
-                'alfaomega_access_status'   => esc_html__('Status', 'alfaomega-ebook'),
-                'alfaomega_access_read'     => esc_html__('Read', 'alfaomega-ebook'),
-                'alfaomega_access_download' => esc_html__('Download', 'alfaomega-ebook'),
+                'alfaomega_access_cover'    => esc_html__('Cover', 'alfaomega-ebooks'),
+                'title'                     => esc_html__('Title', 'alfaomega-ebooks'),
+                'alfaomega_access_isbn'     => esc_html__('ISBN', 'alfaomega-ebooks'),
+                'alfaomega_access_type'     => esc_html__('Type', 'alfaomega-ebooks'),
+                'alfaomega_access_status'   => esc_html__('Status', 'alfaomega-ebooks'),
+                'alfaomega_access_read'     => esc_html__('Read', 'alfaomega-ebooks'),
+                'alfaomega_access_download' => esc_html__('Download', 'alfaomega-ebooks'),
                 // 'categories'                => esc_html__('Categories', 'alfaomega-ebook'),
-                'author'                    => esc_html__('Usuario', 'alfaomega-ebook'),
-                'alfaomega_access_due_date' => esc_html__('Due date', 'alfaomega-ebook'),
+                'author'                    => esc_html__('Client', 'alfaomega-ebooks'),
+                'alfaomega_access_due_date' => esc_html__('Due date', 'alfaomega-ebooks'),
             ];
         }
 

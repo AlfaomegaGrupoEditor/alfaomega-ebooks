@@ -11,7 +11,7 @@ msgstr ""
 "Livan Rodriguez "
 "<livan2r@gmail.com>\n"
 "POT-Creation-Date: "
-"2024-09-04 09:03-0400\n"
+"2024-09-04 09:28-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Livan "
 "Rodriguez <livan2r@gmail."
@@ -644,6 +644,11 @@ msgid ""
 "Alfaomega eBook Access"
 msgstr ""
 
+#: post_types/class-alfaomega-ebooks-access-post-type.php:75
+#: views/alfaomega_ebook_access_metabox.php:6
+msgid "Cover"
+msgstr ""
+
 #: post_types/class-alfaomega-ebooks-access-post-type.php:76
 #: post_types/class-alfaomega-ebooks-post-type.php:74
 msgid "Title"
@@ -678,7 +683,7 @@ msgid "Download"
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:83
-msgid "Usuario"
+msgid "Client"
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:84
@@ -785,10 +790,6 @@ msgstr ""
 #: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:166
 msgid ""
 "Printed ISBN is required."
-msgstr ""
-
-#: views/alfaomega_ebook_access_metabox.php:6
-msgid "Cover"
 msgstr ""
 
 #: views/alfaomega_ebook_access_metabox.php:23
