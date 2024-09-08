@@ -1,0 +1,25 @@
+{
+    "name": "livan2r/carbon-field-choices",
+    "description": "Carbon Fields extension, that provides a customizable, accessible select box with features like searching, multi-selection, and dynamic loading via AJAX.",
+    "keywords": ["wordpress", "carbon-field", "select", "choices"],
+    "homepage": "https://github.com/alfaomega/choices/",
+    "type": "library",
+    "license": "GPL-2.0+",
+    "authors": [
+        {
+            "name": "Livan Rodriguez",
+            "email": "livan2r@gmail.com"
+        }
+    ],
+    "require": {
+        "htmlburger/carbon-fields": "^3.0"
+    },
+    "autoload": {
+        "files": [
+            "field.php"
+        ],
+        "psr-4": {
+            "Carbon_Field_Choices\\": "core/"
+        }
+    }
+}
