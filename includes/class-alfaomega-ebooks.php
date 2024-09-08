@@ -70,6 +70,7 @@ class Alfaomega_Ebooks {
 
         $Alfaomega_Ebooks_Post_Type = new Alfaomega_Ebooks_Post_Type();
         $Alfaomega_Ebook_Access_Post_Type = new Alfaomega_Ebooks_Access_Post_Type();
+        $Alfaomega_Ebook_Sample_Post_Type = new Alfaomega_Ebooks_Sample_Post_Type();
         $Alfaomega_Ebooks_Settings = new Alfaomega_Ebooks_Settings();
         add_action( 'admin_menu', [$this, 'add_menu'] );
     }
@@ -109,6 +110,7 @@ class Alfaomega_Ebooks {
          */
         require_once plugin_dir_path(dirname(__FILE__)) . 'post_types/class-alfaomega-ebooks-post-type.php';
         require_once plugin_dir_path(dirname(__FILE__)) . 'post_types/class-alfaomega-ebooks-access-post-type.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'post_types/class-alfaomega-ebooks-sample-post-type.php';
 
         /**
          * The class responsible for defining the settings page.
@@ -231,6 +233,9 @@ class Alfaomega_Ebooks {
         // ebook product filter
         $this->loader->add_action( 'restrict_manage_posts', $plugin_admin, 'ebooks_product_filters' );
         $this->loader->add_action( 'pre_get_posts', $plugin_admin, 'apply_ebooks_product_filters' );
+
+        // Carbon Fields
+        $this->loader->add_action( 'after_setup_theme', $plugin_admin, 'boot_carbon_fields_framework' );
     }
 
 	/**
@@ -345,6 +350,16 @@ class Alfaomega_Ebooks {
             esc_html__('Access List', 'alfaomega-ebooks'),
             'install_plugins',
             'edit.php?post_type=alfaomega-access',
+            null,
+            null
+        );
+
+        add_submenu_page(
+            'alfaomega_ebooks_admin',
+            esc_html__('eBook Sample', 'alfaomega-ebooks'),
+            esc_html__('Sample List', 'alfaomega-ebooks'),
+            'install_plugins',
+            'edit.php?post_type=alfaomega-sample',
             null,
             null
         );
