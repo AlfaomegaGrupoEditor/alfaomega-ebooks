@@ -16,7 +16,7 @@ const NoOptions = () => (
 	</em>
 );
 
-export class SelectField extends Component {
+export class ChoicesField extends Component {
 	/**
 	 * Handles the change of the input.
 	 *
@@ -70,4 +70,4 @@ export class SelectField extends Component {
 	}
 }
 
-export default SelectField;
+export default ChoicesField;
