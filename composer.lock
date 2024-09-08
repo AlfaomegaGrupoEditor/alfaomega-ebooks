@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "770ba3b6fcc5cb3c1b59558164a49b69",
+    "content-hash": "10a7d6365d0ba0373271b7b5743021bd",
     "packages": [
         {
             "name": "automattic/woocommerce",
@@ -189,6 +189,204 @@
                 }
             ],
             "time": "2024-07-20T21:45:45+00:00"
+        },
+        {
+            "name": "htmlburger/carbon-field-number",
+            "version": "v3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/htmlburger/carbon-field-number.git",
+                "reference": "3bddfaf256472d6071c62e566d011e1f2cdae0c6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/htmlburger/carbon-field-number/zipball/3bddfaf256472d6071c62e566d011e1f2cdae0c6",
+                "reference": "3bddfaf256472d6071c62e566d011e1f2cdae0c6",
+                "shasum": ""
+            },
+            "require": {
+                "htmlburger/carbon-fields": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "field.php"
+                ],
+                "psr-4": {
+                    "Carbon_Field_Number\\": "core/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Plamen Kostadinov",
+                    "email": "pkostadinov.2create@gmail.com"
+                },
+                {
+                    "name": "Atanas Angelov",
+                    "email": "atanas.angelov.dev@gmail.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Viktor Vasilev",
+                    "email": "liberalcho@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Carbon Fields extension, that adds a number field type.",
+            "homepage": "https://github.com/htmlburger/carbon-field-number/",
+            "keywords": [
+                "carbon-field",
+                "carbon-field-number",
+                "wordpress"
+            ],
+            "support": {
+                "source": "https://github.com/htmlburger/carbon-field-number/tree/development"
+            },
+            "time": "2018-12-21T12:45:35+00:00"
+        },
+        {
+            "name": "htmlburger/carbon-fields",
+            "version": "v3.6.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/htmlburger/carbon-fields.git",
+                "reference": "b18f8e2a2cc4cc976306eb867ad1d740a8e7c1d9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/htmlburger/carbon-fields/zipball/b18f8e2a2cc4cc976306eb867ad1d740a8e7c1d9",
+                "reference": "b18f8e2a2cc4cc976306eb867ad1d740a8e7c1d9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.20"
+            },
+            "require-dev": {
+                "mockery/mockery": "1.3.6",
+                "phpunit/phpunit": "7.5.20|9.6.3",
+                "yoast/phpunit-polyfills": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Carbon_Fields\\": "core/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "htmlBurger",
+                    "email": "wordpress@htmlburger.com",
+                    "homepage": "https://htmlburger.com/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Miroslav Mitev",
+                    "email": "mmitev.2create@gmail.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Atanas Angelov",
+                    "email": "atanas.angelov.dev@gmail.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Georgi Stoyanov",
+                    "email": "stoyanov.gs@gmail.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Plamen Kostadinov",
+                    "email": "pkostadinov.2create@gmail.com",
+                    "homepage": "http://plasmen.info/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Stanimir Panchev",
+                    "email": "Stan4omir@gmail.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Marin Atanasov",
+                    "email": "contact@marinatanasov.com",
+                    "homepage": "http://marinatanasov.com/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Siyan Panayotov",
+                    "homepage": "http://siyanpanayotov.com/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Peter Petrov",
+                    "email": "peter.petrov89@gmail.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Stanimir Stoyanov",
+                    "email": "stanimir.k.stoyanov@gmail.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Kaloyan Ivanov",
+                    "email": "kaloyanxivanov@gmail.com",
+                    "homepage": "http://vilepixels.com/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Georgi Popov",
+                    "homepage": "http://magadanski.com/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "German Velchev",
+                    "email": "germozy@gmail.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Rashko Petrov",
+                    "email": "brutalenemy666@gmail.com",
+                    "homepage": "http://errorfactory.com/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Alexander Panayotov",
+                    "email": "alexander.panayotov@gmail.com",
+                    "homepage": "http://alexanderpanayotov.com/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Viktor Vasilev",
+                    "email": "liberalcho@gmail.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Georgi Georgiev",
+                    "email": "george.georgiev96@gmail.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Atanas Vasilev",
+                    "email": "atanasvasilev91@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "WordPress developer-friendly custom fields for post types, taxonomy terms, users, comments, widgets, options and more.",
+            "homepage": "http://carbonfields.net/",
+            "support": {
+                "docs": "http://carbonfields.net/docs/",
+                "email": "wordpress@htmlburger.com",
+                "issues": "https://github.com/htmlburger/carbon-fields/issues",
+                "source": "https://github.com/htmlburger/carbon-fields"
+            },
+            "time": "2024-07-31T08:17:38+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -986,6 +1184,57 @@
     ],
     "packages-dev": [
         {
+            "name": "livan2r/carbon-field-choices",
+            "version": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/livan2r/carbon-field-choices.git",
+                "reference": "76f61f1a33041a98d0f21f6c4e5c0e1acf0f69c7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/livan2r/carbon-field-choices/zipball/76f61f1a33041a98d0f21f6c4e5c0e1acf0f69c7",
+                "reference": "76f61f1a33041a98d0f21f6c4e5c0e1acf0f69c7",
+                "shasum": ""
+            },
+            "require": {
+                "htmlburger/carbon-fields": "^3.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "field.php"
+                ],
+                "psr-4": {
+                    "Carbon_Field_Choices\\": "core/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Livan Rodriguez",
+                    "email": "livan2r@gmail.com"
+                }
+            ],
+            "description": "Carbon Fields extension, that provides a customizable, accessible select box with features like searching, multi-selection, and dynamic loading via AJAX.",
+            "homepage": "https://github.com/alfaomega/choices/",
+            "keywords": [
+                "carbon-field",
+                "choices",
+                "select",
+                "wordpress"
+            ],
+            "support": {
+                "issues": "https://github.com/livan2r/carbon-field-choices/issues",
+                "source": "https://github.com/livan2r/carbon-field-choices/tree/develop"
+            },
+            "time": "2024-09-08T19:34:26+00:00"
+        },
+        {
             "name": "myclabs/deep-copy",
             "version": "1.12.0",
             "source": {
@@ -1223,32 +1472,32 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "11.0.5",
+            "version": "11.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "19b6365ab8b59a64438c0c3f4241feeb480c9861"
+                "reference": "ebdffc9e09585dafa71b9bffcdb0a229d4704c45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/19b6365ab8b59a64438c0c3f4241feeb480c9861",
-                "reference": "19b6365ab8b59a64438c0c3f4241feeb480c9861",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/ebdffc9e09585dafa71b9bffcdb0a229d4704c45",
+                "reference": "ebdffc9e09585dafa71b9bffcdb0a229d4704c45",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "ext-libxml": "*",
                 "ext-xmlwriter": "*",
-                "nikic/php-parser": "^5.0",
+                "nikic/php-parser": "^5.1.0",
                 "php": ">=8.2",
-                "phpunit/php-file-iterator": "^5.0",
-                "phpunit/php-text-template": "^4.0",
-                "sebastian/code-unit-reverse-lookup": "^4.0",
-                "sebastian/complexity": "^4.0",
-                "sebastian/environment": "^7.0",
-                "sebastian/lines-of-code": "^3.0",
-                "sebastian/version": "^5.0",
-                "theseer/tokenizer": "^1.2.0"
+                "phpunit/php-file-iterator": "^5.0.1",
+                "phpunit/php-text-template": "^4.0.1",
+                "sebastian/code-unit-reverse-lookup": "^4.0.1",
+                "sebastian/complexity": "^4.0.1",
+                "sebastian/environment": "^7.2.0",
+                "sebastian/lines-of-code": "^3.0.1",
+                "sebastian/version": "^5.0.1",
+                "theseer/tokenizer": "^1.2.3"
             },
             "require-dev": {
                 "phpunit/phpunit": "^11.0"
@@ -1260,7 +1509,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "11.0-dev"
+                    "dev-main": "11.0.x-dev"
                 }
             },
             "autoload": {
@@ -1289,7 +1538,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/11.0.5"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/11.0.6"
             },
             "funding": [
                 {
@@ -1297,20 +1546,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-07-03T05:05:37+00:00"
+            "time": "2024-08-22T04:37:56+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
-            "version": "5.0.1",
+            "version": "5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-file-iterator.git",
-                "reference": "6ed896bf50bbbfe4d504a33ed5886278c78e4a26"
+                "reference": "118cfaaa8bc5aef3287bf315b6060b1174754af6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/6ed896bf50bbbfe4d504a33ed5886278c78e4a26",
-                "reference": "6ed896bf50bbbfe4d504a33ed5886278c78e4a26",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/118cfaaa8bc5aef3287bf315b6060b1174754af6",
+                "reference": "118cfaaa8bc5aef3287bf315b6060b1174754af6",
                 "shasum": ""
             },
             "require": {
@@ -1350,7 +1599,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-file-iterator/issues",
                 "security": "https://github.com/sebastianbergmann/php-file-iterator/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-file-iterator/tree/5.0.1"
+                "source": "https://github.com/sebastianbergmann/php-file-iterator/tree/5.1.0"
             },
             "funding": [
                 {
@@ -1358,7 +1607,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-07-03T05:06:37+00:00"
+            "time": "2024-08-27T05:02:59+00:00"
         },
         {
             "name": "phpunit/php-invoker",
@@ -1546,16 +1795,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "11.3.0",
+            "version": "11.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "a8dce73a8938dfec7ac0daa91bdbcaae7d7188a3"
+                "reference": "8ed08766d9a2ed979a2f5fdbb95a0671523419c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a8dce73a8938dfec7ac0daa91bdbcaae7d7188a3",
-                "reference": "a8dce73a8938dfec7ac0daa91bdbcaae7d7188a3",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/8ed08766d9a2ed979a2f5fdbb95a0671523419c1",
+                "reference": "8ed08766d9a2ed979a2f5fdbb95a0671523419c1",
                 "shasum": ""
             },
             "require": {
@@ -1569,14 +1818,14 @@
                 "phar-io/manifest": "^2.0.4",
                 "phar-io/version": "^3.2.1",
                 "php": ">=8.2",
-                "phpunit/php-code-coverage": "^11.0.5",
-                "phpunit/php-file-iterator": "^5.0.1",
+                "phpunit/php-code-coverage": "^11.0.6",
+                "phpunit/php-file-iterator": "^5.1.0",
                 "phpunit/php-invoker": "^5.0.1",
                 "phpunit/php-text-template": "^4.0.1",
                 "phpunit/php-timer": "^7.0.1",
                 "sebastian/cli-parser": "^3.0.2",
                 "sebastian/code-unit": "^3.0.1",
-                "sebastian/comparator": "^6.0.1",
+                "sebastian/comparator": "^6.0.2",
                 "sebastian/diff": "^6.0.2",
                 "sebastian/environment": "^7.2.0",
                 "sebastian/exporter": "^6.1.3",
@@ -1626,7 +1875,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.3.0"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.3.3"
             },
             "funding": [
                 {
@@ -1642,7 +1891,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-08-02T03:56:43+00:00"
+            "time": "2024-09-04T13:34:52+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -1816,16 +2065,16 @@
         },
         {
             "name": "sebastian/comparator",
-            "version": "6.0.1",
+            "version": "6.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "131942b86d3587291067a94f295498ab6ac79c20"
+                "reference": "450d8f237bd611c45b5acf0733ce43e6bb280f81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/131942b86d3587291067a94f295498ab6ac79c20",
-                "reference": "131942b86d3587291067a94f295498ab6ac79c20",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/450d8f237bd611c45b5acf0733ce43e6bb280f81",
+                "reference": "450d8f237bd611c45b5acf0733ce43e6bb280f81",
                 "shasum": ""
             },
             "require": {
@@ -1881,7 +2130,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/comparator/issues",
                 "security": "https://github.com/sebastianbergmann/comparator/security/policy",
-                "source": "https://github.com/sebastianbergmann/comparator/tree/6.0.1"
+                "source": "https://github.com/sebastianbergmann/comparator/tree/6.0.2"
             },
             "funding": [
                 {
@@ -1889,7 +2138,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-07-03T04:48:07+00:00"
+            "time": "2024-08-12T06:07:25+00:00"
         },
         {
             "name": "sebastian/complexity",
@@ -2619,9 +2868,11 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": [],
-    "prefer-stable": false,
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "livan2r/carbon-field-choices": 20
+    },
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],

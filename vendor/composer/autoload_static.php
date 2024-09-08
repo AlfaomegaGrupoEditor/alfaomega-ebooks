@@ -13,6 +13,8 @@ class ComposerStaticInitcd53d4cc421fe0b70226223f299ac0ad
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
+        '6632f90381dd49c5fe745d09406b9abb' => __DIR__ . '/..' . '/htmlburger/carbon-field-number/field.php',
+        '441da810217f5afce0d1b47bc045bb41' => __DIR__ . '/..' . '/livan2r/carbon-field-choices/field.php',
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
     );
 
@@ -46,6 +48,9 @@ class ComposerStaticInitcd53d4cc421fe0b70226223f299ac0ad
         ),
         'C' => 
         array (
+            'Carbon_Fields\\' => 14,
+            'Carbon_Field_Number\\' => 20,
+            'Carbon_Field_Choices\\' => 21,
             'Carbon\\Doctrine\\' => 16,
             'Carbon\\' => 7,
         ),
@@ -104,6 +109,18 @@ class ComposerStaticInitcd53d4cc421fe0b70226223f299ac0ad
         'DeepCopy\\' => 
         array (
             0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
+        ),
+        'Carbon_Fields\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/htmlburger/carbon-fields/core',
+        ),
+        'Carbon_Field_Number\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/htmlburger/carbon-field-number/core',
+        ),
+        'Carbon_Field_Choices\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/livan2r/carbon-field-choices/core',
         ),
         'Carbon\\Doctrine\\' => 
         array (

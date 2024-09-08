@@ -506,4 +506,16 @@ class Alfaomega_Ebooks_Admin {
     function action_save_product_meta( $product ) {
         $product->update_meta_data( 'alfaomega_ebooks_ebook_isbn', $_POST['alfaomega_ebooks_ebook_isbn'] ?? '' );
     }
+
+    /**
+     * Boot the Carbon Fields framework.
+     * This method initializes the Carbon Fields framework, which is used for creating custom fields
+     * and meta boxes in the WordPress admin area.
+     *
+     * @since 1.0.0
+     */
+    public function boot_carbon_fields_framework(): void
+    {
+        \Carbon_Fields\Carbon_Fields::boot();
+    }
 }
