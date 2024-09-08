@@ -3,7 +3,7 @@
         'name' => 'bnb-computer-services/your-plugin-name',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'a187e101f5ca96ad691c8f044468d6f00ad4af86',
+        'reference' => '6a2f88850c579cdf06414540e63db9b7acdf1315',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -22,7 +22,7 @@
         'bnb-computer-services/your-plugin-name' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'a187e101f5ca96ad691c8f044468d6f00ad4af86',
+            'reference' => '6a2f88850c579cdf06414540e63db9b7acdf1315',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
