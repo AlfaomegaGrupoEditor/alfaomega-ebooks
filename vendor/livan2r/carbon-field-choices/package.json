@@ -22,17 +22,17 @@
     "babel-loader": "^8.0.2",
     "babel-plugin-module-resolver": "^3.1.1",
     "cross-env": "^5.2.0",
-    "css-loader": "^1.0.0",
-    "mini-css-extract-plugin": "^0.4.4",
+    "css-loader": "^7.1.2",
+    "mini-css-extract-plugin": "^2.9.1",
     "node-sass": "^4.9.4",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.2.0",
-    "sass-loader": "^7.1.0",
+    "sass-loader": "^7.3.1",
     "sass-resources-loader": "^2.0.0",
     "terser-webpack-plugin": "^1.1.0",
-    "webpack": "^4.27.1",
-    "webpack-cli": "^3.1.1"
+    "webpack": "^5.94.0",
+    "webpack-cli": "^5.1.4"
   },
   "dependencies": {
     "@babel/runtime": "^7.1.5",

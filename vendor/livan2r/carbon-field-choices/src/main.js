@@ -2,8 +2,14 @@
  * External dependencies.
  */
 import { Component } from '@wordpress/element';
-import { get } from 'lodash';
+import { debounce, get } from 'lodash';
 import { __ } from '@wordpress/i18n';
+
+/**
+ * Choices dependencies.
+ */
+import "choices.js/public/assets/styles/choices.min.css";
+import Choices from 'choices.js';
 
 /**
  * The internal dependencies.
@@ -29,7 +35,24 @@ export class ChoicesField extends Component {
 		onChange( id, e.target.value );
 	}
 
+	componentDidMount() {
+		const element = document.getElementById( this.props.id );
+		if (element.length) {
+			console.log('element', element);
+			const choices = new Choices( element, {
+				searchEnabled: true,
+				placeholderValue: 'Search for a user',
+				shouldSort: false,
+				searchResultLimit: 5,
+			})
+		} else {
+			console.error(`Element select#${this.props.id} not found`);
+		}
+	}
+
 	componentMount() {
+		console.log(id);
+
 		onChange( id, value );
 	}
 

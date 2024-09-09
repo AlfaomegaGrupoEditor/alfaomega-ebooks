@@ -51,7 +51,14 @@ module.exports = {
                         loader: 'sass-loader'
                     }
                 ]
-            }
+            },
+            {
+                test: /\.css$/, // Regex to test for CSS files
+                use: [
+                    MiniCssExtractPlugin.loader, // Extract CSS into files
+                    'css-loader',                // Resolves @import and url() in CSS
+                ],
+            },
         ]
     },
     externals: [
