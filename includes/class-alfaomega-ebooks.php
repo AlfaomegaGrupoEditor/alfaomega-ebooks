@@ -236,6 +236,7 @@ class Alfaomega_Ebooks {
 
         // Carbon Fields
         $this->loader->add_action( 'after_setup_theme', $plugin_admin, 'boot_carbon_fields_framework' );
+        $this->loader->add_action( 'wp_default_scripts', $plugin_admin, 'remove_jquery_Migrate' );
     }
 
 	/**

@@ -5,6 +5,17 @@ namespace Carbon_Field_Choices;
 use Carbon_Fields\Field\Select_Field;
 
 class Choices_Field extends Select_Field {
+
+    /**
+     * {@inheritDoc}
+     */
+    protected $allowed_attributes = [
+        'placeholder',
+        'shouldSort',
+        'searchEnabled',
+        'searchResultLimit'
+    ];
+
     /**
      * Enqueue scripts and styles in admin
      * Called once per field type

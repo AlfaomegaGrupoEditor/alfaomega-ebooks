@@ -198,11 +198,15 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                                 Field::make('choices', 'alfaomega_sample_payload_isbn', __('eBook', 'alfaomega-ebooks'))
                                     ->set_required()
                                     ->set_width(50)
+                                    ->set_attribute('placeholder', __('Start typing to search the eBook', 'alfaomega-ebooks'))
+                                    ->set_attribute('shouldSort', true)
+                                    ->set_attribute('searchEnabled', true)
                                     ->add_options(fn() => $this->get_ebooks_isbn())
                                     ->set_help_text(__('The eBook ISBN to generate the access code', 'alfaomega-ebooks')),
 
-                                Field::make('select', 'alfaomega_sample_payload_access_time', __('Access time', 'alfaomega-ebooks'))
+                                Field::make('choices', 'alfaomega_sample_payload_access_time', __('Access time', 'alfaomega-ebooks'))
                                     ->add_options([
+                                        ''    => __('Select the access duration', 'alfaomega-ebooks'),
                                         '3'   => sprintf(__('%s days', 'alfaomega-ebooks'), 3),
                                         '7'   => sprintf(__('%s week', 'alfaomega-ebooks'), 1),
                                         '15'  => sprintf(__('%s weeks', 'alfaomega-ebooks'), 2),
@@ -214,6 +218,8 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                                     ])
                                     ->set_required()
                                     ->set_default_value(3)
+                                    ->set_attribute('placeholder', __('Select the access duration', 'alfaomega-ebooks'))
+                                    ->set_attribute('shouldSort', false)
                                     ->set_width(50)
                                     ->set_help_text(__('Defines the time while the eBook access will be available after redeeming this code', 'alfaomega-ebooks')),
 
@@ -302,7 +308,7 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                 wp_reset_postdata();
             }
 
-            return array_merge(['' => __('Select an eBook', 'alfaomega-ebooks')], $ebooks);
+            return array_merge(['' => __('Select the eBook', 'alfaomega-ebooks')], $ebooks);
         }
 
         /**

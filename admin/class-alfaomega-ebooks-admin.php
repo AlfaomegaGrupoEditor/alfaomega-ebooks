@@ -518,4 +518,17 @@ class Alfaomega_Ebooks_Admin {
     {
         \Carbon_Fields\Carbon_Fields::boot();
     }
+
+    /**
+     * To avoid the jQuery Migrate message in the console
+     * @param $scripts
+     *
+     * @return void
+     */
+    function remove_jquery_Migrate($scripts)
+    {
+        if ( /*! is_admin() &&*/ isset( $scripts->registered['jquery'] ) ) {
+            $scripts->registered['jquery']->deps = array_diff( $scripts->registered['jquery']->deps, array( 'jquery-migrate' ) );
+        }
+    }
 }
