@@ -153,6 +153,7 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
             global $pagenow;
 
             // only to add new posts
+            $optionsEndpoint = 'https://api.discogs.com/artists/83080/releases?token=QBRmstCkwXEvCjTclCpumbtNwvVkEzGAdELXyRyW';
             if ($pagenow === 'post-new.php') {
                 Container::make('post_meta', __('Complete the following form to generate eBook Access Samples', 'alfaomega-ebooks'))
                     ->where('post_type', '=', 'alfaomega-sample')
@@ -198,10 +199,15 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                                 Field::make('choices', 'alfaomega_sample_payload_isbn', __('eBook', 'alfaomega-ebooks'))
                                     ->set_required()
                                     ->set_width(50)
-                                    ->set_attribute('placeholder', __('Start typing to search the eBook', 'alfaomega-ebooks'))
+                                    ->set_attribute('placeholder', __('Start typing to search eBook...', 'alfaomega-ebooks'))
                                     ->set_attribute('shouldSort', true)
                                     ->set_attribute('searchEnabled', true)
-                                    ->add_options(fn() => $this->get_ebooks_isbn())
+                                    ->set_attribute('searchResultLimit', 10)
+                                    ->set_render_choice_limit(10)
+                                    ->set_attribute('loadingText', __('Searching eBooks...', 'alfaomega-ebooks'))
+                                    ->set_attribute('searchPlaceholderValue', __('Type to start searching...', 'alfaomega-ebooks'))
+                                    ->set_fetch_url($optionsEndpoint)
+                                    ->add_options(['' => __('Select the eBook', 'alfaomega-ebooks')])
                                     ->set_help_text(__('The eBook ISBN to generate the access code', 'alfaomega-ebooks')),
 
                                 Field::make('choices', 'alfaomega_sample_payload_access_time', __('Access time', 'alfaomega-ebooks'))

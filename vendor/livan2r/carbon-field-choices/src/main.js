@@ -37,46 +37,76 @@ export class ChoicesField extends Component {
 	}
 
 	componentDidMount() {
-		const element = document.getElementById( this.props.id );
-		console.log(this.props);
+		const {
+			id,
+			field,
+			onChange
+		} = this.props;
+
+		const element = document.getElementById( id );
 		if (element.length) {
 			const choices = new Choices( element, {
 				// Whether a search area should be shown
-				searchEnabled: this.props.field.attributes.searchEnabled ? this.props.field.attributes.searchEnabled : false,
+				searchEnabled: field.attributes.searchEnabled ? field.attributes.searchEnabled : false,
 
 				// The value of the search inputs placeholder.
-				placeholderValue: this.props.field.attributes.placeholder
-					? this.props.field.attributes.placeholder :
-					__('Type to search', 'carbon-fields-ui'),
+				placeholderValue: field.attributes.placeholder ? field.attributes.placeholder : __('Type to search', 'carbon-fields-ui'),
 
 				// Whether choices and groups should be sorted. If false, choices/groups will appear in the order they were given.
-				shouldSort: this.props.field.attributes.shouldSort ? this.props.field.attributes.shouldSort : false,
+				shouldSort: field.attributes.shouldSort ? field.attributes.shouldSort : false,
 
 				//The maximum amount of search results to show ("-1" indicates no limit).
-				searchResultLimit: this.props.field.attributes.searchResultLimit ? this.props.field.attributes.searchResultLimit : 5,
+				searchResultLimit: field.attributes.searchResultLimit ? field.attributes.searchResultLimit : 10,
 
-				itemSelectText: '',
+				// The minimum amount of characters a user must type before a search is performed.
+				searchFloor: field.attributes.searchFloor ? field.attributes.searchFloor : 3,
 
-				allowHTML: true,
+				// The text that is shown whilst choices are being populated via AJAX.
+				loadingText: field.attributes.loadingText ? field.attributes.loadingText : __('Loading...', 'carbon-fields-ui'),
 
-				removeItemButton: true,
+				// The text that is shown when a user hovers over a selectable choice.
+				itemSelectText: field.attributes.itemSelectText ? field.attributes.itemSelectText : '',
 
-				searchPlaceholderValue: "Search for a Smiths' record",
+				// Whether HTML should be rendered in all Choices elements.
+				allowHTML: field.attributes.allowHTML ? field.attributes.allowHTML : false,
+
+				// Whether each item should have a remove button.
+				removeItemButton: field.attributes.removeItemButton ? field.attributes.removeItemButton : true,
+
+				// The value of the search inputs placeholder.
+				searchPlaceholderValue: field.attributes.searchPlaceholderValue ? field.attributes.searchPlaceholderValue : null,
+
+				// The amount of choices to be rendered within the dropdown list ("-1" indicates no limit)
+				// only apply when the user is searching
+				render_choice_limit: field.render_choice_limit && field.fetch_url && field.attributes.searchEnabled
+					? field.render_choice_limit : -1,
+
+				// Add a callback to run when the instance is ready.
+				callbackOnInit: () => {
+					// set the node id to the choices element
+					const choicesElement = document.getElementById(this.props.id).parentNode.parentNode;
+					choicesElement.id = 'cf-choices-' + this.props.id.replace('cf-', '');
+
+					// add the searchable class to the choices element
+					if (field.attributes.searchEnabled) {
+						choicesElement.className += ' searchable';
+					}
+				}
 			})
 
-				/*.setChoices(function(callback) {
-					return fetch(
-						'https://api.discogs.com/artists/83080/releases?token=QBRmstCkwXEvCjTclCpumbtNwvVkEzGAdELXyRyW'
-					)
+			if (field.fetch_url) {
+				choices.setChoices(function(callback) {
+					return fetch(field.fetch_url)
 						.then(function(res) {
 							return res.json();
 						})
 						.then(function(data) {
 							return data.releases.map(function(release) {
-								return { label: release.title, value: release.title };
+								return {label: release.title, value: release.title};
 							});
 						});
-				});*/
+				});
+			}
 		} else {
 			console.error(`Element select#${this.props.id} not found`);
 		}
@@ -110,7 +140,7 @@ export class ChoicesField extends Component {
 						id={ id }
 						name={ name }
 						value={ value }
-						className="cf-choises__input form-control"
+						className="cf-select__input form-control"
 						onChange={ this.handleChange }
 					>
 						{ field.options.map( ( option ) => (
