@@ -118,4 +118,28 @@ class EbooksController
             ], 400);
         }
     }
+
+    /**
+     * Search ebooks ready to purchase and returns the response.
+     * @param \WP_REST_Request $request
+     *
+     * @return \WP_REST_Response
+     */
+    public function searchEbooks(WP_REST_Request $request): WP_REST_Response
+    {
+        try {
+            $response = [];
+
+            return new WP_REST_Response([
+                'status'  => 'success',
+                'data'    => $response,
+                'message' => 'Good job!',
+            ], 200);
+        } catch (\Exception $exception) {
+            return new WP_REST_Response([
+                'status'  => 'fail',
+                'message' => $exception->getMessage()
+            ], 400);
+        }
+    }
 }
