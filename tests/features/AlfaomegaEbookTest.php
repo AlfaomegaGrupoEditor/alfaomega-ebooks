@@ -114,13 +114,15 @@ class AlfaomegaEbookTest extends WordpressTest
      * @throws \Exception
      */
     #[DataProvider('searchProvider')]
-    public function testSearchEbooks(string $query = 'python', array $expected = []): void
+    public function testSearchEbooks(string $query = '', array $expected = []): void
     {
         $result = Service::make()
             ->ebooks()
             ->search($query);
 
         $this->assertNotNull($result);
+        $this->assertCount($expected['count'], $result['items']);
+        $this->assertEquals($expected['count'], $result['total']);
     }
     
     /**
@@ -132,7 +134,27 @@ class AlfaomegaEbookTest extends WordpressTest
         return [
             'python' => [
                 'query'    => 'python',
+                'expected' => ['count' => 0],
+            ],
+            'scada' => [
+                'query'    => 'scada',
                 'expected' => ['count' => 1],
+            ],
+            'practicas' => [
+                'query'    => 'practicas',
+                'expected' => ['count' => 2],
+            ],
+            '9786076224632' => [
+                'query'    => '9786076224632',
+                'expected' => ['count' => 1],
+            ],
+            '97860762' => [
+                'query'    => '97860762',
+                'expected' => ['count' => 10],
+            ],
+            'empty' => [
+                'query'    => '',
+                'expected' => ['count' => 16],
             ],
         ];
     }

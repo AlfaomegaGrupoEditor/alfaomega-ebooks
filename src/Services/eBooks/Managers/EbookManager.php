@@ -10,6 +10,7 @@ use AlfaomegaEbooks\Services\eBooks\Process\RefreshEbook;
 use AlfaomegaEbooks\Services\eBooks\Service;
 use Exception;
 use WC_Product_Query;
+use WP_Query;
 
 /**
  * The ebook manager.
@@ -333,54 +334,74 @@ class EbookManager extends AbstractManager
 
     /**
      * Searches for eBooks.
-     * This method searches for eBooks by a query string, limit, and page number.
-     * It constructs the arguments for the WooCommerce product query, including the limit, order, return type, status, type, and page number.
-     * It constructs the meta query for the WooCommerce product query, including the key, value, and comparison.
-     * It constructs the taxonomy query for the WooCommerce product query, including the taxonomy, field, and terms.
-     * It retrieves the products from the WooCommerce product query.
-     * It constructs the data array for each product, including the ID, title, ISBN, and cover image.
-     * It returns the data array.
+     * This method searches for eBooks by a search query, limit, and page.
      *
-     * @param string $query The query string to search for.
-     * @param int $limit    The limit of products to retrieve. Default is 50.
-     * @param int $page     The page number of products to retrieve. Default is 1.
+     * @param string $searchQuery The search query to search for.
+     * @param int $limit          The limit of items to retrieve. Default is 50.
+     * @param int $page           The page of items to retrieve. Default is 1.
      *
-     * @return array Returns an array of associative arrays containing the data for each product.
+     * @return array Returns an associative array containing the search results for the eBooks.
      */
-    public function search(string $query, int $limit = 50, int $page = 1): array
+    public function search(string $searchQuery = '', int $limit = 50, int $page = 1): array
     {
         $args = [
-            'limit'    => $limit,
-            'orderby'  => 'post_title',
-            'order'    => 'asc',
-            'return'   => 'objects',
-            'status'   => 'publish',
-            'type'     => 'variable',
-            'paginate' => true,
-            'paged'    => $page,
+            'post_type'      => 'product',
+            'posts_per_page' => $limit,
+            'paged'          => $page,
+            'paginate'       => true,
+            'orderby'        => 'post_title',
+            'order'          => 'asc',
+            'return'         => 'objects',
+            'status'         => 'publish',
+            'type'           => 'variable',
+            'visibility'     => 'catalog',
+            'tax_query'      => [
+                [
+                    'taxonomy' => 'pa_ebook',
+                    'field'    => 'slug',
+                    'terms'    => 'si',
+                ],
+            ],
+
         ];
 
-        $query = new WC_Product_Query($args);
-
-        $query->set('meta_query', [
-            [
-                'key'     => 'alfaomega_ebooks_ebook_isbn',
-                'value'   => '',
-                'compare' => '!=',
-            ],
-        ]);
-
-        $query->set('tax_query', [
-            [
-                'taxonomy' => 'pa_ebook',
-                'field'    => 'slug',
-                'terms'    => 'si',
-            ],
-        ]);
+        if (!empty($searchQuery)) {
+            $args['s'] = $searchQuery;
+            // FIXME: Doesn't work property with wc_get_products
+            $args['meta_query'] = [
+                [
+                    'key'     => 'alfaomega_ebooks_ebook_isbn',
+                    'value'   => $searchQuery,
+                    'compare' => 'LIKE',
+                ],
+            ];
+        } else {
+            $args['meta_query'] = [
+                [
+                    'key'     => 'alfaomega_ebooks_ebook_isbn',
+                    'value'   => '',
+                    'compare' => '!=',
+                ],
+            ];
+        }
 
         $data = [];
-        $result = $query->get_products();
+        $result = wc_get_products($args);
+        // A hack to search by ISBN if no results are found
+        if ($result->total === 0 && !empty($searchQuery)) {
+            unset($args['s']);
+            $query = new WP_Query($args);
+            $result = (object) [
+                'products'      => $query->get_posts(),
+                'total'         => $query->found_posts,
+                'max_num_pages' => $query->max_num_pages,
+            ];
+        }
+
         foreach ($result->products as $product) {
+            if ($product instanceof \WP_Post) {
+                $product = wc_get_product($product);
+            }
             $image_id = $product->get_image_id();
             $image_url = wp_get_attachment_url($image_id);
 
