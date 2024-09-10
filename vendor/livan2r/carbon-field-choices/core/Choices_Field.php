@@ -25,16 +25,23 @@ class Choices_Field extends Select_Field {
     /**
      * Endpoint url to fetch choices
      *
-     * @var null|float
+     * @var null|string
      */
-    protected $fetch_url = null;
+    protected ?string $fetch_url = null;
+
+    /**
+     * The setup_search property is used to define the fields that will be used to search the choices.
+     *
+     * @var array
+     */
+    protected array $setup_search = [];
 
     /**
      * The amount of choices to be rendered within the dropdown list ("-1" indicates no limit).
      *
      * @var int
      */
-    protected $render_choice_limit = -1;
+    protected int $render_choice_limit = -1;
 
     /**
      * Enqueue scripts and styles in admin
@@ -63,11 +70,13 @@ class Choices_Field extends Select_Field {
      * @param bool $load  Should the value be loaded from the database or use the value from the current instance.
      * @return array
      */
-    public function to_json( $load ) {
+    public function to_json( $load ): array
+    {
         $field_data = parent::to_json( $load );
 
         return array_merge($field_data, [
             'fetch_url'           => $this->fetch_url,
+            'setup_search'        => $this->setup_search,
             'render_choice_limit' => $this->render_choice_limit,
         ]);
     }
@@ -75,21 +84,26 @@ class Choices_Field extends Select_Field {
     /**
      * Set endpoint url to fetch choices
      *
-     * @param  null|float $min
+     * @param string $url
+     * @param array $setup_search
+     *
      * @return self       $this
      */
-    function set_fetch_url( string $url ) {
+    function set_fetch_url( string $url, array $setup_search = [] ): self
+    {
         $this->fetch_url = $url;
+        $this->setup_search = $setup_search;
         return $this;
     }
 
     /**
      * Set the amount of choices to be rendered within the dropdown list
      *
-     * @param  int $number
+     * @param  int|string $number
      * @return self $this
      */
-    function set_render_choice_limit( $number ) {
+    function set_render_choice_limit( int|string $number ): self
+    {
         $this->render_choice_limit = is_numeric($number) ? $number : -1;
         return $this;
     }

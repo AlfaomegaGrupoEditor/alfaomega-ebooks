@@ -9,6 +9,7 @@ use AlfaomegaEbooks\Services\eBooks\Process\ImportEbook;
 use AlfaomegaEbooks\Services\eBooks\Process\RefreshEbook;
 use AlfaomegaEbooks\Services\eBooks\Service;
 use Exception;
+use WC_Product_Query;
 
 /**
  * The ebook manager.
@@ -328,5 +329,74 @@ class EbookManager extends AbstractManager
         }
 
         return $response['token'];
+    }
+
+    /**
+     * Searches for eBooks.
+     * This method searches for eBooks by a query string, limit, and page number.
+     * It constructs the arguments for the WooCommerce product query, including the limit, order, return type, status, type, and page number.
+     * It constructs the meta query for the WooCommerce product query, including the key, value, and comparison.
+     * It constructs the taxonomy query for the WooCommerce product query, including the taxonomy, field, and terms.
+     * It retrieves the products from the WooCommerce product query.
+     * It constructs the data array for each product, including the ID, title, ISBN, and cover image.
+     * It returns the data array.
+     *
+     * @param string $query The query string to search for.
+     * @param int $limit    The limit of products to retrieve. Default is 50.
+     * @param int $page     The page number of products to retrieve. Default is 1.
+     *
+     * @return array Returns an array of associative arrays containing the data for each product.
+     */
+    public function search(string $query, int $limit = 50, int $page = 1): array
+    {
+        $args = [
+            'limit'    => $limit,
+            'orderby'  => 'post_title',
+            'order'    => 'asc',
+            'return'   => 'objects',
+            'status'   => 'publish',
+            'type'     => 'variable',
+            'paginate' => true,
+            'paged'    => $page,
+        ];
+
+        $query = new WC_Product_Query($args);
+
+        $query->set('meta_query', [
+            [
+                'key'     => 'alfaomega_ebooks_ebook_isbn',
+                'value'   => '',
+                'compare' => '!=',
+            ],
+        ]);
+
+        $query->set('tax_query', [
+            [
+                'taxonomy' => 'pa_ebook',
+                'field'    => 'slug',
+                'terms'    => 'si',
+            ],
+        ]);
+
+        $data = [];
+        $result = $query->get_products();
+        foreach ($result->products as $product) {
+            $image_id = $product->get_image_id();
+            $image_url = wp_get_attachment_url($image_id);
+
+            $data[] = [
+                'id'    => $product->get_id(),
+                'title' => $product->get_name(),
+                'isbn'  => $product->get_meta('alfaomega_ebooks_ebook_isbn'),
+                'cover' => $image_url,
+            ];
+        }
+
+        return [
+            'items'   => $data,
+            'total'   => $result->total ?? 0,
+            'pages'   => $result->max_num_pages ?? 0,
+            'current' => $page,
+        ];
     }
 }

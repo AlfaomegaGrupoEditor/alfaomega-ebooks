@@ -1,4 +1,6 @@
 <?php
+
+use AlfaomegaEbooks\Http\RouteManager;
 use Carbon_Fields\Container;
 use Carbon_Fields\Field;
 
@@ -153,8 +155,15 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
             global $pagenow;
 
             // only to add new posts
-            //$optionsEndpoint = 'https://api.discogs.com/artists/83080/releases?token=QBRmstCkwXEvCjTclCpumbtNwvVkEzGAdELXyRyW';
-            $optionsEndpoint = 'https://api.discogs.com/database/search?q={query}&?release_title}&token=QBRmstCkwXEvCjTclCpumbtNwvVkEzGAdELXyRyW';
+            $apiUrl =  esc_url(rest_url(RouteManager::ROUTE_NAMESPACE)) . "/search-ebooks";
+            $searchSetup = [
+                'method' => 'GET',
+                'nonce' => wp_create_nonce('wp_rest'),
+                'query' => 'query',
+                'value' => 'isbn',
+                'label' => 'title',
+            ];
+
             if ($pagenow === 'post-new.php') {
                 Container::make('post_meta', __('Complete the following form to generate eBook Access Samples', 'alfaomega-ebooks'))
                     ->where('post_type', '=', 'alfaomega-sample')
@@ -207,7 +216,7 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                                     ->set_render_choice_limit(10)
                                     ->set_attribute('loadingText', __('Searching eBooks...', 'alfaomega-ebooks'))
                                     ->set_attribute('searchPlaceholderValue', __('Type to start searching...', 'alfaomega-ebooks'))
-                                    ->set_fetch_url($optionsEndpoint)
+                                    ->set_fetch_url($apiUrl, $searchSetup)
                                     ->add_options(['' => __('Select the eBook', 'alfaomega-ebooks')])
                                     ->set_help_text(__('The eBook ISBN to generate the access code', 'alfaomega-ebooks')),
 

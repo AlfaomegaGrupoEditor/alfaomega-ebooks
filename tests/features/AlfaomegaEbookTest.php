@@ -106,29 +106,21 @@ class AlfaomegaEbookTest extends WordpressTest
     /**
      * Test search ebooks
      *
+     * @param int $userId
      * @param string $query
      * @param array $expected
      *
      * @return void
+     * @throws \Exception
      */
     #[DataProvider('searchProvider')]
     public function testSearchEbooks(string $query = 'python', array $expected = []): void
     {
-        $apiUrl =  esc_url(rest_url(RouteManager::ROUTE_NAMESPACE));
-        $response = wp_remote_get("{$apiUrl}/search-ebooks", [
-            'headers' => [
-                'X-WP-Nonce' => wp_create_nonce('wp_rest'),
-            ],
-            'sslverify' => false,
-            'body' => [
-                'query' => $query,
-                'limit' => 50,
-                'page'  => 1,
-            ],
-        ]);
-        
-        
-        $this->assertNotNull($response);
+        $result = Service::make()
+            ->ebooks()
+            ->search($query);
+
+        $this->assertNotNull($result);
     }
     
     /**
@@ -138,7 +130,10 @@ class AlfaomegaEbookTest extends WordpressTest
     public static function searchProvider(): array
     {
         return [
-            [ 'query' => 'python', 'expected' => [ 'count' => 1 ] ],
+            'python' => [
+                'query'    => 'python',
+                'expected' => ['count' => 1],
+            ],
         ];
     }
     
