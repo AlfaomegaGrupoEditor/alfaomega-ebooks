@@ -36,6 +36,113 @@ export class ChoicesField extends Component {
 		onChange( id, e.target.value );
 	}
 
+	/**
+	 * Get the configuration for the choices field.
+	 * @param id
+	 * @param field
+	 * @returns Partial<options>
+	 */
+	getUserConfig = (id, field) => {
+		const {
+			attributes,
+			render_choice_limit,
+			fetch_url
+		} = field;
+
+		return {
+			// Whether a search area should be shown
+			searchEnabled: attributes.searchEnabled ? attributes.searchEnabled : false,
+
+			// The value of the search inputs placeholder.
+			placeholderValue: attributes.placeholder ? attributes.placeholder : __('Type to search',
+				'carbon-fields-ui'),
+
+			// Whether choices and groups should be sorted. If false, choices/groups will appear in the order they were given.
+			shouldSort: attributes.shouldSort ? attributes.shouldSort : false,
+
+			//The maximum amount of search results to show ("-1" indicates no limit).
+			searchResultLimit: attributes.searchResultLimit ? attributes.searchResultLimit : 10,
+
+			// The minimum amount of characters a user must type before a search is performed.
+			searchFloor: attributes.searchFloor ? attributes.searchFloor : 3,
+
+			// The text that is shown whilst choices are being populated via AJAX.
+			loadingText: attributes.loadingText ? attributes.loadingText : __('Loading...', 'carbon-fields-ui'),
+
+			// The text that is shown when a user hovers over a selectable choice.
+			itemSelectText: attributes.itemSelectText ? attributes.itemSelectText : '',
+
+			// Whether HTML should be rendered in all Choices elements.
+			allowHTML: attributes.allowHTML ? attributes.allowHTML : false,
+
+			// Whether each item should have a remove button.
+			removeItemButton: attributes.removeItemButton ? attributes.removeItemButton : true,
+
+			// The value of the search inputs placeholder.
+			searchPlaceholderValue: attributes.searchPlaceholderValue ? attributes.searchPlaceholderValue : null,
+
+			// The amount of choices to be rendered within the dropdown list ("-1" indicates no limit)
+			// only apply when the user is searching
+			render_choice_limit: render_choice_limit && fetch_url && attributes.searchEnabled
+				? field.render_choice_limit : -1,
+
+			//Function to run once Choices initialises.
+			callbackOnInit: () => { this.onInit(id, attributes); }
+		}
+	}
+
+	/**
+	 * Choices initialization callback.
+	 */
+	onInit = (id, attributes) => {
+		// set the node id to the choices element
+		const choicesElement = document.getElementById(id).parentNode.parentNode;
+		choicesElement.id = 'cf-choices-' + id.replace('cf-', '');
+
+		// add the searchable class to the choices element
+		if (attributes.searchEnabled) {
+			choicesElement.className += ' searchable';
+		}
+	}
+
+	/**
+	 * Load choices from the fetch url.
+	 * @param choices
+	 * @param fetch_url
+	 */
+	loadChoices = (choices, fetch_url) => {
+		const loadOptions = (searchTerm) => {
+			const url = fetch_url.replace('{query}', searchTerm);
+
+			fetch(url)
+				.then(response => response.json())
+				.then(data => {
+					const options = data.results.map(result => {
+						return {
+							value: result.id,
+							label: result.title,
+						};
+					});
+
+					// Clear existing choices and set the new ones
+					choices.clearChoices();
+					choices.setChoices(options, 'value', 'label', true);
+
+				})
+				.catch(error => console.error(__('Error fetching options:', 'carbon-fields-ui'), error));
+		}
+
+		choices.containerOuter.element.addEventListener('search', (event) => {
+			const searchTerm = event.detail.value;
+			loadOptions(searchTerm);
+		});
+
+		loadOptions('');
+	}
+
+	/**
+	 * Component did mount.
+	 */
 	componentDidMount() {
 		const {
 			id,
@@ -43,69 +150,14 @@ export class ChoicesField extends Component {
 			onChange
 		} = this.props;
 
+		const { fetch_url } = field;
+
 		const element = document.getElementById( id );
 		if (element.length) {
-			const choices = new Choices( element, {
-				// Whether a search area should be shown
-				searchEnabled: field.attributes.searchEnabled ? field.attributes.searchEnabled : false,
+			const choices = new Choices( element, this.getUserConfig(id, field ) );
 
-				// The value of the search inputs placeholder.
-				placeholderValue: field.attributes.placeholder ? field.attributes.placeholder : __('Type to search', 'carbon-fields-ui'),
-
-				// Whether choices and groups should be sorted. If false, choices/groups will appear in the order they were given.
-				shouldSort: field.attributes.shouldSort ? field.attributes.shouldSort : false,
-
-				//The maximum amount of search results to show ("-1" indicates no limit).
-				searchResultLimit: field.attributes.searchResultLimit ? field.attributes.searchResultLimit : 10,
-
-				// The minimum amount of characters a user must type before a search is performed.
-				searchFloor: field.attributes.searchFloor ? field.attributes.searchFloor : 3,
-
-				// The text that is shown whilst choices are being populated via AJAX.
-				loadingText: field.attributes.loadingText ? field.attributes.loadingText : __('Loading...', 'carbon-fields-ui'),
-
-				// The text that is shown when a user hovers over a selectable choice.
-				itemSelectText: field.attributes.itemSelectText ? field.attributes.itemSelectText : '',
-
-				// Whether HTML should be rendered in all Choices elements.
-				allowHTML: field.attributes.allowHTML ? field.attributes.allowHTML : false,
-
-				// Whether each item should have a remove button.
-				removeItemButton: field.attributes.removeItemButton ? field.attributes.removeItemButton : true,
-
-				// The value of the search inputs placeholder.
-				searchPlaceholderValue: field.attributes.searchPlaceholderValue ? field.attributes.searchPlaceholderValue : null,
-
-				// The amount of choices to be rendered within the dropdown list ("-1" indicates no limit)
-				// only apply when the user is searching
-				render_choice_limit: field.render_choice_limit && field.fetch_url && field.attributes.searchEnabled
-					? field.render_choice_limit : -1,
-
-				// Add a callback to run when the instance is ready.
-				callbackOnInit: () => {
-					// set the node id to the choices element
-					const choicesElement = document.getElementById(this.props.id).parentNode.parentNode;
-					choicesElement.id = 'cf-choices-' + this.props.id.replace('cf-', '');
-
-					// add the searchable class to the choices element
-					if (field.attributes.searchEnabled) {
-						choicesElement.className += ' searchable';
-					}
-				}
-			})
-
-			if (field.fetch_url) {
-				choices.setChoices(function(callback) {
-					return fetch(field.fetch_url)
-						.then(function(res) {
-							return res.json();
-						})
-						.then(function(data) {
-							return data.releases.map(function(release) {
-								return {label: release.title, value: release.title};
-							});
-						});
-				});
+			if (fetch_url) {
+				this.loadChoices(choices, fetch_url);
 			}
 		} else {
 			console.error(`Element select#${this.props.id} not found`);

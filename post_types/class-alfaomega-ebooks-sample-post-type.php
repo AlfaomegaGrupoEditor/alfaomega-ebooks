@@ -153,7 +153,8 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
             global $pagenow;
 
             // only to add new posts
-            $optionsEndpoint = 'https://api.discogs.com/artists/83080/releases?token=QBRmstCkwXEvCjTclCpumbtNwvVkEzGAdELXyRyW';
+            //$optionsEndpoint = 'https://api.discogs.com/artists/83080/releases?token=QBRmstCkwXEvCjTclCpumbtNwvVkEzGAdELXyRyW';
+            $optionsEndpoint = 'https://api.discogs.com/database/search?q={query}&?release_title}&token=QBRmstCkwXEvCjTclCpumbtNwvVkEzGAdELXyRyW';
             if ($pagenow === 'post-new.php') {
                 Container::make('post_meta', __('Complete the following form to generate eBook Access Samples', 'alfaomega-ebooks'))
                     ->where('post_type', '=', 'alfaomega-sample')
