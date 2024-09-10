@@ -34,7 +34,7 @@ class Choices_Field extends Select_Field {
      *
      * @var array
      */
-    protected array $setup_search = [];
+    protected ?array $setup_search = null;
 
     /**
      * The amount of choices to be rendered within the dropdown list ("-1" indicates no limit).
@@ -74,9 +74,28 @@ class Choices_Field extends Select_Field {
     {
         $field_data = parent::to_json( $load );
 
+        $default_setup_search = $searchSetup = [
+            'method'  => 'GET',
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'X-WP-Nonce'   => wp_create_nonce('wp_rest'),
+            ],
+            'params' => [
+                'query' => '',
+                'limit' => 25,
+                'page'  => 1,
+            ],
+            'options' => [
+                'value' => 'value',
+                'label' => 'label',
+            ],
+        ];
+
         return array_merge($field_data, [
             'fetch_url'           => $this->fetch_url,
-            'setup_search'        => $this->setup_search,
+            'setup_search'        => empty($this->setup_search)
+                ? $default_setup_search
+                : array_merge($default_setup_search, $this->setup_search),
             'render_choice_limit' => $this->render_choice_limit,
         ]);
     }

@@ -128,10 +128,13 @@ class EbooksController
     public function searchEbooks(WP_REST_Request $request): WP_REST_Response
     {
         try {
-            [$query, $limit, $page] = $request->get_params();
+            $query = $request->get_param('query') ?? '';
+            $limit = $request->get_param('limit') ?? 25;
+            $page = $request->get_param('page') ?? 1;
+
             $response = Service::make()
                 ->ebooks()
-                ->search($query, $limit ?? 50, $page ?? 1);
+                ->search($query, (int) $limit ?? 50, (int) $page ?? 1);
 
             return new WP_REST_Response([
                 'status'  => 'success',

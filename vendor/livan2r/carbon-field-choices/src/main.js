@@ -109,25 +109,45 @@ export class ChoicesField extends Component {
 	 * Load choices from the fetch url.
 	 * @param choices
 	 * @param fetch_url
+	 * @param setup_search
+	 * @param page
 	 */
-	loadChoices = (choices, fetch_url) => {
+	loadChoices = (choices, fetch_url, setup_search = null, page = 1) => {
 		const loadOptions = (searchTerm) => {
-			const url = fetch_url.replace('{query}', searchTerm);
+			const url = new URL(fetch_url);
+			const params = {query: searchTerm, limit: setup_search.params.limit, page: page};
+			if (setup_search.method === 'GET') {
+				Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+			}
 
-			fetch(url)
+			const request = setup_search.method === 'GET'
+				? fetch(url, {
+					method: 'GET',
+					headers: setup_search.headers || {},
+				})
+				: fetch(url, {
+					method: setup_search.method,
+					headers: setup_search.headers || {},
+					body: JSON.stringify(params),
+				});
+
+			request
 				.then(response => response.json())
 				.then(data => {
-					const options = data.results.map(result => {
-						return {
-							value: result.id,
-							label: result.title,
-						};
-					});
+					if (data.status === 'success') {
+						const options = data.data.items.map(result => {
+							return {
+								value: result[setup_search.options.value],
+								label: result[setup_search.options.label],
+							};
+						});
 
-					// Clear existing choices and set the new ones
-					choices.clearChoices();
-					choices.setChoices(options, 'value', 'label', true);
-
+						// Clear existing choices and set the new ones
+						choices.clearChoices();
+						choices.setChoices(options, 'value', 'label', true);
+					} else {
+						console.error(__('Error fetching options:', 'carbon-fields-ui'), data);
+					}
 				})
 				.catch(error => console.error(__('Error fetching options:', 'carbon-fields-ui'), error));
 		}
@@ -150,14 +170,17 @@ export class ChoicesField extends Component {
 			onChange
 		} = this.props;
 
-		const { fetch_url } = field;
+		const {
+			fetch_url,
+			setup_search
+		} = field;
 
 		const element = document.getElementById( id );
 		if (element.length) {
 			const choices = new Choices( element, this.getUserConfig(id, field ) );
 
 			if (fetch_url) {
-				this.loadChoices(choices, fetch_url);
+				this.loadChoices(choices, fetch_url, setup_search, 1);
 			}
 		} else {
 			console.error(`Element select#${this.props.id} not found`);

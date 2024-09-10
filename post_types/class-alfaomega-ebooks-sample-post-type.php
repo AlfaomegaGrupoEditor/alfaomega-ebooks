@@ -157,11 +157,10 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
             // only to add new posts
             $apiUrl =  esc_url(rest_url(RouteManager::ROUTE_NAMESPACE)) . "/search-ebooks";
             $searchSetup = [
-                'method' => 'GET',
-                'nonce' => wp_create_nonce('wp_rest'),
-                'query' => 'query',
-                'value' => 'isbn',
-                'label' => 'title',
+                'options' => [
+                    'value' => 'isbn',
+                    'label' => 'title',
+                ],
             ];
 
             if ($pagenow === 'post-new.php') {
