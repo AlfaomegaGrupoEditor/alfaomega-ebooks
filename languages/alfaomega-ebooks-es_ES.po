@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Blank WordPress Pot v1.0.0\n"
 "Report-Msgid-Bugs-To: Livan Rodriguez <livan2r@gmail.com>\n"
 "POT-Creation-Date: 2024-09-11 08:14-0400\n"
-"PO-Revision-Date: 2024-09-11 09:37-0400\n"
+"PO-Revision-Date: 2024-09-11 11:46-0400\n"
 "Last-Translator: Alfaomega México ADMIN\n"
 "Language-Team: Español\n"
 "Language: es_ES\n"
@@ -531,7 +531,7 @@ msgstr "Acceso al eBook"
 
 #: includes/class-alfaomega-ebooks.php:351
 msgid "Access List"
-msgstr "Accesos"
+msgstr "Accesos a eBooks"
 
 #: includes/class-alfaomega-ebooks.php:360
 #, fuzzy
