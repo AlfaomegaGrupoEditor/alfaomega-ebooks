@@ -82,7 +82,7 @@ class Choices_Field extends Select_Field {
             ],
             'params' => [
                 'query' => '',
-                'limit' => 25,
+                'limit' => -1, // -1 indicates no limit
                 'page'  => 1,
             ],
             'options' => [

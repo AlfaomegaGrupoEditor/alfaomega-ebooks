@@ -19,7 +19,6 @@ return array(
     'Dotenv\\' => array($vendorDir . '/vlucas/phpdotenv/src'),
     'DeepCopy\\' => array($vendorDir . '/myclabs/deep-copy/src/DeepCopy'),
     'Carbon_Fields\\' => array($vendorDir . '/htmlburger/carbon-fields/core'),
-    'Carbon_Field_Number\\' => array($vendorDir . '/htmlburger/carbon-field-number/core'),
     'Carbon_Field_Choices\\' => array($vendorDir . '/livan2r/carbon-field-choices/core'),
     'Carbon\\Doctrine\\' => array($vendorDir . '/carbonphp/carbon-doctrine-types/src/Carbon/Doctrine'),
     'Carbon\\' => array($vendorDir . '/nesbot/carbon/src/Carbon'),

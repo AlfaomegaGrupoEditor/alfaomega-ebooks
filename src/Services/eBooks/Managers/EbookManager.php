@@ -342,7 +342,7 @@ class EbookManager extends AbstractManager
      *
      * @return array Returns an associative array containing the search results for the eBooks.
      */
-    public function search(string $searchQuery = '', int $limit = 50, int $page = 1): array
+    public function search(string $searchQuery = '', int $limit = -1, int $page = 1): array
     {
         $args = [
             'post_type'      => 'product',
@@ -404,11 +404,11 @@ class EbookManager extends AbstractManager
             }
             $image_id = $product->get_image_id();
             $image_url = wp_get_attachment_url($image_id);
-
+            $isbn = $product->get_meta('alfaomega_ebooks_ebook_isbn');
             $data[] = [
                 'id'    => $product->get_id(),
-                'title' => $product->get_name(),
-                'isbn'  => $product->get_meta('alfaomega_ebooks_ebook_isbn'),
+                'title' => $product->get_name() . " ($isbn)",
+                'isbn'  => $isbn,
                 'cover' => $image_url,
             ];
         }

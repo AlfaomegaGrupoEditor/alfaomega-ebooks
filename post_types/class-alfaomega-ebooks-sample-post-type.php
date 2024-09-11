@@ -156,12 +156,7 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
 
             // only to add new posts
             $apiUrl =  esc_url(rest_url(RouteManager::ROUTE_NAMESPACE)) . "/search-ebooks";
-            $searchSetup = [
-                'options' => [
-                    'value' => 'isbn',
-                    'label' => 'title',
-                ],
-            ];
+            $searchSetup = [ 'options' => [ 'value' => 'isbn', 'label' => 'title', ], ];
 
             if ($pagenow === 'post-new.php') {
                 Container::make('post_meta', __('Complete the following form to generate eBook Access Samples', 'alfaomega-ebooks'))
@@ -190,11 +185,12 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                             ->set_width(50)
                             ->set_help_text( __('A copy of the code sent to the client can be send to a promoter too', 'alfaomega-ebooks') ),
 
-                        Field::make('number', 'alfaomega_sample_count', __('Count', 'alfaomega-ebooks'))
+                        Field::make('text', 'alfaomega_sample_count', __('Count', 'alfaomega-ebooks'))
                             ->set_required()
+                            ->set_attribute('type', 'number')
+                            ->set_attribute('min',1)
+                            ->set_attribute('max', 100)
                             ->set_default_value(1)
-                            ->set_min(1)
-                            ->set_max(100)
                             ->set_width(50)
                             ->set_help_text( __('How many codes to generate with this setup', 'alfaomega-ebooks') ),
 
@@ -211,13 +207,12 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                                     ->set_attribute('placeholder', __('Start typing to search eBook...', 'alfaomega-ebooks'))
                                     ->set_attribute('shouldSort', true)
                                     ->set_attribute('searchEnabled', true)
-                                    ->set_attribute('searchResultLimit', 10)
                                     ->set_render_choice_limit(10)
                                     ->set_attribute('loadingText', __('Searching eBooks...', 'alfaomega-ebooks'))
                                     ->set_attribute('searchPlaceholderValue', __('Type to start searching...', 'alfaomega-ebooks'))
                                     ->set_fetch_url($apiUrl, $searchSetup)
                                     ->add_options(['' => __('Select the eBook', 'alfaomega-ebooks')])
-                                    ->set_help_text(__('The eBook ISBN to generate the access code', 'alfaomega-ebooks')),
+                                    ->set_help_text(__('The eBook ISBN to generate the access code. Doubke click on search input to reset the search', 'alfaomega-ebooks')),
 
                                 Field::make('choices', 'alfaomega_sample_payload_access_time', __('Access time', 'alfaomega-ebooks'))
                                     ->add_options([
