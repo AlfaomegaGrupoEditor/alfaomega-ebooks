@@ -24,6 +24,15 @@ const NoOptions = () => (
 );
 
 export class ChoicesField extends Component {
+
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			choices: null
+		};
+	}
+
 	/**
 	 * Handles the change of the input.
 	 *
@@ -102,18 +111,35 @@ export class ChoicesField extends Component {
 		// add the searchable class to the choices element
 		if (attributes.searchEnabled) {
 			choicesElement.className += ' searchable';
+
+			// clear the search input on dblclick of the pseudo-element
+			document.addEventListener('DOMContentLoaded', () => {
+				const parentElement = document.querySelector('.choices.searchable .choices__list--dropdown');
+
+				if (parentElement) {
+					parentElement.addEventListener('dblclick', (event) => {
+						this.state.choices.clearChoices();
+						this.state.choices.clearInput();
+						this.loadChoices(this.state.choices);
+					});
+				}
+			});
 		}
+
 	}
 
 	/**
 	 * Load choices from the fetch url.
 	 * @param choices
-	 * @param fetch_url
-	 * @param setup_search
 	 * @param page
 	 */
-	loadChoices = (choices, fetch_url, setup_search = null, page = 1) => {
+	loadChoices = (choices, page = 1) => {
 		const loadOptions = (searchTerm) => {
+			const {
+				fetch_url,
+				setup_search
+			} = this.props.field;
+
 			const url = new URL(fetch_url);
 			const params = {query: searchTerm, limit: setup_search.params.limit, page: page};
 			if (setup_search.method === 'GET') {
@@ -178,9 +204,9 @@ export class ChoicesField extends Component {
 		const element = document.getElementById( id );
 		if (element.length) {
 			const choices = new Choices( element, this.getUserConfig(id, field ) );
-
+			this.setState({ choices: choices });
 			if (fetch_url) {
-				this.loadChoices(choices, fetch_url, setup_search, 1);
+				this.loadChoices(choices);
 			}
 		} else {
 			console.error(`Element select#${this.props.id} not found`);
@@ -188,8 +214,6 @@ export class ChoicesField extends Component {
 	}
 
 	componentMount() {
-		console.log(id);
-
 		onChange( id, value );
 	}
 
