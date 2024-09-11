@@ -86,8 +86,8 @@ class Complex_Field extends Field {
 	 * @var array
 	 */
 	public $labels = array(
-		'singular_name' => 'Entry',
-		'plural_name' => 'Entries',
+		'singular_name' => 'Entrada',
+		'plural_name' => 'Entradas',
 	);
 
 	/**
