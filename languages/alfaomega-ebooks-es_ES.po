@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Blank WordPress Pot v1.0.0\n"
 "Report-Msgid-Bugs-To: Livan Rodriguez <livan2r@gmail.com>\n"
 "POT-Creation-Date: 2024-09-11 08:14-0400\n"
-"PO-Revision-Date: 2024-09-11 11:46-0400\n"
+"PO-Revision-Date: 2024-09-11 11:54-0400\n"
 "Last-Translator: Alfaomega México ADMIN\n"
 "Language-Team: Español\n"
 "Language: es_ES\n"
@@ -1041,7 +1041,7 @@ msgstr "Accesos AO eBooks"
 #: post_types/class-alfaomega-ebooks-access-post-type.php:33
 #: post_types/class-alfaomega-ebooks-access-post-type.php:35
 msgid "Alfaomega eBook Access"
-msgstr "Accesos Alfaomega eBooks"
+msgstr "Accesos a Alfaomega eBooks"
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:75
 #: views/alfaomega_ebook_access_metabox.php:6
@@ -1156,7 +1156,7 @@ msgstr "Generar"
 
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:43
 msgid "Generate eBook Access Samples"
-msgstr "Generar acceso a muestras de eBook"
+msgstr "Generar códigos de acceso para muestras de Alfaomega eBook"
 
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:45
 msgid "Edit Sample Code"

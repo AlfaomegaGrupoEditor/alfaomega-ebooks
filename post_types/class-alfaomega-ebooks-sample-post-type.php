@@ -37,7 +37,7 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                     'label'               => esc_html__('AO eBook Sample', 'alfaomega-ebook'),
                     'description'         => esc_html__('Alfaomega eBook Sample', 'alfaomega-ebook'),
                     'labels'              => [
-                        'name'               => esc_html__('Alfaomega eBook Sample', 'alfaomega-ebook'),
+                        'name'               => esc_html__('Códigos de Muestras a Alfaomega eBooks', 'alfaomega-ebook'),
                         'singular_name'      => esc_html__('AO eBook Sample', 'alfaomega-ebook'),
                         'add_new'            => esc_html__('Generate', 'alfaomega-ebooks'),
                         'add_new_item'       => esc_html__('Generate eBook Access Samples', 'alfaomega-ebooks'),
