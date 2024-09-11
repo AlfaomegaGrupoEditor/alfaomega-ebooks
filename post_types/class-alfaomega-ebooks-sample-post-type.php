@@ -162,7 +162,7 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                 Container::make('post_meta', __('Complete the following form to generate eBook Access Samples', 'alfaomega-ebooks'))
                     ->where('post_type', '=', 'alfaomega-sample')
                     ->add_fields([
-                        Field::make( 'hidden', 'alfaomega_ebook_sample_nonce' )
+                        Field::make( 'hidden', 'alfaomega_ebook_sample_nonce', '')
                             ->set_default_value(wp_create_nonce('alfaomega_ebook_sample_nonce')),
 
                         Field::make('textarea', 'alfaomega_sample_description', __('Description', 'alfaomega-ebooks'))
