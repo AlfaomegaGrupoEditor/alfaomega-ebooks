@@ -220,12 +220,6 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
                 }
             }
 
-            // check if is a code generation
-            if ( isset( $_POST['action'] ) && $_POST['action'] == 'editpost' ) {
-
-            }
-
-
             // Now we can actually save the data
             // First, check if the form is sending the right POST action
             if ( isset( $_POST['action'] ) && $_POST['action'] == 'editpost' ) {
