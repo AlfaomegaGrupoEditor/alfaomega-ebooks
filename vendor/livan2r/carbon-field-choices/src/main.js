@@ -78,6 +78,9 @@ export class ChoicesField extends Component {
 			// The text that is shown whilst choices are being populated via AJAX.
 			loadingText: attributes.loadingText ? attributes.loadingText : __('Loading...', 'carbon-fields-ui'),
 
+			// The text that is shown when a user's search has returned no results
+			noResultsText: attributes.noResultsText ? attributes.noResultsText : __('No results found.', 'carbon-fields-ui'),
+
 			// The text that is shown when a user hovers over a selectable choice.
 			itemSelectText: attributes.itemSelectText ? attributes.itemSelectText : '',
 
