@@ -15,6 +15,7 @@ class Choices_Field extends Select_Field {
         'searchEnabled',
         'searchResultLimit',
         'loadingText',
+        'noResultsText',
         'removeItemButton',
         'allowHTML',
         'searchPlaceholderValue',

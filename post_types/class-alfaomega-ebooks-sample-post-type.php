@@ -209,6 +209,7 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                                     ->set_attribute('searchEnabled', true)
                                     ->set_render_choice_limit(10)
                                     ->set_attribute('loadingText', __('Searching eBooks...', 'alfaomega-ebooks'))
+                                    ->set_attribute('noResultsText', __('No results found.', 'alfaomega-ebooks'))
                                     ->set_attribute('searchPlaceholderValue', __('Type to start searching...', 'alfaomega-ebooks'))
                                     ->set_fetch_url($apiUrl, $searchSetup)
                                     ->add_options(['' => __('Select the eBook', 'alfaomega-ebooks')])

@@ -11,7 +11,7 @@ msgstr ""
 "Livan Rodriguez "
 "<livan2r@gmail.com>\n"
 "POT-Creation-Date: "
-"2024-09-11 08:14-0400\n"
+"2024-09-11 20:55-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Livan "
 "Rodriguez <livan2r@gmail."
@@ -1116,9 +1116,14 @@ msgid "AO eBook Access"
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:33
-#: post_types/class-alfaomega-ebooks-access-post-type.php:35
 msgid ""
 "Alfaomega eBook Access"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-access-post-type.php:35
+msgid ""
+"Accesos a Alfaomega "
+"eBooks"
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:75
@@ -1224,9 +1229,14 @@ msgid "AO eBook Sample"
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:38
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:40
 msgid ""
 "Alfaomega eBook Sample"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:40
+msgid ""
+"Códigos de Muestras a "
+"Alfaomega eBooks"
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:42
@@ -1281,7 +1291,7 @@ msgstr ""
 
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:91
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:168
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:265
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:266
 msgid "Description"
 msgstr ""
 
@@ -1301,7 +1311,7 @@ msgid ""
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:171
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:268
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:269
 msgid ""
 "In a few words describe "
 "the intended use of this "
@@ -1309,24 +1319,24 @@ msgid ""
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:172
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:269
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:270
 msgid ""
 "Add a note to identify "
 "the generated code later"
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:174
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:271
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:272
 msgid "Destination"
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:177
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:275
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:276
 msgid "customer@gmail.com"
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:179
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:277
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:278
 msgid ""
 "Upon generation the "
 "sample code can be send "
@@ -1335,18 +1345,18 @@ msgid ""
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:181
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:279
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:280
 msgid "Promoter"
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:184
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:283
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:284
 msgid ""
 "promoter@alfaomega.com.mx"
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:186
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:285
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:286
 msgid ""
 "A copy of the code sent "
 "to the client can be "
@@ -1389,17 +1399,22 @@ msgid "Searching eBooks..."
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:212
+#: vendor/htmlburger/carbon-fields/packages/blocks/components/server-side-render/index.js:135
+msgid "No results found."
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:213
 msgid ""
 "Type to start "
 "searching..."
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:214
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:321
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:215
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:322
 msgid "Select the eBook"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:215
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:216
 msgid ""
 "The eBook ISBN to "
 "generate the access "
@@ -1408,53 +1423,53 @@ msgid ""
 "the search"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:217
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:218
 msgid "Access time"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:219
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:231
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:220
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:232
 msgid ""
 "Select the access "
 "duration"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:220
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:221
 #, php-format
 msgid "%s days"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:221
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:222
 #, php-format
 msgid "%s week"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:222
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:223
 #, php-format
 msgid "%s weeks"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:223
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:224
 #, php-format
 msgid "%s month"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:224
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:225
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:226
 #, php-format
 msgid "%s months"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:226
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:227
 #, php-format
 msgid "%s year"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:227
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:228
 msgid "Unlimited"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:234
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:235
 msgid ""
 "Defines the time while "
 "the eBook access will be "
@@ -1462,22 +1477,22 @@ msgid ""
 "redeeming this code"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:236
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:237
 msgid "Read online"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:240
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:241
 msgid ""
 "The customer will be "
 "able to read the eBook "
 "online"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:242
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:243
 msgid "Download PDF"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:246
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:247
 msgid ""
 "The customer will be "
 "able to download the "
@@ -1486,12 +1501,12 @@ msgid ""
 "costs by download"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:259
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:260
 msgid ""
 "Edit eBook Access Sample"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:384
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:385
 #: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:153
 msgid "Sample code"
 msgstr ""
@@ -1781,10 +1796,6 @@ msgstr ""
 #, javascript-format
 msgid ""
 "Error loading block: %s"
-msgstr ""
-
-#: vendor/htmlburger/carbon-fields/packages/blocks/components/server-side-render/index.js:135
-msgid "No results found."
 msgstr ""
 
 #: vendor/htmlburger/carbon-fields/packages/blocks/fields/datetime/index.js:59
