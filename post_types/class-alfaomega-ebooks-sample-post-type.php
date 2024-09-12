@@ -1,6 +1,7 @@
 <?php
 
 use AlfaomegaEbooks\Http\RouteManager;
+use AlfaomegaEbooks\Services\eBooks\Service;
 use Carbon_Fields\Container;
 use Carbon_Fields\Field;
 
@@ -260,6 +261,7 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                             ]),
                     ]);
             } elseif ($pagenow === 'post.php') {
+                // TODO: implement a different form to edit the sample code
                 Container::make('post_meta', __('Edit eBook Access Sample', 'alfaomega-ebooks'))
                     ->where('post_type', '=', 'alfaomega-sample')
                     ->add_fields([
@@ -348,10 +350,13 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
 
         /**
          * Save post
+         *
+         * @param int $post_id Post ID to be saved
+         *
          * @return void
-         * @since 1.0.0
+         * @throws \Exception
+         * @since  1.0.0
          * @access public
-         * @param int $post_id  Post ID to be saved
          */
         public function save_post( $post_id ): void
         {
@@ -375,11 +380,54 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                 }elseif( ! current_user_can( 'edit_post', $post_id ) ){
                     return;
                 }
+            } else {
+                return;
             }
 
             // Now we can actually save the data
             // First, check if the form is sending the right POST action
             if ( isset( $_POST['action'] ) && $_POST['action'] == 'editpost' ) {
+
+                // Generate the sample codes
+                if (isset($_POST['carbon_fields_compact_input']['_alfaomega_ebook_sample_action']) &&
+                    $_POST['carbon_fields_compact_input']['_alfaomega_ebook_sample_action'] === 'generate') {
+
+                    $_POST['carbon_fields_compact_input']['_alfaomega_ebook_sample_action'] = 'processing';
+                    $fields = $_POST['carbon_fields_compact_input'];
+                    Service::make()
+                        ->ebooks()
+                        ->samplePost()
+                        ->updateOrCreate(null, [
+                            // Email address to send the samples
+                            'destination' => $fields['_alfaomega_sample_destination'] ?? '',
+                            // Email address to sean a copy of the samples
+                            'promoter'    => $fields['_alfaomega_sample_promoter'] ?? '',
+                            // Sample description
+                            'description' => $fields['_alfaomega_sample_description'] ?? '',
+                            // Access information
+                            'payload'     => array_map(function ($access) {
+                                return [
+                                    // eBook ISBN
+                                    'isbn'        => $access['_alfaomega_sample_payload_isbn'] ?? '',
+                                    // Days available to access the eBook after activation
+                                    'access_time' => $access['_alfaomega_sample_payload_access_time'] ?? 3,
+                                    // Allow to read the eBook
+                                    'read'        => isset($access['_alfaomega_sample_payload_read'])
+                                                     && $access['_alfaomega_sample_payload_read'] === 'yes',
+                                    // Allow to download the eBook
+                                    'download'    => isset($access['_alfaomega_sample_payload_download'])
+                                                     && $access['_alfaomega_sample_payload_download'] === 'yes',
+                                ];
+                            }, $fields['_alfaomega_sample_payload'] ?? []),
+                            // Valid until this date
+                            'due_date'    => $fields['_alfaomega_sample_due_date'] ?? '',
+                            // Number of samples to generate
+                            'count'       => intval($fields['_alfaomega_sample_count'] ?? 1),
+                        ]);
+
+                    return;
+                }
+
                 // Populate an array with the fields we want to save
                 $fields = [
                     'alfaomega_sample_description' => [

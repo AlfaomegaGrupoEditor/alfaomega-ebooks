@@ -186,6 +186,8 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
                 }elseif( ! current_user_can( 'edit_post', $post_id ) ){
                     return;
                 }
+            } else {
+                return;
             }
 
             // Now we can actually save the data

@@ -314,10 +314,31 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
     public function codeExists(string $code): bool
     {
         $query = new WP_Query([
-            'post_type' => 'alfaomega-sample',
-            'post_title' => $code,
+            'post_type'   => 'alfaomega-sample',
+            's'           => $code
         ]);
 
         return $query->have_posts();
+    }
+
+    /**
+     * Generate the sample code payload.
+     * @param array $payload
+     *
+     * @return array
+     */
+    public function generate(array $payload): array
+    {
+        $result = [];
+        foreach ($payload as $item) {
+            $result[] = [
+                'isbn'        => $item['isbn'],
+                'read'        => $item['read'] ?? 0,
+                'download'    => $item['download'] ?? 0,
+                'access_time' => $item['access_time'] ?? 0,
+            ];
+        }
+
+        return $result;
     }
 }
