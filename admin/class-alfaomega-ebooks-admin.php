@@ -531,4 +531,21 @@ class Alfaomega_Ebooks_Admin {
             $scripts->registered['jquery']->deps = array_diff( $scripts->registered['jquery']->deps, array( 'jquery-migrate' ) );
         }
     }
+
+    /**
+     * Redirect to sample post type after generating a new sample
+     * @param $location
+     *
+     * @return void
+     */
+    function redirect_custom_post_location( $location ): string
+    {
+        if ( get_post_type() === ALFAOMEGA_EBOOKS_SAMPLE_POST_TYPE &&
+             (isset( $_POST['save'] ) || isset( $_POST['publish'] ))) {
+
+                return admin_url( "edit.php?post_type=" . get_post_type() );
+        }
+
+        return $location;
+    }
 }

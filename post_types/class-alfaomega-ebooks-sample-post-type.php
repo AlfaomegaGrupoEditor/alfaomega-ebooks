@@ -425,6 +425,7 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                             'count'       => intval($fields['_alfaomega_sample_count'] ?? 1),
                         ]);
 
+                    $this->delete_auto_draft();
                     return;
                 }
 
@@ -478,8 +479,6 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
             
                     update_post_meta( $post_id, $field, $new_value, $old_value );
                 }
-
-                $this->delete_auto_draft();
             }
         }
 
@@ -504,7 +503,6 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                     $query->the_post();
                     wp_delete_post(get_the_ID(), true);
                 }
-                wp_reset_postdata();
             }
         }
     }
