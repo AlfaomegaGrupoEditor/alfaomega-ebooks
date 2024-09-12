@@ -1252,3 +1252,7 @@ table.wp-list-table .column-date {
     padding: 3px 5px;
     border-radius: 5px;
 }
+
+div.cf-container__fields .cf-hidden {
+    display: none;
+}

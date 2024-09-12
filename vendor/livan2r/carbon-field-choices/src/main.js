@@ -25,6 +25,10 @@ const NoOptions = () => (
 
 export class ChoicesField extends Component {
 
+	/**
+	 * ChoicesField constructor.
+	 * @param props
+	 */
 	constructor(props) {
 		super(props);
 
@@ -196,6 +200,7 @@ export class ChoicesField extends Component {
 		const {
 			id,
 			field,
+			value,
 			onChange
 		} = this.props;
 
@@ -211,6 +216,8 @@ export class ChoicesField extends Component {
 			if (fetch_url) {
 				this.loadChoices(choices);
 			}
+			const defaultValue = value || get( field.options, '[0].value', '' );
+			choices.setChoiceByValue(defaultValue);
 		} else {
 			console.error(`Element select#${this.props.id} not found`);
 		}

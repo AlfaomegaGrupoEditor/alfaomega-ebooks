@@ -165,6 +165,9 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                         Field::make( 'hidden', 'alfaomega_ebook_sample_nonce', '')
                             ->set_default_value(wp_create_nonce('alfaomega_ebook_sample_nonce')),
 
+                        Field::make( 'hidden', 'alfaomega_ebook_sample_action', '')
+                            ->set_default_value('generate'),
+
                         Field::make('textarea', 'alfaomega_sample_description', __('Description', 'alfaomega-ebooks'))
                             ->set_required()
                             ->set_rows(4)
