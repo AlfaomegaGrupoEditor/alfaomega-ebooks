@@ -386,7 +386,7 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
 
             // Now we can actually save the data
             // First, check if the form is sending the right POST action
-            if ( isset( $_POST['action'] ) && $_POST['action'] == 'editpost' ) {
+            if ( isset( $_POST['action'] ) && $_POST['action'] == 'editpost') {
 
                 // Generate the sample codes
                 if (isset($_POST['carbon_fields_compact_input']['_alfaomega_ebook_sample_action']) &&
@@ -478,8 +478,34 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
             
                     update_post_meta( $post_id, $field, $new_value, $old_value );
                 }
+
+                $this->delete_auto_draft();
             }
         }
 
+        /**
+         * Delete auto draft posts
+         * @return void
+         * @since 1.0.0
+         * @access public
+         */
+        function delete_auto_draft(): void
+        {
+            $args = [
+                'post_type'      => ALFAOMEGA_EBOOKS_SAMPLE_POST_TYPE,
+                's'              => __("Auto Draft"),
+                'posts_per_page' => -1,
+            ];
+
+            $query = new WP_Query($args);
+
+            if ($query->have_posts()) {
+                while ($query->have_posts()) {
+                    $query->the_post();
+                    wp_delete_post(get_the_ID(), true);
+                }
+                wp_reset_postdata();
+            }
+        }
     }
 }

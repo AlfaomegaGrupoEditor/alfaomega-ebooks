@@ -531,22 +531,4 @@ class Alfaomega_Ebooks_Admin {
             $scripts->registered['jquery']->deps = array_diff( $scripts->registered['jquery']->deps, array( 'jquery-migrate' ) );
         }
     }
-
-    /**
-     * Remove autosave script from the post editor
-     *
-     * @param $src
-     * @param $handle
-     *
-     * @return string
-     */
-    function remove_autosave_on_custom_post_types($src, $handle): string
-    {
-        global $typenow;
-
-        if( 'autosave' != $handle || $typenow != ALFAOMEGA_EBOOKS_SAMPLE_POST_TYPE )
-            return $src;
-
-        return '';
-    }
 }
