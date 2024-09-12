@@ -534,12 +534,19 @@ class Alfaomega_Ebooks_Admin {
 
     /**
      * Remove autosave script from the post editor
-     * @return void
+     *
+     * @param $src
+     * @param $handle
+     *
+     * @return string
      */
-    function remove_autosave_on_custom_post_types(): void
+    function remove_autosave_on_custom_post_types($src, $handle): string
     {
-        if ( get_post_type() == ALFAOMEGA_EBOOKS_SAMPLE_POST_TYPE ) {
-            wp_dequeue_script( 'autosave' );
-        }
+        global $typenow;
+
+        if( 'autosave' != $handle || $typenow != ALFAOMEGA_EBOOKS_SAMPLE_POST_TYPE )
+            return $src;
+
+        return '';
     }
 }
