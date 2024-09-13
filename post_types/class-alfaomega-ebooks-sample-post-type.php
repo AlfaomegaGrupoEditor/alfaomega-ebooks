@@ -234,7 +234,7 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                                 ->set_attribute('searchPlaceholderValue', __('Type to start searching...', 'alfaomega-ebooks'))
                                 ->set_fetch_url($apiUrl, $searchSetup)
                                 ->add_options(['' => __('Select the eBook', 'alfaomega-ebooks')])
-                                ->set_help_text(__('The eBook ISBN to generate the access code. Doubke click on search input to reset the search', 'alfaomega-ebooks')),
+                                ->set_help_text(__('The eBook ISBN to generate the access code.', 'alfaomega-ebooks')),
 
                             Field::make('choices', 'alfaomega_sample_payload_access_time', __('Access time', 'alfaomega-ebooks'))
                                 ->add_options([
@@ -330,7 +330,8 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                             ->set_width(33)
                             ->set_help_text(__('Update the code status', 'alfaomega-ebooks'))
                             ->set_default_value($samplePost['status'])
-                        : Field::make('choices', 'alfaomega_sample_status', __('Status', 'alfaomega-ebooks'))
+                        : Field::make('select', 'alfaomega_sample_status', __('Status', 'alfaomega-ebooks'))
+                            ->set_required(true)
                             ->add_options([
                                 'created'  => __('created', 'alfaomega-ebooks'),
                                 'redeemed' => __('redeemed', 'alfaomega-ebooks'),
@@ -362,10 +363,12 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                         ->set_help_text(__('The client redeemed the code this date', 'alfaomega-ebooks')),
 
                     Field::make('complex', 'alfaomega_sample_payload', __('Setup the eBook access', 'alfaomega-ebooks'))
+                        ->set_classes( 'cf-readonly-view' )
                         ->add_fields([
-                            Field::make('text', 'alfaomega_sample_payload_isbn', __('eBook', 'alfaomega-ebooks'))
+                            Field::make('textarea', 'alfaomega_sample_payload_isbn', __('eBook', 'alfaomega-ebooks'))
                                 ->set_attribute('readOnly', true)
-                                ->set_attribute('type', 'text')
+                                //->set_attribute('type', 'text')
+                                ->set_rows(2)
                                 ->set_width(50)
                                 ->set_help_text(__('The eBook ISBN to generate the access code. Doubke click on search input to reset the search', 'alfaomega-ebooks')),
 
@@ -385,10 +388,11 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                                 ->set_width(50)
                                 ->set_help_text(__('The customer will be able to download the eBook PDF. Be careful this option generate costs by download', 'alfaomega-ebooks'))
                         ])->set_duplicate_groups_allowed(false)
+                        ->set_min(count($samplePost['payload']))
                         ->set_default_value(array_map(function ($access) {
                             return [
-                                'alfaomega_sample_payload_isbn'     => $access['isbn'],
-                                'alfaomega_sample_payload_duration' => $access['access_time'],
+                                'alfaomega_sample_payload_isbn'     => $access['title'] . " ({$access['isbn']})",
+                                'alfaomega_sample_payload_duration' => $access['access_time_desc'],
                                 'alfaomega_sample_payload_read'     => $access['read'],
                                 'alfaomega_sample_payload_download' => $access['download'],
                             ];

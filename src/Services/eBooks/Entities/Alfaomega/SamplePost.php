@@ -60,6 +60,23 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         $payload = json_decode($payloadJson, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
             $payload = [];
+        } else {
+            $service = Service::make()->ebooks()->eBookPost();
+            foreach ($payload as &$item) {
+                $eBookPost = $service->search($item['isbn']);
+                $item['title'] = !empty($eBookPost) ? $eBookPost['title'] : '';
+                $item['access_time_desc'] = match ($item['access_time']) {
+                    '3'   => sprintf(__('%s days', 'alfaomega-ebooks'), 3),
+                    '7'   => sprintf(__('%s week', 'alfaomega-ebooks'), 1),
+                    '15'  => sprintf(__('%s weeks', 'alfaomega-ebooks'), 2),
+                    '30'  => sprintf(__('%s month', 'alfaomega-ebooks'), 1),
+                    '60'  => sprintf(__('%s months', 'alfaomega-ebooks'), 2),
+                    '180' => sprintf(__('%s months', 'alfaomega-ebooks'), 6),
+                    '365' => sprintf(__('%s year', 'alfaomega-ebooks'), 1),
+                    '0'   => __('Unlimited', 'alfaomega-ebooks'),
+                    default => __('Unknown', 'alfaomega-ebooks'),
+                };
+            }
         }
 
         $dueDate = get_post_meta($postId, 'alfaomega_sample_due_date', true);

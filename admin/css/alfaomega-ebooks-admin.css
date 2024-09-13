@@ -1256,3 +1256,10 @@ table.wp-list-table .column-date {
 div.cf-container__fields .cf-hidden {
     display: none;
 }
+div.cf-readonly-view button.cf-complex__group-action,
+div.cf-readonly-view button.cf-complex__toggler {
+    display: none;
+}
+div.cf-readonly-view label.cf-checkbox__label{
+    font-style: italic;
+}
