@@ -2,6 +2,7 @@
 
 use AlfaomegaEbooks\Http\RouteManager;
 use AlfaomegaEbooks\Services\eBooks\Service;
+use Carbon\Carbon;
 use Carbon_Fields\Container;
 use Carbon_Fields\Field;
 
@@ -120,10 +121,12 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                     echo esc_html( get_post_meta( $post_id, 'alfaomega_sample_status', true ) );
                     break;
                 case 'alfaomega_sample_activated_at':
-                    echo esc_html( get_post_meta( $post_id, 'alfaomega_sample_activated_at', true ) );
+                    $activatedAt = get_post_meta( $post_id, 'alfaomega_sample_activated_at', true );
+                    echo empty($activatedAt) ? '' : Carbon::parse($activatedAt)->format('d/m/Y h:i A');
                     break;
                 case 'alfaomega_sample_due_date':
-                    echo esc_html( get_post_meta( $post_id, 'alfaomega_sample_due_date', true ) );
+                    $dueDate = get_post_meta( $post_id, 'alfaomega_sample_due_date', true );
+                    echo empty($dueDate) ? '' : Carbon::parse($dueDate)->format('d/m/Y');
                     break;
             }
         }
