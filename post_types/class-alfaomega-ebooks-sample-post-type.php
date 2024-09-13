@@ -168,6 +168,7 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                     $this->add_meta_boxes_edit();
                     break;
             }
+            $this->delete_auto_draft();
         }
 
         /**
@@ -522,8 +523,6 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
 
                     update_post_meta( $post_id, $field, $new_value, $old_value );
                 }
-
-                $this->delete_auto_draft();
             }
         }
 
@@ -535,19 +534,27 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
          */
         function delete_auto_draft(): void
         {
-            $args = [
-                'post_type'      => ALFAOMEGA_EBOOKS_SAMPLE_POST_TYPE,
-                'post_status'    => ['auto-draft'],
-                's'              => __("Auto Draft"),
-                'posts_per_page' => -1,
+            $qArgs = [
+                [
+                    'post_type'      => ALFAOMEGA_EBOOKS_SAMPLE_POST_TYPE,
+                    'posts_per_page' => -1,
+                    'post_status'    => 'auto-draft',
+                ],
+                [
+                    'post_type'      => ALFAOMEGA_EBOOKS_SAMPLE_POST_TYPE,
+                    'posts_per_page' => -1,
+                    's'              => __("Auto Draft"),
+                ]
             ];
 
-            $query = new WP_Query($args);
+            foreach ($qArgs as $args) {
+                $query = new WP_Query($args);
 
-            if ($query->have_posts()) {
-                while ($query->have_posts()) {
-                    $query->the_post();
-                    wp_delete_post(get_the_ID(), true);
+                if ($query->have_posts()) {
+                    while ($query->have_posts()) {
+                        $query->the_post();
+                        wp_delete_post(get_the_ID(), true);
+                    }
                 }
             }
         }
