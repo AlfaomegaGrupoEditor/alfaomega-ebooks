@@ -486,8 +486,6 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                             // Number of samples to generate
                             'count'       => intval($fields['_alfaomega_sample_count'] ?? 1),
                         ]);
-
-                    $this->delete_auto_draft();
                     return;
                 }
 
@@ -524,6 +522,8 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
 
                     update_post_meta( $post_id, $field, $new_value, $old_value );
                 }
+
+                $this->delete_auto_draft();
             }
         }
 
