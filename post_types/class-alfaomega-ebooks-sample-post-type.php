@@ -287,10 +287,17 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
          */
         public function add_meta_boxes_edit() : void
         {
+            if (empty($_GET['post'])) {
+                return;
+            }
+
             $samplePost = Service::make()
                 ->ebooks()
                 ->samplePost()
                 ->get($_GET['post']);
+            if (empty($samplePost)) {
+                return;
+            }
 
             Container::make('post_meta', __('Edit eBook Access Sample', 'alfaomega-ebooks'))
                 ->where('post_type', '=', 'alfaomega-sample')
@@ -401,58 +408,6 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
         }
 
         /**
-         * Retrieves all 'alfaomega-ebook' posts and returns an array with ISBNs as keys and titles as values.
-         *
-         * @return array An associative array where the keys are the ISBNs and the values are the titles of the ebooks.
-         * @fixme: Should be implemente a search by title or ISBN
-         */
-        public function get_ebooks_isbn(): array
-        {
-            $query = new WP_Query([
-                'post_type' => 'alfaomega-ebook',
-                'posts_per_page' => 10,
-                'post_status' => 'publish',
-            ]);
-
-            $ebooks = [];
-
-            if ($query->have_posts()) {
-                while ($query->have_posts()) {
-                    $query->the_post();
-                    $isbn = get_post_meta(get_the_ID(), 'alfaomega_ebook_isbn', true);
-                    $title = get_the_title();
-                    if (!empty($isbn) && !empty($title)) {
-                        $ebooks[$isbn] = str_replace('&#8211;', '-', $title);
-                    }
-                }
-                wp_reset_postdata();
-            }
-
-            return array_merge(['' => __('Select the eBook', 'alfaomega-ebooks')], $ebooks);
-        }
-
-        /**
-         * Add inner meta boxes view
-         * @return void
-         * @since 1.0.0
-         * @access public
-         * @param object $post  Post object to be passed to the view
-         */
-        public function add_inner_meta_boxes( $post ): void
-        {
-            //$meta = get_post_meta( $post->ID );
-            /*$description = get_post_meta( $post->ID, 'alfaomega_sample_description', true );
-            $destination = get_post_meta( $post->ID, 'alfaomega_sample_destination', true );
-            $promoter = get_post_meta( $post->ID, 'alfaomega_sample_promoter', true );
-            $status = get_post_meta( $post->ID, 'alfaomega_sample_status', true );
-            $payload = get_post_meta( $post->ID, 'alfaomega_access_payload', true );
-            $activated_at = get_post_meta( $post->ID, 'alfaomega_sample_activated_at', true );
-            $due_date = get_post_meta( $post->ID, 'alfaomega_sample_due_date', true );
-            require_once( ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_sample_metabox.php' );*/
-
-        }
-
-        /**
          * Save post
          *
          * @param int $post_id Post ID to be saved
@@ -540,36 +495,36 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                         'new'     => $_POST['alfaomega_sample_description'],
                         'default' => __('Sample code', 'alfaomega-ebooks'),
                     ],
-                    'alfaomega_sample_destination' => [
+                    /*'alfaomega_sample_destination' => [
                         'old'     => get_post_meta($post_id, 'alfaomega_sample_destination', true),
                         'new'     => $_POST['alfaomega_sample_destination'],
                         'default' => '',
-                    ],
-                    'alfaomega_sample_promoter' => [
+                    ],*/
+                    /*'alfaomega_sample_promoter' => [
                         'old'     => get_post_meta($post_id, 'alfaomega_sample_promoter', true),
                         'new'     => $_POST['alfaomega_sample_promoter'],
                         'default' => '',
-                    ],
+                    ],*/
                     'alfaomega_sample_status'  => [
                         'old'     => get_post_meta($post_id, 'alfaomega_sample_status', true),
                         'new'     => $_POST['alfaomega_sample_status'],
                         'default' => 'created',
                     ],
-                    'alfaomega_sample_payload'  => [
+                    /*'alfaomega_sample_payload'  => [
                         'old'     => get_post_meta($post_id, 'alfaomega_sample_payload', true),
                         'new'     => $_POST['alfaomega_sample_payload'],
                         'default' => '',
-                    ],
+                    ],*/
                     'alfaomega_sample_due_date'  => [
                         'old'     => get_post_meta($post_id, 'alfaomega_sample_due_date', true),
                         'new'     => $_POST['alfaomega_sample_due_date'],
                         'default' => '',
                     ],
-                    'alfaomega_sample_activated_at'  => [
+                    /*'alfaomega_sample_activated_at'  => [
                         'old'     => get_post_meta($post_id, 'alfaomega_sample_activated_at', true),
                         'new'     => $_POST['alfaomega_sample_activated_at'],
                         'default' => '',
-                    ],
+                    ],*/
                 ];
 
                 // Loop through the array and save the data
