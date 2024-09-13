@@ -1,8 +1,7 @@
 <?php
 
-namespace emails\sample;
+namespace includes;
 
-use AlfaomegaEbooks\Services\eBooks\Service;
 use WC_Email;
 
 if ( ! class_exists( 'Alfaomega_Ebooks_Sample_Email' ) ) {
@@ -20,8 +19,8 @@ if ( ! class_exists( 'Alfaomega_Ebooks_Sample_Email' ) ) {
             $this->heading = __('Sample code email', 'text-domain');
             $this->subject = __('Sample code email', 'text-domain');
 
-            $this->template_html = 'html-sample-email.php';
-            $this->template_plain = 'plain-sample-email.php';
+            $this->template_html = require(ALFAOMEGA_EBOOKS_PATH . 'views/emails/html-sample-email.php');
+            $this->template_plain = require(ALFAOMEGA_EBOOKS_PATH . 'views/emails/plain-sample-email.php');
 
             // Call parent constructor
             parent::__construct();
@@ -83,6 +82,10 @@ if ( ! class_exists( 'Alfaomega_Ebooks_Sample_Email' ) ) {
                 'plain_text' => true,
                 'email' => $this,
             ));
+        }
+
+        public function is_manual(): bool {
+            return true;
         }
     }
 }

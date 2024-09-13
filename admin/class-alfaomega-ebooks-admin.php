@@ -1,6 +1,7 @@
 <?php
 
 use AlfaomegaEbooks\Http\RouteManager;
+use AlfaomegaEbooks\Services\eBooks\Emails\AlfaomegaEbooksSampleEmail;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -556,7 +557,7 @@ class Alfaomega_Ebooks_Admin {
      * @return void
      */
     function add_sample_woocommerce_email_class($email_classes) {
-        $email_classes['Alfaomega_Ebooks_Sample_Email'] = include ALFAOMEGA_EBOOKS_PATH . 'emails/sample/Alfaomega_Ebooks_Sample_Email.php';
+        $email_classes['Alfaomega_Ebooks_Sample_Email'] = new AlfaomegaEbooksSampleEmail();
         return $email_classes;
     }
 }
