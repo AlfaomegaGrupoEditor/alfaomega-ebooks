@@ -330,7 +330,7 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                         ->set_help_text( __('A copy of the code sent to the client can be send to a promoter too', 'alfaomega-ebooks') )
                         ->set_default_value($samplePost['promoter']),
 
-                    $samplePost['status'] !== 'created'
+                    !in_array($samplePost['status'], ['created', 'sent'])
                         ? Field::make('text', 'alfaomega_sample_status', __('Status', 'alfaomega-ebooks'))
                             ->set_attribute('readOnly', true)
                             ->set_attribute('type', 'text')
@@ -341,6 +341,7 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                             ->set_required(true)
                             ->add_options([
                                 'created'  => __('created', 'alfaomega-ebooks'),
+                                'sent'     => __('sent', 'alfaomega-ebooks'),
                                 'redeemed' => __('redeemed', 'alfaomega-ebooks'),
                                 'canceled' => __('canceled', 'alfaomega-ebooks'),
                                 'expired'  => __('expired', 'alfaomega-ebooks'),
@@ -349,7 +350,7 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                             ->set_width(33)
                             ->set_help_text(__('Update the code status', 'alfaomega-ebooks')),
 
-                    $samplePost['status'] !== 'created'
+                    !in_array($samplePost['status'], ['created', 'sent'])
                         ? Field::make('text', 'alfaomega_sample_due_date', __('Due date', 'alfaomega-ebooks'))
                             ->set_attribute('readOnly', true)
                             ->set_attribute('type', 'text')
@@ -374,7 +375,6 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                         ->add_fields([
                             Field::make('textarea', 'alfaomega_sample_payload_isbn', __('eBook', 'alfaomega-ebooks'))
                                 ->set_attribute('readOnly', true)
-                                //->set_attribute('type', 'text')
                                 ->set_rows(2)
                                 ->set_width(50)
                                 ->set_help_text(__('The eBook ISBN to generate the access code. Doubke click on search input to reset the search', 'alfaomega-ebooks')),
@@ -488,44 +488,26 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                     return;
                 }
 
-                // Populate an array with the fields we want to save
                 $fields = [
                     'alfaomega_sample_description' => [
                         'old'     => get_post_meta($post_id, 'alfaomega_sample_description', true),
                         'new'     => $_POST['alfaomega_sample_description'],
                         'default' => __('Sample code', 'alfaomega-ebooks'),
                     ],
-                    /*'alfaomega_sample_destination' => [
-                        'old'     => get_post_meta($post_id, 'alfaomega_sample_destination', true),
-                        'new'     => $_POST['alfaomega_sample_destination'],
-                        'default' => '',
-                    ],*/
-                    /*'alfaomega_sample_promoter' => [
-                        'old'     => get_post_meta($post_id, 'alfaomega_sample_promoter', true),
-                        'new'     => $_POST['alfaomega_sample_promoter'],
-                        'default' => '',
-                    ],*/
-                    'alfaomega_sample_status'  => [
+                ];
+
+                if (in_array(get_post_meta($post_id, 'alfaomega_sample_status', true), ['created', 'sent'])) {
+                    $fields['alfaomega_sample_status'] = [
                         'old'     => get_post_meta($post_id, 'alfaomega_sample_status', true),
                         'new'     => $_POST['alfaomega_sample_status'],
                         'default' => 'created',
-                    ],
-                    /*'alfaomega_sample_payload'  => [
-                        'old'     => get_post_meta($post_id, 'alfaomega_sample_payload', true),
-                        'new'     => $_POST['alfaomega_sample_payload'],
-                        'default' => '',
-                    ],*/
-                    'alfaomega_sample_due_date'  => [
+                    ];
+                    $fields['alfaomega_sample_due_date'] = [
                         'old'     => get_post_meta($post_id, 'alfaomega_sample_due_date', true),
                         'new'     => $_POST['alfaomega_sample_due_date'],
                         'default' => '',
-                    ],
-                    /*'alfaomega_sample_activated_at'  => [
-                        'old'     => get_post_meta($post_id, 'alfaomega_sample_activated_at', true),
-                        'new'     => $_POST['alfaomega_sample_activated_at'],
-                        'default' => '',
-                    ],*/
-                ];
+                    ];
+                }
 
                 // Loop through the array and save the data
                 foreach ( $fields as $field => $data ) {
@@ -535,7 +517,7 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                     if ( $new_value === '' ) {
                         $new_value = $data['default'];
                     }
-            
+
                     update_post_meta( $post_id, $field, $new_value, $old_value );
                 }
             }
