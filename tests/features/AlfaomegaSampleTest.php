@@ -148,7 +148,7 @@ class AlfaomegaSampleTest extends WordpressTest
     public static function sampleEmailProvider(): array
     {
         return [
-            'postId' => 35676
+            ['postId' => 35676]
         ];
     }
 }
