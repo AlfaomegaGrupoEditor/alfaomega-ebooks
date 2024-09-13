@@ -45,7 +45,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         }
 
         $description = get_post_meta($postId, 'alfaomega_sample_description', true);
-        $description = !empty($description) ? __('Sample code', 'alfaomega-ebooks') : $description;
+        $description = !empty($description) ? $description : __('Sample code', 'alfaomega-ebooks');
 
         $destination = get_post_meta($postId, 'alfaomega_sample_destination', true);
         $destination = !empty($destination) ? $destination : '';

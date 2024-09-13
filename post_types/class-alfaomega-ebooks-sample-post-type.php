@@ -115,7 +115,7 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                     echo esc_html( get_post_meta( $post_id, 'alfaomega_sample_description', true ) );
                     break;
                 case 'alfaomega_sample_destination':
-                    echo esc_html( get_post_meta( $post_id, 'alfaomega_sample_destination', true ) );
+                    echo wp_trim_words( get_post_meta( $post_id, 'alfaomega_sample_destination', true ), 10, '...');
                 break;
                 case 'alfaomega_sample_status':
                     echo esc_html( get_post_meta( $post_id, 'alfaomega_sample_status', true ) );
@@ -491,10 +491,11 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                     return;
                 }
 
+                $data = $_POST['carbon_fields_compact_input'];
                 $fields = [
                     'alfaomega_sample_description' => [
                         'old'     => get_post_meta($post_id, 'alfaomega_sample_description', true),
-                        'new'     => $_POST['alfaomega_sample_description'],
+                        'new'     => $data['_alfaomega_sample_description'],
                         'default' => __('Sample code', 'alfaomega-ebooks'),
                     ],
                 ];
@@ -502,12 +503,12 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                 if (in_array(get_post_meta($post_id, 'alfaomega_sample_status', true), ['created', 'sent'])) {
                     $fields['alfaomega_sample_status'] = [
                         'old'     => get_post_meta($post_id, 'alfaomega_sample_status', true),
-                        'new'     => $_POST['alfaomega_sample_status'],
+                        'new'     => $data['_alfaomega_sample_status'],
                         'default' => 'created',
                     ];
                     $fields['alfaomega_sample_due_date'] = [
                         'old'     => get_post_meta($post_id, 'alfaomega_sample_due_date', true),
-                        'new'     => $_POST['alfaomega_sample_due_date'],
+                        'new'     => $data['_alfaomega_sample_due_date'],
                         'default' => '',
                     ];
                 }
@@ -536,6 +537,7 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
         {
             $args = [
                 'post_type'      => ALFAOMEGA_EBOOKS_SAMPLE_POST_TYPE,
+                'post_status'    => ['auto-draft'],
                 's'              => __("Auto Draft"),
                 'posts_per_page' => -1,
             ];

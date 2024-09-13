@@ -1386,7 +1386,7 @@ msgstr "Editar el acceso a muestra de eBook"
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:384
 #: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:153
 msgid "Sample code"
-msgstr "Códifo de muestra"
+msgstr "Código de muestra"
 
 #: public/alfaomega-ebooks-routes.php:14
 msgid "Please log in to download ebooks."
