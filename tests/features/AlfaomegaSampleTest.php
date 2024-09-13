@@ -121,4 +121,34 @@ class AlfaomegaSampleTest extends WordpressTest
             'exists'  => ['code' => '7RWI-WAUO-PW85', 'user_id' => 1, 'expected' => 1],
         ];
     }
+
+    /**
+     * Test send sample by email.
+     *
+     * @param int $postId
+     *
+     * @return void
+     * @throws \Exception
+     */
+    #[DataProvider('sampleEmailProvider')]
+    public function testSendSampleByEmail(int $postId): void
+    {
+        Service::make()
+            ->ebooks()
+            ->samplePost()
+            ->email($postId);
+
+        $this->assertTrue(true);
+    }
+
+    /**
+     * Data provider
+     * @return array[]
+     */
+    public static function sampleEmailProvider(): array
+    {
+        return [
+            'postId' => 35676
+        ];
+    }
 }
