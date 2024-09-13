@@ -44,6 +44,18 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             throw new Exception("Post $postId not found");
         }
 
+        $description = get_post_meta($postId, 'alfaomega_sample_description', true);
+        $description = !empty($description) ? __('Sample code', 'alfaomega-ebooks') : $description;
+
+        $destination = get_post_meta($postId, 'alfaomega_sample_destination', true);
+        $destination = !empty($destination) ? $destination : '';
+
+        $promoter = get_post_meta($postId, 'alfaomega_sample_promoter', true);
+        $promoter = !empty($promoter) ? $promoter : '';
+
+        $status = get_post_meta($postId, 'alfaomega_sample_status', true);
+        $status = !empty($status) ? $status : 'created';
+
         $payloadJson = get_post_meta($postId, 'alfaomega_sample_payload', true);
         $payload = json_decode($payloadJson, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
@@ -51,23 +63,19 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         }
 
         $dueDate = get_post_meta($postId, 'alfaomega_sample_due_date', true);
-        $dueDate = !empty($dueDate)
-            ? Carbon::parse($dueDate)
-            : '';
+        $dueDate = !empty($dueDate) ? Carbon::parse($dueDate) : '';
 
         $activatedAt = get_post_meta($postId, 'alfaomega_sample_activated_at', true);
-        $activatedAt = !empty($activatedAt)
-            ? Carbon::parse($activatedAt)
-            : '';
+        $activatedAt = !empty($activatedAt) ? Carbon::parse($activatedAt) : '';
 
         $this->meta = [
             'id'           => $postId,
             'code'         => $post->post_title,
-            'description'  => $post->post_content,
+            'description'  => $description,
             'author'       => $post->post_author,
-            'destination'  => get_post_meta($postId, 'alfaomega_sample_destination', true),
-            'promoter'     => get_post_meta($postId, 'alfaomega_sample_promoter', true),
-            'status'       => get_post_meta($postId, 'alfaomega_sample_status', true),
+            'destination'  => $destination,
+            'promoter'     => $promoter,
+            'status'       => $status,
             'payload'      => $payload,
             'due_date'     => $dueDate,
             'activated_at' => $activatedAt,

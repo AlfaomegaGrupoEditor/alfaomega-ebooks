@@ -147,153 +147,253 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
 
         /**
          * Add meta boxes
+         *
          * @return void
-         * @since 1.0.0
+         * @throws \Exception
+         * @since  1.0.0
          * @access public
          */
         public function add_meta_boxes() : void
         {
             global $pagenow;
 
+            switch ($pagenow) {
+                case 'post-new.php':
+                    $this->add_meta_boxes_new();
+                    break;
+                case 'post.php':
+                    $this->add_meta_boxes_edit();
+                    break;
+            }
+        }
+
+        /**
+         * Add meta boxes to generate new sample codes
+         * @return void
+         */
+        public function add_meta_boxes_new() : void
+        {
             // only to add new posts
             $apiUrl =  esc_url(rest_url(RouteManager::ROUTE_NAMESPACE)) . "/search-ebooks";
             $searchSetup = [ 'options' => [ 'value' => 'isbn', 'label' => 'title', ], ];
 
-            if ($pagenow === 'post-new.php') {
-                Container::make('post_meta', __('Complete the following form to generate eBook Access Samples', 'alfaomega-ebooks'))
-                    ->where('post_type', '=', 'alfaomega-sample')
-                    ->add_fields([
-                        Field::make( 'hidden', 'alfaomega_ebook_sample_nonce', '')
-                            ->set_default_value(wp_create_nonce('alfaomega_ebook_sample_nonce')),
+            Container::make('post_meta', __('Complete the following form to generate eBook Access Samples', 'alfaomega-ebooks'))
+                ->where('post_type', '=', 'alfaomega-sample')
+                ->add_fields([
+                    Field::make( 'hidden', 'alfaomega_ebook_sample_nonce', '')
+                        ->set_default_value(wp_create_nonce('alfaomega_ebook_sample_nonce')),
 
-                        Field::make( 'hidden', 'alfaomega_ebook_sample_action', '')
-                            ->set_default_value('generate'),
+                    Field::make( 'hidden', 'alfaomega_ebook_sample_action', '')
+                        ->set_default_value('generate'),
 
-                        Field::make('textarea', 'alfaomega_sample_description', __('Description', 'alfaomega-ebooks'))
-                            ->set_required()
-                            ->set_rows(4)
-                            ->set_attribute('placeholder', __('In a few words describe the intended use of this access code', 'alfaomega-ebooks'))
-                            ->set_help_text( __('Add a note to identify the generated code later', 'alfaomega-ebooks') ),
+                    Field::make('textarea', 'alfaomega_sample_description', __('Description', 'alfaomega-ebooks'))
+                        ->set_required()
+                        ->set_rows(4)
+                        ->set_attribute('placeholder', __('In a few words describe the intended use of this access code', 'alfaomega-ebooks'))
+                        ->set_help_text( __('Add a note to identify the generated code later', 'alfaomega-ebooks') ),
 
-                        Field::make('text', 'alfaomega_sample_destination', __('Destination', 'alfaomega-ebooks'))
+                    Field::make('text', 'alfaomega_sample_destination', __('Destination', 'alfaomega-ebooks'))
+                        ->set_required(false)
+                        ->set_attribute('type', 'email')
+                        ->set_attribute('placeholder', __('customer@gmail.com', 'alfaomega-ebooks'))
+                        ->set_width(50)
+                        ->set_help_text( __('Upon generation the sample code can be send to the client email mean to use it', 'alfaomega-ebooks') ),
+
+                    Field::make('text', 'alfaomega_sample_promoter', __('Promoter', 'alfaomega-ebooks'))
+                        ->set_required(false)
+                        ->set_attribute('type', 'email')
+                        ->set_attribute('placeholder', __('promoter@alfaomega.com.mx', 'alfaomega-ebooks'))
+                        ->set_width(50)
+                        ->set_help_text( __('A copy of the code sent to the client can be send to a promoter too', 'alfaomega-ebooks') ),
+
+                    Field::make('text', 'alfaomega_sample_count', __('Count', 'alfaomega-ebooks'))
+                        ->set_required()
+                        ->set_attribute('type', 'number')
+                        ->set_attribute('min',1)
+                        ->set_attribute('max', 100)
+                        ->set_default_value(1)
+                        ->set_width(50)
+                        ->set_help_text( __('How many codes to generate with this setup', 'alfaomega-ebooks') ),
+
+                    Field::make('date', 'alfaomega_sample_due_date', __('Due date', 'alfaomega-ebooks'))
+                        ->set_required(false)
+                        ->set_width(50)
+                        ->set_help_text( __('The code should be used before this date, left empty to never due', 'alfaomega-ebooks') ),
+
+                    Field::make('complex', 'alfaomega_sample_payload', __('Setup the eBook access', 'alfaomega-ebooks'))
+                        ->add_fields([
+                            Field::make('choices', 'alfaomega_sample_payload_isbn', __('eBook', 'alfaomega-ebooks'))
+                                ->set_required()
+                                ->set_width(50)
+                                ->set_attribute('placeholder', __('Start typing to search eBook...', 'alfaomega-ebooks'))
+                                ->set_attribute('shouldSort', true)
+                                ->set_attribute('searchEnabled', true)
+                                ->set_render_choice_limit(10)
+                                ->set_attribute('loadingText', __('Searching eBooks...', 'alfaomega-ebooks'))
+                                ->set_attribute('noResultsText', __('No results found.', 'alfaomega-ebooks'))
+                                ->set_attribute('searchPlaceholderValue', __('Type to start searching...', 'alfaomega-ebooks'))
+                                ->set_fetch_url($apiUrl, $searchSetup)
+                                ->add_options(['' => __('Select the eBook', 'alfaomega-ebooks')])
+                                ->set_help_text(__('The eBook ISBN to generate the access code. Doubke click on search input to reset the search', 'alfaomega-ebooks')),
+
+                            Field::make('choices', 'alfaomega_sample_payload_access_time', __('Access time', 'alfaomega-ebooks'))
+                                ->add_options([
+                                    ''    => __('Select the access duration', 'alfaomega-ebooks'),
+                                    '3'   => sprintf(__('%s days', 'alfaomega-ebooks'), 3),
+                                    '7'   => sprintf(__('%s week', 'alfaomega-ebooks'), 1),
+                                    '15'  => sprintf(__('%s weeks', 'alfaomega-ebooks'), 2),
+                                    '30'  => sprintf(__('%s month', 'alfaomega-ebooks'), 1),
+                                    '60'  => sprintf(__('%s months', 'alfaomega-ebooks'), 2),
+                                    '180' => sprintf(__('%s months', 'alfaomega-ebooks'), 6),
+                                    '365' => sprintf(__('%s year', 'alfaomega-ebooks'), 1),
+                                    '0'   => __('Unlimited', 'alfaomega-ebooks'),
+                                ])
+                                ->set_required()
+                                ->set_default_value(3)
+                                ->set_attribute('placeholder', __('Select the access duration', 'alfaomega-ebooks'))
+                                ->set_attribute('shouldSort', false)
+                                ->set_width(50)
+                                ->set_help_text(__('Defines the time while the eBook access will be available after redeeming this code', 'alfaomega-ebooks')),
+
+                            Field::make( 'checkbox', 'alfaomega_sample_payload_read', __('Read online', 'alfaomega-ebooks') )
+                                ->set_option_value( 'yes' )
+                                ->set_default_value( true )
+                                ->set_width(50)
+                                ->set_help_text(__('The customer will be able to read the eBook online', 'alfaomega-ebooks')),
+
+                            Field::make( 'checkbox', 'alfaomega_sample_payload_download', __('Download PDF', 'alfaomega-ebooks') )
+                                ->set_option_value( 'yes' )
+                                ->set_default_value( false )
+                                ->set_width(50)
+                                ->set_help_text(__('The customer will be able to download the eBook PDF. Be careful this option generate costs by download', 'alfaomega-ebooks')),
+                        ])
+                        ->set_required()
+                        ->set_default_value([
+                            [
+                                'alfaomega_sample_payload_isbn'        => '',
+                                'alfaomega_sample_payload_access_time' => 3,
+                                'alfaomega_sample_payload_read'        => true,
+                                'alfaomega_sample_payload_download'    => false,
+                            ],
+                        ]),
+                ]);
+        }
+
+        /**
+         * Add meta boxes to edit sample codes
+         *
+         * @return void
+         * @throws \Exception
+         */
+        public function add_meta_boxes_edit() : void
+        {
+            $samplePost = Service::make()
+                ->ebooks()
+                ->samplePost()
+                ->get($_GET['post']);
+
+            Container::make('post_meta', __('Edit eBook Access Sample', 'alfaomega-ebooks'))
+                ->where('post_type', '=', 'alfaomega-sample')
+                ->add_fields([
+                    Field::make( 'hidden', 'alfaomega_ebook_sample_nonce' )
+                        ->set_default_value(wp_create_nonce('alfaomega_ebook_sample_nonce')),
+
+                    Field::make('textarea', 'alfaomega_sample_description', __('Description', 'alfaomega-ebooks'))
+                        ->set_required()
+                        ->set_rows(4)
+                        ->set_attribute('placeholder', __('In a few words describe the intended use of this access code', 'alfaomega-ebooks'))
+                        ->set_help_text( __('Add a note to identify the generated code later', 'alfaomega-ebooks') )
+                        ->set_default_value($samplePost['description']),
+
+                    Field::make('text', 'alfaomega_sample_destination', __('Destination', 'alfaomega-ebooks'))
+                        ->set_required(false)
+                        ->set_attribute('readOnly', true)
+                        ->set_attribute('type', 'email')
+                        ->set_attribute('placeholder', __('customer@gmail.com', 'alfaomega-ebooks'))
+                        ->set_width(50)
+                        ->set_help_text( __('Upon generation the sample code can be send to the client email mean to use it', 'alfaomega-ebooks') )
+                        ->set_default_value($samplePost['destination']),
+
+                    Field::make('text', 'alfaomega_sample_promoter', __('Promoter', 'alfaomega-ebooks'))
+                        ->set_required(false)
+                        ->set_attribute('readOnly', true)
+                        ->set_attribute('type', 'email')
+                        ->set_attribute('placeholder', __('promoter@alfaomega.com.mx', 'alfaomega-ebooks'))
+                        ->set_width(50)
+                        ->set_help_text( __('A copy of the code sent to the client can be send to a promoter too', 'alfaomega-ebooks') )
+                        ->set_default_value($samplePost['promoter']),
+
+                    $samplePost['status'] !== 'created'
+                        ? Field::make('text', 'alfaomega_sample_status', __('Status', 'alfaomega-ebooks'))
+                            ->set_attribute('readOnly', true)
+                            ->set_attribute('type', 'text')
+                            ->set_width(33)
+                            ->set_help_text(__('Update the code status', 'alfaomega-ebooks'))
+                            ->set_default_value($samplePost['status'])
+                        : Field::make('choices', 'alfaomega_sample_status', __('Status', 'alfaomega-ebooks'))
+                            ->add_options([
+                                'created'  => __('created', 'alfaomega-ebooks'),
+                                'redeemed' => __('redeemed', 'alfaomega-ebooks'),
+                                'canceled' => __('canceled', 'alfaomega-ebooks'),
+                                'expired'  => __('expired', 'alfaomega-ebooks'),
+                            ])
+                            ->set_default_value($samplePost['status'])
+                            ->set_width(33)
+                            ->set_help_text(__('Update the code status', 'alfaomega-ebooks')),
+
+                    $samplePost['status'] !== 'created'
+                        ? Field::make('text', 'alfaomega_sample_due_date', __('Due date', 'alfaomega-ebooks'))
+                            ->set_attribute('readOnly', true)
+                            ->set_attribute('type', 'text')
+                            ->set_width(33)
+                            ->set_default_value(empty($samplePost['due_date']) ? '' : $samplePost['due_date']->format('d/m/Y'))
+                            ->set_help_text(__('The code should be used before this date, left empty to never due', 'alfaomega-ebooks'))
+                        : Field::make('date', 'alfaomega_sample_due_date', __('Due date', 'alfaomega-ebooks'))
                             ->set_required(false)
-                            ->set_attribute('type', 'email')
-                            ->set_attribute('placeholder', __('customer@gmail.com', 'alfaomega-ebooks'))
-                            ->set_width(50)
-                            ->set_help_text( __('Upon generation the sample code can be send to the client email mean to use it', 'alfaomega-ebooks') ),
-
-                        Field::make('text', 'alfaomega_sample_promoter', __('Promoter', 'alfaomega-ebooks'))
-                            ->set_required(false)
-                            ->set_attribute('type', 'email')
-                            ->set_attribute('placeholder', __('promoter@alfaomega.com.mx', 'alfaomega-ebooks'))
-                            ->set_width(50)
-                            ->set_help_text( __('A copy of the code sent to the client can be send to a promoter too', 'alfaomega-ebooks') ),
-
-                        Field::make('text', 'alfaomega_sample_count', __('Count', 'alfaomega-ebooks'))
-                            ->set_required()
-                            ->set_attribute('type', 'number')
-                            ->set_attribute('min',1)
-                            ->set_attribute('max', 100)
-                            ->set_default_value(1)
-                            ->set_width(50)
-                            ->set_help_text( __('How many codes to generate with this setup', 'alfaomega-ebooks') ),
-
-                        Field::make('date', 'alfaomega_sample_due_date', __('Due date', 'alfaomega-ebooks'))
-                            ->set_required(false)
-                            ->set_width(50)
+                            ->set_width(33)
+                            ->set_default_value(empty($samplePost['due_date']) ? '' : $samplePost['due_date']->toDateString())
                             ->set_help_text( __('The code should be used before this date, left empty to never due', 'alfaomega-ebooks') ),
 
-                        Field::make('complex', 'alfaomega_sample_payload', __('Setup the eBook access', 'alfaomega-ebooks'))
-                            ->add_fields([
-                                Field::make('choices', 'alfaomega_sample_payload_isbn', __('eBook', 'alfaomega-ebooks'))
-                                    ->set_required()
-                                    ->set_width(50)
-                                    ->set_attribute('placeholder', __('Start typing to search eBook...', 'alfaomega-ebooks'))
-                                    ->set_attribute('shouldSort', true)
-                                    ->set_attribute('searchEnabled', true)
-                                    ->set_render_choice_limit(10)
-                                    ->set_attribute('loadingText', __('Searching eBooks...', 'alfaomega-ebooks'))
-                                    ->set_attribute('noResultsText', __('No results found.', 'alfaomega-ebooks'))
-                                    ->set_attribute('searchPlaceholderValue', __('Type to start searching...', 'alfaomega-ebooks'))
-                                    ->set_fetch_url($apiUrl, $searchSetup)
-                                    ->add_options(['' => __('Select the eBook', 'alfaomega-ebooks')])
-                                    ->set_help_text(__('The eBook ISBN to generate the access code. Doubke click on search input to reset the search', 'alfaomega-ebooks')),
+                    Field::make('text', 'alfaomega_sample_activated_at', __('Activated at', 'alfaomega-ebooks'))
+                        ->set_attribute('readOnly', true)
+                        ->set_attribute('type', 'text')
+                        ->set_width(33)
+                        ->set_default_value(empty($samplePost['activated_at']) ? '' : $samplePost['activated_at']->format('d/m/Y h:i A'))
+                        ->set_help_text(__('The client redeemed the code this date', 'alfaomega-ebooks')),
 
-                                Field::make('choices', 'alfaomega_sample_payload_access_time', __('Access time', 'alfaomega-ebooks'))
-                                    ->add_options([
-                                        ''    => __('Select the access duration', 'alfaomega-ebooks'),
-                                        '3'   => sprintf(__('%s days', 'alfaomega-ebooks'), 3),
-                                        '7'   => sprintf(__('%s week', 'alfaomega-ebooks'), 1),
-                                        '15'  => sprintf(__('%s weeks', 'alfaomega-ebooks'), 2),
-                                        '30'  => sprintf(__('%s month', 'alfaomega-ebooks'), 1),
-                                        '60'  => sprintf(__('%s months', 'alfaomega-ebooks'), 2),
-                                        '180' => sprintf(__('%s months', 'alfaomega-ebooks'), 6),
-                                        '365' => sprintf(__('%s year', 'alfaomega-ebooks'), 1),
-                                        '0'   => __('Unlimited', 'alfaomega-ebooks'),
-                                    ])
-                                    ->set_required()
-                                    ->set_default_value(3)
-                                    ->set_attribute('placeholder', __('Select the access duration', 'alfaomega-ebooks'))
-                                    ->set_attribute('shouldSort', false)
-                                    ->set_width(50)
-                                    ->set_help_text(__('Defines the time while the eBook access will be available after redeeming this code', 'alfaomega-ebooks')),
+                    Field::make('complex', 'alfaomega_sample_payload', __('Setup the eBook access', 'alfaomega-ebooks'))
+                        ->add_fields([
+                            Field::make('text', 'alfaomega_sample_payload_isbn', __('eBook', 'alfaomega-ebooks'))
+                                ->set_attribute('readOnly', true)
+                                ->set_attribute('type', 'text')
+                                ->set_width(50)
+                                ->set_help_text(__('The eBook ISBN to generate the access code. Doubke click on search input to reset the search', 'alfaomega-ebooks')),
 
-                                Field::make( 'checkbox', 'alfaomega_sample_payload_read', __('Read online', 'alfaomega-ebooks') )
-                                    ->set_option_value( 'yes' )
-                                    ->set_default_value( true )
-                                    ->set_width(50)
-                                    ->set_help_text(__('The customer will be able to read the eBook online', 'alfaomega-ebooks')),
+                            Field::make('text', 'alfaomega_sample_payload_duration', __('Access time', 'alfaomega-ebooks'))
+                                ->set_attribute('readOnly', true)
+                                ->set_attribute('type', 'text')
+                                ->set_width(50)
+                                ->set_help_text(__('Defines the time while the eBook access will be available after redeeming this code', 'alfaomega-ebooks')),
 
-                                Field::make( 'checkbox', 'alfaomega_sample_payload_download', __('Download PDF', 'alfaomega-ebooks') )
-                                    ->set_option_value( 'yes' )
-                                    ->set_default_value( false )
-                                    ->set_width(50)
-                                    ->set_help_text(__('The customer will be able to download the eBook PDF. Be careful this option generate costs by download', 'alfaomega-ebooks')),
-                            ])
-                            ->set_required()
-                            ->set_default_value([
-                                [
-                                    'alfaomega_sample_payload_isbn'        => '',
-                                    'alfaomega_sample_payload_access_time' => 3,
-                                    'alfaomega_sample_payload_read'        => true,
-                                    'alfaomega_sample_payload_download'    => false,
-                                ],
-                            ]),
-                    ]);
-            } elseif ($pagenow === 'post.php') {
-                // TODO: implement a different form to edit the sample code
-                Container::make('post_meta', __('Edit eBook Access Sample', 'alfaomega-ebooks'))
-                    ->where('post_type', '=', 'alfaomega-sample')
-                    ->add_fields([
-                        Field::make( 'hidden', 'alfaomega_ebook_sample_nonce', 'alfaomega_ebook_sample_nonce' )
-                            ->set_default_value(wp_create_nonce('alfaomega_ebook_sample_nonce')),
+                            Field::make( 'checkbox', 'alfaomega_sample_payload_read', __('Read online', 'alfaomega-ebooks') )
+                                ->set_option_value( 'yes')
+                                ->set_width(50)
+                                ->set_help_text(__('The customer will be able to read the eBook online', 'alfaomega-ebooks')),
 
-                        Field::make('textarea', 'alfaomega_sample_description', __('Description', 'alfaomega-ebooks'))
-                            ->set_required()
-                            ->set_rows(4)
-                            ->set_attribute('placeholder', __('In a few words describe the intended use of this access code', 'alfaomega-ebooks'))
-                            ->set_help_text( __('Add a note to identify the generated code later', 'alfaomega-ebooks') ),
-
-                        Field::make('text', 'alfaomega_sample_destination', __('Destination', 'alfaomega-ebooks'))
-                            ->set_required(false)
-                            ->set_attribute('readOnly', true)
-                            ->set_attribute('type', 'email')
-                            ->set_attribute('placeholder', __('customer@gmail.com', 'alfaomega-ebooks'))
-                            ->set_width(50)
-                            ->set_help_text( __('Upon generation the sample code can be send to the client email mean to use it', 'alfaomega-ebooks') ),
-
-                        Field::make('text', 'alfaomega_sample_promoter', __('Promoter', 'alfaomega-ebooks'))
-                            ->set_required(false)
-                            ->set_attribute('readOnly', true)
-                            ->set_attribute('type', 'email')
-                            ->set_attribute('placeholder', __('promoter@alfaomega.com.mx', 'alfaomega-ebooks'))
-                            ->set_width(50)
-                            ->set_help_text( __('A copy of the code sent to the client can be send to a promoter too', 'alfaomega-ebooks') ),
-
-                        // Add the payload fields
-                    ]);
-            }
-
+                            Field::make( 'checkbox', 'alfaomega_sample_payload_download', __('Download PDF', 'alfaomega-ebooks') )
+                                ->set_option_value( 'yes')
+                                ->set_width(50)
+                                ->set_help_text(__('The customer will be able to download the eBook PDF. Be careful this option generate costs by download', 'alfaomega-ebooks'))
+                        ])->set_duplicate_groups_allowed(false)
+                        ->set_default_value(array_map(function ($access) {
+                            return [
+                                'alfaomega_sample_payload_isbn'     => $access['isbn'],
+                                'alfaomega_sample_payload_duration' => $access['access_time'],
+                                'alfaomega_sample_payload_read'     => $access['read'],
+                                'alfaomega_sample_payload_download' => $access['download'],
+                            ];
+                        }, $samplePost['payload'])),
+                ]);
         }
 
         /**
