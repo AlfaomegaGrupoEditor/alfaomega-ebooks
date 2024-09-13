@@ -366,4 +366,23 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
 
         return $result;
     }
+
+    /**
+     * Send to code to recipients.
+     *
+     * @param int $postId The ID of the post.
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function email(int $postId): void
+    {
+        $mailer = WC()->mailer();
+        $mails = $mailer->get_emails();
+        $email = $mails['Alfaomega_Ebooks_Sample_Email'];
+        $email->settings['subject'] = __('Your Custom Email Subject', 'text-domain');
+        $email->settings['heading'] = 'Heading';
+
+        $email->trigger($this->get($postId));
+    }
 }

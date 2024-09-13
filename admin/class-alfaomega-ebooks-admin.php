@@ -548,4 +548,15 @@ class Alfaomega_Ebooks_Admin {
 
         return $location;
     }
+
+    /**
+     * Add custom email class to WooCommerce
+     * @param $email_classes
+     *
+     * @return void
+     */
+    function add_sample_woocommerce_email_class($email_classes) {
+        $email_classes['Alfaomega_Ebooks_Sample_Email'] = include ALFAOMEGA_EBOOKS_PATH . 'emails/sample/Alfaomega_Ebooks_Sample_Email.php';
+        return $email_classes;
+    }
 }
