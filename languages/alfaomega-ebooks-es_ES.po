@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank WordPress Pot v1.0.0\n"
 "Report-Msgid-Bugs-To: Livan Rodriguez <livan2r@gmail.com>\n"
-"POT-Creation-Date: 2024-09-14 16:09-0400\n"
-"PO-Revision-Date: 2024-09-14 16:18-0400\n"
+"POT-Creation-Date: 2024-09-14 18:20-0400\n"
+"PO-Revision-Date: 2024-09-14 18:23-0400\n"
 "Last-Translator: Alfaomega México ADMIN\n"
 "Language-Team: Español\n"
 "Language: es_ES\n"
@@ -930,8 +930,6 @@ msgstr ""
 
 #: packages/carbon-field-choices/node_modules/yargs/lib/usage.js:289
 #: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/usage.js:289
-#, fuzzy
-#| msgid "Count"
 msgid "count"
 msgstr "Cantidad"
 
@@ -1053,10 +1051,8 @@ msgid "Alfaomega eBook Access"
 msgstr "Accesos a Alfaomega eBooks"
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:39
-#, fuzzy
-#| msgid "All Alfaomega eBooks"
-msgid "Accesos a Alfaomega eBooks"
-msgstr "Todos los libros en Alfaomega eBooks"
+msgid "Alfaomega eBooks access"
+msgstr "Accesos a Alfaomega eBooks"
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:80
 #: post_types/class-alfaomega-ebooks-access-post-type.php:198
@@ -1075,13 +1071,13 @@ msgid "ISBN"
 msgstr "ISBN"
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:83
+#: post_types/class-alfaomega-ebooks-access-post-type.php:205
 #: views/alfaomega_ebook_access_metabox.php:40
 #: views/alfaomega_ebook_sample_metabox.php:40
 msgid "Type"
 msgstr "Tipo"
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:84
-#: post_types/class-alfaomega-ebooks-access-post-type.php:205
 #: post_types/class-alfaomega-ebooks-access-post-type.php:212
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:96
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:337
@@ -2187,6 +2183,11 @@ msgstr "Descarga del PDF con DRM."
 #: views/emails/html-sample-email.php:70
 msgid "We hope you enjoy your reading experience."
 msgstr "Esperamos que disfrute la experiencia de lectura."
+
+#, fuzzy
+#~| msgid "All Alfaomega eBooks"
+#~ msgid "Accesos a Alfaomega eBooks"
+#~ msgstr "Todos los libros en Alfaomega eBooks"
 
 #~ msgid "eBook Access Information"
 #~ msgstr "Información del Acceso al eBook"

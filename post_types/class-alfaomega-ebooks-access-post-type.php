@@ -36,7 +36,7 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
                     'label'               => esc_html__('AO eBook Access', 'alfaomega-ebook'),
                     'description'         => esc_html__('Alfaomega eBook Access', 'alfaomega-ebook'),
                     'labels'              => [
-                        'name'          => esc_html__('Accesos a Alfaomega eBooks', 'alfaomega-ebook'),
+                        'name'          => esc_html__('Alfaomega eBooks access', 'alfaomega-ebook'),
                         'singular_name' => esc_html__('AO eBook Access', 'alfaomega-ebook'),
                     ],
                     'public'              => true,
