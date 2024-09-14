@@ -380,9 +380,6 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         $mailer = WC()->mailer();
         $mails = $mailer->get_emails();
         $email = $mails['Alfaomega_Ebooks_Sample_Email'];
-        $email->settings['subject'] = __('Your Custom Email Subject', 'text-domain');
-        $email->settings['heading'] = 'Heading';
-
         return $email->trigger($this->get($postId));
     }
 }

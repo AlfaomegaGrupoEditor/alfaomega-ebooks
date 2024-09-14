@@ -15,7 +15,7 @@ class AlfaomegaEbooksSampleEmail extends WC_Email {
         $this->title = __('Access code email', 'text-domain');
         $this->description = __('An email with the access code to activate the sample.', 'text-domain');
         $this->heading = __('Ebook Sample Access Codes', 'text-domain');
-        $this->subject = __('Sample access code', 'text-domain');
+        $this->subject = __('Alfaomega eBook access code', 'text-domain');
 
         // Set the templates for HTML and plain email versions
         $this->template_html = 'html-sample-email.php';
