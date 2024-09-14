@@ -133,12 +133,12 @@ class AlfaomegaSampleTest extends WordpressTest
     #[DataProvider('sampleEmailProvider')]
     public function testSendSampleByEmail(int $postId): void
     {
-        Service::make()
+        $success = Service::make()
             ->ebooks()
             ->samplePost()
             ->email($postId);
 
-        $this->assertTrue(true);
+        $this->assertTrue($success);
     }
 
     /**

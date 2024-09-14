@@ -372,10 +372,10 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
      *
      * @param int $postId The ID of the post.
      *
-     * @return void
+     * @return bool
      * @throws \Exception
      */
-    public function email(int $postId): void
+    public function email(int $postId): bool
     {
         $mailer = WC()->mailer();
         $mails = $mailer->get_emails();
@@ -383,6 +383,6 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         $email->settings['subject'] = __('Your Custom Email Subject', 'text-domain');
         $email->settings['heading'] = 'Heading';
 
-        $email->trigger($this->get($postId));
+        return $email->trigger($this->get($postId));
     }
 }
