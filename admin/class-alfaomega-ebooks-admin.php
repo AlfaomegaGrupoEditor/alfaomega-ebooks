@@ -560,4 +560,21 @@ class Alfaomega_Ebooks_Admin {
         $email_classes['Alfaomega_Ebooks_Sample_Email'] = new AlfaomegaEbooksSampleEmail();
         return $email_classes;
     }
+
+    /**
+     * Remove Avada options from custom post types
+     * @return void
+     */
+    function remove_avada_options_from_custom_post_type(): void
+    {
+        $postTypes = [
+            ALFAOMEGA_EBOOKS_POST_TYPE,
+            ALFAOMEGA_EBOOKS_ACCESS_POST_TYPE,
+            ALFAOMEGA_EBOOKS_SAMPLE_POST_TYPE,
+        ];
+
+        foreach ($postTypes as $postType) {
+            remove_meta_box('avada_fusion_page_options', $postType, 'normal');
+        }
+    }
 }
