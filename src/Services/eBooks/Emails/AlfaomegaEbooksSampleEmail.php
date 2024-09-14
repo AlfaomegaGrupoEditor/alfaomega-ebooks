@@ -39,7 +39,8 @@ class AlfaomegaEbooksSampleEmail extends WC_Email {
         }
 
         $this->object = $sample;
-        $this->recipient = $this->object['destination'];
+        $recipient = $this->object['destination'] ?? $this->object['promoter'];
+        $this->recipient = $recipient;
 
         if ( ! $this->is_enabled() || ! $this->get_recipient() ) {
             return false;
@@ -106,5 +107,19 @@ class AlfaomegaEbooksSampleEmail extends WC_Email {
      */
     public function get_default_additional_content() {
         return __( 'We hope you enjoy your reading experience. Thanks for your confidence.', 'alfaomega-ebooks' );
+    }
+
+    /**
+     * Get email headers.
+     *
+     * @return string
+     */
+    public function get_headers() {
+        $headers = 'Content-Type: text/html; charset=UTF-8' . "\r\n";
+        if (!empty($this->object['destination']) && !empty($this->object['promoter'])) {
+            $headers .= "BCC: {$this->object['promoter']}" . "\r\n"; // BCC recipient
+        }
+
+        return $headers;
     }
 }
