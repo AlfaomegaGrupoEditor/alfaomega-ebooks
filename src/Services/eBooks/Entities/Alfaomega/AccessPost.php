@@ -49,6 +49,7 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             'description' => $post->post_content,
             'ebook_id'    => $post->post_parent,
             'user_id'     => $post->post_author,
+            'user_email'  => get_the_author_meta('user_email', $post->post_author),
             'categories'  => !empty($categories) ? wp_list_pluck($categories, 'term_id') : [],
             'isbn'        => get_post_meta($postId, 'alfaomega_access_isbn', true),
             'cover'       => get_post_meta($postId, 'alfaomega_access_cover', true),
