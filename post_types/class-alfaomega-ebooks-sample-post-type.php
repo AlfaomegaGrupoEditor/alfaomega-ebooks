@@ -118,7 +118,7 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
                     echo wp_trim_words( get_post_meta( $post_id, 'alfaomega_sample_destination', true ), 10, '...');
                 break;
                 case 'alfaomega_sample_status':
-                    echo esc_html( get_post_meta( $post_id, 'alfaomega_sample_status', true ) );
+                    echo esc_html__(get_post_meta( $post_id, 'alfaomega_sample_status', true ), 'alfaomega-ebooks');
                     break;
                 case 'alfaomega_sample_activated_at':
                     $activatedAt = get_post_meta( $post_id, 'alfaomega_sample_activated_at', true );
