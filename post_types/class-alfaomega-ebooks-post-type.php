@@ -233,7 +233,7 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
                             ->set_attribute('type', 'text')
                             ->set_width(25)
                             ->set_help_text(__('Date when the eBook was updated', 'alfaomega-ebooks'))
-                            ->set_default_value(Carbon\Carbon::parse($ebookPost['date'])->format('d/m/Y H:i A')),
+                            ->set_default_value(Carbon\Carbon::parse($ebookPost['date'])->format('d/m/Y h:i A')),
                     ]);
             }
         }
