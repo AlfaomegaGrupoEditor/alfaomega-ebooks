@@ -11,7 +11,7 @@ msgstr ""
 "Livan Rodriguez "
 "<livan2r@gmail.com>\n"
 "POT-Creation-Date: "
-"2024-09-14 18:20-0400\n"
+"2024-09-14 19:19-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Livan "
 "Rodriguez <livan2r@gmail."
@@ -128,9 +128,10 @@ msgstr ""
 #: admin/class-alfaomega-ebooks-admin.php:317
 #: admin/class-alfaomega-ebooks-admin.php:329
 #: admin/class-alfaomega-ebooks-admin.php:330
-#: post_types/class-alfaomega-ebooks-access-post-type.php:191
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:228
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:379
+#: post_types/class-alfaomega-ebooks-access-post-type.php:210
+#: post_types/class-alfaomega-ebooks-post-type.php:192
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:248
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:399
 msgid "eBook"
 msgstr ""
 
@@ -193,7 +194,7 @@ msgstr ""
 
 #: admin/partials/alfaomega-ebooks-settings-main.php:15
 #: includes/class-alfaomega-ebooks-settings.php:90
-#: post_types/class-alfaomega-ebooks-access-post-type.php:379
+#: post_types/class-alfaomega-ebooks-access-post-type.php:398
 msgid "Active"
 msgstr ""
 
@@ -574,7 +575,7 @@ msgid ""
 msgstr ""
 
 #: includes/class-alfaomega-ebooks.php:323
-#: post_types/class-alfaomega-ebooks-post-type.php:35
+#: post_types/class-alfaomega-ebooks-post-type.php:40
 msgid "AO eBooks"
 msgstr ""
 
@@ -1106,7 +1107,7 @@ msgid "Loading..."
 msgstr ""
 
 #: packages/carbon-field-choices/src/main.js:86
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:236
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:256
 #: vendor/htmlburger/carbon-fields/packages/blocks/components/server-side-render/index.js:135
 #: vendor/livan2r/carbon-field-choices/src/main.js:86
 msgid "No results found."
@@ -1120,30 +1121,32 @@ msgid ""
 "Error fetching options:"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-access-post-type.php:36
-#: post_types/class-alfaomega-ebooks-access-post-type.php:40
+#: post_types/class-alfaomega-ebooks-access-post-type.php:37
+#: post_types/class-alfaomega-ebooks-access-post-type.php:41
 msgid "AO eBook Access"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-access-post-type.php:37
+#: post_types/class-alfaomega-ebooks-access-post-type.php:38
 msgid ""
 "Alfaomega eBook Access"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-access-post-type.php:39
+#: post_types/class-alfaomega-ebooks-access-post-type.php:40
 msgid ""
 "Alfaomega eBooks access"
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:80
-#: post_types/class-alfaomega-ebooks-access-post-type.php:198
+#: post_types/class-alfaomega-ebooks-access-post-type.php:217
+#: post_types/class-alfaomega-ebooks-post-type.php:79
+#: post_types/class-alfaomega-ebooks-post-type.php:199
 #: views/alfaomega_ebook_access_metabox.php:6
 #: views/alfaomega_ebook_sample_metabox.php:6
 msgid "Cover"
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:81
-#: post_types/class-alfaomega-ebooks-post-type.php:74
+#: post_types/class-alfaomega-ebooks-post-type.php:80
 msgid "Title"
 msgstr ""
 
@@ -1152,17 +1155,17 @@ msgid "ISBN"
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:83
-#: post_types/class-alfaomega-ebooks-access-post-type.php:205
+#: post_types/class-alfaomega-ebooks-access-post-type.php:224
 #: views/alfaomega_ebook_access_metabox.php:40
 #: views/alfaomega_ebook_sample_metabox.php:40
 msgid "Type"
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:84
-#: post_types/class-alfaomega-ebooks-access-post-type.php:212
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:96
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:337
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:343
+#: post_types/class-alfaomega-ebooks-access-post-type.php:231
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:116
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:357
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:363
 #: views/alfaomega_ebook_access_metabox.php:91
 #: views/alfaomega_ebook_import_page.php:36
 #: views/alfaomega_ebook_link_page.php:35
@@ -1179,279 +1182,330 @@ msgid "Read"
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:86
-#: post_types/class-alfaomega-ebooks-access-post-type.php:244
+#: post_types/class-alfaomega-ebooks-access-post-type.php:263
 #: views/alfaomega_ebook_access_metabox.php:125
 #: views/alfaomega_ebook_sample_metabox.php:125
 msgid "Download"
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:88
-#: post_types/class-alfaomega-ebooks-access-post-type.php:228
+#: post_types/class-alfaomega-ebooks-access-post-type.php:247
 msgid "Client"
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:89
-#: post_types/class-alfaomega-ebooks-access-post-type.php:219
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:99
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:221
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:357
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:363
+#: post_types/class-alfaomega-ebooks-access-post-type.php:238
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:119
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:241
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:377
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:383
 #: views/alfaomega_ebook_access_metabox.php:142
 #: views/alfaomega_ebook_sample_metabox.php:142
 msgid "Due date"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-access-post-type.php:123
-#: post_types/class-alfaomega-ebooks-access-post-type.php:129
-#: post_types/class-alfaomega-ebooks-access-post-type.php:241
-#: post_types/class-alfaomega-ebooks-access-post-type.php:250
+#: post_types/class-alfaomega-ebooks-access-post-type.php:122
+#: post_types/class-alfaomega-ebooks-access-post-type.php:128
+#: post_types/class-alfaomega-ebooks-access-post-type.php:260
+#: post_types/class-alfaomega-ebooks-access-post-type.php:269
+#: post_types/class-alfaomega-ebooks-post-type.php:120
+#: post_types/class-alfaomega-ebooks-post-type.php:126
+#: post_types/class-alfaomega-ebooks-post-type.php:212
+#: post_types/class-alfaomega-ebooks-post-type.php:221
 msgid "Yes"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-access-post-type.php:124
-#: post_types/class-alfaomega-ebooks-access-post-type.php:130
-#: post_types/class-alfaomega-ebooks-access-post-type.php:242
-#: post_types/class-alfaomega-ebooks-access-post-type.php:251
+#: post_types/class-alfaomega-ebooks-access-post-type.php:123
+#: post_types/class-alfaomega-ebooks-access-post-type.php:129
+#: post_types/class-alfaomega-ebooks-access-post-type.php:261
+#: post_types/class-alfaomega-ebooks-access-post-type.php:270
+#: post_types/class-alfaomega-ebooks-post-type.php:121
+#: post_types/class-alfaomega-ebooks-post-type.php:127
+#: post_types/class-alfaomega-ebooks-post-type.php:213
+#: post_types/class-alfaomega-ebooks-post-type.php:222
 msgid "No"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-access-post-type.php:135
-#: post_types/class-alfaomega-ebooks-access-post-type.php:225
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:252
+#: post_types/class-alfaomega-ebooks-access-post-type.php:134
+#: post_types/class-alfaomega-ebooks-access-post-type.php:244
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:272
 #: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:80
 msgid "Unlimited"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-access-post-type.php:188
+#: post_types/class-alfaomega-ebooks-access-post-type.php:207
 msgid "View eBook Access"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-access-post-type.php:196
+#: post_types/class-alfaomega-ebooks-access-post-type.php:215
 msgid ""
 "The eBook to access to"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-access-post-type.php:202
+#: post_types/class-alfaomega-ebooks-access-post-type.php:221
+#: post_types/class-alfaomega-ebooks-post-type.php:203
 msgid ""
 "The cover of the eBook"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-access-post-type.php:209
+#: post_types/class-alfaomega-ebooks-access-post-type.php:228
 msgid "The access type"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-access-post-type.php:216
+#: post_types/class-alfaomega-ebooks-access-post-type.php:235
 msgid "The access status"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-access-post-type.php:223
+#: post_types/class-alfaomega-ebooks-access-post-type.php:242
 msgid "Access validity"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-access-post-type.php:232
+#: post_types/class-alfaomega-ebooks-access-post-type.php:251
 msgid ""
 "Client allowed to access"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-access-post-type.php:235
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:261
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:391
+#: post_types/class-alfaomega-ebooks-access-post-type.php:254
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:281
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:411
 msgid "Read online"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-access-post-type.php:239
+#: post_types/class-alfaomega-ebooks-access-post-type.php:258
 msgid ""
 "Access to read online "
 "the eBook"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-access-post-type.php:248
+#: post_types/class-alfaomega-ebooks-access-post-type.php:267
 msgid ""
 "download the PDF with DRM"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-access-post-type.php:377
+#: post_types/class-alfaomega-ebooks-access-post-type.php:396
 msgid "Created"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-access-post-type.php:378
+#: post_types/class-alfaomega-ebooks-access-post-type.php:397
 #: views/alfaomega_ebook_import_page.php:54
 #: views/alfaomega_ebook_link_page.php:53
 #: views/alfaomega_ebook_refresh_page.php:54
 msgid "Pending"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-access-post-type.php:380
+#: post_types/class-alfaomega-ebooks-access-post-type.php:399
 msgid "Expired"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-access-post-type.php:381
+#: post_types/class-alfaomega-ebooks-access-post-type.php:400
 msgid "Cancelled"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-access-post-type.php:394
+#: post_types/class-alfaomega-ebooks-access-post-type.php:413
 msgid "sample"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-access-post-type.php:395
+#: post_types/class-alfaomega-ebooks-access-post-type.php:414
 msgid "purchase"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-access-post-type.php:396
+#: post_types/class-alfaomega-ebooks-access-post-type.php:415
 msgid "import"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-post-type.php:32
-#: post_types/class-alfaomega-ebooks-post-type.php:36
+#: post_types/class-alfaomega-ebooks-post-type.php:37
+#: post_types/class-alfaomega-ebooks-post-type.php:41
 msgid "AO eBook"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-post-type.php:33
+#: post_types/class-alfaomega-ebooks-post-type.php:38
 msgid "Alfaomega eBooks"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-post-type.php:75
+#: post_types/class-alfaomega-ebooks-post-type.php:81
 msgid "Digital ISBN"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-post-type.php:76
-#: views/alfaomega_ebook_metabox.php:23
-msgid "PDF Id"
+#: post_types/class-alfaomega-ebooks-post-type.php:82
+msgid "PDF"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-post-type.php:77
-#: views/alfaomega_ebook_metabox.php:40
-msgid "HTML Url"
+#: post_types/class-alfaomega-ebooks-post-type.php:83
+msgid "HTML"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-post-type.php:78
+#: post_types/class-alfaomega-ebooks-post-type.php:84
 #: views/alfaomega_ebook_metabox.php:57
 msgid "Product SKU"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-post-type.php:79
+#: post_types/class-alfaomega-ebooks-post-type.php:85
 msgid "Date"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-post-type.php:135
-msgid "eBook Information"
+#: post_types/class-alfaomega-ebooks-post-type.php:189
+msgid "View eBooks"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:39
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:43
+#: post_types/class-alfaomega-ebooks-post-type.php:197
+msgid ""
+"The eBook title and "
+"digital ISBN"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-post-type.php:206
+msgid "PDF file"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-post-type.php:210
+msgid ""
+"Download the PDF with DRM"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-post-type.php:215
+msgid "HTML eBook"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-post-type.php:219
+msgid ""
+"HTML eBook to read online"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-post-type.php:224
+msgid "Linked Product"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-post-type.php:228
+msgid ""
+"Store product linked to "
+"this eBook"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-post-type.php:231
+msgid "Updated At"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-post-type.php:235
+msgid ""
+"Date when the eBook was "
+"updated"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:59
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:63
 msgid "AO eBook Sample"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:40
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:60
 msgid ""
 "Alfaomega eBook Sample"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:42
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:62
 msgid ""
 "Códigos de Muestras a "
 "Alfaomega eBooks"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:44
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:46
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:64
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:66
 msgid "Generate"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:45
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:65
 msgid ""
 "Generate eBook Access "
 "Samples"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:47
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:67
 msgid "Edit Sample Code"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:48
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:68
 msgid "View Sample Code"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:49
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:69
 msgid "All Sample Code"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:50
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:70
 msgid "Search Sample Codes"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:51
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:71
 msgid "Parent Sample Code:"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:52
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:72
 msgid ""
 "No sample code found."
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:53
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:73
 msgid ""
 "No sample code found in "
 "Trash."
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:91
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:111
 msgid "Code"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:92
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:112
 msgid "Author"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:93
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:192
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:311
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:113
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:212
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:331
 msgid "Description"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:94
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:114
 msgid "Email"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:98
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:369
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:118
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:389
 msgid "Activated at"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:183
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:203
 msgid ""
 "Complete the following "
 "form to generate eBook "
 "Access Samples"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:195
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:314
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:215
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:334
 msgid ""
 "In a few words describe "
 "the intended use of this "
 "access code"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:196
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:315
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:216
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:335
 msgid ""
 "Add a note to identify "
 "the generated code later"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:198
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:318
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:218
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:338
 msgid "Destination"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:201
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:322
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:221
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:342
 msgid "customer@gmail.com"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:203
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:324
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:223
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:344
 msgid ""
 "Upon generation the "
 "sample code can be send "
@@ -1459,131 +1513,131 @@ msgid ""
 "to use it"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:205
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:327
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:225
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:347
 msgid "Promoter"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:208
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:331
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:228
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:351
 msgid ""
 "promoter@alfaomega.com.mx"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:210
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:333
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:230
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:353
 msgid ""
 "A copy of the code sent "
 "to the client can be "
 "send to a promoter too"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:212
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:232
 #: views/alfaomega_ebook_import_page.php:37
 #: views/alfaomega_ebook_link_page.php:36
 #: views/alfaomega_ebook_refresh_page.php:37
 msgid "Count"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:219
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:239
 msgid ""
 "How many codes to "
 "generate with this setup"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:224
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:362
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:367
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:244
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:382
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:387
 msgid ""
 "The code should be used "
 "before this date, left "
 "empty to never due"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:226
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:376
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:246
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:396
 msgid ""
 "Setup the eBook access"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:231
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:251
 msgid ""
 "Start typing to search "
 "eBook..."
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:235
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:255
 msgid "Searching eBooks..."
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:237
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:257
 msgid ""
 "Type to start "
 "searching..."
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:239
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:259
 msgid "Select the eBook"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:240
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:260
 msgid ""
 "The eBook ISBN to "
 "generate the access code."
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:242
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:385
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:262
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:405
 msgid "Access time"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:244
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:256
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:264
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:276
 msgid ""
 "Select the access "
 "duration"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:245
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:265
 #: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:73
 #, php-format
 msgid "%s days"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:246
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:266
 #: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:74
 #, php-format
 msgid "%s week"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:247
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:267
 #: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:75
 #, php-format
 msgid "%s weeks"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:248
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:268
 #: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:76
 #, php-format
 msgid "%s month"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:249
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:250
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:269
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:270
 #: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:77
 #: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:78
 #, php-format
 msgid "%s months"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:251
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:271
 #: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:79
 #, php-format
 msgid "%s year"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:259
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:389
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:279
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:409
 msgid ""
 "Defines the time while "
 "the eBook access will be "
@@ -1591,21 +1645,21 @@ msgid ""
 "redeeming this code"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:265
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:394
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:285
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:414
 msgid ""
 "The customer will be "
 "able to read the eBook "
 "online"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:267
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:396
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:287
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:416
 msgid "Download PDF"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:271
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:399
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:291
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:419
 msgid ""
 "The customer will be "
 "able to download the "
@@ -1614,44 +1668,44 @@ msgid ""
 "costs by download"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:305
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:325
 msgid ""
 "Edit eBook Access Sample"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:341
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:354
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:361
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:374
 msgid ""
 "Update the code status"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:346
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:366
 msgid "created"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:347
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:367
 msgid "sent"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:348
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:368
 msgid "redeemed"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:349
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:369
 msgid "canceled"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:350
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:370
 msgid "expired"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:374
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:394
 msgid ""
 "The client redeemed the "
 "code this date"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:383
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:403
 msgid ""
 "The eBook ISBN to "
 "generate the access "
@@ -1660,13 +1714,13 @@ msgid ""
 "the search"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:499
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:519
 #: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:48
 #: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:189
 msgid "Sample code"
 msgstr ""
 
-#: post_types/class-alfaomega-ebooks-sample-post-type.php:547
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:567
 msgid "Auto Draft"
 msgstr ""
 
@@ -2334,6 +2388,14 @@ msgstr ""
 #: views/alfaomega_ebook_link_page.php:76
 #: views/alfaomega_ebook_refresh_page.php:77
 msgid "Back"
+msgstr ""
+
+#: views/alfaomega_ebook_metabox.php:23
+msgid "PDF Id"
+msgstr ""
+
+#: views/alfaomega_ebook_metabox.php:40
+msgid "HTML Url"
 msgstr ""
 
 #: views/alfaomega_ebook_settings_page.php:41

@@ -20,6 +20,7 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
             add_filter( 'manage_alfaomega-access_posts_columns', [$this, 'alfaomega_ebook_access_cpt_columns'] );
             add_action( 'manage_alfaomega-access_posts_custom_column', [$this, 'alfaomega_ebook_access_custom_columns'], 10, 2 );
             add_filter( 'manage_edit-alfaomega-access_sortable_columns', [$this, 'alfaomega_ebook_access_sortable_columns'] );
+            add_action('admin_head', [$this, 'custom_admin_css']);
         }
 
         /**
@@ -40,7 +41,6 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
                         'singular_name' => esc_html__('AO eBook Access', 'alfaomega-ebook'),
                     ],
                     'public'              => true,
-                    //'supports'            => ['title', 'author', 'thumbnail'],
                     'supports'            => false,
                     'hierarchical'        => false,
                     'show_ui'             => true,
@@ -102,7 +102,6 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
         {
             switch( $column ){
                 case 'alfaomega_access_cover':
-                    // echo esc_html( get_post_meta( $post_id, 'alfaomega_access_cover', true ) );
                     echo '<a href="' . get_site_url() . '/wp-admin/post.php?post=' . $post_id .'&action=edit">';
                     echo '  <img width="50" height="60" src="' . get_post_meta( $post_id, 'alfaomega_access_cover', true ) . '"';
                     echo '    class="attachment-thumbnail size-thumbnail" alt="" decoding="async"';
@@ -161,6 +160,26 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
             $columns['alfaomega_access_due_date'] = 'alfaomega_access_due_date';
             $columns['author'] = 'author';
             return $columns;
+        }
+
+        /**
+         * Custom admin CSS
+         * @return void
+         * @since 1.0.0
+         * @access public
+         */
+        function custom_admin_css(): void
+        {
+            echo '<style>
+                .column-alfaomega_access_cover { width: 80px; }
+                .column-title { width: 150px; }
+                .column-alfaomega_access_isbn { width: 80px; }
+                .column-alfaomega_access_type { width: 80px; }
+                .column-alfaomega_access_status { width: 80px; }
+                .column-alfaomega_access_read { width: 80px; }
+                .column-alfaomega_access_download { width: 80px; }
+                .column-alfaomega_access_due_date { width: 80px; }
+            </style>';
         }
 
         /**
