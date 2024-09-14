@@ -28,34 +28,33 @@
         <?php endif ?>
     </p>
 
-    <h2><?php _e( 'Order Details', 'alfaomega-ebook' ); ?></h2>
+    <h2><?php _e( 'Access Details', 'alfaomega-ebook' ); ?></h2>
 
     <table class="td" cellspacing="0" cellpadding="6" border="1" style="width: 100%; border-collapse: collapse;">
         <thead>
             <tr>
-                <th style="text-align:left;"><?php _e( 'Product', 'alfaomega-ebook' ); ?></th>
-                <th style="text-align:left;"><?php _e( 'Quantity', 'alfaomega-ebook' ); ?></th>
-                <th style="text-align:left;"><?php _e( 'Price', 'alfaomega-ebook' ); ?></th>
+                <th style="text-align:left;"><?php _e( 'Digital book', 'alfaomega-ebook' ); ?></th>
+                <th style="text-align:left;"><?php _e( 'Access', 'alfaomega-ebook' ); ?></th>
+                <th style="text-align:left;"><?php _e( 'Online', 'alfaomega-ebook' ); ?></th>
+                <th style="text-align:left;"><?php _e( 'Download', 'alfaomega-ebook' ); ?></th>
             </tr>
         </thead>
         <tbody>
-            <?php /*foreach ( $order->get_items() as $item_id => $item ) : */?><!--
+            <?php foreach ( $sample['payload'] as $access ) : ?>
                 <tr>
-                    <td><?php /*echo esc_html( $item->get_name() ); */?></td>
-                    <td><?php /*echo esc_html( $item->get_quantity() ); */?></td>
-                    <td><?php /*echo wc_price( $item->get_total() ); */?></td>
+                    <td><?php echo esc_html( $access['title'] . ' (' . $access['isbn'] . ')' ); ?></td>
+                    <td><?php echo esc_html( $access['access_time_desc'] ); ?></td>
+                    <td><?php $access['read'] ? _e( 'Yes', 'alfaomega-ebook' ) : _e( 'No', 'alfaomega-ebook' )?></td>
+                    <td><?php $access['download'] ? _e( 'Yes', 'alfaomega-ebook' ) : _e( 'No', 'alfaomega-ebook' ) ?></td>
                 </tr>
-            --><?php /*endforeach; */?>
+            <?php endforeach; ?>
         </tbody>
-        <tfoot>
-            <tr>
-                <th colspan="2" style="text-align:left;"><?php _e( 'Total:', 'alfaomega-ebook' ); ?></th>
-                <th style="text-align:left;"><?php echo "test" ?></th>
-            </tr>
-        </tfoot>
     </table>
 
-    <p><?php _e( 'Thank you for your order!', 'alfaomega-ebook' ); ?></p>
+    <p></p>
+    <p></p>
+    <p></p>
+    <p><?php _e( 'We hope you enjoy your reading experience.', 'alfaomega-ebook' ); ?></p>
 
 <?php
 // Load the email footer
