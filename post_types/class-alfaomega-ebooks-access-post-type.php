@@ -202,7 +202,7 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
                             ->set_help_text(__('The cover of the eBook', 'alfaomega-ebooks'))
                             ->set_width(50),
 
-                        Field::make('text', 'alfaomega_access_type', __('Status', 'alfaomega-ebooks'))
+                        Field::make('text', 'alfaomega_access_type', __('Type', 'alfaomega-ebooks'))
                             ->set_attribute('readOnly', true)
                             ->set_attribute('type', 'text')
                             ->set_width(33)

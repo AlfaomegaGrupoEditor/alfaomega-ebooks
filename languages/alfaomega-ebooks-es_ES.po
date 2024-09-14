@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Blank WordPress Pot v1.0.0\n"
 "Report-Msgid-Bugs-To: Livan Rodriguez <livan2r@gmail.com>\n"
 "POT-Creation-Date: 2024-09-14 16:09-0400\n"
-"PO-Revision-Date: 2024-09-14 16:11-0400\n"
+"PO-Revision-Date: 2024-09-14 16:18-0400\n"
 "Last-Translator: Alfaomega México ADMIN\n"
 "Language-Team: Español\n"
 "Language: es_ES\n"
@@ -1152,27 +1152,20 @@ msgid "View eBook Access"
 msgstr "Acceso al eBook"
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:196
-#, fuzzy
-#| msgid "Setup the eBook access"
 msgid "The eBook to access to"
-msgstr "Configurar el acceso al eBook"
+msgstr "El eBook al cual se accede"
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:202
-#, fuzzy
-#| msgid "Select the eBook"
 msgid "The cover of the eBook"
-msgstr "Seleccione un eBook"
+msgstr "Imagen de la portada principal del libro "
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:209
-#, fuzzy
-#| msgid "Access time"
 msgid "The access type"
-msgstr "Duración del acceso"
+msgstr "Tipo de acceso"
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:216
-#, fuzzy
 msgid "The access status"
-msgstr "Estado de la cola"
+msgstr "El estado del acceso"
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:223
 msgid "Access validity"
@@ -1219,16 +1212,12 @@ msgid "Cancelled"
 msgstr "Cancelado"
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:394
-#, fuzzy
-#| msgid "Sample"
 msgid "sample"
-msgstr "Muestra"
+msgstr "Muestra "
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:395
-#, fuzzy
-#| msgid "Purchase"
 msgid "purchase"
-msgstr "Compra"
+msgstr "Compra "
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:396
 msgid "import"
