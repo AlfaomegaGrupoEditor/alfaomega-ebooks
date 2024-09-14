@@ -23,6 +23,26 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
             add_filter( 'manage_alfaomega-sample_posts_columns', [$this, 'alfaomega_ebook_sample_cpt_columns'] );
             add_action( 'manage_alfaomega-sample_posts_custom_column', [$this, 'alfaomega_ebook_sample_custom_columns'], 10, 2 );
             add_filter( 'manage_edit-alfaomega-sample_sortable_columns', [$this, 'alfaomega_ebook_sample_sortable_columns'] );
+            add_action('admin_head', [$this, 'custom_admin_css']);
+        }
+
+        /**
+         * Custom admin CSS
+         * @return void
+         * @since 1.0.0
+         * @access public
+         */
+        function custom_admin_css(): void
+        {
+            echo '<style>
+                .column-title { width: 120px; }
+                .column-author { width: 100px; }
+                .column-alfaomega_sample_description { width: 150px; }
+                .column-alfaomega_sample_destination { width: 100px; }
+                .column-alfaomega_sample_status { width: 100px; }
+                .column-alfaomega_sample_activated_at { width: 100px; }
+                .column-alfaomega_sample_due_date { width: 100px; }
+            </style>';
         }
 
         /**

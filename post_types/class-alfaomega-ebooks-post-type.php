@@ -1,4 +1,8 @@
-<?php 
+<?php
+
+use AlfaomegaEbooks\Services\eBooks\Service;
+use Carbon_Fields\Container;
+use Carbon_Fields\Field\Field;
 
 if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
     class Alfaomega_Ebooks_Post_Type{
@@ -11,11 +15,12 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
          */
         public function __construct(){
             add_action('init', [$this, 'create_post_type']);
-            add_action('add_meta_boxes', [$this, 'add_meta_boxes']);
+            add_action('carbon_fields_register_fields', [$this, 'add_meta_boxes_view']);
             add_action( 'save_post', array( $this, 'save_post' ), 10, 3 );
             add_filter( 'manage_alfaomega-ebook_posts_columns', [$this, 'alfaomega_ebook_cpt_columns'] );
             add_action( 'manage_alfaomega-ebook_posts_custom_column', [$this, 'alfaomega_ebook_custom_columns'], 10, 2 );
             add_filter( 'manage_edit-alfaomega-ebook_sortable_columns', [$this, 'alfaomega_ebook_sortable_columns'] );
+            add_action('admin_head', [$this, 'custom_admin_css']);
         }
 
         /**
@@ -36,7 +41,7 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
                         'singular_name' => esc_html__('AO eBook', 'alfaomega-ebook'),
                     ],
                     'public'              => true,
-                    'supports'            => ['title', 'editor', 'author', 'thumbnail'],
+                    'supports'            => false,
                     'hierarchical'        => false,
                     'show_ui'             => true,
                     'show_in_menu'        => false,
@@ -70,40 +75,79 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
         public function alfaomega_ebook_cpt_columns($columns): array
         {
             return [
-                'cb'                     => $columns['cb'],
-                'title'                  => esc_html__('Title', 'alfaomega-ebook'),
-                'alfaomega_ebook_isbn'   => esc_html__('Digital ISBN', 'alfaomega-ebook'),
-                'alfaomega_ebook_id'     => esc_html__('PDF Id', 'alfaomega-ebook'),
-                'alfaomega_ebook_url'    => esc_html__('HTML Url', 'alfaomega-ebook'),
+                'cb'                          => $columns['cb'],
+                'alfaomega_ebook_cover'       => esc_html__('Cover', 'alfaomega-ebooks'),
+                'title'                       => esc_html__('Title', 'alfaomega-ebook'),
+                'alfaomega_ebook_isbn'        => esc_html__('Digital ISBN', 'alfaomega-ebook'),
+                'alfaomega_ebook_id'          => esc_html__('PDF', 'alfaomega-ebook'),
+                'alfaomega_ebook_url'         => esc_html__('HTML', 'alfaomega-ebook'),
                 'alfaomega_ebook_product_sku' => esc_html__('Product SKU', 'alfaomega-ebook'),
-                'date'                   => esc_html__('Date', 'alfaomega-ebook'),
+                'date'                        => esc_html__('Date', 'alfaomega-ebook'),
             ];
         }
 
         /**
          * Manage plugin table custom columns content
+         *
+         * @param string $column Column name
+         * @param int $post_id   Post ID
+         *
          * @return void
-         * @since 1.0.0
+         * @throws \Exception
+         * @since  1.0.0
          * @access public
-         * @param string $column  Column name
-         * @param int $post_id  Post ID
          */
         public function alfaomega_ebook_custom_columns( $column, $post_id ): void
         {
+            $ebookPost = Service::make()
+                ->ebooks()
+                ->ebookPost()
+                ->get($post_id);
+
             switch( $column ){
+                case 'alfaomega_ebook_cover':
+                    echo '<a href="' . get_site_url() . '/wp-admin/post.php?post=' . $post_id .'&action=edit">';
+                    echo '  <img width="50" height="60" src="' . $ebookPost['cover'] . '"';
+                    echo '    class="attachment-thumbnail size-thumbnail" alt="" decoding="async"';
+                    echo '</a>';
+                    break;
                 case 'alfaomega_ebook_isbn':
                     echo esc_html( get_post_meta( $post_id, 'alfaomega_ebook_isbn', true ) );
                 break;
                 case 'alfaomega_ebook_id':
-                    echo esc_html( get_post_meta( $post_id, 'alfaomega_ebook_id', true ) );
-                break;
+                    $pdf = get_post_meta( $post_id, 'alfaomega_ebook_id', true );
+                    echo !empty($pdf)
+                        ? esc_html__('Yes', 'alfaomega-ebooks')
+                        : esc_html__('No', 'alfaomega-ebooks');
+                    break;
                 case 'alfaomega_ebook_url':
-                    echo esc_html( get_post_meta( $post_id, 'alfaomega_ebook_url', true ) );
+                    $html = get_post_meta( $post_id, 'alfaomega_ebook_url', true );
+                    echo !empty($html)
+                        ? esc_html__('Yes', 'alfaomega-ebooks')
+                        : esc_html__('No', 'alfaomega-ebooks');
+                    break;
                     break;
                 case 'alfaomega_ebook_product_sku':
                     echo esc_html( get_post_meta( $post_id, 'alfaomega_ebook_product_sku', true ) );
                     break;
             }
+        }
+
+        /**
+         * Custom admin CSS
+         * @return void
+         * @since 1.0.0
+         * @access public
+         */
+        function custom_admin_css(): void
+        {
+            echo '<style>
+                .column-alfaomega_ebook_cover { width: 80px; }
+                .column-alfaomega_ebook_isbn { width: 150px; }
+                .column-alfaomega_ebook_id { width: 100px; }
+                .column-alfaomega_ebook_url { width: 100px; }
+                .column-alfaomega_ebook_product_sku { width: 150px; }
+            </style>';
         }
 
         /**
@@ -116,45 +160,82 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
         public function alfaomega_ebook_sortable_columns( $columns ): array
         {
             $columns['alfaomega_ebook_isbn'] = 'alfaomega_ebook_isbn';
-            $columns['alfaomega_ebook_id'] = 'alfaomega_ebook_id';
-            $columns['alfaomega_ebook_url'] = 'alfaomega_ebook_url';
             $columns['alfaomega_ebook_product_sku'] = 'alfaomega_ebook_product_sku';
             return $columns;
         }
 
         /**
          * Add meta boxes
+         *
          * @return void
-         * @since 1.0.0
+         * @throws \Exception
+         * @since  1.0.0
          * @access public
          */
-        public function add_meta_boxes() : void
+        public function add_meta_boxes_view() : void
         {
-            add_meta_box(
-                'alfaomega_ebook_meta_box',
-                esc_html__('eBook Information', 'alfaomega-ebook'),
-                [$this, 'add_inner_meta_boxes'],
-                ALFAOMEGA_EBOOKS_POST_TYPE,
-                'normal', // side
-                'high'
-            );
-        }
+            global $pagenow;
 
-        /**
-         * Add inner meta boxes view
-         * @return void
-         * @since 1.0.0
-         * @access public
-         * @param object $post  Post object to be passed to the view
-         */
-        public function add_inner_meta_boxes( $post ): void
-        {
-            //$meta = get_post_meta( $post->ID );
-            $isbn = get_post_meta( $post->ID, 'alfaomega_ebook_isbn', true );
-            $id = get_post_meta( $post->ID, 'alfaomega_ebook_id', true );
-            $url = get_post_meta( $post->ID, 'alfaomega_ebook_url', true );
-            $tag_id = get_post_meta( $post->ID, 'alfaomega_ebook_product_sku', true );
-            require_once( ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_metabox.php' );
+            if ($pagenow === 'post.php') {
+                $ebookPost = Service::make()
+                    ->ebooks()
+                    ->ebookPost()
+                    ->get($_GET['post']);
+
+                if (empty($ebookPost)) {
+                    return;
+                }
+
+                Container::make('post_meta', __('View eBooks', 'alfaomega-ebooks'))
+                    ->where('post_type', '=', 'alfaomega-ebook')
+                    ->add_fields([
+                        Field::make('textarea', 'alfaomega_ebook_isbn', __('eBook', 'alfaomega-ebooks'))
+                            ->set_attribute('readOnly', true)
+                            ->set_rows(2)
+                            ->set_width(50)
+                            ->set_default_value($ebookPost['title'] . " ({$ebookPost['isbn']})")
+                            ->set_help_text(__('The eBook title and digital ISBN', 'alfaomega-ebooks')),
+
+                        Field::make( 'radio_image', 'alfaomega_ebook_cover', __( 'Cover', 'alfaomega-ebooks' ) )
+                            ->set_options( [
+                                'cover' => $ebookPost['cover'],
+                            ])
+                            ->set_help_text(__('The cover of the eBook', 'alfaomega-ebooks'))
+                            ->set_width(50),
+
+                        Field::make('text', 'alfaomega_access_download', __('PDF file', 'alfaomega-ebooks'))
+                            ->set_attribute('readOnly', true)
+                            ->set_attribute('type', 'text')
+                            ->set_width(25)
+                            ->set_help_text(__('Download the PDF with DRM', 'alfaomega-ebooks'))
+                            ->set_default_value(!empty($ebookPost['pdf_id'])
+                                ? esc_html__('Yes', 'alfaomega-ebooks')
+                                : esc_html__('No', 'alfaomega-ebooks')),
+
+                        Field::make('text', 'alfaomega_access_read', __('HTML eBook', 'alfaomega-ebooks'))
+                            ->set_attribute('readOnly', true)
+                            ->set_attribute('type', 'text')
+                            ->set_width(25)
+                            ->set_help_text(__('HTML eBook to read online', 'alfaomega-ebooks'))
+                            ->set_default_value(!empty($ebookPost['ebook_url'])
+                                ? esc_html__('Yes', 'alfaomega-ebooks')
+                                : esc_html__('No', 'alfaomega-ebooks')),
+
+                        Field::make('text', 'alfaomega_access_product', __('Linked Product', 'alfaomega-ebooks'))
+                            ->set_attribute('readOnly', true)
+                            ->set_attribute('type', 'text')
+                            ->set_width(25)
+                            ->set_help_text(__('Store product linked to this eBook', 'alfaomega-ebooks'))
+                            ->set_default_value($ebookPost['product_sku']),
+
+                        Field::make('text', 'alfaomega_access_date', __('Updated At', 'alfaomega-ebooks'))
+                            ->set_attribute('readOnly', true)
+                            ->set_attribute('type', 'text')
+                            ->set_width(25)
+                            ->set_help_text(__('Date when the eBook was updated', 'alfaomega-ebooks'))
+                            ->set_default_value(Carbon\Carbon::parse($ebookPost['date'])->format('d/m/Y H:i A')),
+                    ]);
+            }
         }
 
         /**
@@ -166,7 +247,9 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
          */
         public function save_post( $post_id ): void
         {
-            // A series of guard clauses to make sure we are saving the right data
+            return;
+
+            /*// A series of guard clauses to make sure we are saving the right data
             // 1. Check if nonce is set
             if( isset( $_POST['alfaomega_ebook_nonce'] ) ){
                 if( ! wp_verify_nonce( $_POST['alfaomega_ebook_nonce'], 'alfaomega_ebook_nonce' ) ){
@@ -228,7 +311,7 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
             
                     update_post_meta( $post_id, $field, $new_value, $old_value );
                 }
-            }
+            }*/
         }
 
     }
