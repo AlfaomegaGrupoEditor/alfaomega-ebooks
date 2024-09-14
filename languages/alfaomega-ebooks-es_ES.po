@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Blank WordPress Pot v1.0.0\n"
 "Report-Msgid-Bugs-To: Livan Rodriguez <livan2r@gmail.com>\n"
 "POT-Creation-Date: 2024-09-14 09:07-0400\n"
-"PO-Revision-Date: 2024-09-14 09:16-0400\n"
+"PO-Revision-Date: 2024-09-14 09:34-0400\n"
 "Last-Translator: Alfaomega México ADMIN\n"
 "Language-Team: Español\n"
 "Language: es_ES\n"
@@ -1526,7 +1526,7 @@ msgstr ""
 
 #: src/Services/eBooks/Emails/AlfaomegaEbooksSampleEmail.php:17
 msgid "Ebook Sample Access Codes"
-msgstr "Códigos de accesso de la muestra"
+msgstr "Código de acceso"
 
 #: src/Services/eBooks/Emails/AlfaomegaEbooksSampleEmail.php:18
 msgid "Alfaomega eBook access code"
@@ -2064,7 +2064,7 @@ msgid ""
 "library in "
 msgstr ""
 "Por favor copie el siguiente código y péguelo en su biblioteca digital "
-"personalizada en"
+"personalizada en el"
 
 #: views/emails/html-sample-email.php:19
 msgid "Alfaomega Portal"
@@ -2080,7 +2080,7 @@ msgstr "Aplicar antes de:"
 
 #: views/emails/html-sample-email.php:31
 msgid "eBook samples in this access code"
-msgstr "Muestras de corstesía en este código de accesso. "
+msgstr "Libros digitales incluidos en este código de acceso."
 
 #: views/emails/html-sample-email.php:41
 msgid "Access details"

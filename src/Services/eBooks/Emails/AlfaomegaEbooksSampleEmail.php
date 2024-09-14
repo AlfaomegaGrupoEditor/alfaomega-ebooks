@@ -12,10 +12,10 @@ use WC_Email;
 class AlfaomegaEbooksSampleEmail extends WC_Email {
     public function __construct() {
         $this->id = 'sample_email';
-        $this->title = __('Access code email', 'alfaomega-ebook');
-        $this->description = __('An email with the access code to activate the sample.', 'alfaomega-ebook');
-        $this->heading = __('Ebook Sample Access Codes', 'alfaomega-ebook');
-        $this->subject = __('Alfaomega eBook access code', 'alfaomega-ebook');
+        $this->title = __('Access code email', 'alfaomega-ebooks');
+        $this->description = __('An email with the access code to activate the sample.', 'alfaomega-ebooks');
+        $this->heading = __('Ebook Sample Access Codes', 'alfaomega-ebooks');
+        $this->subject = __('Alfaomega eBook access code', 'alfaomega-ebooks');
         $this->customer_email = true;
 
         // Set the templates for HTML and plain email versions
@@ -105,6 +105,6 @@ class AlfaomegaEbooksSampleEmail extends WC_Email {
      * @return string
      */
     public function get_default_additional_content() {
-        return __( 'We hope you enjoy your reading experience. Thanks for your confidence.', 'alfaomega-ebook' );
+        return __( 'We hope you enjoy your reading experience. Thanks for your confidence.', 'alfaomega-ebooks' );
     }
 }
