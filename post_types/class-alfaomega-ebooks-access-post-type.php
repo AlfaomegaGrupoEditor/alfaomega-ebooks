@@ -107,19 +107,28 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
                     echo esc_html( get_post_meta( $post_id, 'alfaomega_access_isbn', true ) );
                 break;
                 case 'alfaomega_access_type':
-                    echo esc_html( get_post_meta( $post_id, 'alfaomega_access_type', true ) );
+                    echo esc_html__(get_post_meta( $post_id, 'alfaomega_access_type', true ), 'alfaomega-ebooks');
                 break;
                 case 'alfaomega_access_status':
-                    echo esc_html( get_post_meta( $post_id, 'alfaomega_access_status', true ) );
+                    echo esc_html__(get_post_meta( $post_id, 'alfaomega_access_status', true ), 'alfaomega-ebooks');
                     break;
                 case 'alfaomega_access_read':
-                    echo esc_html( get_post_meta( $post_id, 'alfaomega_access_read', true ) );
+                    $read = get_post_meta( $post_id, 'alfaomega_access_read', true );
+                    echo $read == 1
+                        ? esc_html__('Yes', 'alfaomega-ebooks')
+                        : esc_html__('No', 'alfaomega-ebooks');
                     break;
                 case 'alfaomega_access_download':
-                    echo esc_html( get_post_meta( $post_id, 'alfaomega_access_download', true ) );
+                    $download = get_post_meta( $post_id, 'alfaomega_access_read', true );
+                    echo $download == 1
+                        ? esc_html__('Yes', 'alfaomega-ebooks')
+                        : esc_html__('No', 'alfaomega-ebooks');
                     break;
                 case 'alfaomega_access_due_date':
-                    echo esc_html( get_post_meta( $post_id, 'alfaomega_access_due_date', true ) );
+                    $dueDate = get_post_meta( $post_id, 'alfaomega_access_due_date', true );
+                    echo $dueDate == ''
+                        ? esc_html__('Unlimited', 'alfaomega-ebooks')
+                        : Carbon\Carbon::parse($dueDate)->format('d/m/Y');
                     break;
                 /*case 'categories':
                     $terms = get_the_terms($post_id, 'product_cat');
@@ -296,6 +305,38 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
                     update_post_meta( $post_id, $field, $new_value, $old_value );
                 }
             }
+        }
+
+        /**
+         * Get status list
+         * @return array
+         * @since 1.0.0
+         * @access public
+         */
+        public function get_status_list(): array
+        {
+            return [
+                'created' => esc_html__('Created', 'alfaomega-ebooks'),
+                'pending' => esc_html__('Pending', 'alfaomega-ebooks'),
+                'active' => esc_html__('Active', 'alfaomega-ebooks'),
+                'expired' => esc_html__('Expired', 'alfaomega-ebooks'),
+                'cancelled' => esc_html__('Cancelled', 'alfaomega-ebooks'),
+            ];
+        }
+
+        /**
+         * Get type list
+         * @return array
+         * @since 1.0.0
+         * @access public
+         */
+        public function get_type_list(): array
+        {
+            return [
+                'sample'   => esc_html__('sample', 'alfaomega-ebooks'),
+                'purchase' => esc_html__('purchase', 'alfaomega-ebooks'),
+                'import'   => esc_html__('import', 'alfaomega-ebooks'),
+            ];
         }
 
     }
