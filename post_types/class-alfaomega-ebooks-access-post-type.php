@@ -255,28 +255,6 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
         }
 
         /**
-         * Add inner meta boxes view
-         * @return void
-         * @since 1.0.0
-         * @access public
-         * @param object $post  Post object to be passed to the view
-         */
-        public function add_inner_meta_boxes( $post ): void
-        {
-            //$meta = get_post_meta( $post->ID );
-            $cover = get_post_meta( $post->ID, 'alfaomega_access_cover', true );
-            $isbn = get_post_meta( $post->ID, 'alfaomega_access_isbn', true );
-            $type = get_post_meta( $post->ID, 'alfaomega_access_type', true );
-            $order_id = get_post_meta( $post->ID, 'alfaomega_access_order_id', true );
-            $sample_id = get_post_meta( $post->ID, 'alfaomega_access_sample_id', true );
-            $status = get_post_meta( $post->ID, 'alfaomega_access_status', true );
-            $read = get_post_meta( $post->ID, 'alfaomega_access_read', true );
-            $download = get_post_meta( $post->ID, 'alfaomega_access_download', true );
-            $due_date = get_post_meta( $post->ID, 'alfaomega_access_due_date', true );
-            require_once( ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_access_metabox.php' );
-        }
-
-        /**
          * Save post
          * @return void
          * @since 1.0.0
@@ -285,7 +263,9 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
          */
         public function save_post( $post_id ): void
         {
-            // A series of guard clauses to make sure we are saving the right data
+            return;
+
+            /*// A series of guard clauses to make sure we are saving the right data
             // 1. Check if nonce is set
             if( isset( $_POST['alfaomega_ebook_nonce'] ) ){
                 if( ! wp_verify_nonce( $_POST['alfaomega_ebook_access_nonce'], 'alfaomega_ebook_access_nonce' ) ){
@@ -382,7 +362,7 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
             
                     update_post_meta( $post_id, $field, $new_value, $old_value );
                 }
-            }
+            }*/
         }
 
         /**
