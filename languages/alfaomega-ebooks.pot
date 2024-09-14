@@ -11,7 +11,7 @@ msgstr ""
 "Livan Rodriguez "
 "<livan2r@gmail.com>\n"
 "POT-Creation-Date: "
-"2024-09-04 09:28-0400\n"
+"2024-09-14 09:07-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Livan "
 "Rodriguez <livan2r@gmail."
@@ -50,39 +50,39 @@ msgstr ""
 "X-Poedit-"
 "SearchPath-0: .\n"
 
-#: admin/class-alfaomega-ebooks-admin.php:109
+#: admin/class-alfaomega-ebooks-admin.php:110
 msgid "Update meta"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:124
-#: admin/class-alfaomega-ebooks-admin.php:205
+#: admin/class-alfaomega-ebooks-admin.php:125
+#: admin/class-alfaomega-ebooks-admin.php:206
 msgid "Link eBook"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:139
+#: admin/class-alfaomega-ebooks-admin.php:140
 msgid ""
 "Update eBooks meta "
 "failed!"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:143
+#: admin/class-alfaomega-ebooks-admin.php:144
 #, php-format
 msgid ""
 "%u eBooks meta updated "
 "successfully"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:150
+#: admin/class-alfaomega-ebooks-admin.php:151
 msgid "Product not found"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:153
+#: admin/class-alfaomega-ebooks-admin.php:154
 msgid ""
 "Showing the related "
 "eBook product"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:160
+#: admin/class-alfaomega-ebooks-admin.php:161
 msgid ""
 "Link eBook failed! "
 "Please check the product "
@@ -90,69 +90,71 @@ msgid ""
 "product price."
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:164
+#: admin/class-alfaomega-ebooks-admin.php:165
 #, php-format
 msgid ""
 "%u ebooks linked "
 "successfully"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:171
+#: admin/class-alfaomega-ebooks-admin.php:172
 msgid ""
 "Unlink eBook failed!"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:175
+#: admin/class-alfaomega-ebooks-admin.php:176
 msgid ""
 "Ebook unlinked "
 "successfully"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:211
+#: admin/class-alfaomega-ebooks-admin.php:212
 msgid "Unlink eBook"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:225
+#: admin/class-alfaomega-ebooks-admin.php:226
 msgid "Update"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:229
+#: admin/class-alfaomega-ebooks-admin.php:230
 msgid "Product"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:251
+#: admin/class-alfaomega-ebooks-admin.php:252
 msgid "eBook ISBN"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:284
-#: admin/class-alfaomega-ebooks-admin.php:316
-#: admin/class-alfaomega-ebooks-admin.php:328
+#: admin/class-alfaomega-ebooks-admin.php:285
+#: admin/class-alfaomega-ebooks-admin.php:317
 #: admin/class-alfaomega-ebooks-admin.php:329
+#: admin/class-alfaomega-ebooks-admin.php:330
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:229
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:380
 msgid "eBook"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:375
+#: admin/class-alfaomega-ebooks-admin.php:376
 msgid "Filtrar por eBook"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:376
+#: admin/class-alfaomega-ebooks-admin.php:377
 msgid "Producto simple"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:377
+#: admin/class-alfaomega-ebooks-admin.php:378
 msgid "Todos los eBooks"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:378
+#: admin/class-alfaomega-ebooks-admin.php:379
 msgid ""
 "Vinculado correctamente"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:379
+#: admin/class-alfaomega-ebooks-admin.php:380
 msgid "Desvinculado"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:380
+#: admin/class-alfaomega-ebooks-admin.php:381
 msgid "Desactivado"
 msgstr ""
 
@@ -161,8 +163,8 @@ msgid "Alfaomega Ebooks"
 msgstr ""
 
 #: admin/class-alfaomega-ebooks-wc-settings.php:42
-#: includes/class-alfaomega-ebooks.php:384
-#: includes/class-alfaomega-ebooks.php:385
+#: includes/class-alfaomega-ebooks.php:402
+#: includes/class-alfaomega-ebooks.php:403
 msgid "Settings"
 msgstr ""
 
@@ -310,7 +312,7 @@ msgstr ""
 msgid "Client Secret"
 msgstr ""
 
-#: alfaomega-ebooks.php:73
+#: alfaomega-ebooks.php:74
 msgid ""
 "AlfaomegaEbooks requires "
 "WooCommerce to be "
@@ -413,13 +415,14 @@ msgstr ""
 
 #: includes/class-alfaomega-ebooks-service.php:555
 #: src/Services/eBooks/Entities/Alfaomega/AccessPost.php:131
-#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:184
+#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:188
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:156
 msgid ""
 "Unable to create post."
 msgstr ""
 
 #: includes/class-alfaomega-ebooks-service.php:1123
-#: src/Services/eBooks/Managers/EbookManager.php:162
+#: src/Services/eBooks/Managers/EbookManager.php:183
 #: views/alfaomega_ebook_reader_page.php:16
 msgid ""
 "Online eBook not "
@@ -428,15 +431,15 @@ msgid ""
 msgstr ""
 
 #: includes/class-alfaomega-ebooks-service.php:1148
-#: src/Services/eBooks/Managers/EbookManager.php:187
+#: src/Services/eBooks/Managers/EbookManager.php:208
 msgid ""
 "User not logged in yet"
 msgstr ""
 
 #: includes/class-alfaomega-ebooks-service.php:1156
 #: includes/class-alfaomega-ebooks-service.php:1169
-#: src/Services/eBooks/Managers/EbookManager.php:194
-#: src/Services/eBooks/Managers/EbookManager.php:207
+#: src/Services/eBooks/Managers/EbookManager.php:215
+#: src/Services/eBooks/Managers/EbookManager.php:228
 msgid ""
 "eBook download not "
 "available, please check "
@@ -568,44 +571,52 @@ msgid ""
 "left empty"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:314
+#: includes/class-alfaomega-ebooks.php:322
 #: post_types/class-alfaomega-ebooks-post-type.php:35
 msgid "AO eBooks"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:324
-#: includes/class-alfaomega-ebooks.php:325
+#: includes/class-alfaomega-ebooks.php:332
+#: includes/class-alfaomega-ebooks.php:333
 msgid "Home"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:334
+#: includes/class-alfaomega-ebooks.php:342
 msgid ""
 "All Alfaomega eBooks"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:335
+#: includes/class-alfaomega-ebooks.php:343
 msgid "List"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:344
+#: includes/class-alfaomega-ebooks.php:352
 msgid "eBook Access"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:345
+#: includes/class-alfaomega-ebooks.php:353
 msgid "Access List"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:354
+#: includes/class-alfaomega-ebooks.php:362
+msgid "eBook Sample"
+msgstr ""
+
+#: includes/class-alfaomega-ebooks.php:363
+msgid "Sample List"
+msgstr ""
+
+#: includes/class-alfaomega-ebooks.php:372
 #: views/alfaomega_ebook_home_page.php:18
 #: views/alfaomega_ebook_import_page.php:67
 msgid "Import eBooks"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:355
+#: includes/class-alfaomega-ebooks.php:373
 msgid "Import"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:364
+#: includes/class-alfaomega-ebooks.php:382
 #: views/alfaomega_ebook_home_page.php:24
 #: views/alfaomega_ebook_home_page.php:30
 #: views/alfaomega_ebook_refresh_page.php:5
@@ -613,11 +624,11 @@ msgstr ""
 msgid "Refresh eBooks"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:365
+#: includes/class-alfaomega-ebooks.php:383
 msgid "Refresh"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:374
+#: includes/class-alfaomega-ebooks.php:392
 #: views/alfaomega_ebook_home_page.php:36
 #: views/alfaomega_ebook_home_page.php:42
 #: views/alfaomega_ebook_link_page.php:5
@@ -625,12 +636,486 @@ msgstr ""
 msgid "Link Products"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:375
+#: includes/class-alfaomega-ebooks.php:393
 msgid "Link"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:409
+#: includes/class-alfaomega-ebooks.php:427
 msgid "Settings Saved"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/benchmark/index.js:15
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/benchmark/index.js:15
+msgid "Translate"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/build-module/create-i18n.js:393
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/build/create-i18n.js:399
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/create-i18n.js:399
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/build-module/create-i18n.js:393
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/build/create-i18n.js:399
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/create-i18n.js:399
+msgctxt "text direction"
+msgid "ltr"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:56
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:66
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:67
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:73
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:163
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:201
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:204
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:209
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:373
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:376
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:397
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:400
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:403
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:406
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/default-i18n.js:14
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/default-i18n.js:29
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/default-i18n.js:30
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:56
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:66
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:67
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:73
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:163
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:201
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:204
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:209
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:373
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:376
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:397
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:400
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:403
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:406
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/default-i18n.js:14
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/default-i18n.js:29
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/default-i18n.js:30
+msgid "hello"
+msgid_plural "hellos"
+msgstr[0] ""
+msgstr[1] ""
+
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:80
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:80
+msgctxt "verb"
+msgid "feed"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:90
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:97
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:156
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:178
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:90
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:97
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:156
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:178
+#, javascript-format
+msgid "%d banana"
+msgid_plural "%d bananas"
+msgstr[0] ""
+msgstr[1] ""
+
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:106
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:113
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:106
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:113
+#, javascript-format
+msgctxt "fruit"
+msgid "%d apple"
+msgid_plural "%d apples"
+msgstr[0] ""
+msgstr[1] ""
+
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:168
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:212
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:168
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:212
+msgid "cheeseburger"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:185
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:192
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:217
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:185
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:192
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:217
+#, javascript-format
+msgid "%d cat"
+msgid_plural "%d cats"
+msgstr[0] ""
+msgstr[1] ""
+
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:224
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:244
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:247
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:250
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:266
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:269
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:272
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:224
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:244
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:247
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:250
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:266
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:269
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:272
+msgid "singular"
+msgid_plural "plural"
+msgstr[0] ""
+msgstr[1] ""
+
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:385
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:388
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:415
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:418
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:421
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:424
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:385
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:388
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:415
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:418
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:421
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/create-i18n.js:424
+msgctxt "ctx"
+msgid "hello"
+msgid_plural "hellos"
+msgstr[0] ""
+msgstr[1] ""
+
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/default-i18n.js:18
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/default-i18n.js:41
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/default-i18n.js:42
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/default-i18n.js:18
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/default-i18n.js:41
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/default-i18n.js:42
+msgctxt "context"
+msgid "hello"
+msgid_plural "hellos"
+msgstr[0] ""
+msgstr[1] ""
+
+#: packages/carbon-field-choices/node_modules/@wordpress/i18n/src/test/subscribe-i18n.js:19
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/i18n/src/test/subscribe-i18n.js:19
+msgid "original"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/@wordpress/keycodes/build-module/index.js:285
+#: packages/carbon-field-choices/node_modules/@wordpress/keycodes/src/index.js:266
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/keycodes/build-module/index.js:285
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/keycodes/src/index.js:266
+msgid "Comma"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/@wordpress/keycodes/build-module/index.js:285
+#: packages/carbon-field-choices/node_modules/@wordpress/keycodes/src/index.js:268
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/keycodes/build-module/index.js:285
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/keycodes/src/index.js:268
+msgid "Period"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/@wordpress/keycodes/build-module/index.js:285
+#: packages/carbon-field-choices/node_modules/@wordpress/keycodes/src/index.js:270
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/keycodes/build-module/index.js:285
+#: vendor/livan2r/carbon-field-choices/node_modules/@wordpress/keycodes/src/index.js:270
+msgid "Backtick"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+#: vendor/livan2r/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+msgid "big_int"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+#: vendor/livan2r/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+msgid "num"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+#: packages/carbon-field-choices/node_modules/yargs/lib/usage.js:290
+#: packages/carbon-field-choices/node_modules/yargs/lib/usage.js:291
+#: vendor/livan2r/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/usage.js:290
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/usage.js:291
+msgid "string"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+#: vendor/livan2r/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+msgid "template_head"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+#: vendor/livan2r/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+msgid "comment2"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+#: vendor/livan2r/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+msgid "regexp"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+#: vendor/livan2r/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+msgid "operator"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+#: vendor/livan2r/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+msgid "eof"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+#: vendor/livan2r/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+msgid "expand"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+#: vendor/livan2r/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+msgid "punc"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+#: vendor/livan2r/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+msgid "arrow"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+#: vendor/livan2r/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+msgid "name"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+#: vendor/livan2r/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+msgid "atom"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+#: vendor/livan2r/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+msgid "keyword"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+#: vendor/livan2r/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+msgid "("
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+#: vendor/livan2r/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+msgid ")"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+#: vendor/livan2r/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+msgid ":"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+#: vendor/livan2r/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+msgid ";"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+#: vendor/livan2r/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+msgid ","
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+#: vendor/livan2r/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+msgid "]"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+#: vendor/livan2r/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+msgid "}"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+#: vendor/livan2r/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+msgid "{"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+#: vendor/livan2r/carbon-field-choices/node_modules/terser/dist/bundle.min.js:1
+msgid "["
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/yargs-parser/index.js:367
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs-parser/index.js:367
+#, javascript-format
+msgid ""
+"Not enough arguments "
+"following: %s"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/yargs-parser/index.js:541
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs-parser/index.js:541
+#, javascript-format
+msgid ""
+"Invalid JSON config "
+"file: %s"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/yargs/lib/usage.js:92
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/usage.js:92
+msgid "Positionals:"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/yargs/lib/usage.js:192
+#: packages/carbon-field-choices/node_modules/yargs/lib/usage.js:194
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/usage.js:192
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/usage.js:194
+msgid "command"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/yargs/lib/usage.js:203
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/usage.js:203
+msgid "Commands:"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/yargs/lib/usage.js:223
+#: packages/carbon-field-choices/node_modules/yargs/lib/usage.js:458
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/usage.js:223
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/usage.js:458
+msgid "default:"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/yargs/lib/usage.js:225
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/usage.js:225
+msgid "aliases:"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/yargs/lib/usage.js:288
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/usage.js:288
+msgid "boolean"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/yargs/lib/usage.js:289
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/usage.js:289
+msgid "count"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/yargs/lib/usage.js:292
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/usage.js:292
+msgid "array"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/yargs/lib/usage.js:293
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/usage.js:293
+msgid "number"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/yargs/lib/usage.js:297
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/usage.js:297
+msgid "required"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/yargs/lib/usage.js:298
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/usage.js:298
+msgid "choices:"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/yargs/lib/usage.js:317
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/usage.js:317
+msgid "Examples:"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/yargs/lib/usage.js:436
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/usage.js:436
+msgid "generated-value"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/yargs/lib/validation.js:29
+#: packages/carbon-field-choices/node_modules/yargs/lib/validation.js:52
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/validation.js:29
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/validation.js:52
+#, javascript-format
+msgid ""
+"Not enough non-option "
+"arguments: got %s, need "
+"at least %s"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/yargs/lib/validation.js:40
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/validation.js:40
+#, javascript-format
+msgid ""
+"Too many non-option "
+"arguments: got %s, "
+"maximum of %s"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/yargs/lib/validation.js:147
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/validation.js:147
+msgid "Invalid values:"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/yargs/lib/validation.js:150
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/validation.js:150
+#, javascript-format
+msgid ""
+"Argument: %s, Given: %s, "
+"Choices: %s"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/yargs/lib/validation.js:180
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/validation.js:180
+#, javascript-format
+msgid ""
+"Argument check failed: %s"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/yargs/lib/validation.js:256
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/validation.js:256
+msgid ""
+"Implications failed:"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/yargs/lib/validation.js:295
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/validation.js:295
+#, javascript-format
+msgid ""
+"Arguments %s and %s are "
+"mutually exclusive"
+msgstr ""
+
+#: packages/carbon-field-choices/node_modules/yargs/lib/validation.js:316
+#: vendor/livan2r/carbon-field-choices/node_modules/yargs/lib/validation.js:316
+#, javascript-format
+msgid "Did you mean %s?"
+msgstr ""
+
+#: packages/carbon-field-choices/src/main.js:22
+#: vendor/htmlburger/carbon-fields/packages/core/components/no-options/index.js:14
+#: vendor/livan2r/carbon-field-choices/src/main.js:22
+msgid "No options."
+msgstr ""
+
+#: packages/carbon-field-choices/src/main.js:70
+#: vendor/livan2r/carbon-field-choices/src/main.js:70
+msgid "Type to search"
+msgstr ""
+
+#: packages/carbon-field-choices/src/main.js:83
+#: vendor/livan2r/carbon-field-choices/src/main.js:83
+msgid "Loading..."
+msgstr ""
+
+#: packages/carbon-field-choices/src/main.js:86
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:237
+#: vendor/htmlburger/carbon-fields/packages/blocks/components/server-side-render/index.js:135
+#: vendor/livan2r/carbon-field-choices/src/main.js:86
+msgid "No results found."
+msgstr ""
+
+#: packages/carbon-field-choices/src/main.js:182
+#: packages/carbon-field-choices/src/main.js:185
+#: vendor/livan2r/carbon-field-choices/src/main.js:182
+#: vendor/livan2r/carbon-field-choices/src/main.js:185
+msgid ""
+"Error fetching options:"
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:32
@@ -639,13 +1124,19 @@ msgid "AO eBook Access"
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:33
-#: post_types/class-alfaomega-ebooks-access-post-type.php:35
 msgid ""
 "Alfaomega eBook Access"
 msgstr ""
 
+#: post_types/class-alfaomega-ebooks-access-post-type.php:35
+msgid ""
+"Accesos a Alfaomega "
+"eBooks"
+msgstr ""
+
 #: post_types/class-alfaomega-ebooks-access-post-type.php:75
 #: views/alfaomega_ebook_access_metabox.php:6
+#: views/alfaomega_ebook_sample_metabox.php:6
 msgid "Cover"
 msgstr ""
 
@@ -660,25 +1151,32 @@ msgstr ""
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:78
 #: views/alfaomega_ebook_access_metabox.php:40
+#: views/alfaomega_ebook_sample_metabox.php:40
 msgid "Type"
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:79
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:96
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:338
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:344
 #: views/alfaomega_ebook_access_metabox.php:91
 #: views/alfaomega_ebook_import_page.php:36
 #: views/alfaomega_ebook_link_page.php:35
 #: views/alfaomega_ebook_refresh_page.php:36
+#: views/alfaomega_ebook_sample_metabox.php:91
 msgid "Status"
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:80
 #: public/class-alfaomega-ebooks-public.php:130
 #: views/alfaomega_ebook_access_metabox.php:108
+#: views/alfaomega_ebook_sample_metabox.php:108
 msgid "Read"
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:81
 #: views/alfaomega_ebook_access_metabox.php:125
+#: views/alfaomega_ebook_sample_metabox.php:125
 msgid "Download"
 msgstr ""
 
@@ -687,7 +1185,12 @@ msgid "Client"
 msgstr ""
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:84
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:99
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:222
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:358
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:364
 #: views/alfaomega_ebook_access_metabox.php:142
+#: views/alfaomega_ebook_sample_metabox.php:142
 msgid "Due date"
 msgstr ""
 
@@ -730,6 +1233,349 @@ msgstr ""
 
 #: post_types/class-alfaomega-ebooks-post-type.php:135
 msgid "eBook Information"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:39
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:43
+msgid "AO eBook Sample"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:40
+msgid ""
+"Alfaomega eBook Sample"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:42
+msgid ""
+"Códigos de Muestras a "
+"Alfaomega eBooks"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:44
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:46
+msgid "Generate"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:45
+msgid ""
+"Generate eBook Access "
+"Samples"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:47
+msgid "Edit Sample Code"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:48
+msgid "View Sample Code"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:49
+msgid "All Sample Code"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:50
+msgid "Search Sample Codes"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:51
+msgid "Parent Sample Code:"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:52
+msgid ""
+"No sample code found."
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:53
+msgid ""
+"No sample code found in "
+"Trash."
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:91
+msgid "Code"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:92
+msgid "Author"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:93
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:193
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:312
+msgid "Description"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:94
+msgid "Email"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:98
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:370
+msgid "Activated at"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:184
+msgid ""
+"Complete the following "
+"form to generate eBook "
+"Access Samples"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:196
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:315
+msgid ""
+"In a few words describe "
+"the intended use of this "
+"access code"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:197
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:316
+msgid ""
+"Add a note to identify "
+"the generated code later"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:199
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:319
+msgid "Destination"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:202
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:323
+msgid "customer@gmail.com"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:204
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:325
+msgid ""
+"Upon generation the "
+"sample code can be send "
+"to the client email mean "
+"to use it"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:206
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:328
+msgid "Promoter"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:209
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:332
+msgid ""
+"promoter@alfaomega.com.mx"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:211
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:334
+msgid ""
+"A copy of the code sent "
+"to the client can be "
+"send to a promoter too"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:213
+#: views/alfaomega_ebook_import_page.php:37
+#: views/alfaomega_ebook_link_page.php:36
+#: views/alfaomega_ebook_refresh_page.php:37
+msgid "Count"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:220
+msgid ""
+"How many codes to "
+"generate with this setup"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:225
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:363
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:368
+msgid ""
+"The code should be used "
+"before this date, left "
+"empty to never due"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:227
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:377
+msgid ""
+"Setup the eBook access"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:232
+msgid ""
+"Start typing to search "
+"eBook..."
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:236
+msgid "Searching eBooks..."
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:238
+msgid ""
+"Type to start "
+"searching..."
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:240
+msgid "Select the eBook"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:241
+msgid ""
+"The eBook ISBN to "
+"generate the access code."
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:243
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:386
+msgid "Access time"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:245
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:257
+msgid ""
+"Select the access "
+"duration"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:246
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:73
+#, php-format
+msgid "%s days"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:247
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:74
+#, php-format
+msgid "%s week"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:248
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:75
+#, php-format
+msgid "%s weeks"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:249
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:76
+#, php-format
+msgid "%s month"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:250
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:251
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:77
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:78
+#, php-format
+msgid "%s months"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:252
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:79
+#, php-format
+msgid "%s year"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:253
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:80
+msgid "Unlimited"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:260
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:390
+msgid ""
+"Defines the time while "
+"the eBook access will be "
+"available after "
+"redeeming this code"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:262
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:392
+msgid "Read online"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:266
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:395
+msgid ""
+"The customer will be "
+"able to read the eBook "
+"online"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:268
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:397
+msgid "Download PDF"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:272
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:400
+msgid ""
+"The customer will be "
+"able to download the "
+"eBook PDF. Be careful "
+"this option generate "
+"costs by download"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:306
+msgid ""
+"Edit eBook Access Sample"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:342
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:355
+msgid ""
+"Update the code status"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:347
+msgid "created"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:348
+msgid "sent"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:349
+msgid "redeemed"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:350
+msgid "canceled"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:351
+msgid "expired"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:375
+msgid ""
+"The client redeemed the "
+"code this date"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:384
+msgid ""
+"The eBook ISBN to "
+"generate the access "
+"code. Doubke click on "
+"search input to reset "
+"the search"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:498
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:48
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:183
+msgid "Sample code"
+msgstr ""
+
+#: post_types/class-alfaomega-ebooks-sample-post-type.php:546
+msgid "Auto Draft"
 msgstr ""
 
 #: public/alfaomega-ebooks-routes.php:14
@@ -779,7 +1625,38 @@ msgid ""
 "Authentication error"
 msgstr ""
 
+#: src/Services/eBooks/Emails/AlfaomegaEbooksSampleEmail.php:15
+msgid "Access code email"
+msgstr ""
+
+#: src/Services/eBooks/Emails/AlfaomegaEbooksSampleEmail.php:16
+msgid ""
+"An email with the access "
+"code to activate the "
+"sample."
+msgstr ""
+
+#: src/Services/eBooks/Emails/AlfaomegaEbooksSampleEmail.php:17
+msgid ""
+"Ebook Sample Access Codes"
+msgstr ""
+
+#: src/Services/eBooks/Emails/AlfaomegaEbooksSampleEmail.php:18
+msgid ""
+"Alfaomega eBook access "
+"code"
+msgstr ""
+
+#: src/Services/eBooks/Emails/AlfaomegaEbooksSampleEmail.php:108
+msgid ""
+"We hope you enjoy your "
+"reading experience. "
+"Thanks for your "
+"confidence."
+msgstr ""
+
 #: src/Services/eBooks/Entities/Alfaomega/AccessPost.php:87
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:127
 msgid "Post not found."
 msgstr ""
 
@@ -787,21 +1664,490 @@ msgstr ""
 msgid "Ebook not found."
 msgstr ""
 
-#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:166
+#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:170
 msgid ""
 "Printed ISBN is required."
 msgstr ""
 
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:81
+msgid "Unknown"
+msgstr ""
+
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:271
+msgid "Code not found."
+msgstr ""
+
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:280
+msgid ""
+"Code already redeemed."
+msgstr ""
+
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:281
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:287
+msgid "Code expired."
+msgstr ""
+
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:326
+msgid "Code redeem failed."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/Container/Block_Container.php:287
+msgid ""
+"The parent must be "
+"'array', 'string' or "
+"'null'."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/Container/Block_Container.php:316
+msgid ""
+"The position of inner "
+"blocks must be 'above' "
+"or 'below'."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/Container/Block_Container.php:334
+msgid ""
+"The template must be an "
+"'array' or 'null'."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/Container/Block_Container.php:352
+msgid ""
+"The template lock must "
+"be 'all', 'insert', "
+"'false' or 'null'."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/Container/Block_Container.php:370
+msgid ""
+"The allowed blocks must "
+"be an 'array' or 'null'."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/Container/Block_Container.php:472
+msgid ""
+"'render_callback' is "
+"required for the blocks."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/Container/Block_Container.php:476
+msgid ""
+"'render_callback' must "
+"be a callable."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/Container/Container.php:741
+msgid "General"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/Container/Theme_Options_Container.php:207
+msgid "Settings saved."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/Field/Footer_Scripts_Field.php:20
+msgid ""
+"If you need to add "
+"scripts to your footer "
+"(like Google Analytics "
+"tracking code), you "
+"should enter them in "
+"this box."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/Field/Gravity_Form_Field.php:47
+msgid "No form"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/Field/Header_Scripts_Field.php:20
+msgid ""
+"If you need to add "
+"scripts to your header, "
+"you should enter them "
+"here."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/Field/Sidebar_Field.php:74
+msgctxt "sidebar"
+msgid "Add New"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/Libraries/Sidebar_Manager/Sidebar_Manager.php:69
+msgid ""
+"Please enter a name for "
+"the sidebar."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/Libraries/Sidebar_Manager/Sidebar_Manager.php:72
+msgid ""
+"Unknown action attempted."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/Libraries/Sidebar_Manager/Sidebar_Manager.php:102
+msgid ""
+"Sidebar with the same ID "
+"is already registered."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/Libraries/Sidebar_Manager/Sidebar_Manager.php:112
+#: vendor/htmlburger/carbon-fields/core/Libraries/Sidebar_Manager/Sidebar_Manager.php:142
+msgid ""
+"Failed to update option "
+"storing your custom "
+"sidebars. Please contact "
+"support."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/Libraries/Sidebar_Manager/Sidebar_Manager.php:137
+msgid "Sidebar not found."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/Libraries/Sidebar_Manager/Sidebar_Manager.php:181
+msgid "Add Sidebar"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/Libraries/Sidebar_Manager/Sidebar_Manager.php:182
+#: vendor/htmlburger/carbon-fields/packages/core/fields/sidebar/index.js:110
+msgid ""
+"Please enter the name of "
+"the new sidebar:"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/Libraries/Sidebar_Manager/Sidebar_Manager.php:183
+msgid ""
+"Are you sure you wish to "
+"remove this sidebar?"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/REST_API/Router.php:414
+msgid ""
+"No option names provided"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/REST_API/Router.php:425
+msgid ""
+"Theme Options updated."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/REST_API/Router.php:447
+msgid ""
+"Sorry, you are not "
+"allowed to read blocks "
+"of this post."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/REST_API/Router.php:457
+msgid ""
+"Sorry, you are not "
+"allowed to read blocks "
+"as this user."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/REST_API/Router.php:478
+msgid ""
+"The requested type: ID "
+"or URL."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/REST_API/Router.php:483
+msgid ""
+"The ID / URL of the "
+"attachment"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/REST_API/Router.php:500
+msgid ""
+"The name of the block."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/REST_API/Router.php:505
+msgid ""
+"The content of the block."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/REST_API/Router.php:509
+msgid ""
+"ID of the post context."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/core/REST_API/Router.php:540
+msgid "Invalid block."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/blocks/components/block-edit/index.js:214
+msgid "Show preview"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/blocks/components/block-edit/index.js:215
+msgid "Hide preview"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/blocks/components/block-edit/index.js:286
+msgid "Fields"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/blocks/components/not-supported-field/index.js:14
+#, javascript-format
+msgid ""
+"Field of type '%s' is "
+"not supported in "
+"Gutenberg."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/blocks/components/server-side-render/index.js:129
+#, javascript-format
+msgid ""
+"Error loading block: %s"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/blocks/fields/datetime/index.js:59
+#: vendor/htmlburger/carbon-fields/packages/core/fields/date/index.js:15
+#: vendor/htmlburger/carbon-fields/packages/metaboxes/fields/datetime/index.js:9
+msgid "Select Date"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/blocks/fields/file/index.js:15
+#: vendor/htmlburger/carbon-fields/packages/blocks/fields/file/index.js:17
+#: vendor/htmlburger/carbon-fields/packages/metaboxes/fields/file/index.js:10
+#: vendor/htmlburger/carbon-fields/packages/metaboxes/fields/file/index.js:12
+msgid "Select File"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/blocks/fields/file/index.js:16
+#: vendor/htmlburger/carbon-fields/packages/metaboxes/fields/file/index.js:11
+msgid "Use File"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/blocks/fields/image/index.js:10
+#: vendor/htmlburger/carbon-fields/packages/blocks/fields/image/index.js:12
+#: vendor/htmlburger/carbon-fields/packages/metaboxes/fields/image/index.js:10
+#: vendor/htmlburger/carbon-fields/packages/metaboxes/fields/image/index.js:12
+msgid "Select Image"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/blocks/fields/image/index.js:11
+#: vendor/htmlburger/carbon-fields/packages/metaboxes/fields/image/index.js:11
+msgid "Use Image"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/blocks/fields/media-gallery/index.js:15
+#: vendor/htmlburger/carbon-fields/packages/blocks/fields/media-gallery/index.js:17
+#: vendor/htmlburger/carbon-fields/packages/metaboxes/fields/media-gallery/index.js:15
+#: vendor/htmlburger/carbon-fields/packages/metaboxes/fields/media-gallery/index.js:17
+msgid "Select Attachments"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/blocks/fields/media-gallery/index.js:16
+#: vendor/htmlburger/carbon-fields/packages/metaboxes/fields/media-gallery/index.js:16
+msgid "Use Attachments"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/components/search-input/index.js:30
+msgid "Search..."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/fields/association/index.js:169
+#, javascript-format
+msgid ""
+"Maximum number of items "
+"reached (%s items)"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/fields/association/index.js:269
+#, javascript-format
+msgid ""
+"Showing %1$d of %2$d "
+"results"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/fields/association/index.js:283
+msgid "Thumbnail"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/fields/association/index.js:305
+msgid "Edit"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/fields/association/index.js:313
+msgid "Add"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/fields/association/index.js:365
+msgid "Remove"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/fields/color/index.js:92
+msgid "Select a color"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/fields/color/index.js:106
+msgid "Clear"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/fields/complex/index.js:82
+#, javascript-format
+msgid "Add %s"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/fields/complex/index.js:146
+#, javascript-format
+msgid ""
+"Couldn't create the "
+"label of group - %s"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/fields/complex/index.js:344
+msgid ""
+"There are no entries yet."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/fields/map/index.js:167
+msgid ""
+"Geocode was not "
+"successful for the "
+"following reason: "
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/fields/oembed/index.js:187
+msgid ""
+"An error occurred while "
+"trying to fetch oembed "
+"preview."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/fields/oembed/index.js:202
+msgid "Not Found"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/fields/sidebar/index.js:58
+msgid "Please choose"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/fields/sidebar/index.js:128
+msgid ""
+"An error occurred while "
+"trying to create the "
+"sidebar."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/fields/time/index.js:16
+msgid "Select Time"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/hocs/with-conditional-logic/index.js:87
+#, javascript-format
+msgid ""
+"An unknown field is used "
+"in condition - \"%s\""
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/hocs/with-validation/required.js:20
+msgid ""
+"This field is required."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/registry/index.js:40
+#, javascript-format
+msgid ""
+"%1$s type must be a "
+"string."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/registry/index.js:46
+#, javascript-format
+msgid ""
+"%1$s %2$s is already "
+"registered."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/registry/index.js:54
+msgid ""
+"The \"component\" param "
+"must be a function."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/registry/index.js:79
+#, javascript-format
+msgid ""
+"The provided context "
+"isn't a valid one. Must "
+"be one of - %s ."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/registry/index.js:89
+#, javascript-format
+msgid ""
+"%s %s isn't registered."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/utils/api-fetch.js:19
+msgid "An error occured."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/core/utils/fetch-attachments-data.js:24
+msgid ""
+"An error occurred while "
+"trying to fetch files "
+"data."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/metaboxes/containers/index.js:65
+#, javascript-format
+msgid ""
+"Could not find DOM "
+"element for container "
+"\"%1$s\"."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/metaboxes/monitors/conditional-display/conditions/base.js:52
+#, javascript-format
+msgid ""
+"Unsupported container "
+"condition comparison "
+"operator used - \"%1$s\"."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/metaboxes/monitors/conditional-display/handler/index.js:57
+#, javascript-format
+msgid ""
+"Unsupported container "
+"condition - \"%1$s\"."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/packages/metaboxes/monitors/conditional-display/handler/index.js:75
+#, javascript-format
+msgid ""
+"Unsupported container "
+"condition relation used "
+"- \"%1$s\"."
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/templates/Container/common/options-page.php:43
+msgid "Actions"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/templates/Container/common/options-page.php:52
+msgid "Save Changes"
+msgstr ""
+
+#: vendor/htmlburger/carbon-fields/templates/Container/widget.php:4
+msgid ""
+"No options are available "
+"for this widget."
+msgstr ""
+
 #: views/alfaomega_ebook_access_metabox.php:23
 #: views/alfaomega_ebook_metabox.php:6
+#: views/alfaomega_ebook_sample_metabox.php:23
 msgid "ISBN Digital"
 msgstr ""
 
 #: views/alfaomega_ebook_access_metabox.php:57
+#: views/alfaomega_ebook_sample_metabox.php:57
 msgid "Order Id"
 msgstr ""
 
 #: views/alfaomega_ebook_access_metabox.php:74
+#: views/alfaomega_ebook_sample_metabox.php:74
 msgid "Sample Id"
 msgstr ""
 
@@ -874,12 +2220,6 @@ msgstr ""
 msgid "Idle"
 msgstr ""
 
-#: views/alfaomega_ebook_import_page.php:37
-#: views/alfaomega_ebook_link_page.php:36
-#: views/alfaomega_ebook_refresh_page.php:37
-msgid "Count"
-msgstr ""
-
 #: views/alfaomega_ebook_import_page.php:42
 #: views/alfaomega_ebook_link_page.php:41
 #: views/alfaomega_ebook_refresh_page.php:42
@@ -912,4 +2252,70 @@ msgstr ""
 
 #: views/alfaomega_ebook_settings_page.php:41
 msgid "Save Settings"
+msgstr ""
+
+#: views/emails/html-sample-email.php:13
+msgid ""
+"Hello, dear customer."
+msgstr ""
+
+#: views/emails/html-sample-email.php:15
+msgid ""
+"We cordially welcome you "
+"to our select group of "
+"Alfaomega readers. In "
+"this message we provide "
+"you with courtesy keys "
+"for accessing digital "
+"books on the Alfaomega "
+"Platform."
+msgstr ""
+
+#: views/emails/html-sample-email.php:18
+msgid ""
+"Please copy the "
+"following code and paste "
+"in the your personal "
+"digital library in "
+msgstr ""
+
+#: views/emails/html-sample-email.php:19
+msgid "Alfaomega Portal"
+msgstr ""
+
+#: views/emails/html-sample-email.php:23
+msgid "Access code:"
+msgstr ""
+
+#: views/emails/html-sample-email.php:26
+msgid "Valid until:"
+msgstr ""
+
+#: views/emails/html-sample-email.php:31
+msgid ""
+"eBook samples in this "
+"access code"
+msgstr ""
+
+#: views/emails/html-sample-email.php:41
+msgid "Access details"
+msgstr ""
+
+#: views/emails/html-sample-email.php:44
+msgid "Access duration:"
+msgstr ""
+
+#: views/emails/html-sample-email.php:48
+msgid "Read online."
+msgstr ""
+
+#: views/emails/html-sample-email.php:51
+msgid ""
+"Pdf download with DRM."
+msgstr ""
+
+#: views/emails/html-sample-email.php:70
+msgid ""
+"We hope you enjoy your "
+"reading experience."
 msgstr ""

@@ -1,6 +1,7 @@
 <?php
 
 use AlfaomegaEbooks\Http\RouteManager;
+use AlfaomegaEbooks\Services\eBooks\Emails\AlfaomegaEbooksSampleEmail;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -505,5 +506,58 @@ class Alfaomega_Ebooks_Admin {
      */
     function action_save_product_meta( $product ) {
         $product->update_meta_data( 'alfaomega_ebooks_ebook_isbn', $_POST['alfaomega_ebooks_ebook_isbn'] ?? '' );
+    }
+
+    /**
+     * Boot the Carbon Fields framework.
+     * This method initializes the Carbon Fields framework, which is used for creating custom fields
+     * and meta boxes in the WordPress admin area.
+     *
+     * @since 1.0.0
+     */
+    public function boot_carbon_fields_framework(): void
+    {
+        \Carbon_Fields\Carbon_Fields::boot();
+    }
+
+    /**
+     * To avoid the jQuery Migrate message in the console
+     * @param $scripts
+     *
+     * @return void
+     */
+    function remove_jquery_Migrate($scripts)
+    {
+        if ( /*! is_admin() &&*/ isset( $scripts->registered['jquery'] ) ) {
+            $scripts->registered['jquery']->deps = array_diff( $scripts->registered['jquery']->deps, array( 'jquery-migrate' ) );
+        }
+    }
+
+    /**
+     * Redirect to sample post type after generating a new sample
+     * @param $location
+     *
+     * @return void
+     */
+    function redirect_custom_post_location( $location ): string
+    {
+        if ( get_post_type() === ALFAOMEGA_EBOOKS_SAMPLE_POST_TYPE &&
+             (isset( $_POST['save'] ) || isset( $_POST['publish'] ))) {
+
+                return admin_url( "edit.php?post_type=" . get_post_type() );
+        }
+
+        return $location;
+    }
+
+    /**
+     * Add custom email class to WooCommerce
+     * @param $email_classes
+     *
+     * @return void
+     */
+    function add_sample_woocommerce_email_class($email_classes) {
+        $email_classes['Alfaomega_Ebooks_Sample_Email'] = new AlfaomegaEbooksSampleEmail();
+        return $email_classes;
     }
 }

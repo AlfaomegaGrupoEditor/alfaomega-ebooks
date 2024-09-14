@@ -76,6 +76,7 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
         }
 
         $thumbnail_url = '';
+        $details = null;
         $product_sku = get_post_meta($postId, 'alfaomega_ebook_product_sku', true);
         if (!empty($product_sku)) {
             $product_id = wc_get_product_id_by_sku($product_sku);
@@ -87,6 +88,8 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
                 } else {
                     $categories = wp_list_pluck($categories, 'term_id');
                 }
+                $post = get_post($product_id);
+                $details = apply_filters( 'woocommerce_short_description', $post->post_excerpt );;
             }
         }
         $this->meta = [
@@ -100,6 +103,7 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
             'date'        => $post->post_date,
             'product_sku' => $product_sku,
             'cover'       => $thumbnail_url,
+            'details'     => $details,
             'categories'  => $categories ?? [],
         ];
 

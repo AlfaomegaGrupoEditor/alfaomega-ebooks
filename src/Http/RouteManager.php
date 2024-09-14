@@ -70,6 +70,11 @@ class RouteManager
             'callback'            => [EbooksController::class, 'linkEbooks'],
             'permission_callback' => [Middleware::class, 'auth'],
         ],
+        'search-ebooks'  => [
+            'methods'             => 'GET',
+            'callback'            => [EbooksController::class, 'searchEbooks'],
+            'permission_callback' => [Middleware::class, 'auth'],
+        ],
 
         'queue-status' => [
             'methods'             => 'GET',

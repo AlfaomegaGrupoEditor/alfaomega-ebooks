@@ -8,7 +8,7 @@ class WordpressTest extends TestCase
 {
     protected function setUp(): void
     {
-
+        // @see https://macarthur.me/posts/simpler-unit-testing-for-wordpress
     }
 
     protected function tearDown(): void
