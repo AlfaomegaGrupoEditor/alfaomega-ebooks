@@ -1,4 +1,8 @@
-<?php 
+<?php
+
+use AlfaomegaEbooks\Services\eBooks\Service;
+use Carbon_Fields\Container;
+use Carbon_Fields\Field\Field;
 
 if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
     class Alfaomega_Ebooks_Access_Post_Type{
@@ -11,7 +15,7 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
          */
         public function __construct(){
             add_action('init', [$this, 'create_post_type']);
-            add_action('add_meta_boxes', [$this, 'add_meta_boxes']);
+            add_action('carbon_fields_register_fields', [$this, 'add_meta_boxes_view']);
             add_action( 'save_post', array( $this, 'save_post' ), 10, 3 );
             add_filter( 'manage_alfaomega-access_posts_columns', [$this, 'alfaomega_ebook_access_cpt_columns'] );
             add_action( 'manage_alfaomega-access_posts_custom_column', [$this, 'alfaomega_ebook_access_custom_columns'], 10, 2 );
@@ -36,7 +40,8 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
                         'singular_name' => esc_html__('AO eBook Access', 'alfaomega-ebook'),
                     ],
                     'public'              => true,
-                    'supports'            => ['title', 'author', 'thumbnail'],
+                    //'supports'            => ['title', 'author', 'thumbnail'],
+                    'supports'            => false,
                     'hierarchical'        => false,
                     'show_ui'             => true,
                     'show_in_menu'        => false,
@@ -160,20 +165,93 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
 
         /**
          * Add meta boxes
+         *
          * @return void
-         * @since 1.0.0
+         * @throws \Exception
+         * @since  1.0.0
          * @access public
          */
-        public function add_meta_boxes() : void
+        public function add_meta_boxes_view() : void
         {
-            add_meta_box(
-                'alfaomega_ebook_access_meta_box',
-                esc_html__('eBook Access Information', 'alfaomega-ebook'),
-                [$this, 'add_inner_meta_boxes'],
-                ALFAOMEGA_EBOOKS_ACCESS_POST_TYPE,
-                'normal', // side
-                'high'
-            );
+            global $pagenow;
+
+            if ($pagenow === 'post.php') {
+                $accessPost = Service::make()
+                    ->ebooks()
+                    ->accessPost()
+                    ->get($_GET['post']);
+
+                if (empty($accessPost)) {
+                    return;
+                }
+
+                Container::make('post_meta', __('View eBook Access', 'alfaomega-ebooks'))
+                    ->where('post_type', '=', 'alfaomega-access')
+                    ->add_fields([
+                        Field::make('textarea', 'alfaomega_access_isbn', __('eBook', 'alfaomega-ebooks'))
+                            ->set_attribute('readOnly', true)
+                            ->set_rows(2)
+                            ->set_width(50)
+                            ->set_default_value($accessPost['title'] . " ({$accessPost['isbn']})")
+                            ->set_help_text(__('The eBook to access to', 'alfaomega-ebooks')),
+
+                        Field::make( 'radio_image', 'alfaomega_access_cover', __( 'Cover', 'alfaomega-ebooks' ) )
+                            ->set_options( [
+                                'cover' => $accessPost['cover'],
+                            ])
+                            ->set_help_text(__('The cover of the eBook', 'alfaomega-ebooks'))
+                            ->set_width(50),
+
+                        Field::make('text', 'alfaomega_access_type', __('Status', 'alfaomega-ebooks'))
+                            ->set_attribute('readOnly', true)
+                            ->set_attribute('type', 'text')
+                            ->set_width(33)
+                            ->set_help_text(__('The access type', 'alfaomega-ebooks'))
+                            ->set_default_value(__($accessPost['type'], 'alfaomega-ebooks')),
+
+                        Field::make('text', 'alfaomega_access_status', __('Status', 'alfaomega-ebooks'))
+                            ->set_attribute('readOnly', true)
+                            ->set_attribute('type', 'text')
+                            ->set_width(33)
+                            ->set_help_text(__('The access status', 'alfaomega-ebooks'))
+                            ->set_default_value(__($accessPost['status'], 'alfaomega-ebooks')),
+
+                        Field::make('text', 'alfaomega_access_due_date', __('Due date', 'alfaomega-ebooks'))
+                            ->set_attribute('readOnly', true)
+                            ->set_attribute('type', 'text')
+                            ->set_width(33)
+                            ->set_help_text(__('Access validity', 'alfaomega-ebooks'))
+                            ->set_default_value($accessPost['due_date'] == ''
+                                ? esc_html__('Unlimited', 'alfaomega-ebooks')
+                                : Carbon\Carbon::parse($accessPost['due_date'])->format('d/m/Y')),
+
+                        Field::make('text', 'alfaomega_access_author', __('Client', 'alfaomega-ebooks'))
+                            ->set_attribute('readOnly', true)
+                            ->set_attribute('type', 'text')
+                            ->set_width(33)
+                            ->set_help_text(__('Client allowed to access', 'alfaomega-ebooks'))
+                            ->set_default_value($accessPost['user_email']),
+
+                        Field::make('text', 'alfaomega_access_read', __('Read online', 'alfaomega-ebooks'))
+                            ->set_attribute('readOnly', true)
+                            ->set_attribute('type', 'text')
+                            ->set_width(33)
+                            ->set_help_text(__('Access to read online the eBook', 'alfaomega-ebooks'))
+                            ->set_default_value($accessPost['read']
+                                ? esc_html__('Yes', 'alfaomega-ebooks')
+                                : esc_html__('No', 'alfaomega-ebooks')),
+
+                        Field::make('text', 'alfaomega_access_download', __('Download', 'alfaomega-ebooks'))
+                            ->set_attribute('readOnly', true)
+                            ->set_attribute('type', 'text')
+                            ->set_width(33)
+                            ->set_help_text(__('download the PDF with DRM', 'alfaomega-ebooks'))
+                            ->set_default_value($accessPost['read']
+                                ? esc_html__('Yes', 'alfaomega-ebooks')
+                                : esc_html__('No', 'alfaomega-ebooks'))
+
+                    ]);
+            }
         }
 
         /**
