@@ -157,6 +157,11 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             }
 
             $result[] = $this->save($postId, $data);
+
+            // send email to destination and promoter after creating the post
+            if (!empty($data['destination']) || !empty($data['promoter'])) {
+                $this->email($postId);
+            }
         }
 
         return count($result) === 1 ? $result[0] : $result;
