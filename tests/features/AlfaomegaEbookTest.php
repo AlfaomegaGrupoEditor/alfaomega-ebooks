@@ -104,9 +104,8 @@ class AlfaomegaEbookTest extends WordpressTest
     }
 
     /**
-     * Test search ebooks
+     * Test search ebooks by query
      *
-     * @param int $userId
      * @param string $query
      * @param array $expected
      *
@@ -123,6 +122,25 @@ class AlfaomegaEbookTest extends WordpressTest
         $this->assertNotNull($result);
         $this->assertCount($expected['count'], $result['items']);
         $this->assertEquals($expected['count'], $result['total']);
+    }
+
+    /**
+     * Test search ebooks by isbn only
+     *
+     * @param string $isbn
+     * @param array $expected
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function testSearchEbookByIsbn(string $isbn = '9786076222515', array $expected = []): void
+    {
+        $result = Service::make()
+            ->ebooks()
+            ->ebookPost()
+            ->search($isbn);
+
+        $this->assertNotNull($result);
     }
     
     /**

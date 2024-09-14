@@ -65,6 +65,10 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             foreach ($payload as &$item) {
                 $eBookPost = $service->search($item['isbn']);
                 $item['title'] = !empty($eBookPost) ? $eBookPost['title'] : '';
+                $item['cover'] = !empty($eBookPost) ? $eBookPost['cover'] : '';
+                $item['author'] = !empty($eBookPost) ? $eBookPost['author'] : '';
+                $item['category'] = !empty($eBookPost) ? $eBookPost['isbn'] : '';
+                $item['year'] = !empty($eBookPost) ? $eBookPost['year'] : '';
                 $item['access_time_desc'] = match ($item['access_time']) {
                     '3'   => sprintf(__('%s days', 'alfaomega-ebooks'), 3),
                     '7'   => sprintf(__('%s week', 'alfaomega-ebooks'), 1),
@@ -76,6 +80,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                     '0'   => __('Unlimited', 'alfaomega-ebooks'),
                     default => __('Unknown', 'alfaomega-ebooks'),
                 };
+                $item['details'] = !empty($eBookPost) ? $eBookPost['details'] : '';
             }
         }
 

@@ -12,10 +12,11 @@ use WC_Email;
 class AlfaomegaEbooksSampleEmail extends WC_Email {
     public function __construct() {
         $this->id = 'sample_email';
-        $this->title = __('Access code email', 'text-domain');
-        $this->description = __('An email with the access code to activate the sample.', 'text-domain');
-        $this->heading = __('Ebook Sample Access Codes', 'text-domain');
-        $this->subject = __('Alfaomega eBook access code', 'text-domain');
+        $this->title = __('Access code email', 'alfaomega-ebook');
+        $this->description = __('An email with the access code to activate the sample.', 'alfaomega-ebook');
+        $this->heading = __('Ebook Sample Access Codes', 'alfaomega-ebook');
+        $this->subject = __('Alfaomega eBook access code', 'alfaomega-ebook');
+        $this->customer_email = true;
 
         // Set the templates for HTML and plain email versions
         $this->template_html = 'html-sample-email.php';
@@ -63,11 +64,12 @@ class AlfaomegaEbooksSampleEmail extends WC_Email {
         return wc_get_template_html(
             $this->template_html,
             [
-                'sample'        => $this->object,
-                'email_heading' => $this->get_heading(),
-                'sent_to_admin' => false,
-                'plain_text'    => false,
-                'email'         => $this,
+                'sample'             => $this->object,
+                'email_heading'      => $this->get_heading(),
+                'additional_content' => $this->get_additional_content(),
+                'sent_to_admin'      => false,
+                'plain_text'         => false,
+                'email'              => $this,
             ],
             '',
             ALFAOMEGA_EBOOKS_PATH . 'views/emails/'
@@ -84,14 +86,25 @@ class AlfaomegaEbooksSampleEmail extends WC_Email {
         return wc_get_template_html(
             $this->template_plain,
             [
-                'order'         => $this->object,
-                'email_heading' => $this->get_heading(),
-                'sent_to_admin' => false,
-                'plain_text'    => true,
-                'email'         => $this,
+                'sample'             => $this->object,
+                'email_heading'      => $this->get_heading(),
+                'additional_content' => $this->get_additional_content(),
+                'sent_to_admin'      => false,
+                'plain_text'         => false,
+                'email'              => $this,
             ],
             '',
             ALFAOMEGA_EBOOKS_PATH . 'views/emails/'
         );
+    }
+
+    /**
+     * Default content to show below main email content.
+     *
+     * @since 3.7.0
+     * @return string
+     */
+    public function get_default_additional_content() {
+        return __( 'We hope you enjoy your reading experience. Thanks for your confidence.', 'alfaomega-ebook' );
     }
 }
