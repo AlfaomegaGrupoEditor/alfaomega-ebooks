@@ -34,15 +34,18 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
          */
         function custom_admin_css(): void
         {
-            echo '<style>
-                .column-title { width: 120px; }
-                .column-author { width: 100px; }
-                .column-alfaomega_sample_description { width: 150px; }
-                .column-alfaomega_sample_destination { width: 100px; }
-                .column-alfaomega_sample_status { width: 100px; }
-                .column-alfaomega_sample_activated_at { width: 100px; }
-                .column-alfaomega_sample_due_date { width: 100px; }
-            </style>';
+            if ($_GET['post_type'] === 'alfaomega-sample') {
+                echo '<style>
+                    .column-cb { width: 5% !important; }
+                    .column-title { width: 10% !important; }
+                    .column-author { width: 15% !important; }
+                    .column-alfaomega_sample_description { width: 20% !important; }
+                    .column-alfaomega_sample_destination { width: 10% !important; }
+                    .column-alfaomega_sample_status { width: 10% !important; }
+                    .column-alfaomega_sample_activated_at { width: 10% !important; }
+                    .column-alfaomega_sample_due_date { width: 10% !important; }
+                </style>';
+            }
         }
 
         /**

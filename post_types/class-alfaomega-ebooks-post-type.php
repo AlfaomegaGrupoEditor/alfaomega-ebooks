@@ -141,13 +141,18 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
          */
         function custom_admin_css(): void
         {
-            echo '<style>
-                .column-alfaomega_ebook_cover { width: 80px; }
-                .column-alfaomega_ebook_isbn { width: 150px; }
-                .column-alfaomega_ebook_id { width: 100px; }
-                .column-alfaomega_ebook_url { width: 100px; }
-                .column-alfaomega_ebook_product_sku { width: 150px; }
+            if ($_GET['post_type'] === 'alfaomega-ebook') {
+                echo '<style>
+                .column-cb { width: 5% !important; }
+                .column-alfaomega_ebook_cover { width: 10% !important; }
+                .column-title { width: 30%!important; }
+                .column-alfaomega_ebook_isbn { width: 10% !important; }
+                .column-alfaomega_ebook_id { width: 10% !important; }
+                .column-alfaomega_ebook_url { width: 10% !important; }
+                .column-alfaomega_ebook_product_sku { width: 10% !important; }
+                .column-date { width: 15%; }
             </style>';
+            }
         }
 
         /**
