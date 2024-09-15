@@ -170,16 +170,19 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
          */
         function custom_admin_css(): void
         {
-            echo '<style>
-                .column-alfaomega_access_cover { width: 80px; }
-                .column-title { width: 150px; }
-                .column-alfaomega_access_isbn { width: 80px; }
-                .column-alfaomega_access_type { width: 80px; }
-                .column-alfaomega_access_status { width: 80px; }
-                .column-alfaomega_access_read { width: 80px; }
-                .column-alfaomega_access_download { width: 80px; }
-                .column-alfaomega_access_due_date { width: 80px; }
-            </style>';
+            if ($_GET['post_type'] === 'alfaomega-access') {
+                echo '<style>
+                    .column-cb { width: 5% !important; }
+                    .column-alfaomega_access_cover { width: 10% !important; }
+                    .column-title { width: 15% !important; }
+                    .column-alfaomega_access_isbn { width: 10% !important; }
+                    .column-alfaomega_access_type { width: 10% !important; }
+                    .column-alfaomega_access_status { width: 10% !important; }
+                    .column-alfaomega_access_read { width: 10% !important; }
+                    .column-alfaomega_access_download { width: 10% !important; }
+                    .column-alfaomega_access_due_date { width: 10% !important; }
+                </style>';
+            }
         }
 
         /**
