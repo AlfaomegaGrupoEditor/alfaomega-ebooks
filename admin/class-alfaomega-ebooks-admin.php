@@ -577,4 +577,72 @@ class Alfaomega_Ebooks_Admin {
             remove_meta_box('avada_fusion_page_options', $postType, 'normal');
         }
     }
+
+    /**
+     * Create a new page for My eBooks
+     * @return void
+     */
+    function create_my_ao_ebook_page(): void
+    {
+        // Check if the page already exists
+        $page_slug = 'my-ao-ebooks';
+        $page = get_page_by_path($page_slug);
+
+        if (!$page) {
+            $page_title = __('My eBooks', 'alfaomega-ebooks');
+            $page_content = '[my_ao_ebooks]';
+
+            // Create the page
+            $page_id = wp_insert_post([
+                'post_title'     => $page_title,
+                'post_name'      => $page_slug,
+                'post_content'   => $page_content,
+                'post_status'    => 'publish',
+                'post_type'      => 'page',
+                'post_author'    => 1,
+            ]);
+
+            // Set Avada Page Options (editable in Avada Builder)
+            if ($page_id) {
+                update_post_meta($page_id, '_fusion_builder_status', 'enabled'); // Enable Avada Builder
+            }
+        }
+    }
+
+    /**
+     * Add My eBooks page to the primary menu
+     * @return void
+     */
+    function add_my_ao_ebook_to_menu(): void
+    {
+        $menu_name = 'primary'; // Replace with your theme's primary menu slug
+        $page_slug = 'my-ao-ebooks';
+
+        // Get the page and menu objects
+        $page = get_page_by_path($page_slug);
+        $menu = wp_get_nav_menu_object($menu_name);
+
+        if ($page && $menu) {
+            // Add the page to the menu
+            wp_update_nav_menu_item($menu->term_id, 0, [
+                'menu-item-object-id' => $page->ID,
+                'menu-item-object'    => 'page',
+                'menu-item-type'      => 'post_type',
+                'menu-item-status'    => 'publish',
+            ]);
+        }
+    }
+
+    /**
+     * Register the shortcode for displaying the customer's purchased eBooks
+     * @return void
+     */
+    function my_ao_ebook_shortcode(): false|string
+    {
+        ob_start();
+
+        require ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_my_ebooks.php';
+
+        return ob_get_clean();
+    }
 }

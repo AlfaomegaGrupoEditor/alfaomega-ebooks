@@ -179,4 +179,17 @@ class Alfaomega_Ebooks_Public {
             ->order()
             ->onComplete($order_id);
     }
+
+    /**
+     * Register the shortcode for displaying the customer's purchased eBooks
+     * @return void
+     */
+    function my_ao_ebook_shortcode(): false|string
+    {
+        ob_start();
+
+        require ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_my_ebooks.php';
+
+        return ob_get_clean();
+    }
 }

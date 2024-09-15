@@ -240,6 +240,11 @@ class Alfaomega_Ebooks {
         // Carbon Fields
         $this->loader->add_action( 'after_setup_theme', $plugin_admin, 'boot_carbon_fields_framework' );
         $this->loader->add_action( 'wp_default_scripts', $plugin_admin, 'remove_jquery_Migrate' );
+
+        // my_ao_ebooks
+        $this->loader->add_action('after_setup_theme', $plugin_admin, 'create_my_ao_ebook_page');
+        // $this->loader->add_action('wp_update_nav_menu', $plugin_admin, 'add_my_ebook_to_menu');
+        $this->loader->add_shortcode('my_ao_ebooks', $plugin_admin, 'my_ao_ebook_shortcode');
     }
 
 	/**
@@ -266,6 +271,7 @@ class Alfaomega_Ebooks {
         $this->loader->add_filter('woocommerce_dropdown_variation_attribute_options_html', $plugin_public, 'dropdown_variation_attribute_options_html', 10, 2);
 
         $this->loader->add_action( 'woocommerce_order_status_completed', $plugin_public, 'on_order_complete' );
+        $this->loader->add_shortcode('my_ao_ebooks', $plugin_public, 'my_ao_ebook_shortcode');
     }
 
 	/**
