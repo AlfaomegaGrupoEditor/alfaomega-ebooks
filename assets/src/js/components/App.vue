@@ -24,7 +24,7 @@
         <b-button variant="primary" @click="showAlert">Click me</b-button>
       </b-col>
       <b-col cols="9">
-        <h2>Hello from BootstrapVueNext</h2>
+        <h2>{{ $t('welcome') }}</h2>
       </b-col>
     </b-row>
   </b-container>
