@@ -1,0 +1,16 @@
+/**
+ * All of the CSS for your public-facing functionality should be
+ * included in this file.
+ */
+
+table.variations td.label label,
+div.product_meta span.sku_wrapper {
+    font-weight: bold;
+}
+div.product_meta span.sku_wrapper span.sku{
+    font-weight: normal;
+}
+
+table.variations td.label label:after {
+    content: ': ';
+}

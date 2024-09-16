@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "esModuleInterop": true,
+        "strict": true,
+        "jsx": "preserve",
+        "sourceMap": true,
+        "resolveJsonModule": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["assets/src/js/*"]
+        }
+    },
+    "include": ["assets/src/js/**/*.ts", "assets/src/js/**/*.vue"],
+    "exclude": ["node_modules"]
+}

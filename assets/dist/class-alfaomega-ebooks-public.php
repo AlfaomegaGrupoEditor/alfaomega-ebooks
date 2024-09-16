@@ -51,28 +51,12 @@ class Alfaomega_Ebooks_Public {
 
         if ( defined('WP_DEBUG') && WP_DEBUG ) {
             // Use Vite's development server (replace with the actual local address)
-            wp_enqueue_script('vite-client', 'http://localhost:3000/@vite/client', [], null, true);
-            wp_enqueue_script('myplugin-dev', 'http://localhost:3000/assets/src/js/main.ts', [], null, true);
+            wp_enqueue_script('vite-dev', 'http://localhost:3000/assets/src/js/main.js', array(), null, true);
         } else {
             // Enqueue the bundled files in production
             wp_enqueue_style('myplugin-styles', plugins_url('assets/dist/bundle.css', __FILE__));
             wp_enqueue_script('myplugin-scripts', plugins_url('assets/dist/bundle.js', __FILE__), array(), null, true);
         }
-    }
-
-    /**
-     * Add the type attribute to the script tag.
-     *
-     * @param string $tag The original script tag.
-     * @param string $handle The script handle.
-     * @param string $src The script source.
-     * @return string The modified script tag.
-     */
-    public function myplugin_add_type_attribute($tag, $handle, $src) {
-        if ('myplugin-dev' === $handle) {
-            $tag = '<script type="module" src="' . esc_url($src) . '"></script>';
-        }
-        return $tag;
     }
 
     /**
