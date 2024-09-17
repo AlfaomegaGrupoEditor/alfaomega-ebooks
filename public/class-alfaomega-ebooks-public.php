@@ -40,20 +40,23 @@ class Alfaomega_Ebooks_Public {
      * Register the stylesheets for the public-facing side of the site.
      */
     public function enqueue_styles() {
-        wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'dist/css/bundle.css', array(), $this->version, 'all' );
+        if ( !defined('WP_DEBUG') || !WP_DEBUG ) {
+            wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'dist/css/bundle.css', [], $this->version, 'all');
+        }
     }
 
     /**
      * Register the JavaScript for the public-facing side of the site.
      */
     public function enqueue_scripts() {
-        /*if ( defined('WP_DEBUG') && WP_DEBUG ) {
-            // Use Vite's development server (replace with the actual local address)
-            wp_enqueue_script('vite-client', 'http://localhost:3000/@vite/client', [], null, true);
-            wp_enqueue_script($this->plugin_name, 'http://localhost:3000/assets/src/js/main.ts', [], null, true);
-        } else {*/
-            wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'dist/js/bundle.js', [], $this->version, false );
-        /*}*/
+        add_action('wp_footer', function() {
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                wp_enqueue_script('vite-client', 'http://localhost:3000/@vite/client', [], null, true);
+                wp_enqueue_script($this->plugin_name, 'http://localhost:3000/assets/src/js/main.ts', [], null, true);
+            } else {
+                wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'dist/js/bundle.js', [], $this->version, true);
+            }
+        });
     }
 
     /**
