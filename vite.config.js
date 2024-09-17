@@ -21,6 +21,7 @@ export default defineConfig({
     },
     build: {
         outDir: path.resolve(__dirname, 'public/dist'),
+        publicDir: false,
         rollupOptions: {
             input: {
                 main: path.resolve(__dirname, 'assets/src/js/main.ts'),
@@ -28,7 +29,7 @@ export default defineConfig({
             output: {
                 entryFileNames: 'js/bundle.js',
                 assetFileNames: 'css/bundle.css',
-            },
+            }
         },
     },
     css: {
