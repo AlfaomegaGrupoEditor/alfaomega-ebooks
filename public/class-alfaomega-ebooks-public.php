@@ -40,21 +40,48 @@ class Alfaomega_Ebooks_Public {
      * Register the stylesheets for the public-facing side of the site.
      */
     public function enqueue_styles() {
-        if ( !defined('WP_DEBUG') || !WP_DEBUG ) {
-            wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'dist/css/bundle.css', [], $this->version, 'all');
+        if (!defined('WP_DEBUG') || !WP_DEBUG) {
+            wp_enqueue_style(
+                $this->plugin_name,
+                plugin_dir_url(__FILE__) . 'dist/css/bundle.css',
+                [],
+                $this->version,
+                'all'
+            );
         }
     }
 
     /**
      * Register the JavaScript for the public-facing side of the site.
      */
-    public function enqueue_scripts() {
+    public function enqueue_scripts()
+    {
         add_action('wp_footer', function() {
             if (defined('WP_DEBUG') && WP_DEBUG) {
-                wp_enqueue_script('vite-client', 'http://localhost:3000/@vite/client', [], null, true);
-                wp_enqueue_script($this->plugin_name, 'http://localhost:3000/assets/src/js/main.ts', [], null, true);
+                // development
+                wp_enqueue_script(
+                    'vite-client',
+                    'http://localhost:3000/@vite/client',
+                    [],
+                    null,
+                    true
+                );
+                wp_enqueue_script(
+                    "{$this->plugin_name}-dev",
+                    'http://localhost:3000/assets/src/js/main.ts',
+                    [],
+                    null,
+                    true
+                );
             } else {
-                wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'dist/js/bundle.js', [], $this->version, true);
+                // production
+                wp_enqueue_script(
+                    $this->plugin_name,
+                    plugin_dir_url(__FILE__) . 'dist/js/bundle.js',
+                    [],
+                    $this->version,
+                    true
+                );
             }
         });
     }
