@@ -40,24 +40,20 @@ class Alfaomega_Ebooks_Public {
      * Register the stylesheets for the public-facing side of the site.
      */
     public function enqueue_styles() {
-        wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/alfaomega-ebooks-public.css', array(), $this->version, 'all' );
+        wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'dist/css/bundle.css', array(), $this->version, 'all' );
     }
 
     /**
      * Register the JavaScript for the public-facing side of the site.
      */
     public function enqueue_scripts() {
-        wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/alfaomega-ebooks-public.js', array( 'jquery' ), $this->version, false );
-
-        if ( defined('WP_DEBUG') && WP_DEBUG ) {
+        /*if ( defined('WP_DEBUG') && WP_DEBUG ) {
             // Use Vite's development server (replace with the actual local address)
             wp_enqueue_script('vite-client', 'http://localhost:3000/@vite/client', [], null, true);
-            wp_enqueue_script('myplugin-dev', 'http://localhost:3000/assets/src/js/main.ts', [], null, true);
-        } else {
-            // Enqueue the bundled files in production
-            wp_enqueue_style('myplugin-styles', plugins_url('assets/dist/bundle.css', __FILE__));
-            wp_enqueue_script('myplugin-scripts', plugins_url('assets/dist/bundle.js', __FILE__), array(), null, true);
-        }
+            wp_enqueue_script($this->plugin_name, 'http://localhost:3000/assets/src/js/main.ts', [], null, true);
+        } else {*/
+            wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'dist/js/bundle.js', [], $this->version, false );
+        /*}*/
     }
 
     /**

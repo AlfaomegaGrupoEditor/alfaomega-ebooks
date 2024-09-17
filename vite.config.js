@@ -20,14 +20,14 @@ export default defineConfig({
         }
     },
     build: {
-        outDir: path.resolve(__dirname, 'assets/dist'),
+        outDir: path.resolve(__dirname, 'public/dist'),
         rollupOptions: {
             input: {
                 main: path.resolve(__dirname, 'assets/src/js/main.ts'),
             },
             output: {
-                entryFileNames: 'bundle.js',
-                assetFileNames: 'bundle.css',
+                entryFileNames: 'js/bundle.js',
+                assetFileNames: 'css/bundle.css',
             },
         },
     },
