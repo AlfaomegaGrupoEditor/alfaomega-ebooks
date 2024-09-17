@@ -95,7 +95,7 @@ class Alfaomega_Ebooks_Public {
      * @return string The modified script tag.
      */
     public function myplugin_add_type_attribute($tag, $handle, $src) {
-        if ('myplugin-dev' === $handle) {
+        if ("{$this->plugin_name}-dev" === $handle) {
             $tag = '<script type="module" src="' . esc_url($src) . '"></script>';
         }
         return $tag;
