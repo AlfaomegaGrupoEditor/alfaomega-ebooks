@@ -1,10 +1,16 @@
 <template>
   <b-container fluid>
     <b-row>
+      <!-- Left panel-->
       <b-col>
+        <sample-code-box />
 
+      </b-col>
+
+      <!-- Main content-->
+      <b-col cols="9">
         <!-- Alert test-->
-        <BAlert variant="success" :model-value="true">
+        <BAlert variant="success" :model-value="true" dismissible>
           <h4 class="alert-heading">Well done!</h4>
           <p>
             Aww yeah, you successfully read this important alert message. This example text is going to
@@ -13,21 +19,9 @@
           </p>
         </BAlert>
 
-        <!-- Store test-->
-        <div>
-          <span v-if="isLoading">'Loading'</span>
-        </div>
-      </b-col>
-    </b-row>
-    <b-row>
-      <!-- BoostrapVue component test-->
-      <b-col>
-        <b-button variant="primary" @click="test">Click me</b-button>
-      </b-col>
-
-      <!-- Language test-->
-      <b-col cols="9">
         <h2>{{ $t('welcome') }}</h2>
+
+
       </b-col>
     </b-row>
   </b-container>
@@ -36,6 +30,7 @@
 <script setup lang="ts">
   import { useAppStore } from '@/stores/appStore';
   import { computed } from 'vue';
+  import SampleCodeBox from '@/components/SampleCodeBox.vue';
 
   const appStore = useAppStore();
   const isLoading = computed(() => appStore.isLoading);

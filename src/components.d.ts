@@ -9,8 +9,11 @@ declare module 'vue' {
   export interface GlobalComponents {
     BAlert: typeof import('bootstrap-vue-next/components/BAlert')['BAlert']
     BButton: typeof import('bootstrap-vue-next/components/BButton')['BButton']
+    BCard: typeof import('bootstrap-vue-next/components/BCard')['BCard']
+    BCardText: typeof import('bootstrap-vue-next/components/BCard')['BCardText']
     BCol: typeof import('bootstrap-vue-next/components/BContainer')['BCol']
     BContainer: typeof import('bootstrap-vue-next/components/BContainer')['BContainer']
+    BFormInput: typeof import('bootstrap-vue-next/components/BFormInput')['BFormInput']
     BRow: typeof import('bootstrap-vue-next/components/BContainer')['BRow']
   }
 }
