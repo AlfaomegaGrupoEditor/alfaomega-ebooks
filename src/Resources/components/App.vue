@@ -22,22 +22,35 @@
         <h2>{{ $t('welcome') }}</h2>
       </b-col>
     </b-row>
+
+    <div>
+      <BButton @click="click" class="m-2">Show end</BButton>
+      <BOffcanvas v-model="show" :placement="placement" />
+    </div>
   </b-container>
 </template>
 
 <script setup lang="ts">
   import { useAppStore } from '@/stores/appStore';
-  import { computed } from 'vue';
+  import { computed, ref } from 'vue';
   import { aoSampleInput } from '@/components';
 
   const appStore = useAppStore();
   const isLoading = computed(() => appStore.isLoading);
+
+  const show = ref(false)
+  const placement = ref('start')
 
   const test = () => { appStore.testLoading() };
 
   const showAlert = () => {
     alert('Hello, World!');
   };
+
+  const click = (place = 'start') => {
+    placement.value = 'end'
+    show.value = !show.value
+  }
 </script>
 
 <style scoped>
