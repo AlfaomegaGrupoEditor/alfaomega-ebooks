@@ -34,6 +34,7 @@ export const useAppStore = defineStore('appStore', {
                 this.isLoading = false;
             }
         },
+
         async saveData(newData: Post): Promise<void> {
             this.isLoading = true;
             try {
@@ -51,5 +52,12 @@ export const useAppStore = defineStore('appStore', {
                 this.isLoading = false;
             }
         },
+
+        async testLoading(): Promise<void> {
+            this.isLoading = true;
+            setTimeout(() => {
+                this.isLoading = false;
+            }, 2000);
+        }
     },
 });

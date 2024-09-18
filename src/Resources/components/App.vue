@@ -16,14 +16,13 @@
         <!-- Store test-->
         <div>
           <span v-if="isLoading">'Loading'</span>
-          <span v-else>'Not loading'</span>
         </div>
       </b-col>
     </b-row>
     <b-row>
       <!-- BoostrapVue component test-->
       <b-col>
-        <b-button variant="primary" @click="showAlert">Click me</b-button>
+        <b-button variant="primary" @click="test">Click me</b-button>
       </b-col>
 
       <!-- Language test-->
@@ -40,6 +39,8 @@
 
   const appStore = useAppStore();
   const isLoading = computed(() => appStore.isLoading);
+
+  const test = () => { appStore.testLoading() };
 
   const showAlert = () => {
     alert('Hello, World!');
