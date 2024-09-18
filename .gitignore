@@ -2,4 +2,4 @@
 .env
 .phpunit.result.cache
 /packages/
-/node_modules/
+/src/node_modules/

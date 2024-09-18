@@ -16,15 +16,15 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            '@': path.resolve(__dirname, 'assets/src/js'),
+            '@': path.resolve(__dirname, 'Resources'),
         }
     },
     build: {
-        outDir: path.resolve(__dirname, 'public/dist'),
+        outDir: path.resolve(__dirname, 'Resources/dist'),
         publicDir: false,
         rollupOptions: {
             input: {
-                main: path.resolve(__dirname, 'assets/src/js/main.ts'),
+                main: path.resolve(__dirname, 'Resources/main.ts'),
             },
             output: {
                 entryFileNames: 'js/bundle.js',

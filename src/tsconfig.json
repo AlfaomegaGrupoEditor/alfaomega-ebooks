@@ -10,9 +10,9 @@
         "resolveJsonModule": true,
         "baseUrl": ".",
         "paths": {
-            "@/*": ["assets/src/js/*"]
+            "@/*": ["Resources/*"]
         }
     },
-    "include": ["assets/src/js/**/*.ts", "assets/src/js/**/*.vue"],
+    "include": ["Resources/**/*.ts", "Resources/**/*.vue"],
     "exclude": ["node_modules"]
 }

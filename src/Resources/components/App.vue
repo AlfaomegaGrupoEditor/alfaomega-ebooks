@@ -2,27 +2,31 @@
   <b-container fluid>
     <b-row>
       <b-col>
+
+        <!-- Alert test-->
         <BAlert variant="success" :model-value="true">
           <h4 class="alert-heading">Well done!</h4>
-
           <p>
             Aww yeah, you successfully read this important alert message. This example text is going to
             run a bit longer so that you can see how spacing within an alert works with this kind of
             content.
           </p>
-
-          <hr>
-
-          <p class="mb-0">
-            Whenever you need to, be sure to use margin utilities to keep things nice and tidy.
-          </p>
         </BAlert>
+
+        <!-- Store test-->
+        <div>
+          <span v-if="isLoading">'Loading'</span>
+          <span v-else>'Not loading'</span>
+        </div>
       </b-col>
     </b-row>
     <b-row>
+      <!-- BoostrapVue component test-->
       <b-col>
         <b-button variant="primary" @click="showAlert">Click me</b-button>
       </b-col>
+
+      <!-- Language test-->
       <b-col cols="9">
         <h2>{{ $t('welcome') }}</h2>
       </b-col>
@@ -30,19 +34,15 @@
   </b-container>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+  //import { useAppStore } from '@/stores/appStore';
 
-export default defineComponent({
-  name: 'App',
-  setup() {
-    const showAlert = () => {
-      alert('Hello, World!');
-    };
+  //const appStore = useAppStore();
+  //const isLoading = computed(() => appStore.isLoading);
 
-    return { showAlert };
-  }
-});
+  const showAlert = () => {
+    alert('Hello, World!');
+  };
 </script>
 
 <style scoped>
