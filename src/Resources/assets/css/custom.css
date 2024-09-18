@@ -9,3 +9,19 @@ div.product_meta span.sku_wrapper span.sku{
 table.variations td.label label:after {
     content: ': ';
 }
+
+.ff-body {
+    font-family: var(--bs-body-font-family);;
+}
+
+.fs-7 {
+    font-size: .7rem;
+}
+
+.fs-8 {
+    font-size: .8rem;
+}
+
+.fs-9 {
+    font-size: .9rem;
+}

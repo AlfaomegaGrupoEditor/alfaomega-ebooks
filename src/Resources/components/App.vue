@@ -1,9 +1,9 @@
 <template>
-  <b-container fluid>
+  <b-container fluid class="ff-body">
     <b-row>
       <!-- Left panel-->
       <b-col>
-        <sample-code-box />
+        <ao-sample-input />
 
       </b-col>
 
@@ -20,8 +20,6 @@
         </BAlert>
 
         <h2>{{ $t('welcome') }}</h2>
-
-
       </b-col>
     </b-row>
   </b-container>
@@ -30,7 +28,7 @@
 <script setup lang="ts">
   import { useAppStore } from '@/stores/appStore';
   import { computed } from 'vue';
-  import SampleCodeBox from '@/components/SampleCodeBox.vue';
+  import { aoSampleInput } from '@/components';
 
   const appStore = useAppStore();
   const isLoading = computed(() => appStore.isLoading);

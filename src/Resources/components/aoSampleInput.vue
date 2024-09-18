@@ -1,6 +1,12 @@
 <template>
-  <b-card :title="$t('add_ebooks')">
-    <b-card-text>
+  <b-card>
+    <b-card-title>
+      <span class="fs-8">
+        {{ $t('add_ebooks') }}
+      </span>
+    </b-card-title>
+
+    <b-card-text class="fs-8">
       {{ $t('add_sample_text') }}
     </b-card-text>
 
