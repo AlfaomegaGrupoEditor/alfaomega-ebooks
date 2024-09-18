@@ -68,7 +68,7 @@ class Alfaomega_Ebooks_Public {
                 );
                 wp_enqueue_script(
                     "{$this->plugin_name}-dev",
-                    'http://localhost:3000/assets/src/js/main.ts',
+                    'http://localhost:3000/Resources/main.ts',
                     [],
                     null,
                     true

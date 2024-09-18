@@ -35,10 +35,11 @@
 </template>
 
 <script setup lang="ts">
-  //import { useAppStore } from '@/stores/appStore';
+  import { useAppStore } from '@/stores/appStore';
+  import { computed } from 'vue';
 
-  //const appStore = useAppStore();
-  //const isLoading = computed(() => appStore.isLoading);
+  const appStore = useAppStore();
+  const isLoading = computed(() => appStore.isLoading);
 
   const showAlert = () => {
     alert('Hello, World!');
