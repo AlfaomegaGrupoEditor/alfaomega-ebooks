@@ -1,11 +1,13 @@
 <template>
   <BButton
-      variant="primary"
+      :variant="color"
       class="rounded-pill mx-1 px-2"
-      size="sm"
+      :size="size"
+      :disabled="disabled"
+      @click="handleClick"
   >
     <span class="mx-2 d-inline-block">
-      <i class="fs-5 fa fa-file-pdf ml-2" :class="icon"></i>
+      <i class="fs-5 fa ml-2" :class="icon"></i>
       <span class="mx-2 fs-6 d-inline-block">{{ $t(caption) }}</span>
     </span>
   </BButton>
@@ -13,12 +15,21 @@
 
 
 <script setup lang="ts">
-  import { defineProps } from 'vue';
+  import { defineProps, defineEmits } from 'vue';
 
-  const props = defineProps< {
-    caption: string;
-    icon: string;
-  }>()
+  const props = defineProps({
+    caption: { type: String, default: 'caption' },
+    icon: { type: String, default: 'fa-user' },
+    disabled: { type: Boolean, default: false },
+    color: { type: String as () => ColorVariant, default: 'primary' },
+    size: { type: String as () => SizeVariant, default: 'sm' }
+  });
+
+  const emit = defineEmits(['click']);
+
+  const handleClick = () => {
+    emit('click');
+  };
 
 </script>
 

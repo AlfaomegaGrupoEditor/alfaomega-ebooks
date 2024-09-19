@@ -23,8 +23,19 @@
     </div>
 
     <div class="mt-4 d-flex justify-content-center">
-      <ao-button icon="fa-file-pdf" :caption="$t('download')"/>
-      <ao-button icon="fa-wifi" :caption="$t('read_online')"/>
+      <ao-button
+          icon="fa-file-pdf"
+          :caption="$t('download')"
+          :disabled="false"
+          @click="() => console.log('click download')"
+      />
+
+      <ao-button
+          icon="fa-wifi"
+          :caption="$t('read_online')"
+          :disabled="false"
+          @click="() => console.log('click read online')"
+      />
     </div>
 
   </BOffcanvas>
