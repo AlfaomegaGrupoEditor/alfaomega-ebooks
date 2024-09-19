@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import {ref} from 'vue';
-  import { aoButton } from '@/components';
+  import { aoButton, aoAccessDetails } from '@/components';
 
   const show = ref(false);
   const placement = ref('start');
@@ -56,6 +56,13 @@
       />
     </div>
 
+    <ao-access-details
+        type="purchase"
+        status="active"
+        added_at="01/01/2024"
+        valid_until="31/12/2024"
+        book_url="https://alfaomegaportal.test/producto/tecnologia-de-las-maquinas-herramienta-6a-edicion/"
+    />
   </BOffcanvas>
   <BButton @click="click" class="m-2">Show end</BButton>
 </template>

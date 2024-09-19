@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import { useAppStore } from '@/stores/appStore';
+  import { aoButton } from '@/components';
 
   const appStore = useAppStore();
   const code = ref('');
@@ -27,14 +28,14 @@
       ></b-form-input>
     </div>
 
-    <b-button
-        variant="primary"
-        size="sm"
-        @click="test"
+    <ao-button
         class="float-end"
-    >
-      {{ $t('apply_btn') }}
-    </b-button>
+        icon="fa-key"
+        :caption="$t('apply_btn')"
+        :disabled="false"
+        size="sm"
+        @click="() => console.log('click apply')"
+    />
   </b-card>
 </template>
 

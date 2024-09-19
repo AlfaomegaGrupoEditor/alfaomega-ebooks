@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { defineProps, defineEmits } from 'vue';
+  import { ColorVariant, SizeVariant } from '@/types';
 
   const props = defineProps({
     caption: { type: String, default: 'caption' },
