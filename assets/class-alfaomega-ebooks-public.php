@@ -99,8 +99,8 @@ class Alfaomega_Ebooks_Public {
      * @param string $src The script source.
      * @return string The modified script tag.
      */
-    public function myplugin_add_type_attribute($tag, $handle, $src) {
-        if ("{$this->plugin_name}-dev" === $handle) {
+    public function alfaomega_add_type_attribute($tag, $handle, $src) {
+        if (in_array($handle, [ "{$this->plugin_name}-dev", "vite-client" ])) {
             $tag = '<script type="module" src="' . esc_url($src) . '"></script>';
         }
         return $tag;
