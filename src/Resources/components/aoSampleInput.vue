@@ -1,3 +1,12 @@
+<script setup lang="ts">
+  import { ref } from 'vue';
+  import { useAppStore } from '@/stores/appStore';
+
+  const appStore = useAppStore();
+  const code = ref('');
+  const test = () => { appStore.testLoading() };
+</script>
+
 <template>
   <b-card>
     <b-card-title>
@@ -29,11 +38,6 @@
   </b-card>
 </template>
 
-<script setup lang="ts">
-  import { ref } from 'vue';
-  import { useAppStore } from '@/stores/appStore';
+<style scoped>
 
-  const appStore = useAppStore();
-  const code = ref('');
-  const test = () => { appStore.testLoading() };
-</script>
+</style>

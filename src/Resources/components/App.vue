@@ -1,3 +1,14 @@
+<script setup lang="ts">
+  import { useAppStore } from '@/stores/appStore';
+  import { computed } from 'vue';
+  import { aoSampleInput, aoSidebar } from '@/components';
+
+  const appStore = useAppStore();
+  const isLoading = computed(() => appStore.isLoading);
+
+  const test = () => { appStore.testLoading() };
+</script>
+
 <template>
   <b-container fluid class="ff-body" style="min-height: 700px">
     <b-row>
@@ -28,18 +39,6 @@
     </div>
   </b-container>
 </template>
-
-<script setup lang="ts">
-  import { useAppStore } from '@/stores/appStore';
-  import { computed } from 'vue';
-  import { aoSampleInput, aoSidebar } from '@/components';
-
-  const appStore = useAppStore();
-  const isLoading = computed(() => appStore.isLoading);
-
-  const test = () => { appStore.testLoading() };
-
-</script>
 
 <style scoped>
   h2 {

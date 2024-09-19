@@ -1,3 +1,21 @@
+<script setup lang="ts">
+  import {ref} from 'vue';
+  import { aoButton } from '@/components';
+
+  const show = ref(false);
+  const placement = ref('start');
+
+  const click = (place = 'start') => {
+    placement.value = 'end'
+    show.value = !show.value
+  }
+
+  const data = {
+    title: 'TECNOLOGÍA DE LAS MAQUINAS HERRAMIENTA – 6ª Edición',
+    cover: 'https://alfaomegaportal.test/wp-content/uploads/2024/07/1-3.png'
+  }
+</script>
+
 <template>
   <BOffcanvas
       v-model="show"
@@ -41,24 +59,6 @@
   </BOffcanvas>
   <BButton @click="click" class="m-2">Show end</BButton>
 </template>
-
-<script setup lang="ts">
-  import {ref} from 'vue';
-  import { aoButton } from '@/components';
-
-  const show = ref(false);
-  const placement = ref('start');
-
-  const click = (place = 'start') => {
-    placement.value = 'end'
-    show.value = !show.value
-  }
-
-  const data = {
-    title: 'TECNOLOGÍA DE LAS MAQUINAS HERRAMIENTA – 6ª Edición',
-    cover: 'https://alfaomegaportal.test/wp-content/uploads/2024/07/1-3.png'
-  }
-</script>
 
 <style>
   div.ao-sidebar .offcanvas-title {

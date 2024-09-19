@@ -1,19 +1,3 @@
-<template>
-  <BButton
-      :variant="color"
-      class="rounded-pill mx-1 px-2"
-      :size="size"
-      :disabled="disabled"
-      @click="handleClick"
-  >
-    <span class="mx-2 d-inline-block">
-      <i class="fs-5 fa ml-2" :class="icon"></i>
-      <span class="mx-2 fs-6 d-inline-block">{{ $t(caption) }}</span>
-    </span>
-  </BButton>
-</template>
-
-
 <script setup lang="ts">
   import { defineProps, defineEmits } from 'vue';
 
@@ -30,8 +14,22 @@
   const handleClick = () => {
     emit('click');
   };
-
 </script>
+
+<template>
+  <BButton
+      :variant="color"
+      class="rounded-pill mx-1 px-2"
+      :size="size"
+      :disabled="disabled"
+      @click="handleClick"
+  >
+    <span class="mx-2 d-inline-block">
+      <i class="fs-5 fa ml-2" :class="icon"></i>
+      <span class="mx-2 fs-6 d-inline-block">{{ $t(caption) }}</span>
+    </span>
+  </BButton>
+</template>
 
 <style scoped>
 
