@@ -24,7 +24,7 @@
 </script>
 
 <template>
-  <b-container fluid class="ff-body" style="min-height: 700px">
+  <b-container fluid class="ff-body ao-ebooks" style="min-height: 700px">
     <b-row>
       <b-col class="col-8 offset-2">
         <ao-alert />
@@ -53,7 +53,4 @@
 </template>
 
 <style scoped>
-  h2 {
-    color: #007bff;
-  }
 </style>

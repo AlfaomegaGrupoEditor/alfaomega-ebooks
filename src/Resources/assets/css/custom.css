@@ -25,3 +25,19 @@ table.variations td.label label:after {
 .fs-9 {
     font-size: .9rem;
 }
+
+.ao-ebooks .form-select,
+.ao-ebooks input[type=text] {
+    font-size: 0.8rem;
+    height: 35px;
+}
+
+div.ao-sidebar .offcanvas-title {
+    font-size: .8rem;
+    font-weight: bold;
+}
+
+.ao-ebooks .input-group-text {
+    background-color: #D82310;
+    color: white;
+}

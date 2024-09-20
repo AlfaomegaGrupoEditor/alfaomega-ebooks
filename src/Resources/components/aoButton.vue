@@ -26,8 +26,8 @@
       @click="handleClick"
   >
     <span class="mx-2 d-inline-block">
-      <i class="fs-5 fa ml-2" :class="icon"></i>
-      <span class="mx-2 fs-6 d-inline-block">{{ $t(caption) }}</span>
+      <i class="fs-7 fa ml-2" :class="icon"></i>
+      <span class="mx-2 fs-8 fw-bold d-inline-block">{{ $t(caption) }}</span>
     </span>
   </BButton>
 </template>

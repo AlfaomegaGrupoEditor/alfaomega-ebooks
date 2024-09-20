@@ -67,10 +67,6 @@
   <BButton @click="click" class="m-2">Show end</BButton>
 </template>
 
-<style>
-  div.ao-sidebar .offcanvas-title {
-    font-size: 1rem;
-    font-weight: bold;
-  }
+<style scoped>
 
 </style>
