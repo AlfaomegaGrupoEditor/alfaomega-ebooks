@@ -2,10 +2,13 @@
   import { reactive } from "vue";
   import Tree from 'vue3-treeview';
   import "vue3-treeview/dist/style.css";
+  import { useI18n } from "vue-i18n";
+
+  const { t } = useI18n();
 
   const nodes = reactive({
-    id1: {
-      text: "text1",
+    all_ebooks: {
+      text: t('all_ebooks'),
       opened: true,
       children: ["id11", "id12"],
     },
@@ -15,20 +18,26 @@
     id12: {
       text: "text12",
     },
-    id2: {
-      text: "text2",
+    purchased: {
+      text: t('purchased'),
+    },
+    samples: {
+      text: t('samples'),
     },
   });
 
   const config = {
-    roots: ["id1", "id2"],
+    roots: ["all_ebooks", "purchased", "samples"],
+    padding: 15,
     openedIcon: {
       type: "class",
-      class: "fas fa-angle-down",
+      class: "fas fa-angle-down"
     },
     closedIcon: {
       type: "class",
       class: "fas fa-angle-right",
+      height: "30px",
+      width: "30px"
     },
   };
 
@@ -60,5 +69,9 @@
   .node-wrapper:hover {
     background-color: transparent;
     cursor: pointer;
+  }
+
+  .node-wrapper {
+    font-size: 18px;
   }
 </style>

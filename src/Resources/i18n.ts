@@ -23,6 +23,9 @@ const messages = {
         cancelled: 'Cancelled',
         book_details: 'View Book Details',
         digital_library: 'Digital Library',
+        all_ebooks: 'All eBooks',
+        purchased: 'Purchased',
+        samples: 'Samples',
     },
     es: {
         welcome: 'Bienvenido',
@@ -45,6 +48,9 @@ const messages = {
         cancelled: 'Cancelado',
         book_details: 'Ver Detalles del Libro',
         digital_library: 'Biblioteca Digital',
+        all_ebooks: 'Todos los eBooks',
+        purchased: 'Compras',
+        samples: 'Muestras',
     }
 };
 
