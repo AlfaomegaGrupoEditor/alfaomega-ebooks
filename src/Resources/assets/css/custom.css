@@ -32,6 +32,14 @@ table.variations td.label label:after {
     height: 35px;
 }
 
+.ao-ebooks input[type=text] {
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: 5px;
+}
+.ao-ebooks .input-group input[type=text] {
+    padding-right: 20px;
+}
+
 div.ao-sidebar .offcanvas-title {
     font-size: .8rem;
     font-weight: bold;
@@ -40,4 +48,13 @@ div.ao-sidebar .offcanvas-title {
 .ao-ebooks .input-group-text {
     background-color: #D82310;
     color: white;
+    margin-left: -31px !important;
+    z-index: 1000;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.ao-ebooks .input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }

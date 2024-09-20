@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useAppStore } from '@/stores/appStore';
-  import { computed, ref } from 'vue';
+  import {computed, onMounted, ref} from 'vue';
   import { useI18n } from "vue-i18n";
   import {
     aoSampleInput,
@@ -10,21 +10,44 @@
     aoFilterBar,
     aoBooks
   } from '@/components';
+  import {EbooksQuery, EbooksFilter} from '@/types';
 
   const { t } = useI18n();
   const appStore = useAppStore();
   const isLoading = computed(() => appStore.isLoading);
   const header = ref<string>(t('welcome'));
+  const ebooksQuery = ref<EbooksQuery>(null);
 
   const test = () => { appStore.testLoading() };
 
   const handleSelected = (node) => {
+    ebooksQuery.value = {...ebooksQuery.value, ...{category: node.id}};
     header.value = node.text;
+    console.log(ebooksQuery.value);
   };
 
   const handleFiltered = (filter) => {
-    console.log(filter);
+    ebooksQuery.value = {...ebooksQuery.value, ...{filter: filter}};
+    console.log(ebooksQuery.value);
   };
+
+  onMounted(() => {
+    ebooksQuery.value = {
+      'category': null,
+      'filter': {
+        'accessType': null,
+        'accessStatus': null,
+        'search': null
+      } as EbooksFilter,
+      'page': 0,
+      'pageSize': 12,
+      'userId': null,
+      'order': {
+        'field': 'title',
+        'direction': 'asc'
+      }
+    };
+  });
 </script>
 
 <template>

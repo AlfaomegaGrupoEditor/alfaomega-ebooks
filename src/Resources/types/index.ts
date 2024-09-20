@@ -18,10 +18,24 @@ type AccessType = 'purchase' | 'sample';
 type AccessStatus = 'created' | 'active' | 'expired' | 'cancelled' ;
 
 type EbooksFilter = {
-    searchKey: string;
-    accessType: AccessType;
-    accessStatus: AccessStatus;
+    searchKey: ?string;
+    accessType: ?AccessType;
+    accessStatus: ?AccessStatus;
 };
+
+type Order = {
+    'field': 'title' | 'created_at' | 'valid_until';
+    'direction': 'asc' | 'desc';
+};
+
+type EbooksQuery = {
+    'category': ?string;
+    'filter': EbooksFilter;
+    'page': number;
+    'pageSize': number;
+    'userId': ?string;
+    'order': Order;
+}
 
 export {
     ColorVariant,
@@ -29,4 +43,5 @@ export {
     AccessType,
     AccessStatus,
     EbooksFilter,
+    EbooksQuery
 };
