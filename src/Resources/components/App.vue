@@ -10,7 +10,7 @@
     aoFilterBar,
     aoBooks
   } from '@/components';
-  import {EbooksQuery, EbooksFilter} from '@/types';
+  import {EbooksQuery, EbooksFilter, Order} from '@/types';
 
   const { t } = useI18n();
   const appStore = useAppStore();
@@ -45,7 +45,7 @@
       'order': {
         'field': 'title',
         'direction': 'asc'
-      }
+      } as Order
     };
   });
 </script>

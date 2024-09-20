@@ -43,5 +43,6 @@ export {
     AccessType,
     AccessStatus,
     EbooksFilter,
-    EbooksQuery
+    EbooksQuery,
+    Order
 };
