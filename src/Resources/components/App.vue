@@ -23,7 +23,7 @@
   };
 
   const handleFiltered = (filter) => {
-    console.log = filter;
+    console.log(filter);
   };
 </script>
 

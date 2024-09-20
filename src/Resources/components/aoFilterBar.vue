@@ -69,8 +69,8 @@
                 id="search-input"
                 :placeholder="$t('search')"
                 type="text"
-                debounce="500"
                 v-model="search"
+                @change="handleFilter"
                 @input="handleFilter"
             />
             <BInputGroupText>
