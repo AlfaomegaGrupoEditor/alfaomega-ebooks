@@ -1,7 +1,9 @@
 <script setup lang="ts">
   import { useI18n } from "vue-i18n";
-  import { ref } from 'vue';
+  import { ref, defineEmits } from 'vue';
+  import { EbooksFilter } from '@/types';
 
+  const emit = defineEmits<{ filter: (payload: EbooksFilter) => void }>();
   const { t } = useI18n();
 
   const accessType = ref(null)
@@ -21,6 +23,16 @@
   ]
 
   const search = ref(null)
+
+  const handleFilter = () => {
+    const filter = {
+      accessType: accessType.value,
+      accessStatus: accessStatus.value,
+      search: search.value
+    };
+
+    emit('filter', filter);
+  }
 </script>
 
 <template>
@@ -34,6 +46,7 @@
               v-model="accessType"
               :options="accessTypeOptions"
               size="sm"
+              @change="handleFilter"
           />
         </div>
 
@@ -44,6 +57,7 @@
               v-model="accessStatus"
               :options="accessStatusOptions"
               size="sm"
+              @change="handleFilter"
           />
         </div>
 
@@ -56,6 +70,8 @@
                 :placeholder="$t('search')"
                 type="text"
                 debounce="500"
+                v-model="search"
+                @input="handleFilter"
             />
             <BInputGroupText>
               <i class="fa fa-search"></i>

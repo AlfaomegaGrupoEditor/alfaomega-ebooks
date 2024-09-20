@@ -21,6 +21,10 @@
   const handleSelected = (node) => {
     header.value = node.text;
   };
+
+  const handleFiltered = (filter) => {
+    console.log = filter;
+  };
 </script>
 
 <template>
@@ -41,7 +45,7 @@
       <b-col cols="9">
         <!--  Books selected-->
         <h4 class="text-primary">{{ header }}</h4>
-        <ao-filter-bar />
+        <ao-filter-bar @filter="handleFiltered"/>
         <ao-books />
       </b-col>
     </b-row>

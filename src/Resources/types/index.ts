@@ -17,9 +17,16 @@ type AccessType = 'purchase' | 'sample';
 
 type AccessStatus = 'created' | 'active' | 'expired' | 'cancelled' ;
 
+type EbooksFilter = {
+    searchKey: string;
+    accessType: AccessType;
+    accessStatus: AccessStatus;
+};
+
 export {
     ColorVariant,
     SizeVariant,
     AccessType,
-    AccessStatus
+    AccessStatus,
+    EbooksFilter,
 };
