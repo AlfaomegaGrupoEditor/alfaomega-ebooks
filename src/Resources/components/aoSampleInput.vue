@@ -22,12 +22,12 @@
     </b-card-text>
 
     <div class="mb-4">
-      <b-form-input
+      <BFormInput
           class="form-control-sm"
           v-model="code"
           placeholder="XXXX-XXXX-XXXX"
           type="text"
-      ></b-form-input>
+      />
     </div>
 
     <div class="row">

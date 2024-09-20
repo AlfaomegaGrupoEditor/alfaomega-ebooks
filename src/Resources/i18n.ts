@@ -28,6 +28,9 @@ const messages = {
         all_ebooks: 'All eBooks',
         purchased: 'Purchased',
         samples: 'Samples',
+        all_books: 'All books',
+        added_by: 'Added by:',
+        search: 'Type to search...',
     },
     es: {
         welcome: 'Bienvenido',
@@ -38,7 +41,7 @@ const messages = {
         apply_btn: 'Aplicar',
         download: 'Descargar',
         read_online: 'Leer en línea',
-        access_type: 'Typo de Acceso',
+        access_type: 'Tipo de Acceso',
         status: 'Estado',
         added_at: 'Agregado el',
         valid_until: 'Válido hasta',
@@ -55,6 +58,9 @@ const messages = {
         samples: 'Muestras',
         note: 'Nota',
         purchase_note: 'Los libros comprados son adicionados automáticamente.',
+        all: 'Todos los libros',
+        added_by: 'Agregado por:',
+        search: 'Escribir para buscar...',
     }
 };
 
