@@ -13,6 +13,6 @@
             "@/*": ["Resources/*"]
         }
     },
-    "include": ["Resources/**/*.ts", "Resources/**/*.vue"],
+    "include": ["Resources/**/*.ts", "Resources/**/*.vue", "Resources/**/*.d.ts"],
     "exclude": ["node_modules"]
 }

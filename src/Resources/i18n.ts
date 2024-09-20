@@ -22,6 +22,7 @@ const messages = {
         expired: 'Expired',
         cancelled: 'Cancelled',
         book_details: 'View Book Details',
+        digital_library: 'Digital Library',
     },
     es: {
         welcome: 'Bienvenido',
@@ -43,6 +44,7 @@ const messages = {
         expired: 'Expirado',
         cancelled: 'Cancelado',
         book_details: 'Ver Detalles del Libro',
+        digital_library: 'Biblioteca Digital',
     }
 };
 

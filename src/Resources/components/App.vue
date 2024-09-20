@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { useAppStore } from '@/stores/appStore';
   import { computed } from 'vue';
-  import { aoSampleInput, aoSidebar } from '@/components';
+  import { aoSampleInput, aoSidebar, aoTreeview } from '@/components';
 
   const appStore = useAppStore();
   const isLoading = computed(() => appStore.isLoading);
@@ -14,8 +14,8 @@
     <b-row>
       <!-- Left panel-->
       <b-col>
+        <ao-treeview />
         <ao-sample-input />
-
       </b-col>
 
       <!-- Main content-->

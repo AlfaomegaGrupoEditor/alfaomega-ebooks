@@ -27,7 +27,8 @@
         "bootswatch": "^5.3.3",
         "pinia": "^2.2.2",
         "vue": "^3.0.0",
-        "vue-i18n": "^10.0.1"
+        "vue-i18n": "^10.0.1",
+        "vue3-treeview": "^0.4.2"
     },
     "devDependencies": {
         "@vitejs/plugin-vue": "^5.1.3",
