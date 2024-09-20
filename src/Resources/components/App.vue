@@ -1,12 +1,19 @@
 <script setup lang="ts">
   import { useAppStore } from '@/stores/appStore';
-  import { computed } from 'vue';
+  import { computed, ref } from 'vue';
   import { aoSampleInput, aoSidebar, aoTreeview } from '@/components';
+  import { useI18n } from "vue-i18n";
 
+  const { t } = useI18n();
   const appStore = useAppStore();
   const isLoading = computed(() => appStore.isLoading);
+  const header = ref<string>(t('welcome'));
 
   const test = () => { appStore.testLoading() };
+
+  const handleSelected = (node) => {
+    header.value = node.text;
+  };
 </script>
 
 <template>
@@ -14,12 +21,15 @@
     <b-row>
       <!-- Left panel-->
       <b-col>
-        <ao-treeview />
+        <ao-treeview @selected="handleSelected"/>
         <ao-sample-input />
       </b-col>
 
       <!-- Main content-->
       <b-col cols="9">
+        <!--  Books selected-->
+        <h4 class="text-primary">{{ header }}</h4>
+
         <!-- Alert test-->
         <BAlert variant="success" :model-value="true" dismissible>
           <h4 class="alert-heading">Well done!</h4>
@@ -29,8 +39,6 @@
             content.
           </p>
         </BAlert>
-
-        <h2>{{ $t('welcome') }}</h2>
       </b-col>
     </b-row>
 

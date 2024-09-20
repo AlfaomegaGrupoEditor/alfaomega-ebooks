@@ -18,24 +18,35 @@
 
     <b-card-text class="fs-8">
       {{ $t('add_sample_text') }}
+      {{ $t('purchase_note') }}
     </b-card-text>
 
     <div class="mb-4">
       <b-form-input
+          class="form-control-sm"
           v-model="code"
           placeholder="XXXX-XXXX-XXXX"
           type="text"
       ></b-form-input>
     </div>
 
-    <ao-button
-        class="float-end"
-        icon="fa-key"
-        :caption="$t('apply_btn')"
-        :disabled="false"
-        size="sm"
-        @click="() => console.log('click apply')"
-    />
+    <div class="row">
+      <div class="col">
+        <ao-button
+            class="float-end"
+            icon="fa-key"
+            :caption="$t('apply_btn')"
+            :disabled="false"
+            size="sm"
+            @click="() => console.log('click apply')"
+        />
+      </div>
+    </div>
+
+    <div class="card-body fs-8 text-muted d-none">
+      <span class="fw-bold">{{ $t('note') }}: </span>
+      <span>{{ $t('purchase_note') }}</span>
+    </div>
   </b-card>
 </template>
 

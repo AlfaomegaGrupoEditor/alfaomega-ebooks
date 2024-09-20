@@ -1,22 +1,28 @@
 <script setup lang="ts">
-  import { reactive } from "vue";
+import {reactive, defineEmits, onMounted} from 'vue';
   import Tree from 'vue3-treeview';
   import "vue3-treeview/dist/style.css";
   import { useI18n } from "vue-i18n";
+
+
+  const emit = defineEmits(['selected']);
 
   const { t } = useI18n();
 
   const nodes = reactive({
     all_ebooks: {
       text: t('all_ebooks'),
-      opened: true,
+      state: {
+        opened: true,
+        checked: true,
+      },
       children: ["id11", "id12"],
     },
     id11: {
-      text: "text11",
+      text: "Programación",
     },
     id12: {
-      text: "text12",
+      text: "Ofimática",
     },
     purchased: {
       text: t('purchased'),
@@ -42,13 +48,16 @@
   };
 
   const handleClick = (node) => {
-    console.log(node);
+    emit('selected', node);
   };
 
+  onMounted(() => {
+    emit('selected', nodes['all_ebooks']);
+  });
 </script>
 
 <template>
-  <div class="mb-4">
+  <div class="mb-2">
     <h4>{{ $t('digital_library')}}</h4>
     <Tree :nodes="nodes" :config="config" @node-focus="handleClick"></Tree>
   </div>
@@ -73,5 +82,6 @@
 
   .node-wrapper {
     font-size: 18px;
+    font-family: "Roboto", sans-serif;
   }
 </style>

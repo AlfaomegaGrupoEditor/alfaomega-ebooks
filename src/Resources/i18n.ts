@@ -8,6 +8,8 @@ const messages = {
 
         add_ebooks: 'Add eBooks',
         add_sample_text: 'If you received by mail with a sample code of the ebook, you can type it in here to add the book to your digital library.',
+        note: 'Note',
+        purchase_note: 'Purchased books are added automatically.',
         apply_btn: 'Apply',
         download: 'Download',
         read_online: 'Read Online',
@@ -31,8 +33,8 @@ const messages = {
         welcome: 'Bienvenido',
         message: 'Hola, mundo!',
 
-        add_ebooks: 'Agregar eBooks',
-        add_sample_text: 'Si recibiste por correo un código de muestra del ebook, puedes ingresarlo aquí para agregar el libro a tu biblioteca digital.',
+        add_ebooks: 'Agregar muestras',
+        add_sample_text: 'Si recibiste un código de muestra, puedes ingresarlo aquí para agregar libros.',
         apply_btn: 'Aplicar',
         download: 'Descargar',
         read_online: 'Leer en línea',
@@ -51,6 +53,8 @@ const messages = {
         all_ebooks: 'Todos los eBooks',
         purchased: 'Compras',
         samples: 'Muestras',
+        note: 'Nota',
+        purchase_note: 'Los libros comprados son adicionados automáticamente.',
     }
 };
 
