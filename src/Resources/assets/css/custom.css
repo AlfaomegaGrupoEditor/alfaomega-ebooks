@@ -86,3 +86,7 @@ div.ao-sidebar .offcanvas-title {
 .offcanvas-backdrop {
     background-color: transparent;
 }
+
+.ao-toast {
+    z-index: 200000;
+}

@@ -2,10 +2,22 @@
   import { ref } from 'vue';
   import { useAppStore } from '@/stores/appStore';
   import { aoButton } from '@/components';
+  import { ToastType } from '@/types';
+
+  const emit = defineEmits<{ apply: (payload: ToastType) => void }>();
 
   const appStore = useAppStore();
   const code = ref('');
   const test = () => { appStore.testLoading() };
+
+  const handleClick = () => {
+    emit('apply', {
+      content: 'Code applied successfully',
+      variant: 'success',
+      title: 'Success'
+    } as ToastType);
+  };
+
 </script>
 
 <template>
@@ -38,7 +50,7 @@
             :caption="$t('apply_btn')"
             :disabled="false"
             size="sm"
-            @click="() => console.log('click apply')"
+            @click="handleClick"
         />
       </div>
     </div>

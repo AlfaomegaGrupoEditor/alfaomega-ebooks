@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { defineProps, defineEmits } from 'vue';
   import { ColorVariantType, SizeVariantType } from '@/types';
 
   const props = defineProps({

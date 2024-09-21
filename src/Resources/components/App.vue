@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useAppStore } from '@/stores/appStore';
-  import {computed, onMounted, ref} from 'vue';
+  import {computed, onMounted, ref, reactive} from 'vue';
   import { useI18n } from "vue-i18n";
   import {
     aoSampleInput,
@@ -9,13 +9,16 @@
     aoFilterBar,
     aoBooks
   } from '@/components';
-  import {EbooksQueryType, EbooksFilterType, OrderType} from '@/types';
+  import {EbooksQueryType, EbooksFilterType, OrderType, ToastType} from '@/types';
+  import AoToast from '@/components/aoToast.vue';
 
   const { t } = useI18n();
   const appStore = useAppStore();
   const isLoading = computed(() => appStore.isLoading);
   const header = ref<string>(t('welcome'));
   const ebooksQuery = ref<EbooksQueryType>(null);
+  const toast = ref<ToastType>();
+  const toastActive = ref(false);
 
   const test = () => { appStore.testLoading() };
 
@@ -28,6 +31,20 @@
   const handleFiltered = (filter) => {
     ebooksQuery.value = {...ebooksQuery.value, ...{filter: filter}};
     console.log(ebooksQuery.value);
+  };
+
+  const showToast = (newToast: ToastType) => {
+    toast.value = newToast;
+
+    toastActive.value = true;
+    setTimeout(() => {
+      toastActive.value = false;
+    }, 5000);
+  };
+
+  const handleApply = (payload: ToastType) => {
+    // actually apply the code
+    showToast(payload);
   };
 
   onMounted(() => {
@@ -60,7 +77,7 @@
       <!-- Left panel-->
       <b-col>
         <ao-treeview @selected="handleSelected"/>
-        <ao-sample-input />
+        <ao-sample-input @apply="handleApply"/>
       </b-col>
 
       <!-- Main content-->
@@ -72,6 +89,14 @@
       </b-col>
     </b-row>
   </b-container>
+
+  <!--  Toast message-->
+  <ao-toast
+      :active="toastActive"
+      :variant="toast?.variant || 'success'"
+      :title="toast?.title || ''"
+      :content="toast?.content || 'test'"
+  />
 </template>
 
 <style scoped>

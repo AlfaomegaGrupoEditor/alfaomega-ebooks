@@ -23,5 +23,6 @@ declare module 'vue' {
     BOffcanvas: typeof import('bootstrap-vue-next/components/BOffcanvas')['BOffcanvas']
     BPagination: typeof import('bootstrap-vue-next/components/BPagination')['BPagination']
     BRow: typeof import('bootstrap-vue-next/components/BContainer')['BRow']
+    BToast: typeof import('bootstrap-vue-next/components/BToast')['BToast']
   }
 }

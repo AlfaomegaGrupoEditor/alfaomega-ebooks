@@ -51,6 +51,12 @@ type BookType = {
     url: string;
 }
 
+type ToastType = {
+    title?: string | null;
+    content: string;
+    variant: ColorVariantType;
+}
+
 export {
     ColorVariantType,
     SizeVariantType,
@@ -59,5 +65,6 @@ export {
     EbooksFilterType,
     EbooksQueryType,
     OrderType,
-    BookType
+    BookType,
+    ToastType
 };
