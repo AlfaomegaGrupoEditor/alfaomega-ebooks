@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { defineProps } from 'vue';
-import emptyStateImage from '@/assets/img/empty_state.png';
 
+const publicUrl = import.meta.env.VITE_PUBLIC_URL;
 const props = defineProps({
   title: {
     type: String,
@@ -16,7 +15,7 @@ const props = defineProps({
 
 <template>
   <div class="empty-state-container">
-    <img :src="emptyStateImage" alt="Empty State" class="empty-state-image" />
+    <img :src="`${publicUrl}/img/empty_state.png`" alt="Empty State" class="empty-state-image" />
     <h2 class="empty-state-title">{{ title }}</h2>
     <p class="empty-state-description">{{ description }}</p>
   </div>
@@ -28,7 +27,6 @@ const props = defineProps({
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
   text-align: center;
 }
 

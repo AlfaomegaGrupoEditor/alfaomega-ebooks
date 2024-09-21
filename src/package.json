@@ -14,7 +14,7 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "build-and-copy": "vite build && cp -r Resources/dist/* ../public/",
+        "build-and-copy": "vite build && cp -r Resources/dist/* ../public/ && cp -r Resources/assets/img ../public",
         "build-css": "sass Resources/assets/css/theme.sass Resources/assets/css/theme.css",
         "build:dev": "vite build --mode development",
         "watch": "vite build --watch"

@@ -2,6 +2,7 @@
   import {onMounted, ref} from 'vue';
   import { BookType } from '@/types';
   import { aoBook, aoSidebar } from '@/components';
+  import AoEmptyState from '@/components/aoEmptyState.vue';
 
   const books = ref<BookType[]>([]);
   const showSidebar = ref(false);
@@ -17,7 +18,7 @@
   };
 
   onMounted(() => {
-    books.value = [
+    /*books.value = [
       {
         id: 1,
         title: 'TECNOLOGÍA DE LAS MAQUINAS HERRAMIENTA – 6ª Edición',
@@ -90,32 +91,39 @@
         validUntil: null,
         url: 'https://alfaomegaportal.test/producto/tecnologia-de-las-maquinas-herramienta-6a-edicion/'
       }
-    ]
+    ]*/
   });
 </script>
 
 <template>
-  <div class="row row-cols-1 row-cols-md-4 g-4 mt-0">
-    <ao-book
-        v-for="book in books"
-        :key="book.id"
+  <div v-if="books.length > 0">
+    <div class="row row-cols-1 row-cols-md-4 g-4 mt-0">
+      <ao-book
+          v-for="book in books"
+          :key="book.id"
+          :data="book"
+          @open="()=> toggleSidebar(book)"
+      />
+    </div>
+    <div class="mt-5 d-flex flex-row justify-content-center">
+      <BPagination
+          v-model:currentPage="currentPage"
+          :totalRows="totalRows"
+          :perPage="perPage"
+          limit="3"
+          pills
+          @change="onPageChange"
+      />
+    </div>
+    <ao-sidebar
+        v-model:show="showSidebar"
         :data="book"
-        @open="()=> toggleSidebar(book)"
     />
   </div>
-  <div class="mt-5 d-flex flex-row justify-content-center">
-    <BPagination
-        v-model:currentPage="currentPage"
-        :totalRows="totalRows"
-        :perPage="perPage"
-        limit="3"
-        pills
-        @change="onPageChange"
-    />
-  </div>
-  <ao-sidebar
-      v-model:show="showSidebar"
-      :data="book"
+  <ao-empty-state
+      v-else
+      :title="$t('no_books_found')"
+      :description="$t('no_books_found_description')"
   />
 </template>
 

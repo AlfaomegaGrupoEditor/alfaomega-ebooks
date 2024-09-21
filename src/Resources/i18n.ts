@@ -31,6 +31,8 @@ const messages = {
         message: 'Hello, World!',
         // N
         note: 'Note',
+        no_books_found: 'No books found.',
+        no_books_found_description: 'Please change the filters or search query. You can also buy more books to enlarge your library.',
         // O
         order_by: 'Order by',
         // P
@@ -83,6 +85,8 @@ const messages = {
         muestras: 'Muestras',
         // N
         note: 'Nota',
+        no_books_found: 'No se encontraron libros.',
+        no_books_found_description: 'Por favor, cambia los filtros o la búsqueda. También puedes comprar más libros para ampliar tu biblioteca.',
         // O
         order_by: 'Ordenar por',
         // P

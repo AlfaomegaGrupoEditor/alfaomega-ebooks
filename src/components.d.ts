@@ -7,30 +7,21 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    BAccordion: typeof import('bootstrap-vue-next/components/BAccordion')['BAccordion']
-    BAccordionItem: typeof import('bootstrap-vue-next/components/BAccordion')['BAccordionItem']
     BAlert: typeof import('bootstrap-vue-next/components/BAlert')['BAlert']
     BBadge: typeof import('bootstrap-vue-next/components/BBadge')['BBadge']
     BButton: typeof import('bootstrap-vue-next/components/BButton')['BButton']
     BCard: typeof import('bootstrap-vue-next/components/BCard')['BCard']
-    BCardGroup: typeof import('bootstrap-vue-next/components/BCard')['BCardGroup']
     BCardText: typeof import('bootstrap-vue-next/components/BCard')['BCardText']
     BCardTitle: typeof import('bootstrap-vue-next/components/BCard')['BCardTitle']
     BCol: typeof import('bootstrap-vue-next/components/BContainer')['BCol']
-    BCollapse: typeof import('bootstrap-vue-next/components/BCollapse')['BCollapse']
     BContainer: typeof import('bootstrap-vue-next/components/BContainer')['BContainer']
-    BFormGroup: typeof import('bootstrap-vue-next/components/BFormGroup')['BFormGroup']
     BFormInput: typeof import('bootstrap-vue-next/components/BFormInput')['BFormInput']
     BFormSelect: typeof import('bootstrap-vue-next/components/BFormSelect')['BFormSelect']
-    BImg: typeof import('bootstrap-vue-next/components/BImg')['BImg']
     BInputGroup: typeof import('bootstrap-vue-next/components/BInputGroup')['BInputGroup']
     BInputGroupText: typeof import('bootstrap-vue-next/components/BInputGroup')['BInputGroupText']
     BLink: typeof import('bootstrap-vue-next/components/BLink')['BLink']
     BOffcanvas: typeof import('bootstrap-vue-next/components/BOffcanvas')['BOffcanvas']
     BPagination: typeof import('bootstrap-vue-next/components/BPagination')['BPagination']
     BRow: typeof import('bootstrap-vue-next/components/BContainer')['BRow']
-  }
-  export interface ComponentCustomProperties {
-    vBToggle: typeof import('bootstrap-vue-next/directives/BToggle')['vBToggle']
   }
 }

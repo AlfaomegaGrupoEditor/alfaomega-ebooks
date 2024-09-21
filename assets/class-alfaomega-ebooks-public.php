@@ -84,7 +84,7 @@ class Alfaomega_Ebooks_Public {
                 );
             }
 
-            wp_localize_script('$this->plugin_name', 'wpApiSettings', [
+            wp_localize_script($this->plugin_name, 'wpApiSettings', [
                 'root'  => esc_url_raw(rest_url()), // Root URL for the API
                 'nonce' => wp_create_nonce('wp_rest'), // Create a nonce for secure API calls
             ]);
@@ -100,7 +100,7 @@ class Alfaomega_Ebooks_Public {
      * @return string The modified script tag.
      */
     public function alfaomega_add_type_attribute($tag, $handle, $src) {
-        if (in_array($handle, [ "{$this->plugin_name}-dev", "vite-client" ])) {
+        if (in_array($handle, [ "{$this->plugin_name}-dev", "vite-client", $this->plugin_name ])) {
             $tag = '<script type="module" src="' . esc_url($src) . '"></script>';
         }
         return $tag;
