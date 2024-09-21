@@ -20,6 +20,7 @@ const messages = {
         cancelled: 'Cancelled',
         created: 'Created',
         created_at: 'Created at',
+        code_applied_successfully: 'Code applied successfully.',
         // D
         digital_library: 'Digital Library',
         download: 'Download',
@@ -46,6 +47,7 @@ const messages = {
         samples: 'Samples',
         search: 'Type to search...',
         status: 'Status',
+        success: 'Success',
         // T
         title: 'Title',
         // V
@@ -72,6 +74,7 @@ const messages = {
         cancelled: 'Cancelado',
         created: 'Creado',
         created_at: 'Creado el',
+        code_applied_successfully: 'Código aplicado correctamente.',
         // D
         digital_library: 'Biblioteca Digital',
         download: 'Descargar',
@@ -99,6 +102,7 @@ const messages = {
         sample: 'Muestra',
         search: 'Escribir para buscar...',
         status: 'Estado',
+        success: 'Acción exitosa',
         // T
         title: 'Título',
         // V

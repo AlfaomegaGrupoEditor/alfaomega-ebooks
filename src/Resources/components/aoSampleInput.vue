@@ -3,8 +3,10 @@
   import { useAppStore } from '@/stores/appStore';
   import { aoButton } from '@/components';
   import { ToastType } from '@/types';
+  import { useI18n } from "vue-i18n";
 
   const emit = defineEmits<{ apply: (payload: ToastType) => void }>();
+  const { t } = useI18n();
 
   const appStore = useAppStore();
   const code = ref('');
@@ -12,9 +14,9 @@
 
   const handleClick = () => {
     emit('apply', {
-      content: 'Code applied successfully',
+      content: t('code_applied_successfully'),
       variant: 'success',
-      title: 'Success'
+      title: t('success')
     } as ToastType);
   };
 

@@ -1,8 +1,7 @@
 <script setup lang="ts">
   import {onMounted, ref} from 'vue';
   import { BookType } from '@/types';
-  import { aoBook, aoSidebar } from '@/components';
-  import AoEmptyState from '@/components/aoEmptyState.vue';
+  import { aoBook, aoSidebar, aoEmptyState } from '@/components';
 
   const books = ref<BookType[]>([]);
   const showSidebar = ref(false);

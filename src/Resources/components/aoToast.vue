@@ -25,8 +25,10 @@
           v-model="showToast"
           :variant="variant"
       >
-        <h2 class="fs-6" v-if="title"> {{ title }}: </h2>
-        {{ content }}
+        <div class="fs-8 fw-bold" v-if="title"> {{ title }}: </div>
+        <span class="fs-8">
+          {{ content }}
+        </span>
       </BToast>
     </div>
   </Teleport>
