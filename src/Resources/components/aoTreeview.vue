@@ -63,25 +63,6 @@ import {reactive, defineEmits, onMounted} from 'vue';
   </div>
 </template>
 
-<style>
-  .node-wrapper.focused {
-    font-weight: bold;
-    background-color: transparent;
-    color: #D4230F
-  }
+<style scoped>
 
-  .node-wrapper.focused .node-text{
-    font-weight: bold;
-    color: #D4230F
-  }
-
-  .node-wrapper:hover {
-    background-color: transparent;
-    cursor: pointer;
-  }
-
-  .node-wrapper {
-    font-size: 18px;
-    font-family: "Roboto", sans-serif;
-  }
 </style>

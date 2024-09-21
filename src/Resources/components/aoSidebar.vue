@@ -1,30 +1,40 @@
 <script setup lang="ts">
-  import {ref} from 'vue';
+  import { ref, watch } from 'vue';
   import { aoButton, aoAccessDetails } from '@/components';
+  import { BookType } from '@/types';
 
-  const show = ref(false);
-  const placement = ref('start');
+  const props = defineProps({
+    show: Boolean,
+    data: {type: Object as () => BookType, required: true}
+  });
 
-  const click = (place = 'start') => {
-    placement.value = 'end'
-    show.value = !show.value
-  }
+  const emit = defineEmits(['update:show']);
+  const show = ref(props.show);
 
-  const data = {
-    title: 'TECNOLOGÍA DE LAS MAQUINAS HERRAMIENTA – 6ª Edición',
-    cover: 'https://alfaomegaportal.test/wp-content/uploads/2024/07/1-3.png'
-  }
+  const handleClose = () => {
+    emit('update:show', !show.value);
+  };
+
+  watch(() => props.show, (newVal) => {
+    show.value = newVal;
+  });
+
+  watch(() => props.data, (newVal) => {
+    console.log(props.data);
+  });
 </script>
 
 <template>
   <BOffcanvas
+      v-if="data"
       v-model="show"
       class="ao-sidebar"
-      :placement="placement"
+      placement="end"
       style="z-index: 200000"
-      :hide-backdrop="true"
+      :hide-backdrop="false"
       :header="false"
       :shadow="true"
+      @hide="handleClose"
   >
     <template #title>
       <span class="text-primary">
@@ -64,7 +74,6 @@
         book_url="https://alfaomegaportal.test/producto/tecnologia-de-las-maquinas-herramienta-6a-edicion/"
     />
   </BOffcanvas>
-  <BButton @click="click" class="m-2">Show end</BButton>
 </template>
 
 <style scoped>

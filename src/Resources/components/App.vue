@@ -4,7 +4,6 @@
   import { useI18n } from "vue-i18n";
   import {
     aoSampleInput,
-    aoSidebar,
     aoTreeview,
     aoAlert,
     aoFilterBar,
@@ -72,10 +71,6 @@
         <ao-books />
       </b-col>
     </b-row>
-
-    <div>
-      <ao-sidebar />
-    </div>
   </b-container>
 </template>
 

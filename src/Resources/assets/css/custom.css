@@ -11,7 +11,7 @@ table.variations td.label label:after {
 }
 
 .ff-body {
-    font-family: var(--bs-body-font-family);;
+    font-family: var(--bs-body-font-family);
 }
 
 .fs-7 {
@@ -57,4 +57,29 @@ div.ao-sidebar .offcanvas-title {
 .ao-ebooks .input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
+}
+
+.node-wrapper.focused {
+    font-weight: bold;
+    background-color: transparent;
+    color: #D4230F
+}
+
+.node-wrapper.focused .node-text{
+    font-weight: bold;
+    color: #D4230F
+}
+
+.node-wrapper:hover {
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.node-wrapper {
+    font-size: 18px;
+    font-family: var(--bs-body-font-family);
+}
+
+.offcanvas-backdrop {
+    background-color: transparent;
 }
