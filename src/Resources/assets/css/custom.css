@@ -75,9 +75,12 @@ div.ao-sidebar .offcanvas-title {
     cursor: pointer;
 }
 
+.node-input, .node-text,
 .node-wrapper {
-    font-size: 18px;
+    font-size: 0.8rem;
     font-family: var(--bs-body-font-family);
+    min-height: 24px;
+    line-height: 24px;
 }
 
 .offcanvas-backdrop {

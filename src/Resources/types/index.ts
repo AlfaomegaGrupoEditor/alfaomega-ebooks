@@ -17,15 +17,16 @@ type AccessType = 'purchase' | 'sample';
 
 type StatusType = 'created' | 'active' | 'expired' | 'cancelled' ;
 
+type OrderType = {
+    field: 'title' | 'created_at' | 'status'| 'valid_until' | 'access_at';
+    direction: 'asc' | 'desc';
+};
+
 type EbooksFilterType = {
     searchKey?: string | null;
     accessType?: AccessType | null;
     accessStatus?: StatusType | null;
-};
-
-type OrderType = {
-    field: 'title' | 'created_at' | 'valid_until';
-    direction: 'asc' | 'desc';
+    order: OrderType
 };
 
 type EbooksQueryType = {

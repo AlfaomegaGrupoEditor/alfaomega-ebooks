@@ -3,64 +3,102 @@ import { createI18n } from 'vue-i18n';
 // Define the translations
 const messages = {
     en: {
-        welcome: 'Welcome',
-        message: 'Hello, World!',
-
+        // A
+        access_type: 'Access Type',
+        access_at: 'Access at',
+        active: 'Active',
+        added_at: 'Added at',
+        added_by: 'Added by:',
         add_ebooks: 'Add eBooks',
         add_sample_text: 'If you received by mail with a sample code of the ebook, you can type it in here to add the book to your digital library.',
-        note: 'Note',
-        purchase_note: 'Purchased books are added automatically.',
-        apply_btn: 'Apply',
-        download: 'Download',
-        read_online: 'Read Online',
-        access_type: 'Access Type',
-        status: 'Status',
-        added_at: 'Added at',
-        valid_until: 'Valid Until',
-        purchase: 'Purchase',
-        sample: 'Sample',
-        created: 'Created',
-        active: 'Active',
-        expired: 'Expired',
-        cancelled: 'Cancelled',
-        book_details: 'View Book Details',
-        digital_library: 'Digital Library',
-        all_ebooks: 'All eBooks',
-        purchased: 'Purchased',
-        samples: 'Samples',
         all_books: 'All books',
-        added_by: 'Added by:',
+        all_ebooks: 'All eBooks',
+        apply_btn: 'Apply',
+        // B
+        book_details: 'View Book Details',
+        // C
+        cancelled: 'Cancelled',
+        created: 'Created',
+        created_at: 'Created at',
+        // D
+        digital_library: 'Digital Library',
+        download: 'Download',
+        // E
+        expired: 'Expired',
+        // F
+        filter_by: 'Filter by',
+        // M
+        message: 'Hello, World!',
+        // N
+        note: 'Note',
+        // O
+        order_by: 'Order by',
+        // P
+        purchase: 'Purchase',
+        purchased: 'Purchased',
+        purchase_note: 'Purchased books are added automatically.',
+        // R
+        read_online: 'Read Online',
+        // S
+        sample: 'Sample',
+        samples: 'Samples',
         search: 'Type to search...',
+        status: 'Status',
+        // T
+        title: 'Title',
+        // V
+        valid_until: 'Valid Until',
+        // W
+        welcome: 'Welcome',
     },
     es: {
-        welcome: 'Bienvenido',
-        message: 'Hola, mundo!',
-
+        // A
+        access_type: 'Tipo de Acceso',
+        active: 'Activo',
+        access_at: 'Acceso el',
+        added_at: 'Agregado el',
+        added_by: 'Agregado por:',
         add_ebooks: 'Agregar muestras',
         add_sample_text: 'Si recibiste un código de muestra, puedes ingresarlo aquí para agregar libros.',
-        apply_btn: 'Aplicar',
-        download: 'Descargar',
-        read_online: 'Leer en línea',
-        access_type: 'Tipo de Acceso',
-        status: 'Estado',
-        added_at: 'Agregado el',
-        valid_until: 'Válido hasta',
-        purchase: 'Compra',
-        sample: 'Muestra',
-        created: 'Creado',
-        active: 'Activo',
-        expired: 'Expirado',
-        cancelled: 'Cancelado',
-        book_details: 'Ver Detalles del Libro',
-        digital_library: 'Biblioteca Digital',
-        all_ebooks: 'Todos los eBooks',
-        purchased: 'Compras',
-        samples: 'Muestras',
-        note: 'Nota',
-        purchase_note: 'Los libros comprados son adicionados automáticamente.',
         all: 'Todos los libros',
-        added_by: 'Agregado por:',
+        all_ebooks: 'Todos los eBooks',
+        apply_btn: 'Aplicar',
+        // B
+        book_details: 'Ver Detalles del Libro',
+        bienvenido: 'Bienvenido',
+        // C
+        cancelled: 'Cancelado',
+        created: 'Creado',
+        created_at: 'Creado el',
+        // D
+        digital_library: 'Biblioteca Digital',
+        download: 'Descargar',
+        // E
+        expired: 'Expirado',
+        // F
+        filter_by: 'Filtrar por',
+        // M
+        message: 'Hola, mundo!',
+        muestra: 'Muestra',
+        muestras: 'Muestras',
+        // N
+        note: 'Nota',
+        // O
+        order_by: 'Ordenar por',
+        // P
+        purchase: 'Compra',
+        purchase_note: 'Los libros comprados son adicionados automáticamente.',
+        purchased: 'Compras',
+        // R
+        read_online: 'Leer en línea',
+        // S
+        sample: 'Muestra',
         search: 'Escribir para buscar...',
+        status: 'Estado',
+        // T
+        title: 'Título',
+        // V
+        valid_until: 'Válido hasta',
     }
 };
 
