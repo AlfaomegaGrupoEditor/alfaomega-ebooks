@@ -1,4 +1,4 @@
-type ColorVariant =
+type ColorVariantType =
     | 'primary'
     | 'secondary'
     | 'success'
@@ -11,38 +11,52 @@ type ColorVariant =
     | 'white'
     | 'black';
 
-type SizeVariant = 'sm' | 'md' | 'lg';
+type SizeVariantType = 'sm' | 'md' | 'lg';
 
 type AccessType = 'purchase' | 'sample';
 
-type AccessStatus = 'created' | 'active' | 'expired' | 'cancelled' ;
+type StatusType = 'created' | 'active' | 'expired' | 'cancelled' ;
 
-type EbooksFilter = {
-    searchKey: ?string;
-    accessType: ?AccessType;
-    accessStatus: ?AccessStatus;
+type EbooksFilterType = {
+    searchKey?: string | null;
+    accessType?: AccessType | null;
+    accessStatus?: StatusType | null;
 };
 
-type Order = {
-    'field': 'title' | 'created_at' | 'valid_until';
-    'direction': 'asc' | 'desc';
+type OrderType = {
+    field: 'title' | 'created_at' | 'valid_until';
+    direction: 'asc' | 'desc';
 };
 
-type EbooksQuery = {
-    'category': ?string;
-    'filter': EbooksFilter;
-    'page': number;
-    'pageSize': number;
-    'userId': ?string;
-    'order': Order;
+type EbooksQueryType = {
+    category?: string | null;
+    filter: EbooksFilterType;
+    page: number;
+    pageSize: number;
+    userId?: string | null;
+    order: OrderType;
+}
+
+type BookType = {
+    id: string;
+    title: string;
+    cover: string;
+    download: boolean;
+    read: boolean;
+    accessType: AccessType;
+    status: StatusType;
+    addedAt: string;
+    validUntil?: string | null;
+    url: string;
 }
 
 export {
-    ColorVariant,
-    SizeVariant,
+    ColorVariantType,
+    SizeVariantType,
     AccessType,
-    AccessStatus,
-    EbooksFilter,
-    EbooksQuery,
-    Order
+    StatusType,
+    EbooksFilterType,
+    EbooksQueryType,
+    OrderType,
+    BookType
 };

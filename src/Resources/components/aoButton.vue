@@ -1,13 +1,13 @@
 <script setup lang="ts">
   import { defineProps, defineEmits } from 'vue';
-  import { ColorVariant, SizeVariant } from '@/types';
+  import { ColorVariantType, SizeVariantType } from '@/types';
 
   const props = defineProps({
     caption: { type: String, default: 'caption' },
     icon: { type: String, default: 'fa-user' },
     disabled: { type: Boolean, default: false },
-    color: { type: String as () => ColorVariant, default: 'primary' },
-    size: { type: String as () => SizeVariant, default: 'sm' }
+    color: { type: String as () => ColorVariantType, default: 'primary' },
+    size: { type: String as () => SizeVariantType, default: 'sm' }
   });
 
   const emit = defineEmits(['click']);

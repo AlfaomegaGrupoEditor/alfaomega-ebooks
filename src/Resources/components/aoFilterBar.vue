@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { useI18n } from "vue-i18n";
   import { ref, defineEmits } from 'vue';
-  import { EbooksFilter } from '@/types';
+  import { EbooksFilterType } from '@/types';
 
   const emit = defineEmits<{ filter: (payload: EbooksFilter) => void }>();
   const { t } = useI18n();

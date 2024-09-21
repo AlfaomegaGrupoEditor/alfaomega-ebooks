@@ -1,10 +1,10 @@
 <script setup lang="ts">
   import { defineProps, computed } from 'vue';
-  import { AccessType, AccessStatus } from '@/types';
+  import { AccessType, StatusType } from '@/types';
 
   const props = defineProps({
     type: { type: String as AccessType, default: 'purchase' },
-    status: { type: String as AccessStatus, default: 'created' },
+    status: { type: String as StatusType, default: 'created' },
     added_at: { type: String, default: '01/01/2024' },
     valid_until: { type: String, default: '31/12/2024' },
     book_url: { type: String, default: '' }

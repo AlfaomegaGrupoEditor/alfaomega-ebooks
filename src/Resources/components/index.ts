@@ -6,6 +6,7 @@ import aoTreeview from '@/components/aoTreeview.vue';
 import aoFilterBar from '@/components/aoFilterBar.vue';
 import aoAlert from '@/components/aoAlert.vue';
 import aoBooks from '@/components/aoBooks.vue';
+import aoBook from '@/components/aoBook.vue';
 
 export {
     aoSampleInput,
@@ -15,5 +16,6 @@ export {
     aoTreeview,
     aoFilterBar,
     aoAlert,
-    aoBooks
+    aoBooks,
+    aoBook
 };

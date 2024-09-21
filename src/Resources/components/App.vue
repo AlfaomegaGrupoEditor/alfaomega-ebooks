@@ -10,13 +10,13 @@
     aoFilterBar,
     aoBooks
   } from '@/components';
-  import {EbooksQuery, EbooksFilter, Order} from '@/types';
+  import {EbooksQueryType, EbooksFilterType, OrderType} from '@/types';
 
   const { t } = useI18n();
   const appStore = useAppStore();
   const isLoading = computed(() => appStore.isLoading);
   const header = ref<string>(t('welcome'));
-  const ebooksQuery = ref<EbooksQuery>(null);
+  const ebooksQuery = ref<EbooksQueryType>(null);
 
   const test = () => { appStore.testLoading() };
 
@@ -38,14 +38,14 @@
         'accessType': null,
         'accessStatus': null,
         'search': null
-      } as EbooksFilter,
+      } as EbooksFilterType,
       'page': 0,
       'pageSize': 12,
       'userId': null,
       'order': {
         'field': 'title',
         'direction': 'asc'
-      } as Order
+      } as OrderType
     };
   });
 </script>
