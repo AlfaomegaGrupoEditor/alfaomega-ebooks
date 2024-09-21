@@ -27,6 +27,7 @@ declare module 'vue' {
     BInputGroupText: typeof import('bootstrap-vue-next/components/BInputGroup')['BInputGroupText']
     BLink: typeof import('bootstrap-vue-next/components/BLink')['BLink']
     BOffcanvas: typeof import('bootstrap-vue-next/components/BOffcanvas')['BOffcanvas']
+    BPagination: typeof import('bootstrap-vue-next/components/BPagination')['BPagination']
     BRow: typeof import('bootstrap-vue-next/components/BContainer')['BRow']
   }
   export interface ComponentCustomProperties {

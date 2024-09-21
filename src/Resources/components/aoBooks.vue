@@ -7,6 +7,10 @@
   const showSidebar = ref(false);
   const book = ref<BookType | null>(null);
 
+  const currentPage = ref(1);
+  const perPage = 8;
+  const totalRows = 100;
+
   const toggleSidebar = (selectedBook: BookType) => {
     showSidebar.value = !showSidebar.value;
     book.value = selectedBook;
@@ -97,6 +101,16 @@
         :key="book.id"
         :data="book"
         @open="()=> toggleSidebar(book)"
+    />
+  </div>
+  <div class="mt-5 d-flex flex-row justify-content-center">
+    <BPagination
+        v-model:currentPage="currentPage"
+        :totalRows="totalRows"
+        :perPage="perPage"
+        limit="3"
+        pills
+        @change="onPageChange"
     />
   </div>
   <ao-sidebar
