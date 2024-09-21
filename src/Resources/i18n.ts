@@ -86,7 +86,7 @@ const messages = {
         // N
         note: 'Nota',
         no_books_found: 'No se encontraron libros.',
-        no_books_found_description: 'Por favor, cambia los filtros o la búsqueda. También puedes comprar más libros para ampliar tu biblioteca.',
+        no_books_found_description: 'Por favor, cambia los filtros o el criterio de búsqueda para encontrar resultados. También puedes comprar más libros para ampliar tu biblioteca.',
         // O
         order_by: 'Ordenar por',
         // P

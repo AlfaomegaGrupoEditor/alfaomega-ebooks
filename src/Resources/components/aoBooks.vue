@@ -120,11 +120,12 @@
         :data="book"
     />
   </div>
-  <ao-empty-state
-      v-else
-      :title="$t('no_books_found')"
-      :description="$t('no_books_found_description')"
-  />
+  <div v-else class="row mt-4">
+    <ao-empty-state
+        :title="$t('no_books_found')"
+        :description="$t('no_books_found_description')"
+    />
+  </div>
 </template>
 
 <style scoped>
