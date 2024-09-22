@@ -31,6 +31,12 @@
     apiSuccess: (event: ApiCheckEvent) => { console.log('API is responding!', event); }
   });
 
+  // TODO: if the API check is successful, load the user ebooks
+  //  the default search query will be these merged with the browser query
+  //  each time one of the query parameters changes the browser history will be updated
+  //  The next step is to implement the libraryStore with the action searchBooks(searchQuery)
+  //  then Books will be loaded from the store with a getter
+
   const init = () => {
     appStore.checkApi();
 
