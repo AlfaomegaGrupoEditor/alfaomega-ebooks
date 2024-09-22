@@ -3,14 +3,6 @@ import type { AppInitPayload, State } from '@/services/apps/types';
 import { API } from '@/services';
 import { eventBus } from '@/events';
 
-/**
- * The application store.
- * @function useAppStore
- * @returns {useAppStore} The application store.
- * @property {function(): State} state - A function that returns the state of the application store.
- * @property {object} getters - The getters of the application store.
- * @property {object} actions - The actions of the application store.
- */
 export const useAppStore = defineStore('appStore', {
   /**
    * The state of the application store.
@@ -21,6 +13,21 @@ export const useAppStore = defineStore('appStore', {
   state: (): State => ({
     error: undefined,
     loading: false,
+    config: {
+      baseURL: window.wpApiSettings.root,
+      mode: 'no-cors',
+      headers: {
+        Authorization: `X-WP-Nonce ${window.wpApiSettings.nonce}`,
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json;x-www-form-urlencoded',
+        'Cache-Control': 'no-cache',
+        Accept: 'application/json',
+      },
+      error: undefined,
+      loading: false,
+      withCredentials: true,
+      credentials: 'same-origin'
+    }
   }),
 
   getters: {
@@ -30,72 +37,28 @@ export const useAppStore = defineStore('appStore', {
 
   actions: {
     /**
-     * Initializes the application with the provided data.
-     * Sets the configuration of the application store with the provided data.
-     * Fetches the theme with the provided name.
-     *
-     * @async
-     * @param {AppInitPayload} data - The data to initialize the application with.
-     * @property {string} data.librarySrc - The source of the library.
-     * @property {string} data.token - The token for authorization.
-     * @property {string} data.teacher - The status of the teacher feature ('enabled' or 'disabled').
-     * @property {string} data.referrer - The referrer of the request.
-     * @property {string} data.evaluations - The status of the evaluations feature ('active' or 'inactive').
-     * @property {string} data.video - The ID of the YouTube video to embed.
-     * @property {string} data.themeName - The name of the theme to fetch.
-     * @throws Will throw an error if the theme fetch fails.
+     * Initializes the application store.
+     * @param {AppInitPayload} data - The data to initialize the store with.
      */
-    async initApp(data: AppInitPayload) {
-      const coverPath = import.meta.env.VITE_APP_ASSETS;
-
-      this.config = {
-        library: data.librarySrc,
-        coverPath: coverPath + '/covers/',
-        token: data.token,
-        baseURL: data.librarySrc + '/api/',
-        showTeacher: data.teacher === 'enabled',
-        mode: 'no-cors',
-        headers: {
-          Authorization: 'Bearer ' + data.token,
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json;x-www-form-urlencoded',
-          'Cache-Control': 'no-cache',
-          Accept: '/'
-        },
-        withCredentials: true,
-        credentials: 'same-origin',
-        referrer: data.referrer,
-        evaluations: data.evaluations === 'active',
-        video: 'https://www.youtube.com/embed/' + data.video
-      }
-
-      await this.dispatchGetTheme(data.themeName);
+    async checkApi(data: AppInitPayload) {
+      await this.dispatchCheckApi();
     },
 
     /**
-     * Fetches the theme from the API using the provided theme name.
-     * Updates the store's state with the fetched theme.
-     * Emits an event 'themeLoaded' after successful fetch and update.
-     *
-     * @async
-     * @param {string} theme - The name of the theme to fetch.
-     * @throws Will throw an error if the API call fails.
+     * Checks the API for availability.
      */
-    async dispatchGetTheme(theme: string) {
-      const response = await API.app.getTheme(theme);
+    async dispatchCheckApi() {
+      const response = await API.app.checkApi();
       if (response.status === 'success' && response.data) {
         this.theme = response.data;
-        eventBus.emit('themeLoaded', {});
+        eventBus.emit('apiSuccess', {});
       }
     },
 
     /**
-     * Handles validation errors from API responses.
-     * If the status is 400, it iterates over the validation errors and emits a notification for each error message.
-     * If the status is not 400, it emits a notification with the response message.
-     *
-     * @param {Number} status - The status code of the API response.
-     * @param {any} data - The data from the API response.
+     * Notifies the user of validation errors.
+     * @param status
+     * @param data
      */
     notifyValidationErrors(status: Number, data: any) {
       if (status === 400) {
