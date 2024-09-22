@@ -131,6 +131,10 @@
             :totalRows="totalRows"
             :perPage="perPage"
             limit="3"
+            :prev-text="$t('previous')"
+            :next-text="$t('next')"
+            :hide-goto-end-buttons="true"
+            :hide-goto-start-buttons="true"
             pills
             @change="onPageChange"
         />
