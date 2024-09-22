@@ -102,7 +102,7 @@
           url: 'https://alfaomegaportal.test/producto/tecnologia-de-las-maquinas-herramienta-6a-edicion/'
         }
       ];
-      setTimeout(async () => resolve(data), 2000);
+      setTimeout(async () => resolve(data), 500);
     });
   }
 
