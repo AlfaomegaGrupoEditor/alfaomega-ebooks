@@ -16,7 +16,7 @@
       case 'success':
         return 'fa-check-circle';
       case 'primary':
-        return 'exclamation-circle';
+        return 'fa-exclamation-circle';
       case 'warning':
         return 'fa-exclamation-triangle';
       default:
@@ -39,7 +39,7 @@
       >
         <div class="row">
           <div class="col-1">
-            <i class="fas fs-4" :class="icon"></i>
+            <i class="fas fs-5" :class="icon"></i>
           </div>
           <div class="col">
             <div class="fs-8 fw-bold" v-if="title"> {{ title }} </div>
