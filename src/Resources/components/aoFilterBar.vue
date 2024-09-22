@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import { useI18n } from "vue-i18n";
   import { ref, defineEmits } from 'vue';
-  import {EbooksFilterType, OrderType} from '@/types';
+  import {BooksFilterType, OrderType} from '@/types';
 
-  const emit = defineEmits<{ filter: (payload: EbooksFilterType) => void }>();
+  const emit = defineEmits<{ filter: (payload: BooksFilterType) => void }>();
   const { t } = useI18n();
 
   const accessType = ref(null)

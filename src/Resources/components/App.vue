@@ -7,30 +7,31 @@
     aoTreeview,
     aoAlert,
     aoFilterBar,
-    aoBooks
+    aoBooks,
+    aoBooksSkeleton
   } from '@/components';
-  import {EbooksQueryType, EbooksFilterType, OrderType, ToastType} from '@/types';
+  import {BooksQueryType, BooksFilterType, OrderType, ToastType} from '@/types';
   import AoToast from '@/components/aoToast.vue';
 
   const { t } = useI18n();
   const appStore = useAppStore();
   const isLoading = computed(() => appStore.isLoading);
   const header = ref<string>(t('welcome'));
-  const ebooksQuery = ref<EbooksQueryType>(null);
+  const searchQuery = ref<BooksQueryType>(null);
   const toast = ref<ToastType>();
   const toastActive = ref(false);
 
   const test = () => { appStore.testLoading() };
 
   const handleSelected = (node) => {
-    ebooksQuery.value = {...ebooksQuery.value, ...{category: node.id}};
+    searchQuery.value = {...searchQuery.value, ...{category: node.id}};
     header.value = node.text;
-    console.log(ebooksQuery.value);
+    console.log(searchQuery.value);
   };
 
   const handleFiltered = (filter) => {
-    ebooksQuery.value = {...ebooksQuery.value, ...{filter: filter}};
-    console.log(ebooksQuery.value);
+    searchQuery.value = {...searchQuery.value, ...{filter: filter}};
+    console.log(searchQuery.value);
   };
 
   const showToast = (newToast: ToastType) => {
@@ -48,13 +49,13 @@
   };
 
   onMounted(() => {
-    ebooksQuery.value = {
+    searchQuery.value = {
       'category': null,
       'filter': {
         'accessType': null,
         'accessStatus': null,
         'search': null
-      } as EbooksFilterType,
+      } as BooksFilterType,
       'page': 0,
       'pageSize': 12,
       'userId': null,
@@ -85,7 +86,15 @@
         <!--  Books selected-->
         <h4 class="text-primary">{{ header }}</h4>
         <ao-filter-bar @filter="handleFiltered"/>
-        <ao-books />
+        <!--  load the books on suspense -->
+        <Suspense>
+          <template #default>
+            <ao-books :query="searchQuery"/>
+          </template>
+          <template #fallback>
+            <ao-books-skeleton />
+          </template>
+        </Suspense>
       </b-col>
     </b-row>
   </b-container>

@@ -90,3 +90,11 @@ div.ao-sidebar .offcanvas-title {
 .ao-toast {
     z-index: 200000;
 }
+
+.ao-ebooks .pagination {
+    --bs-pagination-font-size: 0.8rem;
+}
+
+.ao-book-skeleton .card-body {
+    display: none;
+}

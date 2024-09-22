@@ -21,10 +21,10 @@
         class="px-1 py-1 border-2"
         :class="hover ? 'shadow-lg border-primary' : ''"
         v-if="data !== null"
-        style="cursor: pointer;"
         :img-src="data.cover"
         :img-alt="data.title"
         no-body
+        role="button"
         @click="handleClick"
         @mouseover="hover = true"
         @mouseleave="hover = false"

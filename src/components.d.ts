@@ -22,6 +22,7 @@ declare module 'vue' {
     BLink: typeof import('bootstrap-vue-next/components/BLink')['BLink']
     BOffcanvas: typeof import('bootstrap-vue-next/components/BOffcanvas')['BOffcanvas']
     BPagination: typeof import('bootstrap-vue-next/components/BPagination')['BPagination']
+    BPlaceholderCard: typeof import('bootstrap-vue-next/components/BPlaceholder')['BPlaceholderCard']
     BRow: typeof import('bootstrap-vue-next/components/BContainer')['BRow']
     BToast: typeof import('bootstrap-vue-next/components/BToast')['BToast']
   }

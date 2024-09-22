@@ -31,6 +31,7 @@ const messages = {
         // M
         message: 'Hello, World!',
         // N
+        next: 'Next',
         note: 'Note',
         no_books_found: 'No books found.',
         no_books_found_description: 'Please change the filters or search query. You can also buy more books to enlarge your library.',
@@ -40,6 +41,7 @@ const messages = {
         purchase: 'Purchase',
         purchased: 'Purchased',
         purchase_note: 'Purchased books are added automatically.',
+        previous: 'Previous',
         // R
         read_online: 'Read Online',
         // S
@@ -87,6 +89,7 @@ const messages = {
         muestra: 'Muestra',
         muestras: 'Muestras',
         // N
+        next: 'Siguiente',
         note: 'Nota',
         no_books_found: 'No se encontraron libros.',
         no_books_found_description: 'Por favor, cambia los filtros o el criterio de búsqueda para encontrar resultados. También puedes comprar más libros para ampliar tu biblioteca.',
@@ -96,6 +99,7 @@ const messages = {
         purchase: 'Compra',
         purchase_note: 'Los libros comprados son adicionados automáticamente.',
         purchased: 'Compras',
+        previous: 'Anterior',
         // R
         read_online: 'Leer en línea',
         // S

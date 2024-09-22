@@ -1,9 +1,13 @@
 <script setup lang="ts">
-  import {onMounted, ref} from 'vue';
-  import { BookType } from '@/types';
+  import {onMounted, ref, watch} from 'vue';
+  import {BookType, BooksQueryType} from '@/types';
   import { aoBook, aoSidebar, aoEmptyState } from '@/components';
 
-  const books = ref<BookType[]>([]);
+  const props = defineProps({
+    query: { type: Object as () => BooksQueryType | null, default: null }
+  });
+
+  const books = ref<BookType[]>(null);
   const showSidebar = ref(false);
   const book = ref<BookType | null>(null);
 
@@ -16,86 +20,99 @@
     book.value = selectedBook;
   };
 
-  onMounted(() => {
-    /*books.value = [
-      {
-        id: 1,
-        title: 'TECNOLOGÍA DE LAS MAQUINAS HERRAMIENTA – 6ª Edición',
-        cover: 'https://alfaomegaportal.test/wp-content/uploads/2024/07/1-3.png',
-        download: true,
-        read: true,
-        accessType: 'purchase',
-        status: 'active',
-        addedAt: '2024-07-01',
-        validUntil: null,
-        url: 'https://alfaomegaportal.test/producto/tecnologia-de-las-maquinas-herramienta-6a-edicion/'
-      },
-      {
-        id: 2,
-        title: 'TECNOLOGÍA DE LAS MAQUINAS HERRAMIENTA – 6ª Edición',
-        cover: 'https://alfaomegaportal.test/wp-content/uploads/2024/07/1-4.png',
-        download: true,
-        read: true,
-        accessType: 'purchase',
-        status: 'active',
-        addedAt: '2024-07-01',
-        validUntil: null,
-        url: 'https://alfaomegaportal.test/producto/tecnologia-de-las-maquinas-herramienta-6a-edicion/'
-      },
-      {
-        id: 3,
-        title: 'TECNOLOGÍA DE LAS MAQUINAS HERRAMIENTA – 6ª Edición',
-        cover: 'https://alfaomegaportal.test/wp-content/uploads/2024/07/1-2.png',
-        download: true,
-        read: true,
-        accessType: 'purchase',
-        status: 'active',
-        addedAt: '2024-07-01',
-        validUntil: null,
-        url: 'https://alfaomegaportal.test/producto/tecnologia-de-las-maquinas-herramienta-6a-edicion/'
-      },
-      {
-        id: 4,
-        title: 'TECNOLOGÍA DE LAS MAQUINAS HERRAMIENTA – 6ª Edición',
-        cover: 'https://alfaomegaportal.test/wp-content/uploads/2024/07/1-1.png',
-        download: true,
-        read: true,
-        accessType: 'purchase',
-        status: 'active',
-        addedAt: '2024-07-01',
-        validUntil: null,
-        url: 'https://alfaomegaportal.test/producto/tecnologia-de-las-maquinas-herramienta-6a-edicion/'
-      },
-      {
-        id: 5,
-        title: 'TECNOLOGÍA DE LAS MAQUINAS HERRAMIENTA – 6ª Edición',
-        cover: 'https://alfaomegaportal.test/wp-content/uploads/2024/07/2-1.png',
-        download: true,
-        read: true,
-        accessType: 'purchase',
-        status: 'active',
-        addedAt: '2024-07-01',
-        validUntil: null,
-        url: 'https://alfaomegaportal.test/producto/tecnologia-de-las-maquinas-herramienta-6a-edicion/'
-      },
-      {
-        id: 6,
-        title: 'TECNOLOGÍA DE LAS MAQUINAS HERRAMIENTA – 6ª Edición',
-        cover: 'https://alfaomegaportal.test/wp-content/uploads/2024/07/3-1.png',
-        download: true,
-        read: true,
-        accessType: 'purchase',
-        status: 'active',
-        addedAt: '2024-07-01',
-        validUntil: null,
-        url: 'https://alfaomegaportal.test/producto/tecnologia-de-las-maquinas-herramienta-6a-edicion/'
-      }
-    ]*/
+  async function fetchData()
+  {
+    return new Promise(async (resolve) => {
+      const data = [
+        {
+          id: 1,
+          title: 'TECNOLOGÍA DE LAS MAQUINAS HERRAMIENTA – 6ª Edición',
+          cover: 'https://alfaomegaportal.test/wp-content/uploads/2024/07/1-3.png',
+          download: true,
+          read: true,
+          accessType: 'purchase',
+          status: 'active',
+          addedAt: '2024-07-01',
+          validUntil: null,
+          url: 'https://alfaomegaportal.test/producto/tecnologia-de-las-maquinas-herramienta-6a-edicion/'
+        },
+        {
+          id: 2,
+          title: 'TECNOLOGÍA DE LAS MAQUINAS HERRAMIENTA – 6ª Edición',
+          cover: 'https://alfaomegaportal.test/wp-content/uploads/2024/07/1-4.png',
+          download: true,
+          read: true,
+          accessType: 'purchase',
+          status: 'active',
+          addedAt: '2024-07-01',
+          validUntil: null,
+          url: 'https://alfaomegaportal.test/producto/tecnologia-de-las-maquinas-herramienta-6a-edicion/'
+        },
+        {
+          id: 3,
+          title: 'TECNOLOGÍA DE LAS MAQUINAS HERRAMIENTA – 6ª Edición',
+          cover: 'https://alfaomegaportal.test/wp-content/uploads/2024/07/1-2.png',
+          download: true,
+          read: true,
+          accessType: 'purchase',
+          status: 'active',
+          addedAt: '2024-07-01',
+          validUntil: null,
+          url: 'https://alfaomegaportal.test/producto/tecnologia-de-las-maquinas-herramienta-6a-edicion/'
+        },
+        {
+          id: 4,
+          title: 'TECNOLOGÍA DE LAS MAQUINAS HERRAMIENTA – 6ª Edición',
+          cover: 'https://alfaomegaportal.test/wp-content/uploads/2024/07/1-1.png',
+          download: true,
+          read: true,
+          accessType: 'purchase',
+          status: 'active',
+          addedAt: '2024-07-01',
+          validUntil: null,
+          url: 'https://alfaomegaportal.test/producto/tecnologia-de-las-maquinas-herramienta-6a-edicion/'
+        },
+        {
+          id: 5,
+          title: 'TECNOLOGÍA DE LAS MAQUINAS HERRAMIENTA – 6ª Edición',
+          cover: 'https://alfaomegaportal.test/wp-content/uploads/2024/07/2-1.png',
+          download: true,
+          read: true,
+          accessType: 'purchase',
+          status: 'active',
+          addedAt: '2024-07-01',
+          validUntil: null,
+          url: 'https://alfaomegaportal.test/producto/tecnologia-de-las-maquinas-herramienta-6a-edicion/'
+        },
+        {
+          id: 6,
+          title: 'TECNOLOGÍA DE LAS MAQUINAS HERRAMIENTA – 6ª Edición',
+          cover: 'https://alfaomegaportal.test/wp-content/uploads/2024/07/3-1.png',
+          download: true,
+          read: true,
+          accessType: 'purchase',
+          status: 'active',
+          addedAt: '2024-07-01',
+          validUntil: null,
+          url: 'https://alfaomegaportal.test/producto/tecnologia-de-las-maquinas-herramienta-6a-edicion/'
+        }
+      ];
+      setTimeout(async () => resolve(data), 2000);
+    });
+  }
+
+  onMounted(async () => {
+    books.value = await fetchData();
+  });
+
+  watch(() => props.query, async (newVal) => {
+    books.value = null;
+    books.value = await fetchData(); // fetch data from server
   });
 </script>
 
 <template>
-  <div v-if="books.length > 0">
+  <div v-if="books && books.length > 0">
     <div class="row row-cols-1 row-cols-md-4 g-4 mt-0">
       <ao-book
           v-for="book in books"

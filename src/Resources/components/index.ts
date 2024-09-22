@@ -9,6 +9,7 @@ import aoBooks from '@/components/aoBooks.vue';
 import aoBook from '@/components/aoBook.vue';
 import aoEmptyState from '@/components/aoEmptyState.vue';
 import aoToast from '@/components/aoToast.vue';
+import aoBooksSkeleton from '@/components/aoBooksSkeleton.vue';
 
 export {
     aoSampleInput,
@@ -22,4 +23,5 @@ export {
     aoBook,
     aoEmptyState,
     aoToast,
+    aoBooksSkeleton
 };

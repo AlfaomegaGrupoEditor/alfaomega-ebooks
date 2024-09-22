@@ -22,16 +22,16 @@ type OrderType = {
     direction: 'asc' | 'desc';
 };
 
-type EbooksFilterType = {
+type BooksFilterType = {
     searchKey?: string | null;
     accessType?: AccessType | null;
     accessStatus?: StatusType | null;
     order: OrderType
 };
 
-type EbooksQueryType = {
+type BooksQueryType = {
     category?: string | null;
-    filter: EbooksFilterType;
+    filter: BooksFilterType;
     page: number;
     pageSize: number;
     userId?: string | null;
@@ -62,8 +62,8 @@ export {
     SizeVariantType,
     AccessType,
     StatusType,
-    EbooksFilterType,
-    EbooksQueryType,
+    BooksFilterType,
+    BooksQueryType,
     OrderType,
     BookType,
     ToastType
