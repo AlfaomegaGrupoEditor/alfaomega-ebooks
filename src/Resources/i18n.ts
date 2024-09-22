@@ -14,6 +14,7 @@ const messages = {
         all_books: 'All books',
         all_ebooks: 'All eBooks',
         apply_btn: 'Apply',
+        attention: 'Attention!',
         // B
         book_details: 'View Book Details',
         // C
@@ -26,6 +27,8 @@ const messages = {
         download: 'Download',
         // E
         expired: 'Expired',
+        error_fetching_data: 'An error occurred while fetching the data.',
+        error_no_data: 'No data found!',
         // F
         filter_by: 'Filter by',
         // M
@@ -69,6 +72,7 @@ const messages = {
         all: 'Todos los libros',
         all_ebooks: 'Todos los eBooks',
         apply_btn: 'Aplicar',
+        attention: 'Atención!',
         // B
         book_details: 'Ver Detalles del Libro',
         bienvenido: 'Bienvenido',
@@ -82,6 +86,8 @@ const messages = {
         download: 'Descargar',
         // E
         expired: 'Expirado',
+        error_fetching_data: 'Ocurrió un error al obtener los datos.',
+        error_no_data: 'No se encontraron datos.',
         // F
         filter_by: 'Filtrar por',
         // M

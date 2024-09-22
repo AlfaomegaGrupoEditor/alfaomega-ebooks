@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useAppStore } from '@/stores/appStore';
+  import { useAppStore } from '@/stores'
   import {computed, onMounted, ref, reactive} from 'vue';
   import { useI18n } from "vue-i18n";
   import {
@@ -12,6 +12,8 @@
   } from '@/components';
   import {BooksQueryType, BooksFilterType, OrderType, ToastType} from '@/types';
   import AoToast from '@/components/aoToast.vue';
+  import { eventBus, useMittEvents } from '@/events';
+  import { NotificationEvent } from '@/events/types';
 
   const { t } = useI18n();
   const appStore = useAppStore();
@@ -20,6 +22,56 @@
   const searchQuery = ref<BooksQueryType>(null);
   const toast = ref<ToastType>();
   const toastActive = ref(false);
+
+  const init = () => {
+    appStore.checkApi();
+
+    // todo: load the user ebooks
+    searchQuery.value = {
+      'category': null,
+      'filter': {
+        'accessType': null,
+        'accessStatus': null,
+        'search': null
+      } as BooksFilterType,
+      'page': 0,
+      'pageSize': 12,
+      'userId': null,
+      'order': {
+        'field': 'title',
+        'direction': 'asc'
+      } as OrderType
+    };
+  };
+
+  /**
+   * Registers the event the App will be listing to.
+   */
+  useMittEvents(eventBus, {
+    notification : (data: NotificationEvent) => notificationHandler(data),
+  });
+
+  /**
+   * When a notification is sent
+   */
+  const notificationHandler = (data: NotificationEvent) => {
+    if (data.type === 'success') {
+      showToast({
+        variant: 'success',
+        title: t('success'),
+        content: t(data.message)
+      });
+    } else if (data.type === 'error') {
+      showToast({
+        variant: 'primary',
+        title: t('attention'),
+        content: t(data.message)
+      });
+    }
+    console.log(data);
+  }
+
+
 
   const test = () => { appStore.testLoading() };
 
@@ -48,23 +100,7 @@
     showToast(payload);
   };
 
-  onMounted(() => {
-    searchQuery.value = {
-      'category': null,
-      'filter': {
-        'accessType': null,
-        'accessStatus': null,
-        'search': null
-      } as BooksFilterType,
-      'page': 0,
-      'pageSize': 12,
-      'userId': null,
-      'order': {
-        'field': 'title',
-        'direction': 'asc'
-      } as OrderType
-    };
-  });
+  onMounted(init);
 </script>
 
 <template>

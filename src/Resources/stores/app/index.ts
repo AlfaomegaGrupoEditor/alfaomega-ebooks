@@ -37,10 +37,9 @@ export const useAppStore = defineStore('appStore', {
 
   actions: {
     /**
-     * Initializes the application store.
-     * @param {AppInitPayload} data - The data to initialize the store with.
+     * Check Api response
      */
-    async checkApi(data: AppInitPayload) {
+    async checkApi() {
       await this.dispatchCheckApi();
     },
 
@@ -73,7 +72,7 @@ export const useAppStore = defineStore('appStore', {
         }
       } else {
         eventBus.emit('notification', {
-          message: data.message,
+          message: data?.message || 'An error occurred while fetching the data.',
           type: 'error'
         });
       }

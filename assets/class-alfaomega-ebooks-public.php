@@ -57,8 +57,10 @@ class Alfaomega_Ebooks_Public {
     public function enqueue_scripts()
     {
         add_action('wp_footer', function() {
+            $plugin_name = $this->plugin_name;
             if (defined('WP_DEBUG') && WP_DEBUG) {
                 // development
+                $plugin_name .= "-dev";
                 wp_enqueue_script(
                     'vite-client',
                     'http://localhost:3000/@vite/client',
@@ -67,7 +69,7 @@ class Alfaomega_Ebooks_Public {
                     true
                 );
                 wp_enqueue_script(
-                    "{$this->plugin_name}-dev",
+                    $plugin_name,
                     'http://localhost:3000/Resources/main.ts',
                     [],
                     null,
@@ -76,7 +78,7 @@ class Alfaomega_Ebooks_Public {
             } else {
                 // production
                 wp_enqueue_script(
-                    $this->plugin_name,
+                    $plugin_name,
                     ALFAOMEGA_EBOOKS_URL . 'public/js/bundle.js',
                     [],
                     $this->version,
@@ -84,7 +86,7 @@ class Alfaomega_Ebooks_Public {
                 );
             }
 
-            wp_localize_script($this->plugin_name, 'wpApiSettings', [
+            wp_localize_script($plugin_name, 'wpApiSettings', [
                 'root'  => esc_url_raw(rest_url()), // Root URL for the API
                 'nonce' => wp_create_nonce('wp_rest'), // Create a nonce for secure API calls
             ]);

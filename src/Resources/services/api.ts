@@ -5,12 +5,11 @@ import { eventBus } from '@/events'
 import type { RequestMethod } from '@/services/types'
 import { empty } from '@/services/Helper'
 
+
 /**
  * The axios instance.
  */
-const instance = axios.create({
-  baseURL: window.wpApiSettings.root,
-});
+const instance = axios.create();
 
 /**
  * Returns an instance of axios with the app configuration.
@@ -63,7 +62,7 @@ export const request = async <T extends { data?: any }>(method: RequestMethod , 
         response = await http.get<T>(url);
         break;
     }
-    if (response.status === 200 && !empty(response.data)) {
+    if (response.status === 200 && !empty(response.data) && typeof response.data === 'object') {
       return {
         status: 'success',
         code: 200,
@@ -72,8 +71,11 @@ export const request = async <T extends { data?: any }>(method: RequestMethod , 
       };
     } else {
       const error = empty(response.data)
-        ? 'No data found!'
-        : (response.data.data?.message || 'An error occurred while fetching the data.')
+        ? error_no_data
+          /**
+           * The axios instance.
+           */
+        : (response.data?.message || 'error_fetching_data')
 
       eventBus.emit('notification', {
         message: error,
@@ -88,10 +90,7 @@ export const request = async <T extends { data?: any }>(method: RequestMethod , 
     }
   } catch (error) {
     const _error = error as AxiosError<string>;
-    /*eventBus.emit('notification', {
-      message: _error?.message || 'An error occurred while fetching the data.',
-      type: 'error'
-    })*/
+
     return {
       status: 'fail',
       code: 400,

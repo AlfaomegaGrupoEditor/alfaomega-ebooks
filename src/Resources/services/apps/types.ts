@@ -1,8 +1,6 @@
-export type AppError = any;
+type AppError = any;
 
-export type AppFlag = boolean;
-
-export type HttpHeader = {
+type HttpHeader = {
   Authorization: string;
   'Access-Control-Allow-Origin': '*';
   'Content-Type': 'application/json;x-www-form-urlencoded';
@@ -10,7 +8,7 @@ export type HttpHeader = {
   Accept: string;
 }
 
-export type AppConfig = {
+type AppConfig = {
   baseURL: string;
   mode: 'no-cors';
   headers: HttpHeader;
@@ -18,11 +16,25 @@ export type AppConfig = {
   credentials: 'same-origin'
 };
 
-export type AppInitPayload = {
+type AppInitPayload = {
 }
 
-export type State = {
+type State = {
   error: AppError | undefined;
   loading: AppFlag;
   config: AppConfig | undefined;
 }
+
+type CheckApiType = {
+    status: 'success' | 'fail';
+    message?: string;
+}
+
+export {
+  AppError,
+  HttpHeader,
+  AppConfig,
+  AppInitPayload,
+  State,
+  CheckApiType
+};
