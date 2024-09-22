@@ -88,9 +88,7 @@
         <ao-filter-bar @filter="handleFiltered"/>
         <!--  load the books on suspense -->
         <Suspense>
-          <template #default>
-            <ao-books :query="searchQuery"/>
-          </template>
+          <ao-books :query="searchQuery"/>
           <template #fallback>
             <ao-books-skeleton />
           </template>

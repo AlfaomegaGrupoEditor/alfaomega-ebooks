@@ -1,13 +1,18 @@
 <script setup lang="ts">
-  import {onMounted, ref, watch} from 'vue';
+  import {ref, watch} from 'vue';
   import {BookType, BooksQueryType} from '@/types';
-  import { aoBook, aoSidebar, aoEmptyState } from '@/components';
+  import {
+    aoBook,
+    aoSidebar,
+    aoEmptyState,
+    aoBooksSkeleton
+  } from '@/components';
 
   const props = defineProps({
     query: { type: Object as () => BooksQueryType | null, default: null }
   });
 
-  const books = ref<BookType[]>(null);
+  const books = ref<BookType[] | null >(null);
   const showSidebar = ref(false);
   const book = ref<BookType | null>(null);
 
@@ -101,46 +106,49 @@
     });
   }
 
-  onMounted(async () => {
-    books.value = await fetchData();
-  });
-
   watch(() => props.query, async (newVal) => {
     books.value = null;
     books.value = await fetchData(); // fetch data from server
   });
+
+  books.value = await fetchData();
 </script>
 
 <template>
-  <div v-if="books && books.length > 0">
-    <div class="row row-cols-1 row-cols-md-4 g-4 mt-0">
-      <ao-book
-          v-for="book in books"
-          :key="book.id"
+  <div v-if="books">
+    <div v-if="books.length > 0">
+      <div class="row row-cols-1 row-cols-md-4 g-4 mt-0">
+        <ao-book
+            v-for="book in books"
+            :key="book.id"
+            :data="book"
+            @open="()=> toggleSidebar(book)"
+        />
+      </div>
+      <div class="mt-5 d-flex flex-row justify-content-center">
+        <BPagination
+            v-model:currentPage="currentPage"
+            :totalRows="totalRows"
+            :perPage="perPage"
+            limit="3"
+            pills
+            @change="onPageChange"
+        />
+      </div>
+      <ao-sidebar
+          v-model:show="showSidebar"
           :data="book"
-          @open="()=> toggleSidebar(book)"
       />
     </div>
-    <div class="mt-5 d-flex flex-row justify-content-center">
-      <BPagination
-          v-model:currentPage="currentPage"
-          :totalRows="totalRows"
-          :perPage="perPage"
-          limit="3"
-          pills
-          @change="onPageChange"
+    <div v-else class="row mt-4">
+      <ao-empty-state
+          :title="$t('no_books_found')"
+          :description="$t('no_books_found_description')"
       />
     </div>
-    <ao-sidebar
-        v-model:show="showSidebar"
-        :data="book"
-    />
   </div>
-  <div v-else class="row mt-4">
-    <ao-empty-state
-        :title="$t('no_books_found')"
-        :description="$t('no_books_found_description')"
-    />
+  <div v-else>
+    <ao-books-skeleton />
   </div>
 </template>
 
