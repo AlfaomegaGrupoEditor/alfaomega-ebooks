@@ -14,9 +14,9 @@
   const icon = computed(() => {
     switch (props.variant) {
       case 'success':
-        return 'fa-thumbs-up';
-      case 'error':
-        return 'fa-thumbs-down';
+        return 'fa-check-circle';
+      case 'primary':
+        return 'exclamation-circle';
       case 'warning':
         return 'fa-exclamation-triangle';
       default:
