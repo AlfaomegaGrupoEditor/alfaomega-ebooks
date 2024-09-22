@@ -1,5 +1,6 @@
 <?php
 
+use AlfaomegaEbooks\Http\RouteManager;
 use AlfaomegaEbooks\Services\eBooks\Service;
 
 $redirectUrl = is_user_logged_in()
@@ -31,6 +32,10 @@ switch (get_query_var('param_1')) {
             wp_safe_redirect( $redirectUrl);
         }
 
+        exit;
+    case 'api':
+        $routeManager = new RouteManager();
+        $routeManager->callEndpoint(get_query_var('param_2'));
         exit;
     default:
         $_SESSION['alfaomega_ebooks_msg'] = [

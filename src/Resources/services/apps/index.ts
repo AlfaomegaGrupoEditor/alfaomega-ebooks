@@ -9,7 +9,7 @@ async function checkApi(): Promise<APIResponse<CheckApiType>>
   appStore.setError(null);
   appStore.setLoading(true);
 
-  const response = await request<APIResponse<CheckApiType>>('GET', `/ebook-access/check`);
+  const response = await request<APIResponse<CheckApiType>>('GET', `/alfaomega-ebooks/api/check/`);
   appStore.setLoading(false);
 
   if (response.status == 'success') {

@@ -1,6 +1,7 @@
 <?php
 namespace AlfaomegaEbooks\Http;
 
+use AlfaomegaEbooks\Http\Controllers\ApiController;
 use AlfaomegaEbooks\Http\Controllers\EbooksController;
 use AlfaomegaEbooks\Http\Controllers\EbooksMassActionsController;
 use AlfaomegaEbooks\Http\Controllers\EbooksQuickActionsController;
@@ -129,6 +130,10 @@ class RouteManager
         'unlink-ebook' => [EbooksQuickActionsController::class, 'quickUnlinkEbook'],
     ];
 
+    protected array $apiEndpoints = [
+        'check' => [ApiController::class, 'checkApi', 'GET'],
+    ];
+
     /**
      * Registers the routes.
      *
@@ -209,5 +214,48 @@ class RouteManager
         $redirectUrl = $controller->{$endpoint}($_GET['post'], $_SERVER['HTTP_REFERER']);
 
         wp_redirect($redirectUrl);
+    }
+
+    /**
+     * Calls an API endpoint.
+     *
+     * This method checks if the endpoint exists in the $apiEndpoints array. If it does, it creates a new instance of the
+     * controller associated with the endpoint and calls the method associated with the endpoint. The result of this method
+     * call is then returned. If the endpoint does not exist in the $apiEndpoints array, the method returns a 404 response.
+     *
+     * @param string $endpoint The endpoint to call.
+     * @return void
+     */
+    public function callEndpoint(string $endpoint): array
+    {
+        if (!is_user_logged_in()) {
+            wp_send_json([
+                'status'  => 'fail',
+                'data'    => null,
+                'message' => esc_html__('Please log in to access ebooks.', 'alfaomega-ebooks'),
+            ], 401);
+        }
+
+        if (! array_key_exists($endpoint, $this->apiEndpoints)) {
+            wp_send_json([
+                'status'  => 'fail',
+                'data'    => null,
+                'message' => esc_html__('Not found', 'alfaomega-ebooks'),
+            ], 404);
+        }
+
+        try {
+            [$class, $method, $requestMethod] = $this->apiEndpoints[$endpoint];
+            $controller = new $class;
+            $data = $requestMethod === 'POST' ? $_POST : $_GET;
+            $response = $controller->{$method}($data);
+            wp_send_json($response, 200);
+        } catch (\Exception $e) {
+            wp_send_json([
+                'status'  => 'fail',
+                'data'    => null,
+                'message' => esc_html__($e->getMessage(), 'alfaomega-ebooks'),
+            ], 500);
+        }
     }
 }
