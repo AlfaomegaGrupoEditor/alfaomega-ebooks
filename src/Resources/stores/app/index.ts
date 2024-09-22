@@ -49,8 +49,7 @@ export const useAppStore = defineStore('appStore', {
     async dispatchCheckApi() {
       const response = await API.app.checkApi();
       if (response.status === 'success' && response.data) {
-        this.theme = response.data;
-        eventBus.emit('apiSuccess', {});
+        eventBus.emit('apiSuccess', response.data);
       }
     },
 

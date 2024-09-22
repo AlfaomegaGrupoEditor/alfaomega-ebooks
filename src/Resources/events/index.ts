@@ -2,8 +2,9 @@ import mitt from "mitt";
 import type { Emitter } from "mitt";
 import { onUnmounted } from "vue";
 import type {
-  NotificationEvent,
-} from './types'
+  ApiCheckEvent,
+  NotificationEvent
+} from './types';
 
 /**
  * Type definition for the EventBus.
@@ -11,6 +12,7 @@ import type {
  */
 type EventBus = {
   notification: NotificationEvent;
+  apiSuccess: ApiCheckEvent;
 }
 
 /**

@@ -13,7 +13,7 @@ async function checkApi(): Promise<APIResponse<CheckApiType>>
   appStore.setLoading(false);
 
   if (response.status == 'success') {
-    return {...response, ...{data: content}} as APIResponse<CheckApiType>;
+    return response.data as APIResponse<CheckApiType>;
   } else {
     appStore.setError(response.message);
     return response as APIResponse<CheckApiType>;

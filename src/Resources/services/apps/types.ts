@@ -26,8 +26,7 @@ type State = {
 }
 
 type CheckApiType = {
-    status: 'success' | 'fail';
-    message?: string;
+    user_id: string;
 }
 
 export {

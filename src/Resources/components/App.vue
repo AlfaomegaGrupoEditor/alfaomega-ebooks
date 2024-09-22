@@ -13,7 +13,7 @@
   import {BooksQueryType, BooksFilterType, OrderType, ToastType} from '@/types';
   import AoToast from '@/components/aoToast.vue';
   import { eventBus, useMittEvents } from '@/events';
-  import { NotificationEvent } from '@/events/types';
+  import {ApiCheckEvent, NotificationEvent} from '@/events/types';
 
   const { t } = useI18n();
   const appStore = useAppStore();
@@ -22,6 +22,14 @@
   const searchQuery = ref<BooksQueryType>(null);
   const toast = ref<ToastType>();
   const toastActive = ref(false);
+
+  /**
+   * Registers the event the App will be listing to.
+   */
+  useMittEvents(eventBus, {
+    notification : (event: NotificationEvent) => notificationHandler(event),
+    apiSuccess: (event: ApiCheckEvent) => { console.log('API is responding!', event); }
+  });
 
   const init = () => {
     appStore.checkApi();
@@ -43,13 +51,6 @@
       } as OrderType
     };
   };
-
-  /**
-   * Registers the event the App will be listing to.
-   */
-  useMittEvents(eventBus, {
-    notification : (data: NotificationEvent) => notificationHandler(data),
-  });
 
   /**
    * When a notification is sent
