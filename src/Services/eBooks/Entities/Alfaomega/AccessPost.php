@@ -276,7 +276,7 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         $sql = "SELECT p.ID, p.post_title as title, p.post_date as addedAt,
                    pm_cover.meta_value as cover,
                    pm_download.meta_value as download,
-                   pm_read.meta_value as read,
+                   pm_read.meta_value as 'read',
                    status.meta_value as status,
                    pm_type.meta_value as accessType,
                    valid_until.meta_value as validUntil
@@ -292,6 +292,8 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
               AND p.post_status = 'publish'
               AND p.post_author = %d";
 
+        $queryParams = [$currentUserId]; // Always add the current user ID
+
         // Add category filtering if provided
         if ($category) {
             $sql .= " AND EXISTS (
@@ -301,22 +303,27 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                     INNER JOIN {$wpdb->terms} t ON tt.term_id = t.term_id
                     WHERE t.slug = %s AND tr.object_id = p.ID AND tt.taxonomy = 'category'
                   )";
+            $queryParams[] = $category;
         }
 
         // Add search term filtering if provided
         if ($search) {
             $sql .= " AND (p.post_title LIKE %s OR p.post_content LIKE %s)";
-            $search = '%' . $wpdb->esc_like($search) . '%';
+            $searchTerm = '%' . $wpdb->esc_like($search) . '%';
+            $queryParams[] = $searchTerm;
+            $queryParams[] = $searchTerm;
         }
 
         // Add access type filtering if provided
         if ($type) {
             $sql .= " AND pm_type.meta_value = %s";
+            $queryParams[] = $type;
         }
 
         // Add status filtering if provided
         if ($status) {
             $sql .= " AND status.meta_value = %s";
+            $queryParams[] = $status;
         }
 
         // Add ORDER BY clause
@@ -326,11 +333,11 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
 
         // Add LIMIT clause for pagination
         $sql .= " LIMIT %d OFFSET %d";
+        $queryParams[] = $perPage;
+        $queryParams[] = $offset;
 
-        // Prepare the query
-        $query = $wpdb->prepare($sql, $currentUserId, $category, $search, $search, $type, $status, $perPage, $offset);
-
-        // Execute the query
+        // Prepare and execute the query with the collected query params
+        $query = $wpdb->prepare($sql, ...$queryParams);
         $results = $wpdb->get_results($query);
 
         // Fetch total count
