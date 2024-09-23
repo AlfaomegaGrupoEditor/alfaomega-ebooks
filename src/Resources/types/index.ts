@@ -34,9 +34,7 @@ type BooksQueryType = {
     category?: string | null;
     filter: BooksFilterType;
     page: number;
-    pageSize: number;
     userId?: string | null;
-    order: OrderType;
 }
 
 type BookType = {

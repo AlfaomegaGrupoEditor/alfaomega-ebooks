@@ -1,18 +1,20 @@
 <script setup lang="ts">
   import {ref, watch} from 'vue';
-  import {BookType, BooksQueryType} from '@/types';
+  import {BookType, BooksQueryType, computed} from '@/types';
   import {
     aoBook,
     aoSidebar,
     aoEmptyState,
     aoBooksSkeleton
   } from '@/components';
+  import { useLibraryStore } from '@/stores'
 
   const props = defineProps({
     query: { type: Object as () => BooksQueryType | null, default: null }
   });
 
-  const books = ref<BookType[] | null >(null);
+  const libraryStore = useLibraryStore();
+  const books = computed(() => libraryStore.getBooks);
   const showSidebar = ref(false);
   const book = ref<BookType | null>(null);
 
@@ -25,8 +27,7 @@
     book.value = selectedBook;
   };
 
-  async function fetchData()
-  {
+  /*async function fetchData(){
     return new Promise(async (resolve) => {
       const data = [
         {
@@ -111,7 +112,7 @@
     books.value = await fetchData(); // fetch data from server
   });
 
-  books.value = await fetchData();
+  books.value = await fetchData();*/
 </script>
 
 <template>

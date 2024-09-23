@@ -1,12 +1,12 @@
-import {BookType} from '@/types';
+import {BooksQueryType, BookType} from '@/types';
+import {SearchResultType} from '@/services/types';
 
-export type SearchResultType = {
-  total: number;
-  page: number;
-  pageSize: number;
+type State = {
+  books: BookType[];
+  query: BooksQueryType;
+  meta: SearchResultType;
 }
 
-export type State = {
-  books: BookType[];
-  meta: SearchResultType;
+export {
+  State,
 }

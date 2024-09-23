@@ -5,7 +5,7 @@ import aoAccessDetails from '@/components/aoAccessDetails.vue';
 import aoTreeview from '@/components/aoTreeview.vue';
 import aoFilterBar from '@/components/aoFilterBar.vue';
 import aoAlert from '@/components/aoAlert.vue';
-import aoBooks from '@/components/aoBooks.vue';
+import aoLibrary from '@/components/aoLibrary.vue';
 import aoBook from '@/components/aoBook.vue';
 import aoEmptyState from '@/components/aoEmptyState.vue';
 import aoToast from '@/components/aoToast.vue';
@@ -19,7 +19,7 @@ export {
     aoTreeview,
     aoFilterBar,
     aoAlert,
-    aoBooks,
+    aoLibrary,
     aoBook,
     aoEmptyState,
     aoToast,

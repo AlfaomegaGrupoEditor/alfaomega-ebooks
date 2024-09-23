@@ -3,6 +3,9 @@ import type { APIResponse } from "../types";
 import type { CheckApiType } from "./types";
 import { useAppStore } from '@/stores'
 
+/**
+ * Checks the API status.
+ */
 async function checkApi(): Promise<APIResponse<CheckApiType>>
 {
   const appStore = useAppStore();

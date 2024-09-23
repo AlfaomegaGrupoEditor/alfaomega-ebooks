@@ -132,6 +132,7 @@ class RouteManager
 
     protected array $apiEndpoints = [
         'check' => [ApiController::class, 'checkApi', 'GET'],
+        'books' => [ApiController::class, 'getBooks', 'POST'],
     ];
 
     /**

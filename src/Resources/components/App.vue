@@ -7,12 +7,12 @@
     aoTreeview,
     aoAlert,
     aoFilterBar,
-    aoBooks,
+    aoLibrary,
     aoBooksSkeleton
   } from '@/components';
   import {BooksQueryType, BooksFilterType, OrderType, ToastType} from '@/types';
   import AoToast from '@/components/aoToast.vue';
-  import { eventBus, useMittEvents } from '@/events';
+  import {eventBus, useMittEvents} from '@/events';
   import {ApiCheckEvent, NotificationEvent} from '@/events/types';
 
   const { t } = useI18n();
@@ -30,11 +30,6 @@
     notification : (event: NotificationEvent) => notificationHandler(event),
     apiSuccess: (event: ApiCheckEvent) => { console.log('API is responding!', event); }
   });
-
-  // TODO: if the API check is successful, load the user ebooks
-  //  - The next step is to implement the libraryStore with the action searchBooks(searchQuery)
-  //  - then Books will be loaded from the store with a getter
-  //  - if the user is not logged in, show a message to redirect the user to the login page
 
   const init = () => {
     appStore.checkApi();
@@ -76,6 +71,27 @@
     console.log(data);
   }
 
+  /**
+   * Show a toast message
+   * @param newToast
+   */
+  const showToast = (newToast: ToastType) => {
+    toast.value = newToast;
+
+    toastActive.value = true;
+    setTimeout(() => {
+      toastActive.value = false;
+    }, 5000);
+  };
+
+  /**
+   * Handle the filters update
+   * @param filter
+   */
+  const handleFiltered = (filter) => {
+    searchQuery.value = {...searchQuery.value, ...{filter: filter}};
+    console.log(searchQuery.value);
+  };
 
 
   const test = () => { appStore.testLoading() };
@@ -91,14 +107,7 @@
     console.log(searchQuery.value);
   };
 
-  const showToast = (newToast: ToastType) => {
-    toast.value = newToast;
 
-    toastActive.value = true;
-    setTimeout(() => {
-      toastActive.value = false;
-    }, 5000);
-  };
 
   const handleApply = (payload: ToastType) => {
     // actually apply the code
@@ -127,9 +136,9 @@
         <!--  Books selected-->
         <h4 class="text-primary">{{ header }}</h4>
         <ao-filter-bar @filter="handleFiltered"/>
-        <!--  load the books on suspense -->
+        <!--  load the library books on suspense -->
         <Suspense>
-          <ao-books :query="searchQuery"/>
+          <ao-library :query="searchQuery"/>
           <template #fallback>
             <ao-books-skeleton />
           </template>
