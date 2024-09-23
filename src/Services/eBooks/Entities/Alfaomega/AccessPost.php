@@ -248,89 +248,100 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
      *
      * @return array An array of search results.
      */
-    public function search(string $category = null,
-                           string $search = null,
-                           string $type = null,
-                           string $status = null,
-                           int $page = 1,
-                           int $perPage = 8,
-                           string $orderBy = 'title',
-                           string $orderDirection = 'asc'
+    public function search(
+        string $category = null,
+        string $search = null,
+        string $type = null,
+        string $status = null,
+        int $page = 1,
+        int $perPage = 8,
+        string $orderBy = 'title',
+        string $orderDirection = 'asc'
     ): array {
+        global $wpdb;
+
         $currentUserId = get_current_user_id();
+        $offset = ($page - 1) * $perPage;
 
-        // TODO: Order by the following fields
+        // Map orderBy to the corresponding column or meta field
         $orderByFields = [
-            'title'       => 'title',
-            'created_at'  => 'addedAt',
-            'status'      => 'alfaomega_access_status',
-            'valid_until' => 'validUntil',
-            'access_at'   => 'access_at',
+            'title'       => 'p.post_title',
+            'created_at'  => 'p.post_date',
+            'status'      => 'status.meta_value',
+            'valid_until' => 'valid_until.meta_value',
+            'access_at'   => 'access_at.meta_value',
         ];
 
-        $args = [
-            'post_type'      => 'alfaomega-access',
-            'posts_per_page' => $perPage,
-            'paged'          => $page,
-            'orderby'        => $orderBy,
-            'order'          => $orderDirection,
-            'author'         => $currentUserId,
-            'meta_query'     => [
-                'relation' => 'AND',
-            ],
-        ];
+        // Build the base SQL query
+        $sql = "SELECT p.ID, p.post_title as title, p.post_date as addedAt,
+                   pm_cover.meta_value as cover,
+                   pm_download.meta_value as download,
+                   pm_read.meta_value as read,
+                   status.meta_value as status,
+                   pm_type.meta_value as accessType,
+                   valid_until.meta_value as validUntil
+            FROM {$wpdb->posts} p
+            LEFT JOIN {$wpdb->postmeta} pm_cover ON (p.ID = pm_cover.post_id AND pm_cover.meta_key = 'alfaomega_access_cover')
+            LEFT JOIN {$wpdb->postmeta} pm_download ON (p.ID = pm_download.post_id AND pm_download.meta_key = 'alfaomega_access_download')
+            LEFT JOIN {$wpdb->postmeta} pm_read ON (p.ID = pm_read.post_id AND pm_read.meta_key = 'alfaomega_access_read')
+            LEFT JOIN {$wpdb->postmeta} status ON (p.ID = status.post_id AND status.meta_key = 'alfaomega_access_status')
+            LEFT JOIN {$wpdb->postmeta} pm_type ON (p.ID = pm_type.post_id AND pm_type.meta_key = 'alfaomega_access_type')
+            LEFT JOIN {$wpdb->postmeta} valid_until ON (p.ID = valid_until.post_id AND valid_until.meta_key = 'alfaomega_access_due_date')
+            LEFT JOIN {$wpdb->postmeta} access_at ON (p.ID = access_at.post_id AND access_at.meta_key = 'alfaomega_access_at')
+            WHERE p.post_type = 'alfaomega-access'
+              AND p.post_status = 'publish'
+              AND p.post_author = %d";
 
+        // Add category filtering if provided
         if ($category) {
-            $args['category_name'] = $category;
+            $sql .= " AND EXISTS (
+                    SELECT 1
+                    FROM {$wpdb->term_relationships} tr
+                    INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+                    INNER JOIN {$wpdb->terms} t ON tt.term_id = t.term_id
+                    WHERE t.slug = %s AND tr.object_id = p.ID AND tt.taxonomy = 'category'
+                  )";
         }
 
+        // Add search term filtering if provided
         if ($search) {
-            $args['s'] = $search;
+            $sql .= " AND (p.post_title LIKE %s OR p.post_content LIKE %s)";
+            $search = '%' . $wpdb->esc_like($search) . '%';
         }
 
+        // Add access type filtering if provided
         if ($type) {
-            $args['meta_query'][] = [
-                'key'     => 'alfaomega_access_type',
-                'value'   => $type,
-                'compare' => '=',
-            ];
+            $sql .= " AND pm_type.meta_value = %s";
         }
 
+        // Add status filtering if provided
         if ($status) {
-            $args['meta_query'][] = [
-                'key'     => 'alfaomega_access_status',
-                'value'   => $status,
-                'compare' => '=',
-            ];
+            $sql .= " AND status.meta_value = %s";
         }
 
-        $query = new \WP_Query($args);
-        $results = [];
-
-        if ($query->have_posts()) {
-            while ($query->have_posts()) {
-                $query->the_post();
-                $results[] = [
-                    'id'         => get_the_ID(),
-                    'title'      => get_the_title(),
-                    'cover'      => get_the_post_thumbnail_url(get_the_ID(), 'full'),
-                    'download'   => get_post_meta(get_the_ID(), 'alfaomega_access_download', true),
-                    'read'       => get_post_meta(get_the_ID(), 'alfaomega_access_read', true),
-                    'accessType' => get_post_meta(get_the_ID(), 'alfaomega_access_type', true),
-                    'status'     => get_post_meta(get_the_ID(), 'alfaomega_access_status', true),
-                    'addedAt'    => get_the_date('Y-m-d'),
-                    'validUntil' => get_post_meta(get_the_ID(), 'alfaomega_access_due_date', true),
-                    'url'        => get_permalink(),
-                ];
-            }
-            wp_reset_postdata();
+        // Add ORDER BY clause
+        if (isset($orderByFields[$orderBy])) {
+            $sql .= " ORDER BY {$orderByFields[$orderBy]} " . esc_sql($orderDirection);
         }
+
+        // Add LIMIT clause for pagination
+        $sql .= " LIMIT %d OFFSET %d";
+
+        // Prepare the query
+        $query = $wpdb->prepare($sql, $currentUserId, $category, $search, $search, $type, $status, $perPage, $offset);
+
+        // Execute the query
+        $results = $wpdb->get_results($query);
+
+        // Fetch total count
+        $count_sql = "SELECT COUNT(1) FROM {$wpdb->posts} p WHERE p.post_type = 'alfaomega-access' AND p.post_status = 'publish' AND p.post_author = %d";
+        $total = $wpdb->get_var($wpdb->prepare($count_sql, $currentUserId));
 
         return [
             'data' => $results,
             'meta' => [
-                'total'        => $query->found_posts,
-                'pages'        => $query->max_num_pages,
+                'total'        => $total,
+                'pages'        => ceil($total / $perPage),
                 'current_page' => $page,
             ],
         ];

@@ -59,7 +59,7 @@ class ApiController
             ];
         }
 
-        return [
+        /*return [
             'status'  => 'success',
             'data' => [
                 [
@@ -141,6 +141,6 @@ class ApiController
                 'perPage' => 8,
             ],
             'message' => esc_html__('God Job!', 'alfaomega-ebooks'),
-        ];
+        ];*/
     }
 }
