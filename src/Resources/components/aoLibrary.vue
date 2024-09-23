@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import {ref, watch} from 'vue';
-  import {BookType, BooksQueryType, computed} from '@/types';
+  import {ref, computed, watch} from 'vue';
+  import {BookType, BooksQueryType} from '@/types';
   import {
     aoBook,
     aoSidebar,
@@ -26,6 +26,10 @@
     showSidebar.value = !showSidebar.value;
     book.value = selectedBook;
   };
+
+  watch(async () => props.query, async (newVal) => {
+    await libraryStore.dispatchSearchBooks(newVal);
+  });
 
   /*async function fetchData(){
     return new Promise(async (resolve) => {
