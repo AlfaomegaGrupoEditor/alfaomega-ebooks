@@ -47,6 +47,7 @@ const messages = {
         previous: 'Previous',
         // R
         read_online: 'Read Online',
+        reset_filters: 'Reset Filters',
         // S
         sample: 'Sample',
         samples: 'Samples',
@@ -108,6 +109,7 @@ const messages = {
         previous: 'Anterior',
         // R
         read_online: 'Leer en línea',
+        reset_filters: 'Limpiar Filtros',
         // S
         sample: 'Muestra',
         search: 'Escribir para buscar...',

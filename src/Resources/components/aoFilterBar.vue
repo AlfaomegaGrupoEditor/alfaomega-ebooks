@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useI18n } from "vue-i18n";
-  import { ref, defineEmits } from 'vue';
+  import { ref, defineEmits, onMounted, computed } from 'vue';
   import {BooksFilterType, OrderType} from '@/types';
 
   const emit = defineEmits<{ filter: (payload: BooksFilterType) => void }>();
@@ -12,7 +12,6 @@
     {value: 'purchases', text: t('purchased')},
     {value: 'samples', text: t('samples')},
   ]
-
   const accessStatus = ref(null)
   const accessStatusOptions = [
     {value: null, text: t('status')},
@@ -21,9 +20,7 @@
     {value: 'expired', text: t('expired')},
     {value: 'cancelled', text: t('cancelled')},
   ]
-
   const search = ref(null)
-
   const order = ref<OrderType>({
     field: 'title',
     direction: 'asc'
@@ -35,6 +32,13 @@
     {value: 'valid_until', text: t('valid_until')},
     {value: 'access_at', text: t('access_at')},
   ]
+  const defaultFilters = computed(() => {
+    return accessType.value === null &&
+           accessStatus.value === null &&
+           search.value === null &&
+           order.value.field === 'title' &&
+           order.value.direction === 'asc';
+  });
 
   const toggleOrderDirection = () => {
     order.value.direction = order.value.direction === 'asc' ? 'desc' : 'asc';
@@ -49,8 +53,37 @@
       order: order.value
     };
 
+    const activeFilters = Object.keys(filter).reduce((acc, key) => {
+      if (filter[key] !== null && key !== 'order') {
+        acc[key] = filter[key];
+      }
+      return acc;
+    }, {});
+    activeFilters.order_by = order.value.field;
+    activeFilters.order_direction = order.value.direction;
+    const queryString = new URLSearchParams(activeFilters).toString();
+
+    window.history.pushState(null, '', `?${queryString}`);
     emit('filter', filter);
   }
+
+  const handleResetFilters = () => {
+    accessType.value = null;
+    accessStatus.value = null;
+    search.value = null;
+    order.value.field = 'title';
+    order.value.direction = 'asc';
+    handleFilter();
+  }
+
+  onMounted(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    accessType.value = urlParams.get('accessType');
+    accessStatus.value = urlParams.get('accessStatus');
+    search.value = urlParams.get('search');
+    order.value.field = urlParams.get('order_by') || 'title';
+    order.value.direction = urlParams.get('order_direction') || 'asc';
+  });
 </script>
 
 <template>
@@ -106,6 +139,17 @@
   <div class="row mt-3">
     <!--  order by -->
     <div class="col-12 d-flex justify-content-end align-items-center">
+      <BButton
+          variant="link"
+          class="fs-8"
+          underline-opacity="0"
+          underline-opacity-hover="100"
+          underline-offset="3"
+          @click="handleResetFilters"
+          :disabled="defaultFilters"
+      >
+        {{ $t('reset_filters') }}
+      </BButton>
       <BFormLabel
           for="order-by-select"
           class="form-label-sm fs-8 mx-2"
