@@ -32,12 +32,21 @@
     {value: 'valid_until', text: t('valid_until')},
     {value: 'access_at', text: t('access_at')},
   ]
+  const perPage = ref(8);
+  const perPageOptions = [
+    {value: 8, text: '8'},    // 4x2
+    {value: 16, text: '16'},  // 4x4
+    {value: 24, text: '24'},  // 4x6
+    {value: 32, text: '32'},  // 4x8
+    {value: 40, text: '40'},  // 4x10
+  ]
   const defaultFilters = computed(() => {
     return accessType.value === null &&
            accessStatus.value === null &&
            search.value === null &&
            order.value.field === 'title' &&
-           order.value.direction === 'asc';
+           order.value.direction === 'asc' &&
+           perPage.value === 8;
   });
 
   const toggleOrderDirection = () => {
@@ -50,7 +59,8 @@
       accessType: accessType.value,
       accessStatus: accessStatus.value,
       search: search.value,
-      order: order.value
+      order: order.value,
+      perPage: perPage.value
     };
 
     const activeFilters = Object.keys(filter).reduce((acc, key) => {
@@ -73,6 +83,7 @@
     search.value = null;
     order.value.field = 'title';
     order.value.direction = 'asc';
+    perPage.value = 8;
     handleFilter();
   }
 
@@ -83,6 +94,7 @@
     search.value = urlParams.get('search');
     order.value.field = urlParams.get('order_by') || 'title';
     order.value.direction = urlParams.get('order_direction') || 'asc';
+    perPage.value = parseInt(urlParams.get('per_page')) || 8;
   });
 </script>
 
@@ -150,6 +162,20 @@
       >
         {{ $t('reset_filters') }}
       </BButton>
+      <BFormLabel
+          for="per-page-select"
+          class="form-label-sm fs-8 mx-2"
+      >
+        {{ $t('per_page') }}:
+      </BFormLabel>
+      <BFormSelect
+          is="per-page-select"
+          v-model="perPage"
+          :options="perPageOptions"
+          size="sm"
+          style="max-width: 70px; margin-right: 10px"
+          @change="handleFilter"
+      />
       <BFormLabel
           for="order-by-select"
           class="form-label-sm fs-8 mx-2"

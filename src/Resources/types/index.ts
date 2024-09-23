@@ -26,7 +26,8 @@ type BooksFilterType = {
     searchKey?: string | null;
     accessType?: AccessType | null;
     accessStatus?: StatusType | null;
-    order: OrderType
+    order: OrderType,
+    perPage: number;
 };
 
 type BooksQueryType = {

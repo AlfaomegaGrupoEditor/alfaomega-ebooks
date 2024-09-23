@@ -45,6 +45,7 @@ const messages = {
         purchased: 'Purchased',
         purchase_note: 'Purchased books are added automatically.',
         previous: 'Previous',
+        per_page: 'Per Page',
         // R
         read_online: 'Read Online',
         reset_filters: 'Reset Filters',
@@ -107,6 +108,7 @@ const messages = {
         purchase_note: 'Los libros comprados son adicionados automáticamente.',
         purchased: 'Compras',
         previous: 'Anterior',
+        per_page: 'Por Página',
         // R
         read_online: 'Leer en línea',
         reset_filters: 'Limpiar Filtros',
