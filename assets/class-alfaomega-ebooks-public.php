@@ -49,6 +49,9 @@ class Alfaomega_Ebooks_Public {
                 'all'
             );
         }
+
+        // Enqueue loader CSS
+        wp_enqueue_style("{$this->plugin_name}-loader-style", ALFAOMEGA_EBOOKS_URL . 'public/css/loader.css');
     }
 
     /**
@@ -56,6 +59,9 @@ class Alfaomega_Ebooks_Public {
      */
     public function enqueue_scripts()
     {
+        // Enqueue custom JavaScript
+        wp_enqueue_script("{$this->plugin_name}-loader-script", ALFAOMEGA_EBOOKS_URL  . 'public/js/loader.js', array('jquery'), null, true);
+
         add_action('wp_footer', function() {
             $plugin_name = $this->plugin_name;
             if (defined('WP_DEBUG') && WP_DEBUG) {
