@@ -27,7 +27,8 @@
     book.value = selectedBook;
   };
 
-  watch(async () => props.query, async (newVal) => {
+  watch(() => props.query, async (newVal) => {
+    console.log('library', newVal);
     await libraryStore.dispatchSearchBooks(newVal);
   });
 

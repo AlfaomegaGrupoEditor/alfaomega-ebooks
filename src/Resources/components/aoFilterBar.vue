@@ -187,7 +187,7 @@
           v-model="order.field"
           :options="orderByOptions"
           size="sm"
-          style="max-width: 100px;"
+          style="max-width: 120px;"
           @change="handleFilter"
       />
       <BButton

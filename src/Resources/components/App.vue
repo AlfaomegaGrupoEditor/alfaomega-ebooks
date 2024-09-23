@@ -47,7 +47,7 @@
           direction: 'asc'
         } as OrderType,
       } as BooksFilterType,
-      page: 0,
+      page: 1,
     };
   };
 
@@ -90,7 +90,7 @@
    */
   const handleFiltered = (filter) => {
     searchQuery.value = {...searchQuery.value, ...{filter: filter}};
-    console.log(searchQuery.value);
+    console.log('app', searchQuery.value);
   };
 
 
@@ -101,8 +101,6 @@
     header.value = node.text;
     console.log(searchQuery.value);
   };
-
-
 
   const handleApply = (payload: ToastType) => {
     // actually apply the code
