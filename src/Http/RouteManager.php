@@ -246,10 +246,9 @@ class RouteManager
         }
 
         try {
-            [$class, $method, $requestMethod] = $this->apiEndpoints[$endpoint];
+            [$class, $method] = $this->apiEndpoints[$endpoint];
             $controller = new $class;
-            $data = $requestMethod === 'POST' ? $_POST : $_GET;
-            $response = $controller->{$method}($data);
+            $response = $controller->{$method}($this->getRequest());
             wp_send_json($response, 200);
         } catch (\Exception $e) {
             wp_send_json([
@@ -258,5 +257,23 @@ class RouteManager
                 'message' => esc_html__($e->getMessage(), 'alfaomega-ebooks'),
             ], 500);
         }
+    }
+
+    /**
+     * Get the request payload.
+     *
+     * This method reads the raw payload from the request and decodes it as JSON.
+     * If the payload is successfully decoded, the method returns the value of the 'field_name' key in the payload.
+     * If the payload cannot be decoded, the method returns null.
+     *
+     * @return array The request payload.
+     */
+    protected function getRequest(): array
+    {
+        $raw_payload = file_get_contents('php://input');
+        $request_payload = json_decode($raw_payload, true);
+        return json_last_error() === JSON_ERROR_NONE
+            ? $request_payload
+            : [];
     }
 }
