@@ -102,11 +102,6 @@
     console.log(searchQuery.value);
   };
 
-  const handleFiltered = (filter) => {
-    searchQuery.value = {...searchQuery.value, ...{filter: filter}};
-    console.log(searchQuery.value);
-  };
-
 
 
   const handleApply = (payload: ToastType) => {
