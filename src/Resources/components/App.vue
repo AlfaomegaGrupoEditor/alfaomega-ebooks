@@ -32,8 +32,6 @@
   });
 
   // TODO: if the API check is successful, load the user ebooks
-  //  - the default search query will be these merged with the browser query
-  //  - each time one of the query parameters changes the browser history will be updated
   //  - The next step is to implement the libraryStore with the action searchBooks(searchQuery)
   //  - then Books will be loaded from the store with a getter
   //  - if the user is not logged in, show a message to redirect the user to the login page
@@ -43,19 +41,18 @@
 
     // todo: load the user ebooks
     searchQuery.value = {
-      'category': null,
-      'filter': {
-        'accessType': null,
-        'accessStatus': null,
-        'search': null
+      category: null,
+      filter: {
+        accessType: null,
+        accessStatus: null,
+        search: null,
+        perPage: 8,
+        order: {
+          field: 'title',
+          direction: 'asc'
+        } as OrderType,
       } as BooksFilterType,
-      'page': 0,
-      'pageSize': 12,
-      'userId': null,
-      'order': {
-        'field': 'title',
-        'direction': 'asc'
-      } as OrderType
+      page: 0,
     };
   };
 
