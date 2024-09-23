@@ -44,7 +44,7 @@ export const useLibraryStore = defineStore('libraryStore', {
     async dispatchSearchBooks(query: BooksQueryType)
     {
       this.query = query;
-      console.log('status', this.query);
+      this.books = null; // Reset the books list
       const response = await API.library.getBooks(query);
       if (response.status === 'success' && response.data) {
         this.books = response.data;

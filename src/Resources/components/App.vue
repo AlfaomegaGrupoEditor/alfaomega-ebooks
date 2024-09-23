@@ -28,7 +28,7 @@
    */
   useMittEvents(eventBus, {
     notification : (event: NotificationEvent) => notificationHandler(event),
-    apiSuccess: (event: ApiCheckEvent) => { console.log('API is responding!', event); }
+    apiSuccess: (event: ApiCheckEvent) => { /*console.log('API is responding!', event);*/ }
   });
 
   const init = () => {
@@ -68,7 +68,6 @@
         content: t(data.message)
       });
     }
-    console.log(data);
   }
 
   /**
@@ -90,7 +89,6 @@
    */
   const handleFiltered = (filter) => {
     searchQuery.value = {...searchQuery.value, ...{filter: filter}};
-    console.log('app', searchQuery.value);
   };
 
 

@@ -20,7 +20,7 @@
   });
 
   watch(() => props.data, (newVal) => {
-    console.log(props.data);
+    /*console.log(props.data);*/
   });
 </script>
 

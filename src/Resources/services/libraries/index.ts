@@ -12,7 +12,6 @@ async function getBooks(query: BooksQueryType): Promise<APIResponse<BookType[] |
   appStore.setError(null);
   appStore.setLoading(true);
 
-  console.log('controller', query);
   const response = await request<APIResponse<BookType[]>>('POST', `/alfaomega-ebooks/api/books/`, query);
   appStore.setLoading(false);
 

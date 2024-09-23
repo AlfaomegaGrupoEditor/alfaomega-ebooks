@@ -28,7 +28,6 @@
   };
 
   watch(() => props.query, async (newVal) => {
-    console.log('library', newVal);
     await libraryStore.dispatchSearchBooks(newVal);
   });
 </script>
