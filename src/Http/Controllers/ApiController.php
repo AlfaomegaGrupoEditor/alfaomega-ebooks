@@ -44,7 +44,7 @@ class ApiController
                     type: $data['filter']['accessType'],
                     status: $data['filter']['accessStatus'],
                     page: $data['page'],
-                    perPage: $data['perPage'],
+                    perPage: $data['filter']['perPage'],
                     orderBy: $data['filter']['order']['field'],
                     orderDirection: $data['filter']['order']['direction'],
                 );
