@@ -230,4 +230,109 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
 
         return $this->get($postId);
     }
+
+    /**
+     * Search the current user eBooks access based on various criteria.
+     *
+     * This method allows searching for eBooks by category, search term, type, status, and other parameters.
+     * It returns an array of search results.
+     *
+     * @param string|null $category The category to filter by. Default is null.
+     * @param string|null $search The search term to filter by. Default is null.
+     * @param string|null $type The type of eBook to filter by. Default is null.
+     * @param string|null $status The status of the eBook to filter by. Default is null.
+     * @param int $page The page number for pagination. Default is 1.
+     * @param int $perPage The number of results per page. Default is 8.
+     * @param string $orderBy The field to order the results by. Default is 'title'.
+     * @param string $orderDirection The direction to order the results ('asc' or 'desc'). Default is 'asc'.
+     *
+     * @return array An array of search results.
+     */
+    public function search(string $category = null,
+                           string $search = null,
+                           string $type = null,
+                           string $status = null,
+                           int $page = 1,
+                           int $perPage = 8,
+                           string $orderBy = 'title',
+                           string $orderDirection = 'asc'
+    ): array {
+        $currentUserId = get_current_user_id();
+
+        // TODO: Order by the following fields
+        $orderByFields = [
+            'title'       => 'title',
+            'created_at'  => 'addedAt',
+            'status'      => 'alfaomega_access_status',
+            'valid_until' => 'validUntil',
+            'access_at'   => 'access_at',
+        ];
+
+        $args = [
+            'post_type'      => 'alfaomega-access',
+            'posts_per_page' => $perPage,
+            'paged'          => $page,
+            'orderby'        => $orderBy,
+            'order'          => $orderDirection,
+            'author'         => $currentUserId,
+            'meta_query'     => [
+                'relation' => 'AND',
+            ],
+        ];
+
+        if ($category) {
+            $args['category_name'] = $category;
+        }
+
+        if ($search) {
+            $args['s'] = $search;
+        }
+
+        if ($type) {
+            $args['meta_query'][] = [
+                'key'     => 'alfaomega_access_type',
+                'value'   => $type,
+                'compare' => '=',
+            ];
+        }
+
+        if ($status) {
+            $args['meta_query'][] = [
+                'key'     => 'alfaomega_access_status',
+                'value'   => $status,
+                'compare' => '=',
+            ];
+        }
+
+        $query = new \WP_Query($args);
+        $results = [];
+
+        if ($query->have_posts()) {
+            while ($query->have_posts()) {
+                $query->the_post();
+                $results[] = [
+                    'id'         => get_the_ID(),
+                    'title'      => get_the_title(),
+                    'cover'      => get_the_post_thumbnail_url(get_the_ID(), 'full'),
+                    'download'   => get_post_meta(get_the_ID(), 'alfaomega_access_download', true),
+                    'read'       => get_post_meta(get_the_ID(), 'alfaomega_access_read', true),
+                    'accessType' => get_post_meta(get_the_ID(), 'alfaomega_access_type', true),
+                    'status'     => get_post_meta(get_the_ID(), 'alfaomega_access_status', true),
+                    'addedAt'    => get_the_date('Y-m-d'),
+                    'validUntil' => get_post_meta(get_the_ID(), 'alfaomega_access_due_date', true),
+                    'url'        => get_permalink(),
+                ];
+            }
+            wp_reset_postdata();
+        }
+
+        return [
+            'data' => $results,
+            'meta' => [
+                'total'        => $query->found_posts,
+                'pages'        => $query->max_num_pages,
+                'current_page' => $page,
+            ],
+        ];
+    }
 }

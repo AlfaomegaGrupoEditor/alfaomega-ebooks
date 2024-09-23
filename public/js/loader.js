@@ -9,4 +9,4 @@ setTimeout(() => {
     loader.style.display = 'none';
     loadingText.style.display = 'none';
     errorMessage.style.display = 'block';
-}, 5000); // wait 5 seconds before showing error message
+}, 15000); // wait 15 seconds before showing error message

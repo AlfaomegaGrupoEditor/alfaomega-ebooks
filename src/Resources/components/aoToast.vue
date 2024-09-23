@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import {ColorVariantType} from '@/types';
   import {ref, watch, computed} from 'vue';
+  import _ from 'lodash';
 
   const props = defineProps({
     active: Boolean,
@@ -25,7 +26,8 @@
   });
 
   watch(() => props.active, (newVal) => {
-    showToast.value = newVal;
+    const unescapedStr = _.unescape(newVal);
+    showToast.value = unescapedStr.replace(/<\/?[^>]+(>|$)/g, "");
   });
 
 </script>

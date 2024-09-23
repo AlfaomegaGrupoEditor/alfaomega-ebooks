@@ -2,6 +2,8 @@
 
 namespace AlfaomegaEbooks\Http\Controllers;
 
+use AlfaomegaEbooks\Services\eBooks\Service;
+
 class ApiController
 {
     /**
@@ -28,9 +30,35 @@ class ApiController
      * @param array $data
      *
      * @return array
+     * @throws \Exception
      */
     public function getBooks(array $data = []): array
     {
+        try {
+            $result = Service::make()
+                ->ebooks()
+                ->accessPost()
+                ->search(
+                    category: $data['category'],
+                    search: $data['filter']['searchKey'],
+                    type: $data['filter']['accessType'],
+                    status: $data['filter']['accessStatus'],
+                    page: $data['page'],
+                    perPage: $data['perPage'],
+                    orderBy: $data['filter']['order']['field'],
+                    orderDirection: $data['filter']['order']['direction'],
+                );
+            return array_merge([
+                    'status'  => 'success',
+                    'message' => esc_html__('God Job!', 'alfaomega-ebooks'),
+                ], $result);
+        } catch (\Exception $e) {
+            return [
+                'status'  => 'error',
+                'message' => esc_html__($e->getMessage(), 'alfaomega-ebooks'),
+            ];
+        }
+
         return [
             'status'  => 'success',
             'data' => [
