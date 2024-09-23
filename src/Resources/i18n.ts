@@ -51,7 +51,7 @@ const messages = {
         // S
         sample: 'Sample',
         samples: 'Samples',
-        search: 'Type to search...',
+        search: 'Type to search amount your books...',
         status: 'Status',
         success: 'Success',
         // T
@@ -112,7 +112,7 @@ const messages = {
         reset_filters: 'Limpiar Filtros',
         // S
         sample: 'Muestra',
-        search: 'Escribir para buscar...',
+        search: 'Escribir para buscar entre sus libros...',
         status: 'Estado',
         success: 'Acción exitosa',
         // T
