@@ -98,3 +98,8 @@ div.ao-sidebar .offcanvas-title {
 .ao-book-skeleton .card-body {
     display: none;
 }
+
+.ao-ebooks .card-img-top {
+    width: 180px;
+    height: 250px;
+}
