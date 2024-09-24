@@ -15,12 +15,11 @@
 
   const libraryStore = useLibraryStore();
   const books = computed(() => libraryStore.getBooks);
+  const meta = computed(() => libraryStore.getMeta);
   const showSidebar = ref(false);
   const book = ref<BookType | null>(null);
 
-  const currentPage = ref(1);
-  const perPage = 8;
-  const totalRows = 100;
+  const currentPage = ref(meta.page);
 
   const toggleSidebar = (selectedBook: BookType) => {
     showSidebar.value = !showSidebar.value;
@@ -45,9 +44,10 @@
       </div>
       <div class="mt-5 d-flex flex-row justify-content-center">
         <BPagination
+            v-if="meta.pages > 1"
             v-model:currentPage="currentPage"
-            :totalRows="totalRows"
-            :perPage="perPage"
+            :totalRows="meta.total"
+            :perPage="meta.perPage"
             limit="3"
             :prev-text="$t('previous')"
             :next-text="$t('next')"
