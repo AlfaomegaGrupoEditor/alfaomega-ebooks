@@ -40,7 +40,7 @@ class ApiController
                 ->accessPost()
                 ->search(
                     category: $data['category'],
-                    search: $data['filter']['searchKey'],
+                    search: $data['filter']['search'],
                     type: $data['filter']['accessType'],
                     status: $data['filter']['accessStatus'],
                     page: $data['page'],
