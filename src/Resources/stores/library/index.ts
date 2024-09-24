@@ -75,10 +75,14 @@ export const useLibraryStore = defineStore('libraryStore', {
          */
         buildTree(catalog: any)
         {
+            const catalogTree = [];
             const traverse = (node: any) => {
-                console.log(node);
                 return Object.keys(node).reduce((acc, key) => {
                     const item = node[key];
+                    catalogTree[key] = {
+                        text: item.title,
+                        children: Object.keys(item.children)
+                    };
                     acc[key] = {
                         text: item.title,
                         children: traverse(item.children)
@@ -87,24 +91,9 @@ export const useLibraryStore = defineStore('libraryStore', {
                 }, {});
             };
 
-            const catalogTree = traverse(catalog);
-            console.log(catalogTree);
-            return {
-                all_ebooks: {
-                    text: 'all_ebooks',
-                    state: {
-                        opened: true,
-                        checked: true,
-                    },
-                    children: catalogTree
-                },
-                purchased: {
-                    text: 'purchased',
-                },
-                samples: {
-                    text: 'samples',
-                },
-            };
+            traverse(catalog);
+
+            return catalogTree;
         }
     },
 });

@@ -395,18 +395,18 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
 
         // Query to get all alfaomega-access posts for the current user with associated categories
         $query = $wpdb->prepare("
-        SELECT t.term_id, t.slug, t.name, tt.parent, COUNT(p.ID) as book_count
-        FROM {$wpdb->posts} p
-        LEFT JOIN {$wpdb->term_relationships} tr ON p.ID = tr.object_id
-        LEFT JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
-        LEFT JOIN {$wpdb->terms} t ON tt.term_id = t.term_id
-        WHERE p.post_type = 'alfaomega-access'
-          AND p.post_status = 'publish'
-          AND p.post_author = %d
-          AND tt.taxonomy = 'product_cat'
-        GROUP BY t.term_id
-        ORDER BY t.name ASC
-    ", $currentUserId);
+            SELECT t.term_id, t.slug, t.name, tt.parent, COUNT(p.ID) as book_count
+            FROM {$wpdb->posts} p
+            LEFT JOIN {$wpdb->term_relationships} tr ON p.ID = tr.object_id
+            LEFT JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+            LEFT JOIN {$wpdb->terms} t ON tt.term_id = t.term_id
+            WHERE p.post_type = 'alfaomega-access'
+              AND p.post_status = 'publish'
+              AND p.post_author = %d
+              AND tt.taxonomy = 'product_cat'
+            GROUP BY t.term_id
+            ORDER BY t.name ASC
+        ", $currentUserId);
 
         // Execute the query and get the results
         $results = $wpdb->get_results($query);
@@ -427,19 +427,56 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             ];
         }
 
-        // Assign each category to its parent in the tree
+        // Now, assign each category to its parent in the tree
         foreach ($categories as $termId => &$category) {
             if ($category['parent'] == 0) {
-                // Root-level category, directly add to the tree
+                // If the category has no parent, it's a top-level category
                 $categoryTree[$termId] = &$category;
-            } else {
-                // Child category, add it to its parent's children array
-                if (isset($categories[$category['parent']])) {
-                    $categories[$category['parent']]['children'][$termId] = &$category;
+                if (!isset($categories[$termId]['slug'])) {
+                    $term = get_term($termId, 'product_cat');
+                    if ($term) {
+                        $categoryTree[$termId] = array_merge($categoryTree[$termId], [
+                            'title'      => $term->name,
+                            'slug'       => $term->slug,
+                            'parent'     => 0,
+                            'book_count' => 0, // calculate children sum
+                        ]);
+                    }
                 }
+            } else {
+                // Otherwise, add it to its parent's children array
+                $categories[$category['parent']]['children'][$termId] = &$category;
             }
         }
 
+        // Sum up the book count for parent categories based on children
+        foreach ($categoryTree as &$rootCategory) {
+            $this->calculateBookCount($rootCategory);
+        }
+
         return $categoryTree;
+    }
+
+    /**
+     * Recursively calculate the total book count for a category, summing its children's counts.
+     *
+     * @param array &$category The category array to calculate the total book count for.
+     * @return int The total book count.
+     */
+    private function calculateBookCount(array &$category): int
+    {
+        $totalBookCount = $category['book_count'];
+
+        // Recursively sum the children's book counts
+        if (!empty($category['children'])) {
+            foreach ($category['children'] as &$childCategory) {
+                $totalBookCount += $this->calculateBookCount($childCategory);
+            }
+        }
+
+        // Update the book_count with the total sum
+        $category['book_count'] = $totalBookCount;
+
+        return $totalBookCount;
     }
 }

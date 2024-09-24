@@ -85,7 +85,7 @@ class ApiController
     {
         try {
             $key = 'ebooks-catalog-' . wp_get_current_user()->ID;
-            Service::make()->helper()->cacheForget($key);
+            //Service::make()->helper()->cacheForget($key);
             $result = Service::make()->helper()
                 ->cacheRemember($key, 24 * HOUR_IN_SECONDS, function () {
                     return Service::make()

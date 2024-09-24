@@ -120,4 +120,23 @@ class AlfaomegaAccessTest extends WordpressTest
             ],
         ];
     }
+
+    /**
+     * Load catalog.
+     *
+     * @param int $userId
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function testLoadCatalog(int $userId = 1): void
+    {
+        wp_set_current_user($userId);
+        $result = Service::make()
+            ->ebooks()
+            ->accessPost()
+            ->catalog();
+
+        $this->assertNotNull($result);
+    }
 }
