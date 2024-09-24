@@ -1,8 +1,9 @@
 <script setup lang="ts">
   import { useI18n } from "vue-i18n";
-  import { ref, defineEmits, onMounted, computed } from 'vue';
+  import { ref, defineEmits, onMounted, computed, watch } from 'vue';
   import {BooksFilterType, OrderType} from '@/types';
   import {useLibraryStore} from '@/stores';
+  import debounce from 'lodash/debounce';
 
   const emit = defineEmits<{ filter: (payload: BooksFilterType) => void }>();
   const { t } = useI18n();
@@ -91,6 +92,10 @@
     handleFilter();
   }
 
+  const debouncedHandleFilter = debounce(handleFilter, 500);
+
+  watch(search, debouncedHandleFilter);
+
   onMounted(() => {
     const urlParams = new URLSearchParams(window.location.search);
     accessType.value = urlParams.get('accessType');
@@ -141,8 +146,6 @@
                 :placeholder="$t('search')"
                 type="text"
                 v-model="search"
-                @change="handleFilter"
-                @input="handleFilter"
             />
             <BInputGroupText>
               <i class="fa fa-search"></i>
