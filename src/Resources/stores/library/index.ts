@@ -35,7 +35,7 @@ export const useLibraryStore = defineStore('libraryStore', {
         getBooks: (state) => state.books,
         getQuery: (state) => state.query,
         getMeta: (state) => state.meta,
-        getCatalog: (state) => state.catalog
+        getCatalog: (state) => useLibraryStore().buildTree(state.catalog)
     },
 
     actions: {
@@ -67,6 +67,44 @@ export const useLibraryStore = defineStore('libraryStore', {
             if (response.status === 'success' && response.data) {
                 this.catalog = response.data;
             }
+        },
+
+        /**
+         * Builds the catalog tree.
+         * @param catalog
+         */
+        buildTree(catalog: any)
+        {
+            const traverse = (node: any) => {
+                console.log(node);
+                return Object.keys(node).reduce((acc, key) => {
+                    const item = node[key];
+                    acc[key] = {
+                        text: item.title,
+                        children: traverse(item.children)
+                    };
+                    return acc;
+                }, {});
+            };
+
+            const catalogTree = traverse(catalog);
+            console.log(catalogTree);
+            return {
+                all_ebooks: {
+                    text: 'all_ebooks',
+                    state: {
+                        opened: true,
+                        checked: true,
+                    },
+                    children: catalogTree
+                },
+                purchased: {
+                    text: 'purchased',
+                },
+                samples: {
+                    text: 'samples',
+                },
+            };
         }
     },
 });

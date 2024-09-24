@@ -4,7 +4,7 @@
   import { useI18n } from "vue-i18n";
   import {
     aoSampleInput,
-    aoTreeview,
+    aoUserCatalog,
     aoAlert,
     aoFilterBar,
     aoLibrary,
@@ -118,7 +118,7 @@
     <b-row>
       <!-- Left panel-->
       <b-col>
-        <ao-treeview @selected="handleSelected"/>
+        <ao-user-catalog @selected="handleSelected"/>
         <ao-sample-input @apply="handleApply"/>
       </b-col>
 

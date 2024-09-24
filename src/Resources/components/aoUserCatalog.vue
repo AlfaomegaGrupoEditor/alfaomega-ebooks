@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import {reactive, defineEmits, onMounted} from 'vue';
+import {reactive, defineEmits, onMounted, computed, watch} from 'vue';
   import Tree from 'vue3-treeview';
   import "vue3-treeview/dist/style.css";
   import { useI18n } from "vue-i18n";
+  import { useLibraryStore } from '@/stores'
 
 
   const emit = defineEmits(['selected']);
 
   const { t } = useI18n();
+  const libraryStore = useLibraryStore();
 
+  const catalog = computed(() => libraryStore.getCatalog);
   const nodes = reactive({
     all_ebooks: {
       text: t('all_ebooks'),
@@ -53,7 +56,13 @@ import {reactive, defineEmits, onMounted} from 'vue';
 
   onMounted(() => {
     emit('selected', nodes['all_ebooks']);
+    libraryStore.dispatchLoadCatalog();
   });
+
+  watch(catalog, (newVal) => {
+    console.log(newVal);
+  });
+
 </script>
 
 <template>

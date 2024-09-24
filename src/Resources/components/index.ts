@@ -2,7 +2,7 @@ import aoSampleInput from '@/components/aoSampleInput.vue';
 import aoSidebar from '@/components/aoSidebar.vue';
 import aoButton from '@/components/aoButton.vue';
 import aoAccessDetails from '@/components/aoAccessDetails.vue';
-import aoTreeview from '@/components/aoTreeview.vue';
+import aoUserCatalog from '@/components/aoUserCatalog.vue';
 import aoFilterBar from '@/components/aoFilterBar.vue';
 import aoAlert from '@/components/aoAlert.vue';
 import aoLibrary from '@/components/aoLibrary.vue';
@@ -16,7 +16,7 @@ export {
     aoSidebar,
     aoButton,
     aoAccessDetails,
-    aoTreeview,
+    aoUserCatalog,
     aoFilterBar,
     aoAlert,
     aoLibrary,

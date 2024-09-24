@@ -395,18 +395,18 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
 
         // Query to get all alfaomega-access posts for the current user with associated categories
         $query = $wpdb->prepare("
-            SELECT t.term_id, t.slug, t.name, tt.parent, COUNT(p.ID) as book_count
-            FROM {$wpdb->posts} p
-            LEFT JOIN {$wpdb->term_relationships} tr ON p.ID = tr.object_id
-            LEFT JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
-            LEFT JOIN {$wpdb->terms} t ON tt.term_id = t.term_id
-            WHERE p.post_type = 'alfaomega-access'
-              AND p.post_status = 'publish'
-              AND p.post_author = %d
-              AND tt.taxonomy = 'product_cat'
-            GROUP BY t.term_id
-            ORDER BY t.name ASC
-        ", $currentUserId);
+        SELECT t.term_id, t.slug, t.name, tt.parent, COUNT(p.ID) as book_count
+        FROM {$wpdb->posts} p
+        LEFT JOIN {$wpdb->term_relationships} tr ON p.ID = tr.object_id
+        LEFT JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+        LEFT JOIN {$wpdb->terms} t ON tt.term_id = t.term_id
+        WHERE p.post_type = 'alfaomega-access'
+          AND p.post_status = 'publish'
+          AND p.post_author = %d
+          AND tt.taxonomy = 'product_cat'
+        GROUP BY t.term_id
+        ORDER BY t.name ASC
+    ", $currentUserId);
 
         // Execute the query and get the results
         $results = $wpdb->get_results($query);
@@ -427,14 +427,16 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             ];
         }
 
-        // Now, assign each category to its parent in the tree
+        // Assign each category to its parent in the tree
         foreach ($categories as $termId => &$category) {
             if ($category['parent'] == 0) {
-                // If the category has no parent, it's a top-level category
+                // Root-level category, directly add to the tree
                 $categoryTree[$termId] = &$category;
             } else {
-                // Otherwise, add it to its parent's children array
-                $categories[$category['parent']]['children'][$termId] = &$category;
+                // Child category, add it to its parent's children array
+                if (isset($categories[$category['parent']])) {
+                    $categories[$category['parent']]['children'][$termId] = &$category;
+                }
             }
         }
 
