@@ -379,4 +379,65 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             ],
         ];
     }
+
+    /**
+     * Get the catalog of eBooks for the current user.
+     *
+     * This method fetches the catalog of eBooks for the current user.
+     * It groups the eBooks by category and returns the categories as a tree structure.
+     *
+     * @return array The catalog of eBooks for the current user.
+     */
+    public function catalog(): array
+    {
+        global $wpdb;
+        $currentUserId = get_current_user_id();
+
+        // Query to get all alfaomega-access posts for the current user with associated categories
+        $query = $wpdb->prepare("
+            SELECT t.term_id, t.slug, t.name, tt.parent, COUNT(p.ID) as book_count
+            FROM {$wpdb->posts} p
+            LEFT JOIN {$wpdb->term_relationships} tr ON p.ID = tr.object_id
+            LEFT JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+            LEFT JOIN {$wpdb->terms} t ON tt.term_id = t.term_id
+            WHERE p.post_type = 'alfaomega-access'
+              AND p.post_status = 'publish'
+              AND p.post_author = %d
+              AND tt.taxonomy = 'product_cat'
+            GROUP BY t.term_id
+            ORDER BY t.name ASC
+        ", $currentUserId);
+
+        // Execute the query and get the results
+        $results = $wpdb->get_results($query);
+
+        // Build a tree structure based on the parent-child relationships
+        $categoryTree = [];
+
+        // Create an associative array for easy parent-child lookup
+        $categories = [];
+
+        foreach ($results as $result) {
+            $categories[$result->term_id] = [
+                'slug'       => $result->slug,
+                'title'      => $result->name,
+                'parent'     => $result->parent,
+                'book_count' => $result->book_count,
+                'children'   => [],
+            ];
+        }
+
+        // Now, assign each category to its parent in the tree
+        foreach ($categories as $termId => &$category) {
+            if ($category['parent'] == 0) {
+                // If the category has no parent, it's a top-level category
+                $categoryTree[$termId] = &$category;
+            } else {
+                // Otherwise, add it to its parent's children array
+                $categories[$category['parent']]['children'][$termId] = &$category;
+            }
+        }
+
+        return $categoryTree;
+    }
 }

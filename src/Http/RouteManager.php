@@ -129,10 +129,10 @@ class RouteManager
         'link-ebook'   => [EbooksQuickActionsController::class, 'quickLinkEbook'],
         'unlink-ebook' => [EbooksQuickActionsController::class, 'quickUnlinkEbook'],
     ];
-
     protected array $apiEndpoints = [
-        'check' => [ApiController::class, 'checkApi', 'GET'],
-        'books' => [ApiController::class, 'getBooks', 'POST'],
+        'check'   => [ApiController::class, 'checkApi', 'GET'],
+        'books'   => [ApiController::class, 'getBooks', 'POST'],
+        'catalog' => [ApiController::class, 'getCatalog', 'GET'],
     ];
 
     /**

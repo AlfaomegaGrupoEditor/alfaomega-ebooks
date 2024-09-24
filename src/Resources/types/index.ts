@@ -51,6 +51,16 @@ type BookType = {
     url: string;
 }
 
+type CatalogItemType = {
+    slug: string;
+    title: string;
+    parent: number;
+    book_count: number;
+    children: Record<number, CatalogItemType>;
+};
+
+type CatalogType = Record<number, CatalogItemType>;
+
 type ToastType = {
     title?: string | null;
     content: string;
@@ -66,5 +76,7 @@ export {
     BooksQueryType,
     OrderType,
     BookType,
-    ToastType
+    ToastType,
+    CatalogItemType,
+    CatalogType
 };
