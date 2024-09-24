@@ -9,8 +9,8 @@
   const accessType = ref(null)
   const accessTypeOptions = [
     {value: null, text: t('access_type')},
-    {value: 'purchases', text: t('purchased')},
-    {value: 'samples', text: t('samples')},
+    {value: 'purchase', text: t('purchased')},
+    {value: 'sample', text: t('samples')},
   ]
   const accessStatus = ref(null)
   const accessStatusOptions = [

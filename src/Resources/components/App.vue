@@ -34,20 +34,20 @@
   const init = () => {
     appStore.checkApi();
 
-    // todo: load the user ebooks
+    const urlParams = new URLSearchParams(window.location.search);
     searchQuery.value = {
       category: null,
       filter: {
-        accessType: null,
-        accessStatus: null,
-        search: null,
-        perPage: 8,
+        accessType: urlParams.get('accessType'),
+        accessStatus: urlParams.get('accessStatus'),
+        search: urlParams.get('search'),
+        perPage: parseInt(urlParams.get('per_page')) || 8,
         order: {
-          field: 'title',
-          direction: 'asc'
+          field: urlParams.get('order_by') || 'title',
+          direction: urlParams.get('order_direction') || 'asc'
         } as OrderType,
       } as BooksFilterType,
-      page: 1,
+      page: parseInt(urlParams.get('page')) || 1,
     };
   };
 
