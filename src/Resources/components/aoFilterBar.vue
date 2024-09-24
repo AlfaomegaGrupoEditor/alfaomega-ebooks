@@ -2,9 +2,13 @@
   import { useI18n } from "vue-i18n";
   import { ref, defineEmits, onMounted, computed } from 'vue';
   import {BooksFilterType, OrderType} from '@/types';
+  import {useLibraryStore} from '@/stores';
 
   const emit = defineEmits<{ filter: (payload: BooksFilterType) => void }>();
   const { t } = useI18n();
+
+  const libraryStore = useLibraryStore();
+  const meta = computed(() => libraryStore.getMeta);
 
   const accessType = ref(null)
   const accessTypeOptions = [
@@ -149,8 +153,18 @@
     </div>
   </div>
   <div class="row mt-3">
+    <!--  Books founds -->
+    <div class="col-3">
+      <BFormLabel
+          for="total-books-label"
+          class="form-label-sm"
+      >
+        <span class="fs-8 fw-bold">{{ $t('books_found') }}:</span>
+      </BFormLabel>
+      <BBadge>{{ meta.total }}</BBadge>
+    </div>
     <!--  order by -->
-    <div class="col-12 d-flex justify-content-end align-items-center">
+    <div class="col-9 d-flex justify-content-end align-items-center">
       <BButton
           variant="link"
           class="fs-8"
@@ -162,6 +176,7 @@
       >
         {{ $t('reset_filters') }}
       </BButton>
+      <!--  order by -->
       <BFormLabel
           for="per-page-select"
           class="form-label-sm fs-8 mx-2"

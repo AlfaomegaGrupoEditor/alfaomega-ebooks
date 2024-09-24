@@ -17,6 +17,7 @@ const messages = {
         attention: 'Attention!',
         // B
         book_details: 'View Book Details',
+        books_found: "Books found",
         // C
         cancelled: 'Cancelled',
         created: 'Created',
@@ -78,6 +79,7 @@ const messages = {
         // B
         book_details: 'Ver Detalles del Libro',
         bienvenido: 'Bienvenido',
+        books_found: "Resultados",
         // C
         cancelled: 'Cancelado',
         created: 'Creado',

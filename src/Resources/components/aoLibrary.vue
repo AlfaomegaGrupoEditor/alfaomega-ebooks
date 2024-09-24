@@ -35,7 +35,7 @@
 <template>
   <div v-if="books">
     <div v-if="books.length > 0">
-      <div class="row row-cols-1 row-cols-md-4 g-4 mt-0">
+      <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
         <ao-book
             v-for="book in books"
             :key="book.id"
