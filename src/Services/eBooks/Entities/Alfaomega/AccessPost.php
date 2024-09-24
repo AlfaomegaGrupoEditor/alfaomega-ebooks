@@ -272,77 +272,79 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             'access_at'   => 'access_at.meta_value',
         ];
 
-        // Build the base SQL query
-        $sql = "SELECT p.ID, p.post_title as title, p.post_date as addedAt,
-                   pm_cover.meta_value as cover,
-                   pm_download.meta_value as download,
-                   pm_read.meta_value as 'read',
-                   status.meta_value as status,
-                   pm_type.meta_value as accessType,
-                   valid_until.meta_value as validUntil
-            FROM {$wpdb->posts} p
-            LEFT JOIN {$wpdb->postmeta} pm_cover ON (p.ID = pm_cover.post_id AND pm_cover.meta_key = 'alfaomega_access_cover')
-            LEFT JOIN {$wpdb->postmeta} pm_download ON (p.ID = pm_download.post_id AND pm_download.meta_key = 'alfaomega_access_download')
-            LEFT JOIN {$wpdb->postmeta} pm_read ON (p.ID = pm_read.post_id AND pm_read.meta_key = 'alfaomega_access_read')
-            LEFT JOIN {$wpdb->postmeta} status ON (p.ID = status.post_id AND status.meta_key = 'alfaomega_access_status')
-            LEFT JOIN {$wpdb->postmeta} pm_type ON (p.ID = pm_type.post_id AND pm_type.meta_key = 'alfaomega_access_type')
-            LEFT JOIN {$wpdb->postmeta} valid_until ON (p.ID = valid_until.post_id AND valid_until.meta_key = 'alfaomega_access_due_date')
-            LEFT JOIN {$wpdb->postmeta} access_at ON (p.ID = access_at.post_id AND access_at.meta_key = 'alfaomega_access_at')
-            WHERE p.post_type = 'alfaomega-access'
-              AND p.post_status = 'publish'
-              AND p.post_author = %d";
+        // Start building the base SQL query for data fetching
+        $baseSql = "FROM {$wpdb->posts} p
+                LEFT JOIN {$wpdb->postmeta} pm_cover ON (p.ID = pm_cover.post_id AND pm_cover.meta_key = 'alfaomega_access_cover')
+                LEFT JOIN {$wpdb->postmeta} pm_download ON (p.ID = pm_download.post_id AND pm_download.meta_key = 'alfaomega_access_download')
+                LEFT JOIN {$wpdb->postmeta} pm_read ON (p.ID = pm_read.post_id AND pm_read.meta_key = 'alfaomega_access_read')
+                LEFT JOIN {$wpdb->postmeta} status ON (p.ID = status.post_id AND status.meta_key = 'alfaomega_access_status')
+                LEFT JOIN {$wpdb->postmeta} pm_type ON (p.ID = pm_type.post_id AND pm_type.meta_key = 'alfaomega_access_type')
+                LEFT JOIN {$wpdb->postmeta} valid_until ON (p.ID = valid_until.post_id AND valid_until.meta_key = 'alfaomega_access_due_date')
+                LEFT JOIN {$wpdb->postmeta} access_at ON (p.ID = access_at.post_id AND access_at.meta_key = 'alfaomega_access_at')
+                WHERE p.post_type = 'alfaomega-access'
+                  AND p.post_status = 'publish'
+                  AND p.post_author = %d";
 
         $queryParams = [$currentUserId]; // Always add the current user ID
 
-        // Add category filtering if provided
+        // Add filters to the base query
         if ($category) {
-            $sql .= " AND EXISTS (
-                    SELECT 1
-                    FROM {$wpdb->term_relationships} tr
-                    INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
-                    INNER JOIN {$wpdb->terms} t ON tt.term_id = t.term_id
-                    WHERE t.slug = %s AND tr.object_id = p.ID AND tt.taxonomy = 'category'
-                  )";
+            $baseSql .= " AND EXISTS (
+                        SELECT 1
+                        FROM {$wpdb->term_relationships} tr
+                        INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+                        INNER JOIN {$wpdb->terms} t ON tt.term_id = t.term_id
+                        WHERE t.slug = %s AND tr.object_id = p.ID AND tt.taxonomy = 'category'
+                      )";
             $queryParams[] = $category;
         }
 
-        // Add search term filtering if provided
         if ($search) {
-            $sql .= " AND (p.post_title LIKE %s OR p.post_content LIKE %s)";
+            $baseSql .= " AND (p.post_title LIKE %s OR p.post_content LIKE %s)";
             $searchTerm = '%' . $wpdb->esc_like($search) . '%';
             $queryParams[] = $searchTerm;
             $queryParams[] = $searchTerm;
         }
 
-        // Add access type filtering if provided
         if ($type) {
-            $sql .= " AND pm_type.meta_value = %s";
+            $baseSql .= " AND pm_type.meta_value = %s";
             $queryParams[] = $type;
         }
 
-        // Add status filtering if provided
         if ($status) {
-            $sql .= " AND status.meta_value = %s";
+            $baseSql .= " AND status.meta_value = %s";
             $queryParams[] = $status;
         }
 
-        // Add ORDER BY clause
+        // Add the ORDER BY clause
         if (isset($orderByFields[$orderBy])) {
-            $sql .= " ORDER BY {$orderByFields[$orderBy]} " . esc_sql($orderDirection);
+            $baseSql .= " ORDER BY {$orderByFields[$orderBy]} " . esc_sql($orderDirection);
         }
 
-        // Add LIMIT clause for pagination
-        $sql .= " LIMIT %d OFFSET %d";
+        // Add LIMIT and OFFSET for pagination
+        $dataSql = "SELECT p.ID, p.post_title as title, p.post_date as addedAt,
+                        pm_cover.meta_value as cover,
+                        pm_download.meta_value as download,
+                        pm_read.meta_value as 'read',
+                        status.meta_value as status,
+                        pm_type.meta_value as accessType,
+                        valid_until.meta_value as validUntil
+                $baseSql
+                LIMIT %d OFFSET %d";
+
         $queryParams[] = $perPage;
         $queryParams[] = $offset;
 
-        // Prepare and execute the query with the collected query params
-        $query = $wpdb->prepare($sql, ...$queryParams);
-        $results = $wpdb->get_results($query);
+        // Prepare and execute the query for fetching data
+        $dataQuery = $wpdb->prepare($dataSql, ...$queryParams);
+        $results = $wpdb->get_results($dataQuery);
 
-        // Fetch total count
-        $count_sql = "SELECT COUNT(1) FROM {$wpdb->posts} p WHERE p.post_type = 'alfaomega-access' AND p.post_status = 'publish' AND p.post_author = %d";
-        $total = $wpdb->get_var($wpdb->prepare($count_sql, $currentUserId));
+        // Count query to get total results (without LIMIT and OFFSET)
+        $countSql = "SELECT COUNT(1) $baseSql";
+
+        // Prepare and execute the count query
+        $countQuery = $wpdb->prepare($countSql, ...$queryParams);
+        $total = $wpdb->get_var($countQuery);
 
         return [
             'data' => $results,
