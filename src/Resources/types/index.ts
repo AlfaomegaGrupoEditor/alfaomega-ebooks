@@ -40,6 +40,7 @@ type BooksQueryType = {
 type BookType = {
     id: string;
     title: string;
+    categories: string;
     cover: string;
     download: boolean;
     read: boolean;

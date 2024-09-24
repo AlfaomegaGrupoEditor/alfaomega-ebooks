@@ -294,7 +294,7 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                         FROM {$wpdb->term_relationships} tr
                         INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
                         INNER JOIN {$wpdb->terms} t ON tt.term_id = t.term_id
-                        WHERE t.slug = %s AND tr.object_id = p.ID AND tt.taxonomy = 'category'
+                        WHERE t.slug = %s AND tr.object_id = p.ID AND tt.taxonomy = 'product_cat'
                       )";
             $queryParams[] = $category;
         }
@@ -338,6 +338,20 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         // Prepare and execute the query for fetching data
         $dataQuery = $wpdb->prepare($dataSql, ...$queryParams);
         $results = $wpdb->get_results($dataQuery);
+
+        // Fetch the categories for each post
+        foreach ($results as $key => $result) {
+            $categories = get_the_terms($result->ID, 'product_cat');
+            if ($categories && !is_wp_error($categories)) {
+                // Build the category path
+                $categoryPath = array_map(function ($cat) {
+                    return $cat->name;
+                }, $categories);
+                $results[$key]->categories = implode(' > ', $categoryPath);
+            } else {
+                $results[$key]->categories = '';
+            }
+        }
 
         // Count query to get total results (without LIMIT and OFFSET)
         $countSql = "SELECT COUNT(1) $baseSql";
