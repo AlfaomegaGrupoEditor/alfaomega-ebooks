@@ -35,19 +35,35 @@ class ApiController
     public function getBooks(array $data = []): array
     {
         try {
-            $result = Service::make()
-                ->ebooks()
-                ->accessPost()
-                ->search(
-                    category: $data['category'],
-                    search: $data['filter']['search'],
-                    type: $data['filter']['accessType'],
-                    status: $data['filter']['accessStatus'],
-                    page: $data['page'],
-                    perPage: $data['filter']['perPage'],
-                    orderBy: $data['filter']['order']['field'],
-                    orderDirection: $data['filter']['order']['direction'],
-                );
+            $key = join('-', [
+                'user-books-search',
+                'user_id'        => wp_get_current_user()->ID,
+                'category'       => $data['category'],
+                'search'         => $data['filter']['search'],
+                'accessType'     => $data['filter']['accessType'],
+                'accessStatus'   => $data['filter']['accessStatus'],
+                'page'           => $data['page'],
+                'perPage'        => $data['filter']['perPage'],
+                'orderBy'        => $data['filter']['order']['field'],
+                'orderDirection' => $data['filter']['order']['direction'],
+            ]);
+
+            $result = Service::make()->helper()
+                ->cacheRemember($key, 1 * HOUR_IN_SECONDS, function () use ($data) {
+                    return Service::make()
+                        ->ebooks()
+                        ->accessPost()
+                        ->search(
+                            category: $data['category'],
+                            search: $data['filter']['search'],
+                            type: $data['filter']['accessType'],
+                            status: $data['filter']['accessStatus'],
+                            page: $data['page'],
+                            perPage: $data['filter']['perPage'],
+                            orderBy: $data['filter']['order']['field'],
+                            orderDirection: $data['filter']['order']['direction'],
+                        );
+                });
             return array_merge([
                     'status'  => 'success',
                     'message' => esc_html__('God Job!', 'alfaomega-ebooks'),
@@ -68,10 +84,14 @@ class ApiController
     public function getCatalog(): array
     {
         try {
-            $result = Service::make()
-                ->ebooks()
-                ->accessPost()
-                ->catalog();
+            $key = 'ebooks-catalog-' . wp_get_current_user()->ID;
+            $result = Service::make()->helper()
+                ->cacheRemember($key, 24 * HOUR_IN_SECONDS, function () {
+                    return Service::make()
+                        ->ebooks()
+                        ->accessPost()
+                        ->catalog();
+                });
 
             return [
                 'status'  => 'success',
@@ -79,6 +99,8 @@ class ApiController
                 'message' => esc_html__('God Job!', 'alfaomega-ebooks'),
             ];
         } catch (\Exception $e) {
+            Service::make()->helper()
+                ->cacheForget($key);
             return [
                 'status'  => 'error',
                 'message' => esc_html__($e->getMessage(), 'alfaomega-ebooks'),
