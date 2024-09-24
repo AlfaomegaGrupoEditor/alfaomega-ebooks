@@ -10,6 +10,7 @@
 
   const emit = defineEmits(['update:show']);
   const show = ref(props.show);
+  const book = ref<BookType | null>(null);
 
   const handleClose = () => {
     emit('update:show', !show.value);
@@ -20,7 +21,8 @@
   });
 
   watch(() => props.data, (newVal) => {
-    /*console.log(props.data);*/
+    console.log(newVal);
+    book.value = newVal;
   });
 </script>
 
@@ -38,15 +40,15 @@
   >
     <template #title>
       <span class="text-primary">
-        {{ data.title }}
+        {{ book.title }}
       </span>
     </template>
 
     <div class="mx-4">
       <img
           class="img-thumbnail"
-          :src="data.cover"
-          :alt="data.title"
+          :src="book.cover"
+          :alt="book.title"
       />
     </div>
 
@@ -54,24 +56,24 @@
       <ao-button
           icon="fa-file-pdf"
           :caption="$t('download')"
-          :disabled="false"
+          :disabled="!book.download"
           @click="() => console.log('click download')"
       />
 
       <ao-button
           icon="fa-wifi"
           :caption="$t('read_online')"
-          :disabled="false"
+          :disabled="!book.read"
           @click="() => console.log('click read online')"
       />
     </div>
 
     <ao-access-details
-        type="purchase"
-        status="active"
-        added_at="01/01/2024"
-        valid_until="31/12/2024"
-        book_url="https://alfaomegaportal.test/producto/tecnologia-de-las-maquinas-herramienta-6a-edicion/"
+        :type="book.type"
+        :status="book.status"
+        :added_at="book.addedAt"
+        :valid_until="book.validUntil"
+        :book_url="book.url"
     />
   </BOffcanvas>
 </template>

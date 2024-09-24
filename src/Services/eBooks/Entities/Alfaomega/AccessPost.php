@@ -5,6 +5,7 @@ namespace AlfaomegaEbooks\Services\eBooks\Entities\Alfaomega;
 use AlfaomegaEbooks\Services\Alfaomega\Api;
 use AlfaomegaEbooks\Services\eBooks\Entities\AbstractEntity;
 use AlfaomegaEbooks\Services\eBooks\Service;
+use Carbon\Carbon;
 use Exception;
 
 class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
@@ -341,9 +342,9 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
 
         // Fetch the categories for each post
         foreach ($results as $key => $result) {
+            // Build the category path
             $categories = get_the_terms($result->ID, 'product_cat');
             if ($categories && !is_wp_error($categories)) {
-                // Build the category path
                 $categoryPath = array_map(function ($cat) {
                     return $cat->name;
                 }, $categories);
@@ -351,6 +352,15 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             } else {
                 $results[$key]->categories = '';
             }
+
+            // Add the post URL
+            $results[$key]->url = get_permalink($result->ID);
+
+            // format dates
+            $results[$key]->addedAt = Carbon::parse($result->addedAt)->format('d/m/Y');
+            $results[$key]->validUntil = empty($results[$key]->validUntil)
+                ? '-'
+                : Carbon::parse($results[$key]->validUntil)->format('d/m/Y');
         }
 
         // Count query to get total results (without LIMIT and OFFSET)
