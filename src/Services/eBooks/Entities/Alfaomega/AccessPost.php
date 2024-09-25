@@ -295,9 +295,8 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                         FROM {$wpdb->term_relationships} tr
                         INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
                         INNER JOIN {$wpdb->terms} t ON tt.term_id = t.term_id
-                        WHERE t.term_id IN ( %s ) AND tr.object_id = p.ID AND tt.taxonomy = 'product_cat'
+                        WHERE t.term_id IN ({$category}) AND tr.object_id = p.ID AND tt.taxonomy = 'product_cat'
                       )";
-            $queryParams[] = $category; // category id
         }
 
         if ($search) {
@@ -326,7 +325,7 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         $dataSql = "SELECT p.ID, p.post_title as title, p.post_date as addedAt,
                         pm_cover.meta_value as cover,
                         pm_download.meta_value as download,
-                        pm_read.meta_value as 'read',
+                        pm_read.meta_value as `read`,
                         status.meta_value as status,
                         pm_type.meta_value as accessType,
                         valid_until.meta_value as validUntil
