@@ -52,6 +52,7 @@ type BookType = {
 }
 
 type CatalogItemsType = {
+    id: string;
     title: string;
     children: number[];
 };

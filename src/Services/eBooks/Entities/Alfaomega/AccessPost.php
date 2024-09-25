@@ -423,6 +423,7 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         foreach ($categories as $key => $result) {
             if (! isset($categoryTree[$key])) {
                 $categoryTree[$key] = [
+                    'id'       => $key,
                     'title'    => $result->name,
                     'children' => [],
                 ];
@@ -439,6 +440,7 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                 } elseif (isset($categories[$result->parent])) {
                     // exists in $categories but is not moved to $categoryTree yet
                     $categoryTree[$result->parent] = [
+                        'id'       => $result->parent,
                         'title'    => $categories[$result->parent]->name,
                         'children' => [$key],
                     ];
@@ -451,6 +453,7 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                         $term = get_term($parent, 'product_cat');
                         if ($term) {
                             $categoryTree[$parent] = [
+                                'id'       => $parent,
                                 'title'    => $term->name,
                                 'children' => [$newKey],
                             ];

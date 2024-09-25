@@ -97,7 +97,7 @@
   const handleSelected = (node) => {
     searchQuery.value = {
       ...searchQuery.value,
-      ...{category: node.id === 'all_ebooks' ? null : node.id}
+      ...{ category: node.categories }
     };
     header.value = node.text;
   };
