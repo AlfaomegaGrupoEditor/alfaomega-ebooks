@@ -43,6 +43,7 @@
   };
 
   const handleClick = (node) => {
+    // TODO: filter by accessType on purchased and samples
     const traverse = (node) => {
       categories += categories === '' ? node.id : `,${node.id}`;
       if (node.children && node.children.length > 0) {
