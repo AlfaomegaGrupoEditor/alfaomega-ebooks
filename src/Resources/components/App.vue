@@ -115,6 +115,7 @@
   };
 
   const handleSelected = (node) => {
+    header.value = node.text;
     if (!searchQuery.value) {
       return;
     }
@@ -129,14 +130,10 @@
         }
       }
     };
-    header.value = node.text;
   };
 
-  const test = () => { appStore.testLoading() };
-
-
   const handleApply = (payload: ToastType) => {
-    // actually apply the code
+    // TODO: actually apply the code
     showToast(payload);
   };
 

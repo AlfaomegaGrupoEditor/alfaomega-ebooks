@@ -73,7 +73,7 @@ const messages = {
         add_ebooks: 'Agregar muestras',
         add_sample_text: 'Si recibiste un código de muestra, puedes ingresarlo aquí para agregar libros.',
         all: 'Todos los libros',
-        all_ebooks: 'Todos los eBooks',
+        all_ebooks: 'Catálogo de Libros',
         apply_btn: 'Aplicar',
         attention: 'Atención!',
         // B
@@ -108,7 +108,7 @@ const messages = {
         // P
         purchase: 'Compra',
         purchase_note: 'Los libros comprados son adicionados automáticamente.',
-        purchased: 'Compras',
+        purchased: 'Mis Compras',
         previous: 'Anterior',
         per_page: 'Por Página',
         // R
@@ -116,6 +116,7 @@ const messages = {
         reset_filters: 'Limpiar Filtros',
         // S
         sample: 'Muestra',
+        samples: 'Muestras de cortesía',
         search: 'Escribir para buscar entre sus libros...',
         status: 'Estado',
         success: 'Acción exitosa',

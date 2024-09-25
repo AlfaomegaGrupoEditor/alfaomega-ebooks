@@ -87,7 +87,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get('category') || 'all_ebooks';
     if (nodes[category]) {
-      nodes[category].state = { opened: true, checked: true };
+      nodes[category].state = { opened: true, checked: true, focus: true };
     }
   });
 

@@ -16,8 +16,10 @@ const empty = (variable: any): boolean => {
  */
 const updateHistory = (pFilter: BooksFilterType | null = null, pCategory: string | null = null):BooksFilterType => {
   const urlParams = new URLSearchParams(window.location.search);
+  let activeFilters: BooksFilterType;
+
   if (pFilter === null) {
-    const activeFilters = {
+    activeFilters = {
       category: pCategory === null ? (urlParams.get('category') || null) : pCategory,
       accessType: urlParams.get('accessType') || null,
       accessStatus: urlParams.get('accessStatus') || null,
@@ -29,7 +31,7 @@ const updateHistory = (pFilter: BooksFilterType | null = null, pCategory: string
       perPage: urlParams.get('perPage') || 8,
     } as BooksFilterType;
   } else {
-    const activeFilters: BooksFilterType = Object.keys(pFilter).reduce((acc, key) => {
+    activeFilters = Object.keys(pFilter).reduce((acc, key) => {
       if (filter[key] !== null && key !== 'order') {
         acc[key] = filter[key];
       }
