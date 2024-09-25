@@ -1,7 +1,7 @@
 import {request} from '../api';
 import type {APIResponse} from '../types';
 import {useAppStore} from '@/stores';
-import {BooksQueryType, BookType} from '@/types';
+import {BooksQueryType, BookType, CatalogType} from '@/types';
 
 /**
  * Checks the API status.
@@ -26,17 +26,17 @@ async function getBooks(query: BooksQueryType): Promise<APIResponse<BookType[] |
 /**
  * Loads the user catalog.
  */
-async function loadCatalog(): Promise<APIResponse<CatalogType[] | null>>
+async function loadCatalog(): Promise<APIResponse<CatalogType | null>>
 {
     const appStore = useAppStore();
     appStore.setError(null);
     appStore.setLoading(true);
 
-    const response = await request<APIResponse<CatalogType[]>>('GET', `/alfaomega-ebooks/api/catalog/`);
+    const response = await request<APIResponse<CatalogType>>('GET', `/alfaomega-ebooks/api/catalog/`);
     appStore.setLoading(false);
 
     if (response.status == 'success') {
-        return response.data as APIResponse<CatalogType[]>;
+        return response.data as APIResponse<CatalogType>;
     } else {
         appStore.setError(response.message);
         return null;

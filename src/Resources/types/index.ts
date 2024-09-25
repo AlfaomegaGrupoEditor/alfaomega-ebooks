@@ -51,15 +51,15 @@ type BookType = {
     url: string;
 }
 
-type CatalogItemType = {
-    slug: string;
+type CatalogItemsType = {
     title: string;
-    parent: number;
-    book_count: number;
-    children: Record<number, CatalogItemType>;
+    children: number[];
 };
 
-type CatalogType = Record<number, CatalogItemType>;
+type CatalogType = {
+    root: number[];
+    items: CatalogItemsType[];
+};
 
 type ToastType = {
     title?: string | null;
@@ -77,6 +77,6 @@ export {
     OrderType,
     BookType,
     ToastType,
-    CatalogItemType,
-    CatalogType
+    CatalogType,
+    CatalogItemsType
 };
