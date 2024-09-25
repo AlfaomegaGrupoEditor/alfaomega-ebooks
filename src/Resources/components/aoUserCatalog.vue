@@ -19,7 +19,7 @@ import {reactive, defineEmits, onMounted, computed, watch} from 'vue';
         opened: false,
         checked: true,
       },
-      children: [], // "id11", "id12"
+      children: ["id11", "id12"], // "id11", "id12"
     },
     id11: {
       text: "Programación",
@@ -60,12 +60,13 @@ import {reactive, defineEmits, onMounted, computed, watch} from 'vue';
   });
 
   watch(catalog, (newVal) => {
-    if (nodes && newVal) {
-      nodes['all_ebooks']['children'] = [111, 118];//Object.keys(newVal);
-      nodes.value = {...nodes, ...newVal};
-      console.log(nodes.value, newVal);
-      //nodes['all_ebooks']['children'] = ["id11", "id12"];
-    }
+    nodes['all_ebooks']['children'] = newVal.root;
+    Object.keys(newVal.tree).forEach((key) => {
+      nodes[key] = {
+        text: newVal.tree[key].title,
+        children: newVal.tree[key].children,
+      };
+    });
   });
 
 </script>

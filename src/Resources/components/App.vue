@@ -95,9 +95,11 @@
   const test = () => { appStore.testLoading() };
 
   const handleSelected = (node) => {
-    searchQuery.value = {...searchQuery.value, ...{category: node.id}};
+    searchQuery.value = {
+      ...searchQuery.value,
+      ...{category: node.id === 'all_ebooks' ? null : node.id}
+    };
     header.value = node.text;
-    console.log(searchQuery.value);
   };
 
   const handleApply = (payload: ToastType) => {

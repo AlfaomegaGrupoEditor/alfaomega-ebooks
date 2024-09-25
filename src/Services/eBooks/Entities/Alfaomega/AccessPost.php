@@ -295,9 +295,9 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                         FROM {$wpdb->term_relationships} tr
                         INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
                         INNER JOIN {$wpdb->terms} t ON tt.term_id = t.term_id
-                        WHERE t.slug = %s AND tr.object_id = p.ID AND tt.taxonomy = 'product_cat'
+                        WHERE t.term_id IN ( %s ) AND tr.object_id = p.ID AND tt.taxonomy = 'product_cat'
                       )";
-            $queryParams[] = $category;
+            $queryParams[] = $category; // category id
         }
 
         if ($search) {
@@ -471,28 +471,5 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             'root' => $rootCategories,
             'tree' => $categoryTree,
         ];
-    }
-
-    /**
-     * Recursively calculate the total book count for a category, summing its children's counts.
-     *
-     * @param array &$category The category array to calculate the total book count for.
-     * @return int The total book count.
-     */
-    private function calculateBookCount(array &$category): int
-    {
-        $totalBookCount = $category['book_count'];
-
-        // Recursively sum the children's book counts
-        if (!empty($category['children'])) {
-            foreach ($category['children'] as &$childCategory) {
-                $totalBookCount += $this->calculateBookCount($childCategory);
-            }
-        }
-
-        // Update the book_count with the total sum
-        $category['book_count'] = $totalBookCount;
-
-        return $totalBookCount;
     }
 }
