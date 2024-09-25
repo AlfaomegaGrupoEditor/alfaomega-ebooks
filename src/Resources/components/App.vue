@@ -38,9 +38,10 @@
     searchQuery.value = {
       category: null,
       filter: {
-        accessType: urlParams.get('accessType'),
-        accessStatus: urlParams.get('accessStatus'),
-        search: urlParams.get('search'),
+        category: urlParams.get('category') || null,
+        accessType: urlParams.get('accessType') || null,
+        accessStatus: urlParams.get('accessStatus') || null,
+        searchKey: urlParams.get('searchKey')  || null,
         perPage: parseInt(urlParams.get('per_page')) || 8,
         order: {
           field: urlParams.get('order_by') || 'title',

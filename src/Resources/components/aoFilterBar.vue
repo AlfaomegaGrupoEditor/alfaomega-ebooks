@@ -4,6 +4,7 @@
   import {BooksFilterType, OrderType} from '@/types';
   import {useLibraryStore} from '@/stores';
   import debounce from 'lodash/debounce';
+  import {updateHistory} from '@/services/Helper';
 
   const emit = defineEmits<{ filter: (payload: BooksFilterType) => void }>();
   const { t } = useI18n();
@@ -25,7 +26,7 @@
     {value: 'expired', text: t('expired')},
     {value: 'cancelled', text: t('cancelled')},
   ]
-  const search = ref(null)
+  const searchKey = ref(null)
   const order = ref<OrderType>({
     field: 'title',
     direction: 'asc'
@@ -48,7 +49,7 @@
   const defaultFilters = computed(() => {
     return accessType.value === null &&
            accessStatus.value === null &&
-           search.value === null &&
+           searchKey.value === null &&
            order.value.field === 'title' &&
            order.value.direction === 'asc' &&
            perPage.value === 8;
@@ -60,32 +61,22 @@
   }
 
   const handleFilter = () => {
-    const filter = {
+    const filter = updateHistory({
       accessType: accessType.value,
       accessStatus: accessStatus.value,
-      search: search.value,
+      searchKey: searchKey.value,
       order: order.value,
       perPage: perPage.value
-    };
+    })
 
-    const activeFilters = Object.keys(filter).reduce((acc, key) => {
-      if (filter[key] !== null && key !== 'order') {
-        acc[key] = filter[key];
-      }
-      return acc;
-    }, {});
-    activeFilters.order_by = order.value.field;
-    activeFilters.order_direction = order.value.direction;
-    const queryString = new URLSearchParams(activeFilters).toString();
-
-    window.history.pushState(null, '', `?${queryString}`);
     emit('filter', filter);
   }
 
   const handleResetFilters = () => {
-    accessType.value = null;
+    const urlParams = new URLSearchParams(window.location.search);
+    accessType.value = urlParams.get('category') || null;
     accessStatus.value = null;
-    search.value = null;
+    searchKey.value = null;
     order.value.field = 'title';
     order.value.direction = 'asc';
     perPage.value = 8;
@@ -94,13 +85,13 @@
 
   const debouncedHandleFilter = debounce(handleFilter, 500);
 
-  watch(search, debouncedHandleFilter);
+  watch(searchKey, debouncedHandleFilter);
 
   onMounted(() => {
     const urlParams = new URLSearchParams(window.location.search);
     accessType.value = urlParams.get('accessType');
     accessStatus.value = urlParams.get('accessStatus');
-    search.value = urlParams.get('search');
+    searchKey.value = urlParams.get('searchKey');
     order.value.field = urlParams.get('order_by') || 'title';
     order.value.direction = urlParams.get('order_direction') || 'asc';
     perPage.value = parseInt(urlParams.get('per_page')) || 8;
@@ -137,7 +128,7 @@
               @change="handleFilter"
           />
         </div>
-        <!--      search-->
+        <!-- search -->
         <div class="col-6">
           <BInputGroup size="sm">
             <BFormInput
@@ -145,7 +136,7 @@
                 id="search-input"
                 :placeholder="$t('search')"
                 type="text"
-                v-model="search"
+                v-model="searchKey"
             />
             <BInputGroupText>
               <i class="fa fa-search"></i>

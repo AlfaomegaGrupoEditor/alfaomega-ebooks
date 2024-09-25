@@ -62,6 +62,7 @@
       traverse(node);
     }
 
+    const urlParams = new URLSearchParams(window.location.search);
     emit('selected', { categories: categories, text: node.text });
   };
 

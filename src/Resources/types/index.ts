@@ -23,6 +23,7 @@ type OrderType = {
 };
 
 type BooksFilterType = {
+    category?: string | null;
     searchKey?: string | null;
     accessType?: AccessType | null;
     accessStatus?: StatusType | null;
@@ -31,7 +32,6 @@ type BooksFilterType = {
 };
 
 type BooksQueryType = {
-    category?: string | null;
     filter: BooksFilterType;
     page: number;
     userId?: string | null;

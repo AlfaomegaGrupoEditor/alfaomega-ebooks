@@ -38,8 +38,8 @@ class ApiController
             $key = join('-', [
                 'user-books-search',
                 'user_id'        => wp_get_current_user()->ID,
-                'category'       => $data['category'],
-                'search'         => $data['filter']['search'],
+                'category'       => $data['filter']['category'],
+                'search'         => $data['filter']['searchKey'],
                 'accessType'     => $data['filter']['accessType'],
                 'accessStatus'   => $data['filter']['accessStatus'],
                 'page'           => $data['page'],
@@ -54,8 +54,8 @@ class ApiController
                         ->ebooks()
                         ->accessPost()
                         ->search(
-                            category: $data['category'],
-                            search: $data['filter']['search'],
+                            category: $data['filter']['category'],
+                            search: $data['filter']['searchKey'],
                             type: $data['filter']['accessType'],
                             status: $data['filter']['accessStatus'],
                             page: $data['page'],
