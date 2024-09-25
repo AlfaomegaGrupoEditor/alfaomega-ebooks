@@ -23,13 +23,13 @@
   const toast = ref<ToastType>();
   const toastActive = ref(false);
 
-  const accessTypeValue = (pCategory: string = null) => {
+  const accessTypeValue = (pCategory: string|null = null) => {
+    const urlParams = new URLSearchParams(window.location.search);
     const accessType = urlParams.get('accessType') || null;
-    if (pCategory == null) {
-      const urlParams = new URLSearchParams(window.location.search);
-      const category = urlParams.get('category') || null;
-    } else {
-      const category = pCategory;
+    let category = urlParams.get('category') || null;
+
+    if (pCategory !== null) {
+      category = pCategory;
     }
 
     switch (category) {
@@ -53,6 +53,7 @@
   const init = () => {
     appStore.checkApi();
 
+    const urlParams = new URLSearchParams(window.location.search);
     searchQuery.value = {
       category: null,
       filter: {
@@ -114,6 +115,10 @@
   };
 
   const handleSelected = (node) => {
+    if (!searchQuery.value) {
+      return;
+    }
+
     searchQuery.value = {
       ...searchQuery.value,
       ...{
