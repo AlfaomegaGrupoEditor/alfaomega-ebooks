@@ -87,14 +87,20 @@
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get('category') || 'all_ebooks';
     if (nodes[category]) {
-      nodes[category].state = { opened: true, checked: true,};
+      nodes[category].state = { opened: true, checked: true, focused: true};
 
-      setTimeout(() => {
+      /*setTimeout(() => {
+        // FIXME remove the previous focus
+        const focusedNode = document.querySelector('.tree .focused');
+        if (focusedNode) {
+          focusedNode.classList.remove('focused');
+        }
+
         const checkedNode = document.querySelector('.tree .checked');
         if (checkedNode) {
           checkedNode.classList.add('focused');
         }
-      }, 100);
+      }, 100);*/
     }
   });
 

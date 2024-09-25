@@ -32,8 +32,8 @@ const updateHistory = (pFilter: BooksFilterType | null = null, pCategory: string
     } as BooksFilterType;
   } else {
     activeFilters = Object.keys(pFilter).reduce((acc, key) => {
-      if (filter[key] !== null && key !== 'order') {
-        acc[key] = filter[key];
+      if (pFilter[key] !== null && key !== 'order') {
+        acc[key] = pFilter[key];
       }
       return acc;
     }, {});
