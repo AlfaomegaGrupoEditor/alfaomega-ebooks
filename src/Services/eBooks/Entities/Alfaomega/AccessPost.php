@@ -415,46 +415,62 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         $categoryTree = [];
 
         // Create an associative array for easy parent-child lookup
-        $categories = [];
+        $categories = array_column($results, null, 'term_id');
 
-        foreach ($results as $result) {
-            $categories[$result->term_id] = [
-                'slug'       => $result->slug,
-                'title'      => $result->name,
-                'parent'     => $result->parent,
-                'book_count' => $result->book_count,
-                'children'   => [],
-            ];
-        }
+        // The categories with parent = 0
+        $rootCategories = [];
 
-        // Now, assign each category to its parent in the tree
-        foreach ($categories as $termId => &$category) {
-            if ($category['parent'] == 0) {
-                // If the category has no parent, it's a top-level category
-                $categoryTree[$termId] = &$category;
-                if (!isset($categories[$termId]['slug'])) {
-                    $term = get_term($termId, 'product_cat');
-                    if ($term) {
-                        $categoryTree[$termId] = array_merge($categoryTree[$termId], [
-                            'title'      => $term->name,
-                            'slug'       => $term->slug,
-                            'parent'     => 0,
-                            'book_count' => 0, // calculate children sum
-                        ]);
-                    }
+        foreach ($categories as $key => $result) {
+            if (! isset($categoryTree[$key])) {
+                $categoryTree[$key] = [
+                    'title'    => $result->name,
+                    'children' => [],
+                ];
+            }
+
+            if ($result->parent === 0) {
+                if (!in_array($key, $rootCategories)) {
+                    $rootCategories[] = $key;
                 }
             } else {
-                // Otherwise, add it to its parent's children array
-                $categories[$category['parent']]['children'][$termId] = &$category;
+                if (isset($categoryTree[$result->parent])) {
+                    // exists in $categoryTree
+                    $categoryTree[$result->parent]['children'][] = $key;
+                } elseif (isset($categories[$result->parent])) {
+                    // exists in $categories but is not moved to $categoryTree yet
+                    $categoryTree[$result->parent] = [
+                        'title'    => $categories[$result->parent]->name,
+                        'children' => [$key],
+                    ];
+                } else {
+                    // load all parents until root
+                    $parent = $result->parent;
+                    $error = false;
+                    $newKey = $key;
+                    do {
+                        $term = get_term($parent, 'product_cat');
+                        if ($term) {
+                            $categoryTree[$parent] = [
+                                'title'    => $term->name,
+                                'children' => [$newKey],
+                            ];
+                            $newKey = $parent;
+                            $parent = $term->parent;
+                        } else {
+                            $error = true;
+                        }
+                    } while ($parent !== 0 || $error);
+                    if (!in_array($key, $rootCategories)) {
+                        $rootCategories[] = $newKey;
+                    }
+                }
             }
         }
 
-        // Sum up the book count for parent categories based on children
-        foreach ($categoryTree as &$rootCategory) {
-            $this->calculateBookCount($rootCategory);
-        }
-
-        return $categoryTree;
+        return [
+            'root' => $rootCategories,
+            'tree' => $categoryTree,
+        ];
     }
 
     /**

@@ -125,12 +125,15 @@ class AlfaomegaAccessTest extends WordpressTest
      * Load catalog.
      *
      * @param int $userId
+     * @param array $expected
      *
      * @return void
      * @throws \Exception
      */
-    public function testLoadCatalog(int $userId = 1): void
+    #[DataProvider('catalogProvider')]
+    public function testLoadCatalog(int $userId = 1, array $expected = []): void
     {
+        // TODO: refactor load catalog to return the structure ready to pass to tree view component
         wp_set_current_user($userId);
         $result = Service::make()
             ->ebooks()
@@ -138,5 +141,17 @@ class AlfaomegaAccessTest extends WordpressTest
             ->catalog();
 
         $this->assertNotNull($result);
+    }
+
+    public static function catalogProvider(): array
+    {
+        return [
+            'catalog' => [
+                'userId' => 1,
+                'expected' => [
+
+                ]
+            ],
+        ];
     }
 }
