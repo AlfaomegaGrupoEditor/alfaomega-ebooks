@@ -3,6 +3,7 @@ import type { Emitter } from "mitt";
 import { onUnmounted } from "vue";
 import type {
   ApiCheckEvent,
+  CatalogSelectedEvent,
   NotificationEvent
 } from './types';
 
@@ -13,6 +14,7 @@ import type {
 type EventBus = {
   notification: NotificationEvent;
   apiSuccess: ApiCheckEvent;
+  catalogSelected: CatalogSelectedEvent;
 }
 
 /**

@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useAppStore } from '@/stores'
-  import {computed, onMounted, ref, reactive} from 'vue';
+  import {computed, onMounted, ref} from 'vue';
   import { useI18n } from "vue-i18n";
   import {
     aoSampleInput,
@@ -23,6 +23,25 @@
   const toast = ref<ToastType>();
   const toastActive = ref(false);
 
+  const accessTypeValue = (pCategory: string = null) => {
+    const accessType = urlParams.get('accessType') || null;
+    if (pCategory == null) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const category = urlParams.get('category') || null;
+    } else {
+      const category = pCategory;
+    }
+
+    switch (category) {
+      case 'purchased':
+        return 'purchase';
+      case 'samples':
+        return 'sample';
+    }
+
+    return accessType;
+  };
+
   /**
    * Registers the event the App will be listing to.
    */
@@ -34,12 +53,11 @@
   const init = () => {
     appStore.checkApi();
 
-    const urlParams = new URLSearchParams(window.location.search);
     searchQuery.value = {
       category: null,
       filter: {
         category: urlParams.get('category') || null,
-        accessType: urlParams.get('accessType') || null,
+        accessType: accessTypeValue(),
         accessStatus: urlParams.get('accessStatus') || null,
         searchKey: urlParams.get('searchKey')  || null,
         perPage: parseInt(urlParams.get('per_page')) || 8,
@@ -89,19 +107,28 @@
    * @param filter
    */
   const handleFiltered = (filter) => {
-    searchQuery.value = {...searchQuery.value, ...{filter: filter}};
+    searchQuery.value = {
+      ...searchQuery.value,
+      ...{filter: filter}
+    };
   };
-
-
-  const test = () => { appStore.testLoading() };
 
   const handleSelected = (node) => {
     searchQuery.value = {
       ...searchQuery.value,
-      ...{ category: node.categories }
+      ...{
+        ...searchQuery.value.filter,
+        ...{
+          category: node.id,
+          accessType: accessTypeValue(node.id)
+        }
+      }
     };
     header.value = node.text;
   };
+
+  const test = () => { appStore.testLoading() };
+
 
   const handleApply = (payload: ToastType) => {
     // actually apply the code

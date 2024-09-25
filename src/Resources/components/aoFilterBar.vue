@@ -5,14 +5,20 @@
   import {useLibraryStore} from '@/stores';
   import debounce from 'lodash/debounce';
   import {updateHistory} from '@/services/Helper';
+  import {eventBus, useMittEvents} from '@/events';
+  import {CatalogSelectedEvent} from '@/events/types';
 
   const emit = defineEmits<{ filter: (payload: BooksFilterType) => void }>();
   const { t } = useI18n();
+  useMittEvents(eventBus, {
+    catalogSelected : (event: CatalogSelectedEvent) => catalogSelectedHandler(event),
+  });
 
   const libraryStore = useLibraryStore();
   const meta = computed(() => libraryStore.getMeta);
 
   const accessType = ref(null)
+  const disableAccessType = ref(false)
   const accessTypeOptions = [
     {value: null, text: t('access_type')},
     {value: 'purchase', text: t('purchased')},
@@ -83,6 +89,19 @@
     handleFilter();
   }
 
+  const catalogSelectedHandler = (event: CatalogSelectedEvent) => {
+    if (event.category === 'all_ebooks') {
+      accessType.value = null;
+      disableAccessType.value = false;
+    } else if (event.category === 'purchased') {
+      accessType.value = 'purchase';
+      disableAccessType.value = true;
+    } else if (event.category === 'samples') {
+      accessType.value = 'sample';
+      disableAccessType.value = true;
+    }
+  }
+
   const debouncedHandleFilter = debounce(handleFilter, 500);
 
   watch(searchKey, debouncedHandleFilter);
@@ -115,6 +134,7 @@
               is="access-type-select"
               v-model="accessType"
               :options="accessTypeOptions"
+              :disabled="disableAccessType"
               size="sm"
               style="max-width: 150px;"
               @change="handleFilter"

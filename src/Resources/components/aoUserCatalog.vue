@@ -4,6 +4,8 @@
   import 'vue3-treeview/dist/style.css';
   import {useI18n} from 'vue-i18n';
   import {useLibraryStore} from '@/stores';
+  import {updateHistory} from '@/services/Helper';
+  import {eventBus} from '@/events';
 
   const emit = defineEmits(['selected']);
 
@@ -60,9 +62,12 @@
         && node.id !== 'samples') {
       categories = '';
       traverse(node);
+      eventBus.emit('catalogSelected', 'all_ebooks');
+    } else {
+      eventBus.emit('catalogSelected', node.id);
     }
 
-    const urlParams = new URLSearchParams(window.location.search);
+    updateHistory(null, node.id);
     emit('selected', { categories: categories, text: node.text });
   };
 
@@ -78,6 +83,12 @@
   onMounted(() => {
     emit('selected', nodes['all_ebooks']);
     libraryStore.dispatchLoadCatalog();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category') || 'all_ebooks';
+    if (nodes[category]) {
+      nodes[category].state = { opened: true, checked: true };
+    }
   });
 
   watch(catalog, (newVal) => {
