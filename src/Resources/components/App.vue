@@ -14,6 +14,7 @@
   import AoToast from '@/components/aoToast.vue';
   import {eventBus, useMittEvents} from '@/events';
   import {ApiCheckEvent, NotificationEvent} from '@/events/types';
+  import {getValue} from '@/services/Helper';
 
   const { t } = useI18n();
   const appStore = useAppStore();
@@ -25,8 +26,8 @@
 
   const accessTypeValue = (pCategory: string|null = null) => {
     const urlParams = new URLSearchParams(window.location.search);
-    const accessType = urlParams.get('accessType') || null;
-    let category = urlParams.get('category') || null;
+    const accessType = getValue(urlParams.get('accessType'));
+    let category = getValue(urlParams.get('category'));
 
     if (pCategory !== null) {
       category = pCategory;
@@ -55,19 +56,18 @@
 
     const urlParams = new URLSearchParams(window.location.search);
     searchQuery.value = {
-      category: null,
       filter: {
-        category: urlParams.get('category') || null,
+        category: getValue(urlParams.get('category')),
         accessType: accessTypeValue(),
-        accessStatus: urlParams.get('accessStatus') || null,
-        searchKey: urlParams.get('searchKey')  || null,
-        perPage: parseInt(urlParams.get('per_page')) || 8,
+        accessStatus: getValue(urlParams.get('accessStatus')),
+        searchKey: getValue(urlParams.get('searchKey')),
+        perPage: parseInt(getValue(urlParams.get('per_page'),8)),
         order: {
-          field: urlParams.get('order_by') || 'title',
-          direction: urlParams.get('order_direction') || 'asc'
+          field: getValue(urlParams.get('order_by'), 'title'),
+          direction: getValue(urlParams.get('order_direction'), 'asc')
         } as OrderType,
       } as BooksFilterType,
-      page: parseInt(urlParams.get('page')) || 1,
+      page: parseInt(getValue(urlParams.get('page'), 1)),
     };
   };
 

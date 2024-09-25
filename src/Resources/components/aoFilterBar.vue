@@ -4,7 +4,7 @@
   import {BooksFilterType, OrderType} from '@/types';
   import {useLibraryStore} from '@/stores';
   import debounce from 'lodash/debounce';
-  import {updateHistory} from '@/services/Helper';
+  import {updateHistory, getValue} from '@/services/Helper';
   import {eventBus, useMittEvents} from '@/events';
   import {CatalogSelectedEvent} from '@/events/types';
 
@@ -67,15 +67,19 @@
   }
 
   const handleFilter = () => {
-    const filter = updateHistory({
+    const urlParams = new URLSearchParams(window.location.search);
+    const filterValue = {
+      category: urlParams.get('category'),
       accessType: accessType.value,
       accessStatus: accessStatus.value,
       searchKey: searchKey.value,
       order: order.value,
       perPage: perPage.value
-    })
+    }
 
-    emit('filter', filter);
+    updateHistory(filterValue)
+
+    emit('filter', filterValue);
   }
 
   const handleResetFilters = () => {
@@ -108,12 +112,12 @@
 
   onMounted(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    accessType.value = urlParams.get('accessType');
-    accessStatus.value = urlParams.get('accessStatus');
-    searchKey.value = urlParams.get('searchKey');
-    order.value.field = urlParams.get('order_by') || 'title';
-    order.value.direction = urlParams.get('order_direction') || 'asc';
-    perPage.value = parseInt(urlParams.get('per_page')) || 8;
+    accessType.value = getValue(urlParams.get('accessType'));
+    accessStatus.value = getValue(urlParams.get('accessStatus'));
+    searchKey.value = getValue(urlParams.get('searchKey'));
+    order.value.field = getValue(urlParams.get('order_by'), 'title');
+    order.value.direction = getValue(urlParams.get('order_direction'), 'asc');
+    perPage.value = parseInt(getValue(urlParams.get('per_page'), 8));
   });
 </script>
 

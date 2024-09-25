@@ -71,6 +71,23 @@
     emit('selected', { categories: categories, text: node.text });
   };
 
+  const handleChecked = (node) => {
+    console.log(node);
+
+    /*setTimeout(() => {
+     // FIXME remove the previous focus
+     const focusedNode = document.querySelector('.tree .focused');
+     if (focusedNode) {
+     focusedNode.classList.remove('focused');
+     }
+
+     const checkedNode = document.querySelector('.tree .checked');
+     if (checkedNode) {
+     checkedNode.classList.add('focused');
+     }
+     }, 100);*/
+  }
+
   const traverse = (node) => {
     category += category === '' ? node.id : `, ${node.id}`;
     if (node.children) {
@@ -87,20 +104,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get('category') || 'all_ebooks';
     if (nodes[category]) {
-      nodes[category].state = { opened: true, checked: true, focused: true};
-
-      /*setTimeout(() => {
-        // FIXME remove the previous focus
-        const focusedNode = document.querySelector('.tree .focused');
-        if (focusedNode) {
-          focusedNode.classList.remove('focused');
-        }
-
-        const checkedNode = document.querySelector('.tree .checked');
-        if (checkedNode) {
-          checkedNode.classList.add('focused');
-        }
-      }, 100);*/
+      nodes[category].state = { opened: true, checked: true};
     }
   });
 
@@ -120,7 +124,12 @@
 <template>
   <div class="mb-2">
     <h4>{{ $t('digital_library') }}</h4>
-    <Tree :nodes="nodes" :config="config" @node-focus="handleClick"></Tree>
+    <Tree
+        :nodes="nodes"
+        :config="config"
+        @nodeFocus="handleClick"
+        @nodeChecked="handleChecked"
+    />
   </div>
 </template>
 

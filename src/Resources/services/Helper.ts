@@ -19,7 +19,7 @@ const updateHistory = (pFilter: BooksFilterType | null = null, pCategory: string
   let activeFilters: BooksFilterType;
 
   if (pFilter === null) {
-    activeFilters = {
+    pFilter = {
       category: pCategory === null ? (urlParams.get('category') || null) : pCategory,
       accessType: urlParams.get('accessType') || null,
       accessStatus: urlParams.get('accessStatus') || null,
@@ -29,18 +29,19 @@ const updateHistory = (pFilter: BooksFilterType | null = null, pCategory: string
         'direction': urlParams.get('order_direction') || 'asc'
       } as OrderType,
       perPage: urlParams.get('perPage') || 8,
-    } as BooksFilterType;
-  } else {
-    activeFilters = Object.keys(pFilter).reduce((acc, key) => {
-      if (pFilter[key] !== null && key !== 'order') {
-        acc[key] = pFilter[key];
-      }
-      return acc;
-    }, {});
-    activeFilters.order_by = pFilter.order.value.field;
-    activeFilters.order_direction = pFilter.order.value.direction;
-    activeFilters.category = pCategory === null ? (urlParams.get('category') || null) : pCategory;
+    };
   }
+
+  activeFilters = Object.keys(pFilter).reduce((acc, key) => {
+    if (pFilter[key] !== null && key !== 'order') {
+      acc[key] = pFilter[key];
+    }
+    return acc;
+  }, {});
+
+  activeFilters.order_by = pFilter.order.field;
+  activeFilters.order_direction = pFilter.order.direction;
+  activeFilters.category = pCategory === null ? (urlParams.get('category') || null) : pCategory;
 
   const queryString = new URLSearchParams(activeFilters).toString();
 
@@ -48,7 +49,30 @@ const updateHistory = (pFilter: BooksFilterType | null = null, pCategory: string
   return activeFilters;
 }
 
+/**
+ * Check if a variable is null
+ * @param variable
+ */
+const isNull = (variable: any): boolean => {
+    return variable === null
+           || variable === undefined
+           || variable === ''
+           || variable === 'null'
+           || variable === 0;
+}
+
+/**
+ * Get the value of a variable
+ * @param variable
+ * @param defaultValue
+ */
+const getValue = (variable: any, defaultValue = null): any => {
+    return isNull(variable) ? defaultValue : variable;
+}
+
 export {
     empty,
-    updateHistory
+    updateHistory,
+    isNull,
+    getValue
 }

@@ -35,6 +35,9 @@ class ApiController
     public function getBooks(array $data = []): array
     {
         try {
+            $data['filter']['category'] = $data['filter']['category'] === 'all_ebooks'
+                ? null
+                : $data['filter']['category'];
             $key = join('-', [
                 'user-books-search',
                 'user_id'        => wp_get_current_user()->ID,
