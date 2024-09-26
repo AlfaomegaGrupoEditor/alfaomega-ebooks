@@ -233,21 +233,38 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
     }
 
     /**
-     * Search the current user eBooks access based on various criteria.
+     * Expire the access to an eBook.
+     * @param int $postId
      *
+     * @return void
+     * @throws \Exception
+     */
+    public function expire(int $postId): void
+    {
+        update_post_meta(
+            $postId,
+            'alfaomega_access_status',
+            'expired',
+            get_post_meta($postId, 'alfaomega_access_status', true)
+        );
+    }
+
+    /**
+     * Search the current user eBooks access based on various criteria.
      * This method allows searching for eBooks by category, search term, type, status, and other parameters.
      * It returns an array of search results.
      *
-     * @param string|null $category The category to filter by. Default is null.
-     * @param string|null $search The search term to filter by. Default is null.
-     * @param string|null $type The type of eBook to filter by. Default is null.
-     * @param string|null $status The status of the eBook to filter by. Default is null.
-     * @param int $page The page number for pagination. Default is 1.
-     * @param int $perPage The number of results per page. Default is 8.
-     * @param string $orderBy The field to order the results by. Default is 'title'.
+     * @param string|null $category  The category to filter by. Default is null.
+     * @param string|null $search    The search term to filter by. Default is null.
+     * @param string|null $type      The type of eBook to filter by. Default is null.
+     * @param string|null $status    The status of the eBook to filter by. Default is null.
+     * @param int $page              The page number for pagination. Default is 1.
+     * @param int $perPage           The number of results per page. Default is 8.
+     * @param string $orderBy        The field to order the results by. Default is 'title'.
      * @param string $orderDirection The direction to order the results ('asc' or 'desc'). Default is 'asc'.
      *
      * @return array An array of search results.
+     * @throws \Exception
      */
     public function search(
         string $category = null,
@@ -325,7 +342,9 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         $dataSql = "SELECT p.ID, p.post_title as title, p.post_date as addedAt,
                         pm_cover.meta_value as cover,
                         pm_download.meta_value as download,
+                        '' as download_url,
                         pm_read.meta_value as `read`,
+                        '' as read_url,
                         status.meta_value as status,
                         pm_type.meta_value as accessType,
                         valid_until.meta_value as validUntil
@@ -340,26 +359,56 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         $results = $wpdb->get_results($dataQuery);
 
         // Fetch the categories for each post
-        foreach ($results as $key => $result) {
+        foreach ($results as $key => &$result) {
             // Build the category path
             $categories = get_the_terms($result->ID, 'product_cat');
             if ($categories && !is_wp_error($categories)) {
                 $categoryPath = array_map(function ($cat) {
                     return $cat->name;
                 }, $categories);
-                $results[$key]->categories = implode(' > ', $categoryPath);
+                $result->categories = implode(' > ', $categoryPath);
             } else {
-                $results[$key]->categories = '';
+                $result->categories = '';
             }
 
+            $result->title = strtoupper($result->title);
+
             // Add the post URL
-            $results[$key]->url = get_permalink($result->ID);
+            $result->url = get_permalink($result->ID);
+
+            // check the expiration dade
+            if (in_array($result->status, ['created', 'active'])) {
+                if (!empty($result->validUntil) && Carbon::parse($result->validUntil)->isPast()) {
+                    $result->status = 'expired';
+                    $this->expire($result->ID);
+                    $result->read = false;
+                    $result->download = false;
+                    continue;
+                }
+            } else {
+                $result->read = false;
+                $result->download = false;
+                continue;
+            }
+
+            // Add the read URL
+            if ($result->read) {
+                //$results[$key]->read_url = site_url("alfaomega-ebooks/read/{$ebookId}?key={$downloadId}");;
+                $result->read_url = site_url("alfaomega-ebooks/read/EBOOK-ID?key=DOWNLOAD-ID");
+            }
+
+            // Add the download URL
+            if ($result->download) {
+                $result->download_url = $result->accessType === 'purchased'
+                    ? site_url("alfaomega-ebooks/download/DONWLOAD-URL")
+                    : site_url("alfaomega-ebooks/download/EBOOK-ID?key=DOWNLOAD-ID");
+            }
 
             // format dates
-            $results[$key]->addedAt = Carbon::parse($result->addedAt)->format('d/m/Y');
-            $results[$key]->validUntil = empty($results[$key]->validUntil)
+            $result->addedAt = Carbon::parse($result->addedAt)->format('d/m/Y');
+            $result->validUntil = empty($result->validUntil)
                 ? '-'
-                : Carbon::parse($results[$key]->validUntil)->format('d/m/Y');
+                : Carbon::parse($result->validUntil)->format('d/m/Y');
         }
 
         // Count query to get total results (without LIMIT and OFFSET)

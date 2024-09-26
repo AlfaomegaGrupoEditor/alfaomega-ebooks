@@ -43,7 +43,9 @@ type BookType = {
     categories: string;
     cover: string;
     download: boolean;
+    downloadUrl: string | null;
     read: boolean;
+    readUrl: string | null;
     accessType: AccessType;
     status: StatusType;
     addedAt: string;

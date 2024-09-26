@@ -21,7 +21,6 @@
     });
 
     watch(() => props.data, (newVal) => {
-        console.log(newVal);
         book.value = newVal;
     });
 </script>
@@ -61,14 +60,14 @@
                 icon="fa-file-pdf"
                 :caption="$t('download')"
                 :disabled="!book.download"
-                @click="() => console.log('click download')"
+                @click="() => window.open(book.downloadUrl, '_self')"
             />
 
             <ao-button
                 icon="fa-wifi"
                 :caption="$t('read_online')"
                 :disabled="!book.read"
-                @click="() => console.log('click read online')"
+                @click="() => window.open(book.readUrl, '_blank')"
             />
         </div>
 
