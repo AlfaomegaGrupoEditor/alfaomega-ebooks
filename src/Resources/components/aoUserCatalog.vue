@@ -1,125 +1,127 @@
 <script setup lang="ts">
-  import {reactive, defineEmits, onMounted, computed, watch} from 'vue';
-  import Tree from 'vue3-treeview';
-  import 'vue3-treeview/dist/style.css';
-  import {useI18n} from 'vue-i18n';
-  import {useLibraryStore} from '@/stores';
-  import {updateHistory, setClass} from '@/services/Helper';
-  import {eventBus} from '@/events';
+    import {reactive, defineEmits, onMounted, computed, watch} from 'vue';
+    import Tree from 'vue3-treeview';
+    import 'vue3-treeview/dist/style.css';
+    import {useI18n} from 'vue-i18n';
+    import {useLibraryStore} from '@/stores';
+    import {updateHistory, setClass} from '@/services/Helper';
+    import {eventBus} from '@/events';
+    import {getValue} from '@/services/Helper';
 
-  const emit = defineEmits(['selected']);
+    const emit = defineEmits(['selected']);
 
-  const {t} = useI18n();
-  const libraryStore = useLibraryStore();
-  const catalog = computed(() => libraryStore.getCatalog);
+    const {t} = useI18n();
+    const libraryStore = useLibraryStore();
+    const catalog = computed(() => libraryStore.getCatalog);
 
-  const nodes = reactive({
-    all_ebooks: {
-      text: t('all_ebooks'),
-      state: {
-        opened: false,
-        checked: true
-      },
-      children: []
-    },
-    purchased: {
-      text: t('purchased')
-    },
-    samples: {
-      text: t('samples')
-    }
-  });
-  const config = {
-    roots: ['all_ebooks', 'purchased', 'samples'],
-    padding: 15,
-    openedIcon: {
-      type: 'class',
-      class: 'fas fa-angle-down'
-    },
-    closedIcon: {
-      type: 'class',
-      class: 'fas fa-angle-right',
-      height: '30px',
-      width: '30px'
-    }
-  };
-
-  const handleClick = (node) => {
-    // TODO: filter by accessType on purchased and samples
-    const traverse = (node) => {
-      categories += categories === '' ? node.id : `,${node.id}`;
-      if (node.children && node.children.length > 0) {
-        node.children.forEach((child) => {
-          traverse(nodes[child]);
-        });
-      }
+    const nodes = reactive({
+        all_ebooks: {
+            text: t('all_ebooks'),
+            state: {
+                opened: false,
+                checked: true
+            },
+            children: []
+        },
+        purchased: {
+            text: t('purchased')
+        },
+        samples: {
+            text: t('samples')
+        }
+    });
+    const config = {
+        roots: ['all_ebooks', 'purchased', 'samples'],
+        padding: 15,
+        openedIcon: {
+            type: 'class',
+            class: 'fas fa-angle-down'
+        },
+        closedIcon: {
+            type: 'class',
+            class: 'fas fa-angle-right',
+            height: '30px',
+            width: '30px'
+        }
     };
 
-    let categories = null;
+    const handleClick = (node) => {
+        // TODO: filter by accessType on purchased and samples
+        const traverse = (node) => {
+            categories += categories === '' ? node.id : `,${node.id}`;
+            if (node.children && node.children.length > 0) {
+                node.children.forEach((child) => {
+                    traverse(nodes[child]);
+                });
+            }
+        };
 
-    if (node.id !== 'all_ebooks'
-        && node.id !== 'purchased'
-        && node.id !== 'samples') {
-      categories = '';
-      traverse(node);
-      eventBus.emit('catalogSelected', 'all_ebooks');
-    } else {
-      eventBus.emit('catalogSelected', node.id);
-    }
+        let categories = null;
 
-    updateHistory(null, node.id);
-    emit('selected', { categories: categories, text: node.text });
-  };
+        if (node.id !== 'all_ebooks'
+            && node.id !== 'purchased'
+            && node.id !== 'samples') {
+            categories = '';
+            traverse(node);
+            eventBus.emit('catalogSelected', 'all_ebooks');
+        } else {
+            eventBus.emit('catalogSelected', node.id);
+        }
 
-  const handleBlur = (node) => {
-    setClass('.tree .focused', 'focused', false);
-  }
+        updateHistory(null, node.id);
+        emit('selected', {categories: categories, text: node.text});
+    };
 
-  const traverse = (node) => {
-    category += category === '' ? node.id : `, ${node.id}`;
-    if (node.children) {
-      node.children.forEach((child) => {
-        traverse(child);
-      });
-    }
-  };
+    const handleBlur = (node) => {
+        setClass('.tree .focused', 'focused', false);
+    };
 
-  onMounted(() => {
-    emit('selected', nodes['all_ebooks']);
-    libraryStore.dispatchLoadCatalog();
+    const traverse = (node) => {
+        category += category === '' ? node.id : `, ${node.id}`;
+        if (node.children) {
+            node.children.forEach((child) => {
+                traverse(child);
+            });
+        }
+    };
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const category = urlParams.get('category') || 'all_ebooks';
-    if (nodes[category]) {
-      nodes[category].state = { opened: true, checked: true};
-      const node = document.querySelector(`.tree .node[data-id="${category}"]`);
-      setClass('.tree .checked', 'focused');
-    }
-  });
+    onMounted(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = getValue(urlParams.get('category'), 'all_ebooks');
 
-  watch(catalog, (newVal) => {
-    nodes['all_ebooks']['children'] = newVal.root;
-    Object.keys(newVal.tree).forEach((key) => {
-      nodes[key] = {
-        id: key,
-        text: newVal.tree[key].title,
-        children: newVal.tree[key].children
-      };
+        libraryStore.dispatchLoadCatalog()
+            .then(() => {
+                emit('selected', nodes[category]);
+                if (nodes[category]) {
+                    nodes[category].state = {opened: true, checked: true};
+                    setClass('.tree .checked', 'focused');
+                }
+            });
     });
-  });
+
+    watch(catalog, (newVal) => {
+        nodes['all_ebooks']['children'] = newVal.root;
+        Object.keys(newVal.tree).forEach((key) => {
+            nodes[key] = {
+                id: key,
+                text: newVal.tree[key].title,
+                children: newVal.tree[key].children
+            };
+        });
+    });
 
 </script>
 
 <template>
-  <div class="mb-2">
-    <h4>{{ $t('digital_library') }}</h4>
-    <Tree
-        :nodes="nodes"
-        :config="config"
-        @nodeFocus="handleClick"
-        @nodeBlur="handleBlur"
-    />
-  </div>
+    <div class="mb-2">
+        <h4>{{ $t('digital_library') }}</h4>
+        <Tree
+            :nodes="nodes"
+            :config="config"
+            @nodeFocus="handleClick"
+            @nodeBlur="handleBlur"
+        />
+    </div>
 </template>
 
 <style scoped>
