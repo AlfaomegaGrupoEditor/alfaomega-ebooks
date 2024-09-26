@@ -132,7 +132,7 @@
                 }
             }
         };
-        eventBus.emit('catalogSelected', {category: node.id});
+        eventBus.emit('catalogSelected', {catalog_id: node.id});
     };
 
     const handleApply = (payload: ToastType) => {

@@ -18,7 +18,7 @@ type ApiCheckEvent = {
  * Type definition for the 'catalogSelectedEvent'.
  */
 type CatalogSelectedEvent = {
-    catalog_id: 'all_ebooks' | 'purchase' | 'sample'    ;
+    catalog_id: string    ;
 }
 export {
     NotificationEvent,
