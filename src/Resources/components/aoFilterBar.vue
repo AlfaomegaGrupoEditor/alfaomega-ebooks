@@ -197,7 +197,6 @@
                 underline-opacity-hover="100"
                 underline-offset="3"
                 @click="handleResetFilters"
-                :disabled="defaultFilters"
             >
                 {{ $t('reset_filters') }}
             </BButton>

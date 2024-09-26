@@ -73,7 +73,7 @@
     };
 
     const handleBlur = (node) => {
-        setClass('.tree .focused', 'focused', false);
+        //setClass('.tree .focused', 'focused', false);
     };
 
     const traverse = (node) => {
@@ -86,17 +86,10 @@
     };
 
     onMounted(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const category = getValue(urlParams.get('category'), 'all_ebooks');
-
-        libraryStore.dispatchLoadCatalog()
-            .then(() => {
-                emit('selected', nodes[category]);
-                if (nodes[category]) {
-                    nodes[category].state = {opened: true, checked: true};
-                    setClass('.tree .checked', 'focused');
-                }
-            });
+        libraryStore.dispatchLoadCatalog();
+        //const urlParams = new URLSearchParams(window.location.search);
+        //const category = getValue(urlParams.get('category'), 'all_ebooks');
+        emit('selected', 'all_ebooks');
     });
 
     watch(catalog, (newVal) => {
