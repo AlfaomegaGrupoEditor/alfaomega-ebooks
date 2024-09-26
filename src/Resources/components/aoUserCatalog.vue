@@ -4,7 +4,7 @@
     import 'vue3-treeview/dist/style.css';
     import {useI18n} from 'vue-i18n';
     import {useLibraryStore} from '@/stores';
-    import {updateHistory, setClass} from '@/services/Helper';
+    import {updateHistory} from '@/services/Helper';
     import {eventBus} from '@/events';
     import {getValue} from '@/services/Helper';
 
@@ -59,11 +59,15 @@
         }
         nodes[id].state.opened = true;
     };
-    
-    const handleClick = (node) => {
-        // TODO: filter by accessType on purchased and samples
+
+    /**
+     * Get the descendants of a node
+     * @param id
+     */
+    const nodeDescendants = (id): string => {
+        let descendants = '';
         const traverse = (node) => {
-            categories += categories === '' ? node.id : `,${node.id}`;
+            descendants += descendants === '' ? String(node.id) : `,${node.id}`;
             if (node.children && node.children.length > 0) {
                 node.children.forEach((child) => {
                     traverse(nodes[child]);
@@ -71,13 +75,17 @@
             }
         };
 
-        let categories = null;
+        traverse(nodes[id]);
+        return descendants;
+    };
 
+    const handleClick = (node) => {
+        // TODO: filter by accessType on purchased and samples
+        let categories = null;
         if (node.id !== 'all_ebooks'
             && node.id !== 'purchased'
             && node.id !== 'samples') {
-            categories = '';
-            traverse(node);
+            categories = nodeDescendants(node.id);
             eventBus.emit('catalogSelected', 'all_ebooks');
         } else {
             eventBus.emit('catalogSelected', node.id);
@@ -123,7 +131,8 @@
         });
 
         openNode(category);
-        emit('selected', nodes[category]);
+        const categories = category === 'all_ebooks' ? null : nodeDescendants(category);
+        emit('selected', {categories: categories, text: nodes[category].text, id: category});
     });
 
 </script>
