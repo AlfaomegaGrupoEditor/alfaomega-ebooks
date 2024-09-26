@@ -69,7 +69,7 @@
         }
 
         updateHistory(null, node.id);
-        emit('selected', {categories: categories, text: node.text});
+        emit('selected', {categories: categories, text: node.text, id: node.id});
     };
 
     const handleBlur = (node) => {

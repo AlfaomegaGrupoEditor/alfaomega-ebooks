@@ -126,7 +126,7 @@
                 filter: {
                     ...searchQuery.value.filter,
                     ...{
-                        category: node.id,
+                        category: node.categories,
                         accessType: accessTypeValue(node.id)
                     }
                 }
