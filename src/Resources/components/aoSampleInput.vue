@@ -1,67 +1,67 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
-  import { useAppStore } from '@/stores/appStore';
-  import { aoButton } from '@/components';
-  import { ToastType } from '@/types';
-  import { useI18n } from "vue-i18n";
+    import {ref} from 'vue';
+    import {useAppStore} from '@/stores/appStore';
+    import {aoButton} from '@/components';
+    import {ToastType} from '@/types';
+    import {useI18n} from 'vue-i18n';
 
-  const emit = defineEmits<{ apply: (payload: ToastType) => void }>();
-  const { t } = useI18n();
+    const emit = defineEmits<{ apply: (payload: ToastType) => void }>();
+    const {t} = useI18n();
 
-  const appStore = useAppStore();
-  const code = ref('');
-  const test = () => { appStore.testLoading() };
+    const appStore = useAppStore();
+    const code = ref('');
+    const test = () => { appStore.testLoading(); };
 
-  const handleClick = () => {
-    emit('apply', {
-      content: t('code_applied_successfully'),
-      variant: 'success',
-      title: t('success')
-    } as ToastType);
-  };
+    const handleClick = () => {
+        emit('apply', {
+            content: t('code_applied_successfully'),
+            variant: 'success',
+            title: t('success')
+        } as ToastType);
+    };
 
 </script>
 
 <template>
-  <b-card>
-    <b-card-title>
-      <span class="fs-8">
-        {{ $t('add_ebooks') }}
-      </span>
-    </b-card-title>
+    <b-card>
+        <b-card-title>
+            <span class="fs-8">
+                {{ $t('add_ebooks') }}
+            </span>
+        </b-card-title>
 
-    <b-card-text class="fs-8">
-      {{ $t('add_sample_text') }}
-      {{ $t('purchase_note') }}
-    </b-card-text>
+        <b-card-text class="fs-8">
+            {{ $t('add_sample_text') }}
+            {{ $t('purchase_note') }}
+        </b-card-text>
 
-    <div class="mb-4">
-      <BFormInput
-          class="form-control-sm"
-          v-model="code"
-          placeholder="XXXX-XXXX-XXXX"
-          type="text"
-      />
-    </div>
+        <div class="mb-4">
+            <BFormInput
+                class="form-control-sm"
+                v-model="code"
+                placeholder="XXXX-XXXX-XXXX"
+                type="text"
+            />
+        </div>
 
-    <div class="row">
-      <div class="col">
-        <ao-button
-            class="float-end"
-            icon="fa-key"
-            :caption="$t('apply_btn')"
-            :disabled="false"
-            size="sm"
-            @click="handleClick"
-        />
-      </div>
-    </div>
+        <div class="row">
+            <div class="col">
+                <ao-button
+                    class="float-end"
+                    icon="fa-key"
+                    :caption="$t('apply_btn')"
+                    :disabled="false"
+                    size="sm"
+                    @click="handleClick"
+                />
+            </div>
+        </div>
 
-    <div class="card-body fs-8 text-muted d-none">
-      <span class="fw-bold">{{ $t('note') }}: </span>
-      <span>{{ $t('purchase_note') }}</span>
-    </div>
-  </b-card>
+        <div class="card-body fs-8 text-muted d-none">
+            <span class="fw-bold">{{ $t('note') }}: </span>
+            <span>{{ $t('purchase_note') }}</span>
+        </div>
+    </b-card>
 </template>
 
 <style scoped>
