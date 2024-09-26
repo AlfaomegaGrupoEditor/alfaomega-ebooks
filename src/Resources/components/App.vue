@@ -110,7 +110,12 @@
     const handleFiltered = (filter) => {
         searchQuery.value = {
             ...searchQuery.value,
-            ...{filter: filter}
+            ...{
+                filter: {
+                    ...filter,
+                    ...{category: searchQuery.value.filter.category}
+                }
+            }
         };
     };
 
