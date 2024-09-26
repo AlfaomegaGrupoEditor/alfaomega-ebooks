@@ -22,7 +22,7 @@
   const accessTypeOptions = [
     {value: null, text: t('access_type')},
     {value: 'purchase', text: t('purchased')},
-    {value: 'sample', text: t('samples')},
+    {value: 'sample', text: t('sample')},
   ]
   const accessStatus = ref(null)
   const accessStatusOptions = [
@@ -83,24 +83,31 @@
   }
 
   const handleResetFilters = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    accessType.value = urlParams.get('category') || null;
+    accessType.value = null;
     accessStatus.value = null;
     searchKey.value = null;
     order.value.field = 'title';
     order.value.direction = 'asc';
     perPage.value = 8;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = getValue(urlParams.get('category'), 'all_ebooks');
+    checkAccessType(category);
     handleFilter();
   }
 
   const catalogSelectedHandler = (event: CatalogSelectedEvent) => {
-    if (event.category === 'all_ebooks') {
+    checkAccessType(event.category);
+  }
+
+  const checkAccessType = (category) => {
+    if (category === 'all_ebooks') {
       accessType.value = null;
       disableAccessType.value = false;
-    } else if (event.category === 'purchased') {
+    } else if (category === 'purchased') {
       accessType.value = 'purchase';
       disableAccessType.value = true;
-    } else if (event.category === 'samples') {
+    } else if (category === 'samples') {
       accessType.value = 'sample';
       disableAccessType.value = true;
     }
