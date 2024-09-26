@@ -5,8 +5,10 @@ import {BooksFilterType, OrderType} from '@/types';
  * @param variable
  */
 const empty = (variable: any): boolean => {
-  return variable === null || variable === undefined || variable === '';
-}
+    return variable === null
+           || variable === undefined
+           || variable === '';
+};
 
 /**
  * Update the browser history
@@ -14,40 +16,44 @@ const empty = (variable: any): boolean => {
  * @param pCategory
  * @returns BooksFilterType
  */
-const updateHistory = (pFilter: BooksFilterType | null = null, pCategory: string | null = null):BooksFilterType => {
-  const urlParams = new URLSearchParams(window.location.search);
-  let activeFilters: BooksFilterType;
+const updateHistory = (pFilter: BooksFilterType | null = null, pCategory: string | null = null): BooksFilterType => {
+    const urlParams = new URLSearchParams(window.location.search);
+    let activeFilters: BooksFilterType;
 
-  if (pFilter === null) {
-    pFilter = {
-      category: pCategory === null ? (urlParams.get('category') || null) : pCategory,
-      accessType: urlParams.get('accessType') || null,
-      accessStatus: urlParams.get('accessStatus') || null,
-      searchKey: urlParams.get('searchKey') || null,
-      order: {
-        'field': urlParams.get('order_by') || 'title',
-        'direction': urlParams.get('order_direction') || 'asc'
-      } as OrderType,
-      perPage: urlParams.get('perPage') || 8,
-    };
-  }
-
-  activeFilters = Object.keys(pFilter).reduce((acc, key) => {
-    if (pFilter[key] !== null && key !== 'order') {
-      acc[key] = pFilter[key];
+    if (pFilter === null) {
+        pFilter = {
+            category: pCategory === null ? (
+                urlParams.get('category') || null
+            ) : pCategory,
+            accessType: urlParams.get('accessType') || null,
+            accessStatus: urlParams.get('accessStatus') || null,
+            searchKey: urlParams.get('searchKey') || null,
+            order: {
+                'field': urlParams.get('order_by') || 'title',
+                'direction': urlParams.get('order_direction') || 'asc'
+            } as OrderType,
+            perPage: urlParams.get('perPage') || 8
+        };
     }
-    return acc;
-  }, {});
 
-  activeFilters.order_by = pFilter.order.field;
-  activeFilters.order_direction = pFilter.order.direction;
-  activeFilters.category = pCategory === null ? (urlParams.get('category') || null) : pCategory;
+    activeFilters = Object.keys(pFilter).reduce((acc, key) => {
+        if (pFilter[key] !== null && key !== 'order') {
+            acc[key] = pFilter[key];
+        }
+        return acc;
+    }, {});
 
-  const queryString = new URLSearchParams(activeFilters).toString();
+    activeFilters.order_by = pFilter.order.field;
+    activeFilters.order_direction = pFilter.order.direction;
+    activeFilters.category = pCategory === null ? (
+        urlParams.get('category') || null
+    ) : pCategory;
 
-  window.history.pushState(null, '', `?${queryString}`);
-  return activeFilters;
-}
+    const queryString = new URLSearchParams(activeFilters).toString();
+
+    window.history.pushState(null, '', `?${queryString}`);
+    return activeFilters;
+};
 
 /**
  * Check if a variable is null
@@ -59,7 +65,7 @@ const isNull = (variable: any): boolean => {
            || variable === ''
            || variable === 'null'
            || variable === 0;
-}
+};
 
 /**
  * Get the value of a variable
@@ -68,11 +74,28 @@ const isNull = (variable: any): boolean => {
  */
 const getValue = (variable: any, defaultValue = null): any => {
     return isNull(variable) ? defaultValue : variable;
-}
+};
+
+/**
+ * Set a class to an element
+ * @param cssQuery
+ * @param className
+ * @param add
+ */
+const setClass = (cssQuery, className: string, add = true): void => {
+    setTimeout(() => {
+        const element = document.querySelector(cssQuery);
+        if (element) {
+            add ? element.classList.add(className)
+                : element.classList.remove(className);
+        }
+    }, 100);
+};
 
 export {
     empty,
     updateHistory,
     isNull,
-    getValue
-}
+    getValue,
+    setClass
+};

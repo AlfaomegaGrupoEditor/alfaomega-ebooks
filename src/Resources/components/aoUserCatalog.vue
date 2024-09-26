@@ -4,7 +4,7 @@
   import 'vue3-treeview/dist/style.css';
   import {useI18n} from 'vue-i18n';
   import {useLibraryStore} from '@/stores';
-  import {updateHistory} from '@/services/Helper';
+  import {updateHistory, setClass} from '@/services/Helper';
   import {eventBus} from '@/events';
 
   const emit = defineEmits(['selected']);
@@ -71,21 +71,8 @@
     emit('selected', { categories: categories, text: node.text });
   };
 
-  const handleChecked = (node) => {
-    console.log(node);
-
-    /*setTimeout(() => {
-     // FIXME remove the previous focus
-     const focusedNode = document.querySelector('.tree .focused');
-     if (focusedNode) {
-     focusedNode.classList.remove('focused');
-     }
-
-     const checkedNode = document.querySelector('.tree .checked');
-     if (checkedNode) {
-     checkedNode.classList.add('focused');
-     }
-     }, 100);*/
+  const handleBlur = (node) => {
+    setClass('.tree .focused', 'focused', false);
   }
 
   const traverse = (node) => {
@@ -105,6 +92,8 @@
     const category = urlParams.get('category') || 'all_ebooks';
     if (nodes[category]) {
       nodes[category].state = { opened: true, checked: true};
+      const node = document.querySelector(`.tree .node[data-id="${category}"]`);
+      setClass('.tree .checked', 'focused');
     }
   });
 
@@ -128,7 +117,7 @@
         :nodes="nodes"
         :config="config"
         @nodeFocus="handleClick"
-        @nodeChecked="handleChecked"
+        @nodeBlur="handleBlur"
     />
   </div>
 </template>
