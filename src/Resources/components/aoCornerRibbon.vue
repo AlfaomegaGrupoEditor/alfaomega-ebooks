@@ -1,29 +1,23 @@
 <script setup lang="ts">
-
+    const props = defineProps({
+        title: { type: String, required: true, default: 'Ribbon'},
+        variant: { type: String, required: false, default: 'primary' },
+        position: { type: String, required: false, default: 'ribbon-top-left' },
+        show: { type: Boolean, required: false, default: false }
+    });
 </script>
 
 <template>
-    <div class="ribbon ribbon-top-left"><span>ribbon</span></div>
+    <div
+        v-if="show"
+        class="ribbon" :class="variant + ' ' + position"
+    >
+        <span>{{ title }}</span>
+    </div>
 </template>
 
 <style scoped>
-    /*body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        background: #f0f0f0;
-    }*/
-    .box {
-        position: relative;
-        max-width: 600px;
-        width: 90%;
-        height: 400px;
-        background: #fff;
-        box-shadow: 0 0 15px rgba(0,0,0,.1);
-    }
-
-    /* common */
+    @import url(https://fonts.googleapis.com/css?family=Lato:700);
     .ribbon {
         width: 150px;
         height: 150px;
@@ -50,6 +44,15 @@
         text-shadow: 0 1px 1px rgba(0,0,0,.2);
         text-transform: uppercase;
         text-align: center;
+    }
+
+    .ribbon.primary::before,
+    .ribbon.primary::after {
+        border: 5px solid #771004;
+    }
+
+    .ribbon.primary span {
+        background-color: #D4230F;
     }
 
     /* top left*/
