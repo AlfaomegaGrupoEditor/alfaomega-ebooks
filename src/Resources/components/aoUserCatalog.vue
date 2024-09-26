@@ -19,7 +19,7 @@
             text: t('all_ebooks'),
             state: {
                 opened: false,
-                checked: true
+                checked: false
             },
             children: []
         },
@@ -87,20 +87,26 @@
 
     onMounted(() => {
         libraryStore.dispatchLoadCatalog();
-        //const urlParams = new URLSearchParams(window.location.search);
-        //const category = getValue(urlParams.get('category'), 'all_ebooks');
-        emit('selected', 'all_ebooks');
     });
 
     watch(catalog, (newVal) => {
-        nodes['all_ebooks']['children'] = newVal.root;
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = getValue(urlParams.get('category'), 'all_ebooks');
+
         Object.keys(newVal.tree).forEach((key) => {
             nodes[key] = {
                 id: key,
                 text: newVal.tree[key].title,
-                children: newVal.tree[key].children
+                children: newVal.tree[key].children,
+                state: {
+                    opened: key === category,
+                    checked: key === category
+                }
             };
         });
+
+        nodes['all_ebooks']['children'] = newVal.root;
+        //emit('selected', category);
     });
 
 </script>
