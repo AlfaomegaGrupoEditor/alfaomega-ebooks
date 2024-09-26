@@ -27,7 +27,7 @@
 
 <template>
     <BOffcanvas
-        v-if="data"
+        v-if="book"
         v-model="show"
         class="ao-sidebar"
         placement="end"
