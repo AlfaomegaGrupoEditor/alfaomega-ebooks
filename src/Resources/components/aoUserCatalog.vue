@@ -45,6 +45,21 @@
         }
     };
 
+    /**
+     * Opens the node and its parent nodes recursively.
+     * @param {string} id
+     */
+    const openNode = (id) => {
+        const parent = Object.keys(nodes).findIndex((key) => {
+            return nodes[key].children && nodes[key].children.includes(Number(id));
+        });
+        if (parent != -1) {
+            const parentId = Object.keys(nodes)[parent];
+            openNode(parentId);
+        }
+        nodes[id].state.opened = true;
+    };
+    
     const handleClick = (node) => {
         // TODO: filter by accessType on purchased and samples
         const traverse = (node) => {
@@ -92,6 +107,8 @@
     watch(catalog, (newVal) => {
         const urlParams = new URLSearchParams(window.location.search);
         const category = getValue(urlParams.get('category'), 'all_ebooks');
+        nodes['all_ebooks']['children'] = newVal.root;
+        nodes['all_ebooks']['state']['opened'] = true;
 
         Object.keys(newVal.tree).forEach((key) => {
             nodes[key] = {
@@ -99,14 +116,14 @@
                 text: newVal.tree[key].title,
                 children: newVal.tree[key].children,
                 state: {
-                    opened: key === category,
-                    checked: key === category
+                    opened: false,
+                    checked: false
                 }
             };
         });
 
-        nodes['all_ebooks']['children'] = newVal.root;
-        //emit('selected', category);
+        openNode(category);
+        emit('selected', nodes[category]);
     });
 
 </script>
