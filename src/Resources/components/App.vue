@@ -60,6 +60,7 @@
                 type: sessionMessage.type,
                 message: sessionMessage.message
             });
+            console.error(sessionMessage);
             sessionStorage.removeItem('alfaomega_ebooks_msg');
         }
 
