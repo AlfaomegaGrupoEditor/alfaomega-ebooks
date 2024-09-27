@@ -138,13 +138,29 @@ class EbookManager extends AbstractManager
      */
     public function download(int $ebookId, string $downloadId, bool $purchase = true): string
     {
-        if (!$purchase) {
-            $valid = $this->validateAccess($ebookId, $downloadId, 'download');
+        if (!$purchase && !$this->validateAccess($ebookId, $downloadId, 'download')) {
+            return '';
         }
 
         $eBook = $this->ebookPost->get($ebookId);
         if (empty($eBook)) {
             return '';
+        }
+
+        // If the download is not from a purchase, retrieve the downloadId
+        // from the user downloads using the order_id and product_id
+        $accessPost = $this->accessPost->get($downloadId);
+        if (!$purchase && !empty($accessPost['orderId'])) {
+            // TODO: Not tested yet
+            $customerDownloads = Service::make()
+                ->wooCommerce()
+                ->getCustomerDownloads(get_current_user_id());
+            foreach ($customerDownloads as $download) {
+                if ($download->product_id == $eBook['product_id']) {
+                    $downloadId = $download->download_id;
+                    break;
+                }
+            }
         }
 
         $filePath = ALFAOMEGA_EBOOKS_PATH . "downloads/{$eBook['isbn']}_{$downloadId}.acsm";
