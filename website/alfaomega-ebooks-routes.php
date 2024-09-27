@@ -33,6 +33,31 @@ switch (get_query_var('param_1')) {
         }
 
         exit;
+    case 'download':
+        if (!is_user_logged_in()) {
+            $_SESSION['alfaomega_ebooks_msg'] = [
+                'type' => 'error',
+                'message' => esc_html__('Please log in to download ebooks.', 'alfaomega-ebooks')
+            ];
+            wp_safe_redirect( $redirectUrl);
+            exit;
+        }
+
+        try {
+            // $service = new Alfaomega_Ebooks_Service();
+            // $service->readEbook($ebookId, $_GET['key'] ?? '');
+            $ebookId = intval(get_query_var('param_2'));
+            Service::make()->ebooks()
+                ->download($ebookId, $_GET['key'] ?? '');
+        } catch (Exception $e) {
+            $_SESSION['alfaomega_ebooks_msg'] = [
+                'type' => 'error',
+                'message' => esc_html__($e->getMessage(), 'alfaomega-ebooks')
+            ];
+            wp_safe_redirect( $redirectUrl);
+        }
+
+        exit;
     case 'api':
         $routeManager = new RouteManager();
         $routeManager->callEndpoint(get_query_var('param_2'));

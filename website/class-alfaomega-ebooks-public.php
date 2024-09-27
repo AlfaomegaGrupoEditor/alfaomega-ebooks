@@ -122,7 +122,7 @@ class Alfaomega_Ebooks_Public {
         new Alfaomega_Ebooks_Custom_Route(
             'alfaomega-ebooks/(.+?)/(.+?)/?$',
             ['param_1', 'param_2'],
-            ALFAOMEGA_EBOOKS_PATH . 'assets/alfaomega-ebooks-routes.php',
+            ALFAOMEGA_EBOOKS_PATH . 'website/alfaomega-ebooks-routes.php',
             true
         );
     }

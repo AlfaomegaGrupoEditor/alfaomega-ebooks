@@ -103,7 +103,7 @@ class Alfaomega_Ebooks {
         /**
          * The class responsible for defining all actions that occur in the public-facing side of the site.
          */
-        require_once plugin_dir_path(dirname(__FILE__)) . 'assets/class-alfaomega-ebooks-public.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'website/class-alfaomega-ebooks-public.php';
 
         /**
          * The class responsible for defining the Custom Post Type alfaomega-ebook.
