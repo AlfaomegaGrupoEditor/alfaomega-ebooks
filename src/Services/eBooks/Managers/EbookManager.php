@@ -163,7 +163,8 @@ class EbookManager extends AbstractManager
             }
         }
 
-        $filePath = ALFAOMEGA_EBOOKS_PATH . "downloads/{$eBook['isbn']}_{$downloadId}.acsm";
+        $filename = md5("{$eBook['isbn']}_{$downloadId}") . '.acsm';
+        $filePath = ALFAOMEGA_EBOOKS_PATH . "downloads/$filename";
         if (file_exists($filePath)) {
             return $filePath;
         }

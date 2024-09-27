@@ -3,3 +3,4 @@
 .phpunit.result.cache
 /packages/
 /src/node_modules/
+/downloads/
