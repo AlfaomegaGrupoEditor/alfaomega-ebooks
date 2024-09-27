@@ -402,12 +402,12 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
 
             // Add the read URL
             if ($result->read) {
-                $result->read_url = site_url("alfaomega-ebooks/read/{$result->ebookId}?access={$result->ID}");
+                $result->readUrl = site_url("alfaomega-ebooks/read/{$result->ebookId}?access={$result->ID}");
             }
 
             // Add the download URL
             if ($result->download) {
-                $result->download_url = site_url("alfaomega-ebooks/download/{$result->ebookId}?access={$result->ID}");
+                $result->downloadUrl = site_url("alfaomega-ebooks/download/{$result->ebookId}?access={$result->ID}");
             }
 
             // format dates

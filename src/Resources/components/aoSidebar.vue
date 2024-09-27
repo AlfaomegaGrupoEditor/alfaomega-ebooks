@@ -16,6 +16,18 @@
         emit('update:show', !show.value);
     };
 
+    const handleDownload = () => {
+        if (book.value?.downloadUrl) {
+            window.open(book.value.downloadUrl, '_self');
+        }
+    };
+
+    const handleReadOnline = () => {
+        if (book.value?.readUrl) {
+            window.open(book.value.readUrl, '_self');
+        }
+    };
+
     watch(() => props.show, (newVal) => {
         show.value = newVal;
     });
@@ -60,14 +72,14 @@
                 icon="fa-file-pdf"
                 :caption="$t('download')"
                 :disabled="!book.download"
-                @click="() => window.open(book.downloadUrl, '_self')"
+                @click="handleDownload"
             />
 
             <ao-button
                 icon="fa-wifi"
                 :caption="$t('read_online')"
                 :disabled="!book.read"
-                @click="() => window.open(book.readUrl, '_blank')"
+                @click="handleReadOnline"
             />
         </div>
 

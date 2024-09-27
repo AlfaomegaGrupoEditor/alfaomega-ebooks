@@ -130,12 +130,17 @@ class EbookManager extends AbstractManager
      *
      * @param int $ebookId       The ID of the eBook to download.
      * @param string $downloadId The download ID of the eBook.
+     * @param bool $purchase     The request is from the purchase link.
      *
      * @return string Returns the file path of the downloaded eBook if the download is successful, or an empty string if the download is unsuccessful.
      * @throws \Exception
      */
-    public function download(int $ebookId, string $downloadId): string
+    public function download(int $ebookId, string $downloadId, bool $purchase = true): string
     {
+        if (!$purchase) {
+            $valid = $this->validateAccess($ebookId, $downloadId, 'download');
+        }
+
         $eBook = $this->ebookPost->get($ebookId);
         if (empty($eBook)) {
             return '';
@@ -170,13 +175,16 @@ class EbookManager extends AbstractManager
      *
      * @param int $ebookId       The ID of the eBook to read.
      * @param string $downloadId The download ID of the eBook.
+     * @param bool $purchase     The request is from the purchase link.
      *
      * @return void
      * @throws \Exception
      */
-    public function read(int $ebookId, string $key): void
+    public function read(int $ebookId, string $key, bool $purchase = true): void
     {
-        $this->validate($ebookId, $key);
+        $valid = $purchase
+            ? $this->validate($ebookId, $key)
+            : $this->validateAccess($ebookId, $key, 'read');
 
         $eBook = $this->ebookPost->get($ebookId);
         if (empty($eBook)) {
@@ -227,6 +235,28 @@ class EbookManager extends AbstractManager
         if (empty($requestedDownload)) {
             throw new Exception(esc_html__('eBook download not available, please check order status', 'alfaomega-ebooks'));
         }
+
+        return true;
+    }
+
+    /**
+     * Validates access to an eBook checking the access post.
+     * @param int $ebookId
+     * @param int $accessId
+     * @param $accessType
+     *
+     * @return bool
+     */
+    public function validateAccess(int $ebookId, int $accessId, $accessType): bool
+    {
+        // TODO: Implement validateAccess() method.
+        // user is logged in and match the access post author
+        // the access parent_id matches the ebook id
+        // the access type is allowed
+        // the access status is active or created
+        // check valid until and expire the access if necessary
+        // return true if all conditions are met
+        // update the access_at|download_at value
 
         return true;
     }
