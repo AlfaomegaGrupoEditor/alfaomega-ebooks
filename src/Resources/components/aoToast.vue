@@ -24,10 +24,13 @@
                 return 'fa-info-circle';
         }
     });
+    const stripedContent = computed(() => {
+        const unescapedStr = _.unescape(props.content);
+        return unescapedStr.replace(/<\/?[^>]+(>|$)/g, '');
+    });
 
     watch(() => props.active, (newVal) => {
-        const unescapedStr = _.unescape(newVal);
-        showToast.value = unescapedStr.replace(/<\/?[^>]+(>|$)/g, '');
+        showToast.value = newVal;
     });
 
 </script>
@@ -46,7 +49,7 @@
                     <div class="col">
                         <div class="fs-8 fw-bold" v-if="title"> {{ title }}</div>
                         <span class="fs-8">
-                            {{ content }}
+                            {{ stripedContent }}
                         </span>
                     </div>
                 </div>
