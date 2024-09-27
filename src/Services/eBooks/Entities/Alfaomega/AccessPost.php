@@ -339,7 +339,10 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         }
 
         // Add LIMIT and OFFSET for pagination
-        $dataSql = "SELECT p.ID, p.post_title as title, p.post_date as addedAt,
+        $dataSql = "SELECT p.ID, 
+                        p.post_title as title, 
+                        p.post_date as addedAt,
+                        p.post_parent as ebookId,
                         pm_cover.meta_value as cover,
                         pm_download.meta_value as download,
                         '' as download_url,
@@ -374,7 +377,13 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             $result->title = strtoupper($result->title);
 
             // Add the post URL
-            $result->url = get_permalink($result->ID);
+            $ebookPost = Service::make()->ebooks()
+                ->ebookPost()
+                ->get($result->ebookId);
+            if (!empty($ebookPost)) {
+                $product = wc_get_product($ebookPost['product_id']);
+                $result->url = $product ? $product->get_permalink() : '';
+            }
 
             // check the expiration dade
             if (in_array($result->status, ['created', 'active'])) {
@@ -395,6 +404,8 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             if ($result->read) {
                 //$results[$key]->read_url = site_url("alfaomega-ebooks/read/{$ebookId}?key={$downloadId}");;
                 $result->read_url = site_url("alfaomega-ebooks/read/EBOOK-ID?key=DOWNLOAD-ID");
+
+                // https://staging.alfaomega.com.mx/alfaomega-ebooks/read/35007?key=7c25126e-33e7-4f63-afea-192300f11ed4
             }
 
             // Add the download URL
@@ -402,6 +413,8 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                 $result->download_url = $result->accessType === 'purchased'
                     ? site_url("alfaomega-ebooks/download/DONWLOAD-URL")
                     : site_url("alfaomega-ebooks/download/EBOOK-ID?key=DOWNLOAD-ID");
+
+                // https://staging.alfaomega.com.mx/?download_file=35085&order=wc_order_X1KdZkvsvP9qP&email=livan2r%40gmail.com&key=7c25126e-33e7-4f63-afea-192300f11ed4
             }
 
             // format dates

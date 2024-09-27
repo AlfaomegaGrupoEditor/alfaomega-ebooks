@@ -89,7 +89,7 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
                     $categories = wp_list_pluck($categories, 'term_id');
                 }
                 $post = get_post($product_id);
-                $details = apply_filters( 'woocommerce_short_description', $post->post_excerpt );;
+                $details = apply_filters( 'woocommerce_short_description', $post->post_excerpt );
             }
         }
         $this->meta = [
@@ -102,6 +102,7 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
             'ebook_url'   => get_post_meta($postId, 'alfaomega_ebook_url', true),
             'date'        => $post->post_date,
             'product_sku' => $product_sku,
+            'product_id'  => $product_id,
             'cover'       => $thumbnail_url,
             'details'     => $details,
             'categories'  => $categories ?? [],
