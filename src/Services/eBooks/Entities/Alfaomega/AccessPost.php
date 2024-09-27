@@ -69,6 +69,40 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
     }
 
     /**
+     * Find an eBook access post by eBook ID and user ID.
+     * This method finds an eBook access post by eBook ID and user ID.
+     * It returns an associative array containing the post metadata if the post exists, or null if it doesn't.
+     *
+     * @param int $eBookId The ID of the eBook post.
+     * @param int $userId  The ID of the user post.
+     *
+     * @return array|null An associative array containing the post metadata or null if the post doesn't exist.
+     * @throws \Exception
+     */
+    public function find(int $eBookId, int $userId): ?array
+    {
+        global $wpdb;
+
+        $query = $wpdb->prepare("
+                SELECT p.ID
+                FROM {$wpdb->posts} p
+                LEFT JOIN {$wpdb->postmeta} pm_status ON (p.ID = pm_status.post_id AND pm_status.meta_key = 'alfaomega_access_status')
+                WHERE p.post_type = 'alfaomega-access'
+                  AND p.post_status = 'publish'
+                  AND p.post_author = %d
+                  AND p.post_parent = %d
+                  AND pm_status.meta_value IN ('active', 'created')
+                LIMIT 1
+            ", $userId, $eBookId);
+
+        $postId = $wpdb->get_var($query);
+        if (empty($postId)) {
+            return null;
+        }
+
+        return $this->get($postId);
+    }
+    /**
      * Updates or creates a new eBook post.
      *
      * This method updates an existing eBook post or creates a new one if it doesn't exist.
@@ -247,6 +281,32 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             'expired',
             get_post_meta($postId, 'alfaomega_access_status', true)
         );
+    }
+
+    /**
+     * Mark an eBook as read or downloaded.
+     * This method marks an eBook as read by updating the 'alfaomega_access_read' metadata field.
+     *
+     * @param int $postId The ID of the post to mark as read.
+     * @param string $accessType The type of access to mark (e.g., 'read', 'download').
+     *
+     * @return void
+     */
+    public function touch(int $postId, string $accessType = 'read'): void
+    {
+        $accessType === 'read'
+            ? update_post_meta(
+                $postId,
+                'alfaomega_access_at',
+                Carbon::now()->toDateTimeString(),
+                get_post_meta($postId, 'alfaomega_access_at', true)
+            )
+            : update_post_meta(
+                $postId,
+                'alfaomega_access_download_at',
+                Carbon::now()->toDateTimeString(),
+                get_post_meta($postId, 'alfaomega_access_download_at', true)
+            );
     }
 
     /**

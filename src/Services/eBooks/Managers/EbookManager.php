@@ -9,6 +9,7 @@ use AlfaomegaEbooks\Services\eBooks\Entities\Alfaomega\SamplePost;
 use AlfaomegaEbooks\Services\eBooks\Process\ImportEbook;
 use AlfaomegaEbooks\Services\eBooks\Process\RefreshEbook;
 use AlfaomegaEbooks\Services\eBooks\Service;
+use Carbon\Carbon;
 use Exception;
 use WC_Product_Query;
 use WP_Query;
@@ -241,22 +242,49 @@ class EbookManager extends AbstractManager
 
     /**
      * Validates access to an eBook checking the access post.
+     *
      * @param int $ebookId
      * @param int $accessId
-     * @param $accessType
+     * @param bool $purchase
      *
      * @return bool
+     * @throws \Exception
      */
-    public function validateAccess(int $ebookId, string $accessId, $accessType): bool
+    public function validateAccess(int $ebookId, string $accessId = '', bool $purchase = true): bool
     {
-        // TODO: Implement validateAccess() method.
-        // user is logged in and match the access post author
-        // the access parent_id matches the ebook id
-        // the access type is allowed
-        // the access status is active or created
-        // check valid until and expire the access if necessary
-        // return true if all conditions are met
-        // update the access_at|download_at value
+        // user should be logged in
+        $userId = get_current_user_id();
+        if (empty($userId)) {
+            return false;
+        }
+
+        // ebook should exist
+        $bookPost = $this->ebookPost->get($ebookId);
+        if (empty($bookPost)) {
+            return false;
+        }
+
+        // access should exist
+        $accessPost = empty($accessId)
+            ? $this->accessPost->find($ebookId, $userId)
+            : $this->accessPost->get($accessId);
+        if (empty($accessPost)) {
+            return false;
+        }
+
+        if (!$accessPost['read']) {
+            return false;
+        }
+
+        // Check valid until and expire the access if necessary
+        if (!empty($accessPost['validUntil'])
+            && Carbon::parse($accessPost['validUntil'])->isPast()) {
+            $this->accessPost->expire($accessPost['id']);
+            return false;
+        }
+
+        $this->accessPost
+            ->touch($accessPost['id'], $purchase ? 'download' : 'read');
 
         return true;
     }

@@ -23,8 +23,6 @@ switch (get_query_var('param_1')) {
         }
 
         try {
-            // $service = new Alfaomega_Ebooks_Service();
-            // $service->readEbook($ebookId, $_GET['key'] ?? '');
             $ebookId = intval(get_query_var('param_2'));
             $purchase = isset($_GET['key']);
             $accessKey = $purchase ?  $_GET['key'] : ($_GET['access'] ?? '');
@@ -49,8 +47,6 @@ switch (get_query_var('param_1')) {
         }
 
         try {
-            // $service = new Alfaomega_Ebooks_Service();
-            // $service->readEbook($ebookId, $_GET['key'] ?? '');
             $ebookId = intval(get_query_var('param_2'));
             $purchase = isset($_GET['key']);
             $accessKey = $purchase ?  $_GET['key'] : ($_GET['access'] ?? '');
