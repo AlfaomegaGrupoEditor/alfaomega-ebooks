@@ -402,19 +402,12 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
 
             // Add the read URL
             if ($result->read) {
-                //$results[$key]->read_url = site_url("alfaomega-ebooks/read/{$ebookId}?key={$downloadId}");;
-                $result->read_url = site_url("alfaomega-ebooks/read/EBOOK-ID?key=DOWNLOAD-ID");
-
-                // https://staging.alfaomega.com.mx/alfaomega-ebooks/read/35007?key=7c25126e-33e7-4f63-afea-192300f11ed4
+                $result->read_url = site_url("alfaomega-ebooks/read/{$result->ebookId}?access={$result->ID}");
             }
 
             // Add the download URL
             if ($result->download) {
-                $result->download_url = $result->accessType === 'purchased'
-                    ? site_url("alfaomega-ebooks/download/DONWLOAD-URL")
-                    : site_url("alfaomega-ebooks/download/EBOOK-ID?key=DOWNLOAD-ID");
-
-                // https://staging.alfaomega.com.mx/?download_file=35085&order=wc_order_X1KdZkvsvP9qP&email=livan2r%40gmail.com&key=7c25126e-33e7-4f63-afea-192300f11ed4
+                $result->download_url = site_url("alfaomega-ebooks/download/{$result->ebookId}?access={$result->ID}");
             }
 
             // format dates
