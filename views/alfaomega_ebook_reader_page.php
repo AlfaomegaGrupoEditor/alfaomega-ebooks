@@ -3,7 +3,7 @@
     try {
         $purchase = isset($_GET['key']);
         $service = \AlfaomegaEbooks\Services\eBooks\Service::make()->ebooks();
-        $accessKey = $purchase ?  $_GET['key'] : $_GET['access'];
+        $accessKey = $purchase ?  $_GET['key'] : ($_GET['access'] ?? '');
 
         $path = explode('/', trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/'));
         $eBookId = intval($path[array_key_last($path)]);

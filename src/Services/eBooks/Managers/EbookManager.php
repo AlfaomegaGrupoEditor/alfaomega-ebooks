@@ -247,7 +247,7 @@ class EbookManager extends AbstractManager
      *
      * @return bool
      */
-    public function validateAccess(int $ebookId, int $accessId, $accessType): bool
+    public function validateAccess(int $ebookId, string $accessId, $accessType): bool
     {
         // TODO: Implement validateAccess() method.
         // user is logged in and match the access post author

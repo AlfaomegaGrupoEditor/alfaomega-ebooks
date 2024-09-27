@@ -27,9 +27,8 @@ switch (get_query_var('param_1')) {
             // $service->readEbook($ebookId, $_GET['key'] ?? '');
             $ebookId = intval(get_query_var('param_2'));
             $purchase = isset($_GET['key']);
-            $accessKey = $purchase ?  $_GET['key'] : $_GET['access'];
-            Service::make()->ebooks()
-                ->read($ebookId, $accessKey, $purchase);
+            $accessKey = $purchase ?  $_GET['key'] : ($_GET['access'] ?? '');
+            Service::make()->ebooks()->read($ebookId, $accessKey, $purchase);
         } catch (Exception $e) {
             $_SESSION['alfaomega_ebooks_msg'] = [
                 'type' => 'error',
@@ -54,9 +53,8 @@ switch (get_query_var('param_1')) {
             // $service->readEbook($ebookId, $_GET['key'] ?? '');
             $ebookId = intval(get_query_var('param_2'));
             $purchase = isset($_GET['key']);
-            $accessKey = $purchase ?  $_GET['key'] : $_GET['access'];
-            Service::make()->ebooks()
-                ->download($ebookId, $accessKey, $accessKey);
+            $accessKey = $purchase ?  $_GET['key'] : ($_GET['access'] ?? '');
+            Service::make()->ebooks()->download($ebookId, $accessKey, $accessKey);
         } catch (Exception $e) {
             $_SESSION['alfaomega_ebooks_msg'] = [
                 'type' => 'error',
