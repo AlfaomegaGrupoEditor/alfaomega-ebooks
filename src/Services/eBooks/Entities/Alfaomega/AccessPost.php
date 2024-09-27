@@ -412,8 +412,7 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
 
             // format dates
             $result->addedAt = Carbon::parse($result->addedAt)->format('d/m/Y');
-            $result->validUntil = empty($result->validUntil)
-                ? '-'
+            $result->validUntil = empty($result->validUntil) ? '-'
                 : Carbon::parse($result->validUntil)->format('d/m/Y');
         }
 
