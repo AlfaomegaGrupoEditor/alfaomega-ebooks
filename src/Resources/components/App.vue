@@ -54,6 +54,15 @@
     const init = () => {
         appStore.checkApi();
 
+        const sessionMessage = JSON.parse(sessionStorage.getItem('alfaomega_ebooks_msg') || '{}');
+        if (sessionMessage && sessionMessage.type && sessionMessage.message) {
+            notificationHandler({
+                type: sessionMessage.type,
+                message: sessionMessage.message
+            });
+            sessionStorage.removeItem('alfaomega_ebooks_msg');
+        }
+
         const urlParams = new URLSearchParams(window.location.search);
         searchQuery.value = {
             filter: {

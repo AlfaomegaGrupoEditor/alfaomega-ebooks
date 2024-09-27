@@ -88,7 +88,7 @@ div.ao-sidebar .offcanvas-title {
 }
 
 .ao-toast {
-    z-index: 200000;
+    z-index: 9999999999;
 }
 
 .ao-ebooks .pagination {

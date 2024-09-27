@@ -1,25 +1,52 @@
 <?php
-    $service = \AlfaomegaEbooks\Services\eBooks\Service::make()->ebooks();
-    $key = $_GET['key'] ?? '';
-    $path = explode('/', trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/'));
-    $eBookId = intval($path[array_key_last($path)]);
-    if (empty($eBookId)) {
-        array_pop($path);
+    $purchase = null;
+    try {
+        $purchase = isset($_GET['key']);
+        $service = \AlfaomegaEbooks\Services\eBooks\Service::make()->ebooks();
+        $accessKey = $purchase ?  $_GET['key'] : $_GET['access'];
+
+        $path = explode('/', trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/'));
         $eBookId = intval($path[array_key_last($path)]);
+        if (empty($eBookId)) {
+            array_pop($path);
+            $eBookId = intval($path[array_key_last($path)]);
+        }
+        $error = null;
+        $data = $service->getReaderData($eBookId, $accessKey, $purchase);
+    } catch (Exception $e) {
+        $purchase = is_null($purchase) || $purchase;
+        $error = $e->getMessage();
+        $data = null;
     }
-    $data = $service->getReaderData($eBookId, $key);
 ?>
 <?php if(empty($data)):?>
     <?php
-        $_SESSION['alfaomega_ebooks_msg'] = [
-            'type' => 'error',
-            'message' => esc_html__('Online eBook not available, please check order status', 'alfaomega-ebooks')
+        $message = [
+            'type'          => 'error',
+            'message'       => esc_html__(
+                'Online eBook not available, please check order status or contact support.',
+                'alfaomega-ebooks'),
+            'error_details' => json_decode($error),
+            'referer'       => $_SERVER['HTTP_REFERER'],
         ];
-        $redirectUrl = is_user_logged_in()
-            ? get_permalink( get_option('woocommerce_myaccount_page_id') ) . '/downloads'
-            : get_permalink( get_option('woocommerce_myaccount_page_id') );
-        wp_safe_redirect($redirectUrl );
+        $_SESSION['alfaomega_ebooks_msg'] = $message;
+
+        if ($purchase) {
+            $redirectUrl = is_user_logged_in()
+                ? get_permalink( get_option('woocommerce_myaccount_page_id') ) . '/downloads'
+                : get_permalink( get_option('woocommerce_myaccount_page_id') );
+        } else {
+            $myEbooksPage = get_page_by_path('my-ao-ebooks');
+            $redirectUrl = get_permalink($myEbooksPage->ID);
+        }
+        if (empty($redirectUrl)) {
+            $redirectUrl = $redirectUrl = home_url();;
+        }
     ?>
+    <script type="text/javascript">
+        sessionStorage.setItem('alfaomega_ebooks_msg', '<?php echo json_encode($message); ?>');
+        window.location.href = "<?php echo $redirectUrl; ?>";
+    </script>
 <?php else: ?>
     <head>
         <meta charset="utf-8">

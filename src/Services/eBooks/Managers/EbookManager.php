@@ -309,18 +309,20 @@ class EbookManager extends AbstractManager
     }
 
     /**
-     * Retrieves the post metadata for an eBook.
-     * This method retrieves the post metadata for an eBook by its ID.
-     * It retrieves the post metadata for the eBook post type, including the title, author, ISBN, PDF ID, eBook URL, date, and tag ID.
+     * Retrieves the reader data for an eBook.
+     * @param int $ebookId
+     * @param string $key
+     * @param bool $purchase
      *
-     * @param int $postId The ID of the eBook to retrieve the post metadata for.
-     *
-     * @return array|null Returns an associative array containing the post metadata for the eBook if the post is found, or null if the post is not found.
+     * @return array|null
      * @throws \Exception
      */
-    public function getReaderData(int $ebookId, string $key): ?array
+    public function getReaderData(int $ebookId, string $key, bool $purchase = true): ?array
     {
-        if (!$this->validate($ebookId, $key)) {
+        $validate = $purchase
+            ? $this->validate($ebookId, $key)
+            : $this->validateAccess($ebookId, $key, 'read');
+        if (!$validate) {
             return null;
         };
 
