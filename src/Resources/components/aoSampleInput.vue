@@ -25,7 +25,9 @@
                     variant: 'success',
                     title: t('success')
                 } as ToastType);
-                await libraryStore.dispatchLoadCatalog();
+                code.value = '';
+                processing.value = false;
+                setTimeout(() => window.location.reload(), 1000);
             } else {
                 emit('apply', {
                     content: response.message != null
@@ -35,9 +37,10 @@
                     title: t('failed')
                 } as ToastType);
                 code.value = '';
+                processing.value = false;
             }
-            processing.value = false;
         } catch (e) {
+            code.value = '';
             processing.value = false;
         }
     };
