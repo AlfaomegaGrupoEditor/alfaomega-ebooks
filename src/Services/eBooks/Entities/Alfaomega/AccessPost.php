@@ -284,6 +284,23 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
     }
 
     /**
+     * Activate the access to an eBook.
+     * @param int $postId
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function activate(int $postId): void
+    {
+        update_post_meta(
+            $postId,
+            'alfaomega_access_status',
+            'active',
+            get_post_meta($postId, 'alfaomega_access_status', true)
+        );
+    }
+
+    /**
      * Mark an eBook as read or downloaded.
      * This method marks an eBook as read by updating the 'alfaomega_access_read' metadata field.
      *

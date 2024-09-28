@@ -293,11 +293,14 @@ class EbookManager extends AbstractManager
             return false;
         }
 
-        // Check valid until and expire the access if necessary
+        // Check valid until and expire|activate the access if necessary
         if (!empty($accessPost['validUntil'])
             && Carbon::parse($accessPost['validUntil'])->isPast()) {
             $this->accessPost->expire($accessPost['id']);
+
             return false;
+        } elseif ($accessPost['status'] === 'created') {
+            $this->accessPost->activate($accessPost['id']);
         }
 
         $this->accessPost
