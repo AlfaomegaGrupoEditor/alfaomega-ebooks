@@ -148,9 +148,7 @@ class AlfaomegaAccessTest extends WordpressTest
         return [
             'catalog' => [
                 'userId' => 1,
-                'expected' => [
-
-                ],
+                'expected' => [],
             ],
         ];
     }
