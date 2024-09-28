@@ -16,14 +16,25 @@
     const libraryStore = useLibraryStore();
     const books = computed(() => libraryStore.getBooks);
     const meta = computed(() => libraryStore.getMeta);
+    const query = computed(() => libraryStore.getQuery);
     const showSidebar = ref(false);
     const book = ref<BookType | null>(null);
-
     const currentPage = ref(meta.page);
+    const processing = ref(false);
 
     const toggleSidebar = (selectedBook: BookType) => {
         showSidebar.value = !showSidebar.value;
         book.value = selectedBook;
+    };
+
+    const onPageChange = async (event, pageNumber) => {
+        const urlParams = new URLSearchParams(window.location.search);
+
+        const newQuery = {
+            ...query.value,
+            page: pageNumber
+        };
+        await libraryStore.dispatchSearchBooks(newQuery);
     };
 
     watch(() => props.query, async (newVal) => {
@@ -44,17 +55,16 @@
             </div>
             <div class="mt-5 d-flex flex-row justify-content-center">
                 <BPagination
-                    v-if="meta.pages > 1"
-                    v-model:currentPage="currentPage"
-                    :totalRows="meta.total"
-                    :perPage="meta.perPage"
-                    limit="3"
+                    v-if="meta.pages > 1 || processing"
+                    v-model="currentPage"
+                    :total-rows="meta.total"
+                    :per-page="query.filter.perPage"
                     :prev-text="$t('previous')"
                     :next-text="$t('next')"
                     :hide-goto-end-buttons="true"
                     :hide-goto-start-buttons="true"
                     pills
-                    @change="onPageChange"
+                    @page-click="onPageChange"
                 />
             </div>
             <ao-sidebar

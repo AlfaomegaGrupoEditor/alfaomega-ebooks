@@ -506,7 +506,7 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         return [
             'data' => $results,
             'meta' => [
-                'total'        => $total,
+                'total'        => intval($total),
                 'pages'        => ceil($total / $perPage),
                 'current_page' => $page,
             ],
