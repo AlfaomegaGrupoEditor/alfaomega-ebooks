@@ -281,7 +281,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         $query->the_post();
         $postId = get_the_ID();
         $samplePost = $this->get($postId);
-        if ($samplePost['status'] !== 'created') {
+        if (!in_array($samplePost['status'], ['created', 'sent'])) {
             match ($samplePost['status']) {
                 'redeemed' => throw new Exception(esc_html__('Code already redeemed.', 'alfaomega-ebooks')),
                 'expired' => throw new Exception(esc_html__('Code expired.', 'alfaomega-ebooks')),
