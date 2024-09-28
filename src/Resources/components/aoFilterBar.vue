@@ -27,7 +27,7 @@
     const accessStatus = ref(null);
     const accessStatusOptions = [
         {value: null, text: t('status')},
-        {value: 'created', text: t('created')},
+        //{value: 'created', text: t('created')},
         {value: 'active', text: t('active')},
         {value: 'expired', text: t('expired')},
         {value: 'cancelled', text: t('cancelled')}

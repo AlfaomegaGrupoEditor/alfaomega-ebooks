@@ -389,7 +389,9 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         }
 
         if ($status) {
-            $baseSql .= " AND status.meta_value = %s";
+            $baseSql .= $status === 'active'
+                ? " AND status.meta_value IN (%s, 'created')"
+                : " AND status.meta_value = %s";
             $queryParams[] = $status;
         }
 

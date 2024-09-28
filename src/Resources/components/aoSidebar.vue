@@ -13,21 +13,26 @@
     const emit = defineEmits(['update:show']);
     const show = ref(props.show);
     const book = ref<BookType | null>(null);
+    const processing = ref(false);
 
     const handleClose = () => {
         emit('update:show', !show.value);
     };
 
     const handleDownload = () => {
+        processing.value = true;
         if (book.value?.downloadUrl) {
             window.open(book.value.downloadUrl, '_self');
         }
+        processing.value = false;
     };
 
     const handleReadOnline = () => {
+        processing.value = true;
         if (book.value?.readUrl) {
             window.open(book.value.readUrl, '_self');
         }
+        processing.value = false;
     };
 
     watch(() => props.show, (newVal) => {
@@ -76,6 +81,7 @@
                 :disabled="!book.download"
                 @click="handleDownload"
                 :tooltip="$t('download_tooltip')"
+                :loading="processing"
             />
 
             <ao-button
@@ -84,6 +90,7 @@
                 :disabled="!book.read"
                 @click="handleReadOnline"
                 :tooltip="$t('read_tooltip')"
+                :loading="processing"
             />
         </div>
 

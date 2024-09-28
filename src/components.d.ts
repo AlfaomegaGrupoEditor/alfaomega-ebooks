@@ -24,6 +24,7 @@ declare module 'vue' {
     BPagination: typeof import('bootstrap-vue-next/components/BPagination')['BPagination']
     BPlaceholderCard: typeof import('bootstrap-vue-next/components/BPlaceholder')['BPlaceholderCard']
     BRow: typeof import('bootstrap-vue-next/components/BContainer')['BRow']
+    BSpinner: typeof import('bootstrap-vue-next/components/BSpinner')['BSpinner']
     BToast: typeof import('bootstrap-vue-next/components/BToast')['BToast']
   }
   export interface ComponentCustomProperties {

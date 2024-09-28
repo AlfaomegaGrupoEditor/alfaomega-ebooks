@@ -9,11 +9,13 @@
     const {t} = useI18n();
 
     const code = ref('');
+    const processing = ref(false);
     const invalidCode = computed(() => !/^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code.value));
 
     const test = () => { appStore.testLoading(); };
 
     const handleClick = async () => {
+        processing.value = true;
         const response = await API.library.applyCode(code.value);
         if (response.status === 'success') {
             emit('apply', {
@@ -29,7 +31,9 @@
                 variant: 'primary',
                 title: t('failed')
             } as ToastType);
+            code.value = '';
         }
+        processing.value = false;
     };
 
 </script>
@@ -51,7 +55,7 @@
             <BFormInput
                 class="form-control-sm"
                 v-model="code"
-                placeholder="XXXX-XXXX-XXXX"
+                :placeholder="t('paste_code_here')"
                 type="text"
             />
         </div>
@@ -65,6 +69,7 @@
                     :disabled="invalidCode"
                     size="sm"
                     @click="handleClick"
+                    :loading="processing"
                 />
             </div>
         </div>
