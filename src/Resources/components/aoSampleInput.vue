@@ -4,10 +4,11 @@
     import {ToastType} from '@/types';
     import {useI18n} from 'vue-i18n';
     import {API} from '@/services';
+    import {useLibraryStore} from '@/stores';
 
     const emit = defineEmits<{ apply: (payload: ToastType) => void }>();
     const {t} = useI18n();
-
+    const libraryStore = useLibraryStore();
     const code = ref('');
     const processing = ref(false);
     const invalidCode = computed(() => !/^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code.value));
@@ -16,24 +17,29 @@
 
     const handleClick = async () => {
         processing.value = true;
-        const response = await API.library.applyCode(code.value);
-        if (response.status === 'success') {
-            emit('apply', {
-                content: response.message,
-                variant: 'success',
-                title: t('success')
-            } as ToastType);
-        } else {
-            emit('apply', {
-                content: response.message != null
-                    ? response.message
-                    : t('something_went_wrong'),
-                variant: 'primary',
-                title: t('failed')
-            } as ToastType);
-            code.value = '';
+        try {
+            const response = await API.library.applyCode(code.value);
+            if (response.status === 'success') {
+                emit('apply', {
+                    content: response.message,
+                    variant: 'success',
+                    title: t('success')
+                } as ToastType);
+                await libraryStore.dispatchLoadCatalog();
+            } else {
+                emit('apply', {
+                    content: response.message != null
+                        ? response.message
+                        : t('something_went_wrong'),
+                    variant: 'primary',
+                    title: t('failed')
+                } as ToastType);
+                code.value = '';
+            }
+            processing.value = false;
+        } catch (e) {
+            processing.value = false;
         }
-        processing.value = false;
     };
 
 </script>
@@ -53,7 +59,7 @@
 
         <div class="mb-4">
             <BFormInput
-                class="form-control-sm"
+                class="form-control-sm fw-bold text-primary"
                 v-model="code"
                 :placeholder="t('paste_code_here')"
                 type="text"
