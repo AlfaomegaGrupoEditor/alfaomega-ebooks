@@ -2,6 +2,7 @@ import {defineStore} from 'pinia';
 import type {State} from '@/services/libraries/types';
 import {API} from '@/services';
 import {BooksQueryType} from '@/types';
+import {eventBus} from '@/events';
 
 export const useLibraryStore = defineStore('libraryStore', {
     state: (): State => (
@@ -71,5 +72,25 @@ export const useLibraryStore = defineStore('libraryStore', {
                 this.catalog = response.data;
             }
         },
+
+        /**
+         * Apply code and notify user
+         * @param code
+         */
+        async applyCode(code: string)
+        {
+            const response = await API.library.applyCode(code);
+            if (response.status === 'success') {
+                eventBus.emit('notification', {
+                    message: response.message,
+                    type: 'success'
+                });
+            } else {
+                eventBus.emit('notification', {
+                    message: response.message,
+                    type: 'error'
+                });
+            }
+        }
     },
 });

@@ -43,7 +43,28 @@ async function loadCatalog(): Promise<APIResponse<CatalogType | null>>
     }
 }
 
+/**
+ * Applies a code to the user's account.
+ *
+ * @param {string} code - The code to be applied.
+ * @returns {Promise<APIResponse>} - The API response.
+ */
+async function applyCode(code: string): Promise<APIResponse>
+{
+    const appStore = useAppStore();
+    appStore.setError(null);
+    appStore.setLoading(true);
+
+    const response = await request<APIResponse<CatalogType>>(
+        'POST',
+        `/alfaomega-ebooks/api/redeem`,
+        { code: code });
+    appStore.setLoading(false);
+    return response
+}
+
 export default {
     getBooks,
-    loadCatalog
+    loadCatalog,
+    applyCode
 };
