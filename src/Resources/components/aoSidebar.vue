@@ -2,12 +2,14 @@
     import {ref, watch} from 'vue';
     import {aoButton, aoAccessDetails} from '@/components';
     import {BookType} from '@/types';
+    import {useI18n} from 'vue-i18n';
 
     const props = defineProps({
         show: Boolean,
         data: {type: Object as () => BookType, required: true}
     });
 
+    const {t} = useI18n();
     const emit = defineEmits(['update:show']);
     const show = ref(props.show);
     const book = ref<BookType | null>(null);
@@ -73,6 +75,7 @@
                 :caption="$t('download')"
                 :disabled="!book.download"
                 @click="handleDownload"
+                :tooltip="$t('download_tooltip')"
             />
 
             <ao-button
@@ -80,6 +83,7 @@
                 :caption="$t('read_online')"
                 :disabled="!book.read"
                 @click="handleReadOnline"
+                :tooltip="$t('read_tooltip')"
             />
         </div>
 

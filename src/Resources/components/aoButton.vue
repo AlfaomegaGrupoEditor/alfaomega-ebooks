@@ -6,7 +6,8 @@
         icon: {type: String, default: 'fa-user'},
         disabled: {type: Boolean, default: false},
         color: {type: String as () => ColorVariantType, default: 'primary'},
-        size: {type: String as () => SizeVariantType, default: 'sm'}
+        size: {type: String as () => SizeVariantType, default: 'sm'},
+        tooltip: {type: String, default: ''}
     });
 
     const emit = defineEmits(['click']);
@@ -23,6 +24,7 @@
         :size="size"
         :disabled="disabled"
         @click="handleClick"
+        v-b-tooltip.title="tooltip"
     >
         <span class="mx-2 d-inline-block">
             <i class="fs-7 fa ml-2" :class="icon"></i>

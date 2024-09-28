@@ -26,6 +26,7 @@ const messages = {
         // D
         digital_library: 'Digital Library',
         download: 'Download',
+        download_tooltip: 'Download the adobe token to import in your ebook reader.',
         // E
         expired: 'Expired',
         error_fetching_data: 'An error occurred while fetching the data.',
@@ -50,6 +51,7 @@ const messages = {
         // R
         read_online: 'Read Online',
         reset_filters: 'Reset Filters',
+        read_tooltip: 'Load the e-book into your browser to read it online.',
         // S
         sample: 'Sample',
         samples: 'Samples',
@@ -88,6 +90,7 @@ const messages = {
         // D
         digital_library: 'Biblioteca Digital',
         download: 'Descargar',
+        download_tooltip: 'Descarga el token de Adobe (.acsm) para cargar el PDF en tu lector.',
         // E
         expired: 'Expirado',
         error_fetching_data: 'Ocurrió un error al obtener los datos.',
@@ -114,6 +117,7 @@ const messages = {
         // R
         read_online: 'Leer en línea',
         reset_filters: 'Limpiar Filtros',
+        read_tooltip: 'Carga el libro digital en tu navegador para leerlo en línea.',
         // S
         sample: 'Muestra',
         samples: 'Muestras de cortesía',

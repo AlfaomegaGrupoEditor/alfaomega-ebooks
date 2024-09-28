@@ -103,3 +103,31 @@ div.ao-sidebar .offcanvas-title {
     width: 180px;
     height: 250px;
 }
+
+.b-tooltip {
+    font-size: 0.8rem;
+    border: 1px solid dimgray;
+    border-radius: 10px;
+}
+
+.b-tooltip .tooltip-inner {
+    background-color: dimgray;
+    color: white;
+}
+
+/* Custom Tooltip Arrow Color */
+.tooltip.bs-tooltip-top .tooltip-arrow::before {
+    border-top-color: dimgray; /* Replace with desired color */
+}
+
+.tooltip.bs-tooltip-bottom .tooltip-arrow::before {
+    border-bottom-color: dimgray; /* Replace with desired color */
+}
+
+.tooltip.bs-tooltip-left .tooltip-arrow::before {
+    border-left-color: dimgray; /* Replace with desired color */
+}
+
+.tooltip.bs-tooltip-right .tooltip-arrow::before {
+    border-right-color: dimgray; /* Replace with desired color */
+}

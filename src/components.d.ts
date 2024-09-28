@@ -26,4 +26,7 @@ declare module 'vue' {
     BRow: typeof import('bootstrap-vue-next/components/BContainer')['BRow']
     BToast: typeof import('bootstrap-vue-next/components/BToast')['BToast']
   }
+  export interface ComponentCustomProperties {
+    vBTooltip: typeof import('bootstrap-vue-next/directives/BTooltip')['vBTooltip']
+  }
 }
