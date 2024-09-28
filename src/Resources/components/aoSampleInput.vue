@@ -1,23 +1,35 @@
 <script setup lang="ts">
-    import {ref} from 'vue';
-    import {useAppStore} from '@/stores/appStore';
+    import {ref, computed} from 'vue';
     import {aoButton} from '@/components';
     import {ToastType} from '@/types';
     import {useI18n} from 'vue-i18n';
+    import {API} from '@/services';
 
     const emit = defineEmits<{ apply: (payload: ToastType) => void }>();
     const {t} = useI18n();
 
-    const appStore = useAppStore();
     const code = ref('');
+    const invalidCode = computed(() => !/^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code.value));
+
     const test = () => { appStore.testLoading(); };
 
-    const handleClick = () => {
-        emit('apply', {
-            content: t('code_applied_successfully'),
-            variant: 'success',
-            title: t('success')
-        } as ToastType);
+    const handleClick = async () => {
+        const response = await API.library.applyCode(code.value);
+        if (response.status === 'success') {
+            emit('apply', {
+                content: response.message,
+                variant: 'success',
+                title: t('success')
+            } as ToastType);
+        } else {
+            emit('apply', {
+                content: response.message != null
+                    ? response.message
+                    : t('something_went_wrong'),
+                variant: 'primary',
+                title: t('failed')
+            } as ToastType);
+        }
     };
 
 </script>
@@ -50,7 +62,7 @@
                     class="float-end"
                     icon="fa-key"
                     :caption="$t('apply_btn')"
-                    :disabled="false"
+                    :disabled="invalidCode"
                     size="sm"
                     @click="handleClick"
                 />

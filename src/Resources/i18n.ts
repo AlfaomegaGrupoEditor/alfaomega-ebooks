@@ -58,6 +58,7 @@ const messages = {
         search: 'Type to search amount your books...',
         status: 'Status',
         success: 'Success',
+        something_went_wrong: 'Something went wrong!',
         // T
         title: 'Title',
         // V
@@ -97,6 +98,7 @@ const messages = {
         error_no_data: 'No se encontraron datos.',
         // F
         filter_by: 'Filtrar por',
+        failed: 'El proceso ha fallado!',
         // M
         message: 'Hola, mundo!',
         muestra: 'Muestra',
@@ -124,6 +126,7 @@ const messages = {
         search: 'Escribir para buscar entre sus libros...',
         status: 'Estado',
         success: 'Acción exitosa',
+        something_went_wrong: 'Algo ha salido mal!',
         // T
         title: 'Título',
         // V

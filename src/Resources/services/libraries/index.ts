@@ -1,7 +1,7 @@
 import {request} from '../api';
 import type {APIResponse} from '../types';
 import {useAppStore} from '@/stores';
-import {BooksQueryType, BookType, CatalogType} from '@/types';
+import {BooksQueryType, BookType, CatalogType, RedeemStatusType} from '@/types';
 
 /**
  * Checks the API status.
@@ -49,18 +49,21 @@ async function loadCatalog(): Promise<APIResponse<CatalogType | null>>
  * @param {string} code - The code to be applied.
  * @returns {Promise<APIResponse>} - The API response.
  */
-async function applyCode(code: string): Promise<APIResponse>
+async function applyCode(code: string): Promise<APIResponse<RedeemStatusType>>
 {
     const appStore = useAppStore();
     appStore.setError(null);
     appStore.setLoading(true);
 
-    const response = await request<APIResponse<CatalogType>>(
-        'POST',
-        `/alfaomega-ebooks/api/redeem`,
-        { code: code });
+    const response = await request<APIResponse<RedeemStatusType>>('POST', `/alfaomega-ebooks/api/redeem`, { code: code });
     appStore.setLoading(false);
-    return response
+
+    if (response.status == 'success') {
+        return response.data as APIResponse<RedeemStatusType>;
+    } else {
+        appStore.setError(response.message);
+        return null;
+    }
 }
 
 export default {

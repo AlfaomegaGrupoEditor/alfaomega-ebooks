@@ -112,6 +112,13 @@ class ApiController
         }
     }
 
+    /**
+     * Redeem a code to add associated books to the user's personal library.
+     *
+     * @param array $data The data containing the code to redeem.
+     *
+     * @return array The result of the redemption process.
+     */
     public function redeemCode(array $data = []): array
     {
         try {

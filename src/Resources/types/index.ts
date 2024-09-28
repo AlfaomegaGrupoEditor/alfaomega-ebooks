@@ -70,6 +70,12 @@ type ToastType = {
     variant: ColorVariantType;
 }
 
+type RedeemStatusType = {
+    status: 'success' | 'error';
+    message: string;
+    data: null;
+}
+
 export {
     ColorVariantType,
     SizeVariantType,
@@ -81,5 +87,6 @@ export {
     BookType,
     ToastType,
     CatalogType,
-    CatalogItemsType
+    CatalogItemsType,
+
 };
