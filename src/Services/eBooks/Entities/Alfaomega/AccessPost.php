@@ -513,6 +513,105 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
     }
 
     /**
+     * Consolidate the eBooks access for the current user.
+     * This method consolidates the eBooks access for the current user.
+     * It fetches the eBooks access posts for the current user and groups them by eBook ID.
+     * It then consolidates the access for each eBook by merging the access posts into a single post.
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function consolidateSamples(): bool
+    {
+        global $wpdb;
+        $currentUserId = get_current_user_id();
+
+        // Query to get all alfaomega-access posts for the current user
+        $query = $wpdb->prepare("
+            SELECT GROUP_CONCAT(p.ID) as access, p.post_parent as ebook_id, p.post_author as user_id
+            FROM {$wpdb->posts} p
+            LEFT JOIN {$wpdb->postmeta} pm_type ON (p.ID = pm_type.post_id AND pm_type.meta_key = 'alfaomega_access_type')
+            WHERE p.post_type = 'alfaomega-access'
+              AND p.post_status = 'publish'
+              AND p.post_author = %d
+              AND pm_type.meta_value = 'sample'  
+            GROUP BY p.post_parent, p.post_author
+            HAVING COUNT(p.ID) > 1
+        ", $currentUserId);
+
+        // Execute the query and get the results
+        $results = $wpdb->get_results($query);
+
+        // Group the results by eBook ID
+        $toDelete = [];
+        foreach ($results as $result) {
+            $accessPosts = explode(',', $result->access);
+            $firstPost = null;
+            foreach ($accessPosts as $postId) {
+                $accessPost = $this->get($postId);
+                if (empty($firstPost)) {
+                    $firstPost = $accessPost;
+                    continue;
+                }
+
+                // upgrade status if not active already
+                if ($firstPost['status'] !== 'active') {
+                    if (in_array($accessPost['status'], ['created', 'active'])) {
+                        $firstPost['status'] = $accessPost['status'];
+                    }
+                }
+
+                // upgrade read access
+                if (!$firstPost['read'] && $accessPost['read']) {
+                    $firstPost['read'] = true;
+                }
+
+                // upgrade download access
+                if (!$firstPost['download'] && $accessPost['download']) {
+                    $firstPost['download'] = true;
+                }
+
+                // upgrade due date
+                if (!empty($firstPost['due_date'])) {
+                    if (empty($accessPost['due_date'])
+                        || Carbon::parse($firstPost['due_date'])->lessThan(Carbon::parse($accessPost['due_date']))) {
+                        $firstPost['due_date'] = $accessPost['due_date'];
+                    }
+                }
+
+                // upgrade download at
+                if (empty($firstPost['download_at']) && !empty($accessPost['download_at'])) {
+                    $firstPost['download_at'] = $accessPost['download_at'];
+                } elseif (!empty($firstPost['download_at']) && !empty($accessPost['download_at'])) {
+                    if (Carbon::parse($firstPost['download_at'])->lessThan(Carbon::parse($accessPost['download_at']))) {
+                        $firstPost['download_at'] = $accessPost['download_at'];
+                    }
+                }
+
+
+                // upgrade read at
+                if (empty($firstPost['read_at']) && !empty($accessPost['read_at'])) {
+                    $firstPost['read_at'] = $accessPost['read_at'];
+                } elseif (!empty($firstPost['read_at']) && !empty($accessPost['read_at'])) {
+                    if (Carbon::parse($firstPost['read_at'])->lessThan(Carbon::parse($accessPost['read_at']))) {
+                        $firstPost['read_at'] = $accessPost['read_at'];
+                    }
+                }
+
+                $toDelete[] = $postId;
+                $this->save($firstPost['id'], $firstPost);
+            }
+        }
+
+        // delete all access posts except the first one
+        foreach ($toDelete as $postId) {
+            wp_delete_post($postId, true);
+        }
+
+        return true;
+    }
+
+    /**
      * Get the catalog of eBooks for the current user.
      *
      * This method fetches the catalog of eBooks for the current user.

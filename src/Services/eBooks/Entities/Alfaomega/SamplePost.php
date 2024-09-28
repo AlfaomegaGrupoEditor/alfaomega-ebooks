@@ -295,8 +295,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         $redeemed = [];
         $user = wp_get_current_user();
         foreach ($samplePost['payload'] as $payload) {
-            $eBookPost = Service::make()
-                ->ebooks()
+            $eBookPost = Service::make()->ebooks()
                 ->eBookPost()
                 ->search($payload['isbn']);
             if (empty($eBookPost)) {
@@ -331,6 +330,9 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             $this->redeemed($postId);
         }
 
+        Service::make()->ebooks()
+            ->accessPost()
+            ->consolidateSamples();
         return $redeemed;
     }
 

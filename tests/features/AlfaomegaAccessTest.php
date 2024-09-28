@@ -150,8 +150,27 @@ class AlfaomegaAccessTest extends WordpressTest
                 'userId' => 1,
                 'expected' => [
 
-                ]
+                ],
             ],
         ];
+    }
+
+    /**
+     * Consolidate user catalog.
+     *
+     * @param int $userId
+     * @param array $expected
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function testConsolidateCatalog (int $userId = 1, array $expected = []): void
+    {
+        wp_set_current_user($userId);
+        $result = Service::make()->ebooks()
+            ->accessPost()
+            ->consolidateSamples();
+
+        $this->assertTrue($result);
     }
 }
