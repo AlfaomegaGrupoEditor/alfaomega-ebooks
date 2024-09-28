@@ -13,8 +13,6 @@
     const processing = ref(false);
     const invalidCode = computed(() => !/^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code.value));
 
-    const test = () => { appStore.testLoading(); };
-
     const handleClick = async () => {
         processing.value = true;
         try {

@@ -72,13 +72,14 @@
                 accessStatus: getValue(urlParams.get('accessStatus')),
                 searchKey: getValue(urlParams.get('searchKey')),
                 perPage: parseInt(getValue(urlParams.get('per_page'), 8)),
-                page: parseInt(getValue(urlParams.get('page'), 1)),
+                currentPage: getValue(urlParams.get('currentPage'), 1),
                 order: {
                     field: getValue(urlParams.get('order_by'), 'title'),
                     direction: getValue(urlParams.get('order_direction'), 'asc')
                 } as OrderType
             } as BooksFilterType
         };
+        console.log(searchQuery.value.filter.currentPage);
     };
 
     /**

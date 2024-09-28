@@ -29,7 +29,7 @@ type BooksFilterType = {
     accessStatus?: StatusType | null;
     order: OrderType,
     perPage: number;
-    page: number;
+    currentPage: number;
 };
 
 type BooksQueryType = {

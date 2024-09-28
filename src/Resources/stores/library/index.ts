@@ -18,7 +18,7 @@ export const useLibraryStore = defineStore('libraryStore', {
                         direction: 'asc'
                     },
                     perPage: 8,
-                    page: 1,
+                    currentPage: 1,
                 },
                 userId: null
             },

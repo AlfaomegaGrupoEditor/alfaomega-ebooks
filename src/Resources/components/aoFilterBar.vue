@@ -75,7 +75,7 @@
             searchKey: searchKey.value,
             order: order.value,
             perPage: perPage.value,
-            page: urlParams.get('page') || 1
+            currentPage: getValue(urlParams.get('currentPage'), 1)
         };
 
         updateHistory(filterValue);
@@ -125,7 +125,7 @@
         searchKey.value = getValue(urlParams.get('searchKey'));
         order.value.field = getValue(urlParams.get('order_by'), 'title');
         order.value.direction = getValue(urlParams.get('order_direction'), 'asc');
-        perPage.value = parseInt(getValue(urlParams.get('per_page'), 8));
+        perPage.value = parseInt(getValue(urlParams.get('perPage'), 8));
     });
 </script>
 

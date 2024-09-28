@@ -35,7 +35,7 @@ const updateHistory = (pFilter: BooksFilterType | null = null, pCategory: string
                 'direction': urlParams.get('order_direction') || 'asc'
             } as OrderType,
             perPage: urlParams.get('perPage') || 8,
-            page: urlParams.get('page') || 1
+            currentPage: urlParams.get('currentPage') || 1
         };
     }
 

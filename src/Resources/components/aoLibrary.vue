@@ -21,7 +21,7 @@
     const query = computed(() => libraryStore.getQuery);
     const showSidebar = ref(false);
     const book = ref<BookType | null>(null);
-    const currentPage = ref(query.value.filter.page);
+    const currentPage = ref(props.query?.filter.currentPage || 1);
     const processing = ref(false);
 
     const toggleSidebar = (selectedBook: BookType) => {
@@ -35,7 +35,7 @@
             ...query.value,
             filter: {
                 ...query.value.filter,
-                page: pageNumber
+                currentPage: pageNumber
             }
         };
         updateHistory(newQuery.filter);
@@ -50,10 +50,11 @@
     });
 
     onMounted(() => {
-        console.log('store', query.value.filter.page);
-
         const urlParams = new URLSearchParams(window.location.search);
-        console.log('browser', parseInt(getValue(urlParams.get('page'), 1)));
+        const page = parseInt(getValue(urlParams.get('currentPage'), 1));
+        if (page !== currentPage.value) {
+            currentPage.value = page;
+        }
     })
 </script>
 
