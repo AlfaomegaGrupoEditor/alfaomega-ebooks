@@ -333,6 +333,11 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         Service::make()->ebooks()
             ->accessPost()
             ->consolidateSamples();
+
+        Service::make()->ebooks()
+            ->accessPost()
+            ->clearCustomerCache();
+
         return $redeemed;
     }
 

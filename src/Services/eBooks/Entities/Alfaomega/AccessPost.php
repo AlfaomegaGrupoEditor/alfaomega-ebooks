@@ -102,6 +102,7 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
 
         return $this->get($postId);
     }
+
     /**
      * Updates or creates a new eBook post.
      *
@@ -705,5 +706,22 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             'root' => $rootCategories,
             'tree' => $categoryTree,
         ];
+    }
+
+    /**
+     * Clear the customer cache.
+     *
+     * This method clears the cache for the current customer.
+     *
+     * @return void
+     */
+    public function clearCustomerCache(): void
+    {
+        // user books search
+        $booksKey = 'user-books-search-' . wp_get_current_user()->ID . '-*';
+        Service::make()->helper()->cacheForget($booksKey);
+        // catalog
+        $catalogKey = 'ebooks-catalog-' . wp_get_current_user()->ID;
+        Service::make()->helper()->cacheForget($catalogKey);
     }
 }

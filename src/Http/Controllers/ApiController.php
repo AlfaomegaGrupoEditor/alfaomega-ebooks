@@ -50,7 +50,7 @@ class ApiController
                 'orderBy'        => $data['filter']['order']['field'],
                 'orderDirection' => $data['filter']['order']['direction'],
             ]);
-            Service::make()->helper()->cacheForget($key);
+            //Service::make()->helper()->cacheForget($key);
             $result = Service::make()->helper()
                 ->cacheRemember($key, 1 * HOUR_IN_SECONDS, function () use ($data) {
                     return Service::make()
@@ -88,7 +88,7 @@ class ApiController
     {
         try {
             $key = 'ebooks-catalog-' . wp_get_current_user()->ID;
-            Service::make()->helper()->cacheForget($key);
+            //Service::make()->helper()->cacheForget($key);
             $result = Service::make()->helper()
                 ->cacheRemember($key, 24 * HOUR_IN_SECONDS, function () {
                     return Service::make()
