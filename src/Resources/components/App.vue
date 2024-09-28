@@ -72,12 +72,12 @@
                 accessStatus: getValue(urlParams.get('accessStatus')),
                 searchKey: getValue(urlParams.get('searchKey')),
                 perPage: parseInt(getValue(urlParams.get('per_page'), 8)),
+                page: parseInt(getValue(urlParams.get('page'), 1)),
                 order: {
                     field: getValue(urlParams.get('order_by'), 'title'),
                     direction: getValue(urlParams.get('order_direction'), 'asc')
                 } as OrderType
-            } as BooksFilterType,
-            page: parseInt(getValue(urlParams.get('page'), 1))
+            } as BooksFilterType
         };
     };
 
@@ -177,13 +177,7 @@
                 <!--  Books selected-->
                 <h4 class="text-primary">{{ header }}</h4>
                 <ao-filter-bar @filter="handleFiltered" />
-                <!--  load the library books on suspense -->
-                <Suspense>
-                    <ao-library :query="searchQuery" />
-                    <template #fallback>
-                        <ao-books-skeleton />
-                    </template>
-                </Suspense>
+                <ao-library :query="searchQuery" />
             </b-col>
         </b-row>
     </b-container>

@@ -4,7 +4,8 @@ import {BooksFilterType, OrderType} from '@/types';
  * Check if a variable is empty
  * @param variable
  */
-const empty = (variable: any): boolean => {
+const empty = (variable: any): boolean =>
+{
     return variable === null
            || variable === undefined
            || variable === '';
@@ -16,7 +17,8 @@ const empty = (variable: any): boolean => {
  * @param pCategory
  * @returns BooksFilterType
  */
-const updateHistory = (pFilter: BooksFilterType | null = null, pCategory: string | null = null): BooksFilterType => {
+const updateHistory = (pFilter: BooksFilterType | null = null, pCategory: string | null = null): BooksFilterType =>
+{
     const urlParams = new URLSearchParams(window.location.search);
     let activeFilters: BooksFilterType;
 
@@ -32,7 +34,8 @@ const updateHistory = (pFilter: BooksFilterType | null = null, pCategory: string
                 'field': urlParams.get('order_by') || 'title',
                 'direction': urlParams.get('order_direction') || 'asc'
             } as OrderType,
-            perPage: urlParams.get('perPage') || 8
+            perPage: urlParams.get('perPage') || 8,
+            page: urlParams.get('page') || 1
         };
     }
 
@@ -59,7 +62,8 @@ const updateHistory = (pFilter: BooksFilterType | null = null, pCategory: string
  * Check if a variable is null
  * @param variable
  */
-const isNull = (variable: any): boolean => {
+const isNull = (variable: any): boolean =>
+{
     return variable === null
            || variable === undefined
            || variable === ''
@@ -72,7 +76,8 @@ const isNull = (variable: any): boolean => {
  * @param variable
  * @param defaultValue
  */
-const getValue = (variable: any, defaultValue = null): any => {
+const getValue = (variable: any, defaultValue = null): any =>
+{
     return isNull(variable) ? defaultValue : variable;
 };
 
@@ -82,7 +87,8 @@ const getValue = (variable: any, defaultValue = null): any => {
  * @param className
  * @param add
  */
-const setClass = (cssQuery, className: string, add = true): void => {
+const setClass = (cssQuery, className: string, add = true): void =>
+{
     setTimeout(() => {
         const element = document.querySelector(cssQuery);
         if (element) {

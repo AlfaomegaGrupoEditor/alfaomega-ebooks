@@ -74,7 +74,8 @@
             accessStatus: accessStatus.value,
             searchKey: searchKey.value,
             order: order.value,
-            perPage: perPage.value
+            perPage: perPage.value,
+            page: urlParams.get('page') || 1
         };
 
         updateHistory(filterValue);

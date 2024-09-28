@@ -17,9 +17,9 @@ export const useLibraryStore = defineStore('libraryStore', {
                         field: 'title',
                         direction: 'asc'
                     },
-                    perPage: 8
+                    perPage: 8,
+                    page: 1,
                 },
-                page: 1,
                 userId: null
             },
             meta: {
@@ -49,7 +49,7 @@ export const useLibraryStore = defineStore('libraryStore', {
         async dispatchSearchBooks(query: BooksQueryType)
         {
             this.query = query;
-            this.books = null; // Reset the books list
+            //this.books = null; // Reset the books list
             const response = await API.library.getBooks(query);
             if (response.status === 'success' && response.data) {
                 this.books = response.data;

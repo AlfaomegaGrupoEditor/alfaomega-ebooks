@@ -29,11 +29,11 @@ type BooksFilterType = {
     accessStatus?: StatusType | null;
     order: OrderType,
     perPage: number;
+    page: number;
 };
 
 type BooksQueryType = {
     filter: BooksFilterType;
-    page: number;
     userId?: string | null;
 }
 
