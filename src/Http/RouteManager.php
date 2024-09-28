@@ -1,6 +1,7 @@
 <?php
 namespace AlfaomegaEbooks\Http;
 
+use AlfaomegaEbooks\Http\Controllers\ApiController;
 use AlfaomegaEbooks\Http\Controllers\EbooksController;
 use AlfaomegaEbooks\Http\Controllers\EbooksMassActionsController;
 use AlfaomegaEbooks\Http\Controllers\EbooksQuickActionsController;
@@ -128,6 +129,12 @@ class RouteManager
         'link-ebook'   => [EbooksQuickActionsController::class, 'quickLinkEbook'],
         'unlink-ebook' => [EbooksQuickActionsController::class, 'quickUnlinkEbook'],
     ];
+    protected array $apiEndpoints = [
+        'check'   => [ApiController::class, 'checkApi', 'GET'],
+        'books'   => [ApiController::class, 'getBooks', 'POST'],
+        'catalog' => [ApiController::class, 'getCatalog', 'GET'],
+        'redeem' => [ApiController::class, 'redeemCode', 'POST'],
+    ];
 
     /**
      * Registers the routes.
@@ -209,5 +216,65 @@ class RouteManager
         $redirectUrl = $controller->{$endpoint}($_GET['post'], $_SERVER['HTTP_REFERER']);
 
         wp_redirect($redirectUrl);
+    }
+
+    /**
+     * Calls an API endpoint.
+     *
+     * This method checks if the endpoint exists in the $apiEndpoints array. If it does, it creates a new instance of the
+     * controller associated with the endpoint and calls the method associated with the endpoint. The result of this method
+     * call is then returned. If the endpoint does not exist in the $apiEndpoints array, the method returns a 404 response.
+     *
+     * @param string $endpoint The endpoint to call.
+     * @return void
+     */
+    public function callEndpoint(string $endpoint): array
+    {
+        if (!is_user_logged_in()) {
+            wp_send_json([
+                'status'  => 'fail',
+                'data'    => null,
+                'message' => esc_html__('Please log in to access ebooks.', 'alfaomega-ebooks'),
+            ], 401);
+        }
+
+        if (! array_key_exists($endpoint, $this->apiEndpoints)) {
+            wp_send_json([
+                'status'  => 'fail',
+                'data'    => null,
+                'message' => esc_html__('Not found', 'alfaomega-ebooks'),
+            ], 404);
+        }
+
+        try {
+            [$class, $method] = $this->apiEndpoints[$endpoint];
+            $controller = new $class;
+            $response = $controller->{$method}($this->getRequest());
+            wp_send_json($response, 200);
+        } catch (\Exception $e) {
+            wp_send_json([
+                'status'  => 'fail',
+                'data'    => null,
+                'message' => esc_html__($e->getMessage(), 'alfaomega-ebooks'),
+            ], 500);
+        }
+    }
+
+    /**
+     * Get the request payload.
+     *
+     * This method reads the raw payload from the request and decodes it as JSON.
+     * If the payload is successfully decoded, the method returns the value of the 'field_name' key in the payload.
+     * If the payload cannot be decoded, the method returns null.
+     *
+     * @return array The request payload.
+     */
+    protected function getRequest(): array
+    {
+        $raw_payload = file_get_contents('php://input');
+        $request_payload = json_decode($raw_payload, true);
+        return json_last_error() === JSON_ERROR_NONE
+            ? $request_payload
+            : [];
     }
 }

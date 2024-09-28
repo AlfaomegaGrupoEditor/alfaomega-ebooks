@@ -281,23 +281,21 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         $query->the_post();
         $postId = get_the_ID();
         $samplePost = $this->get($postId);
-        if ($samplePost['status'] !== 'created') {
+        if (!in_array($samplePost['status'], ['created', 'sent'])) {
             match ($samplePost['status']) {
+                'failed' => throw new Exception(esc_html__('This code is not working anymore.', 'alfaomega-ebooks')),
                 'redeemed' => throw new Exception(esc_html__('Code already redeemed.', 'alfaomega-ebooks')),
                 'expired' => throw new Exception(esc_html__('Code expired.', 'alfaomega-ebooks')),
             };
-        } elseif ($samplePost['due_date'] < Carbon::now()) {
-            $this->save($postId, [
-                'status' => 'expired',
-            ]);
+        } elseif (!empty($samplePost['due_date']) && $samplePost['due_date'] < Carbon::now()) {
+            $this->expire($postId);
             throw new Exception(esc_html__('Code expired.', 'alfaomega-ebooks'));
         }
 
         $redeemed = [];
         $user = wp_get_current_user();
         foreach ($samplePost['payload'] as $payload) {
-            $eBookPost = Service::make()
-                ->ebooks()
+            $eBookPost = Service::make()->ebooks()
                 ->eBookPost()
                 ->search($payload['isbn']);
             if (empty($eBookPost)) {
@@ -326,16 +324,19 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         }
 
         if (count($redeemed) === 0) {
-            $this->save($postId, [
-                'status' => 'failed',
-            ]);
+            $this->failed($postId);
             throw new Exception(esc_html__('Code redeem failed.', 'alfaomega-ebooks'));
         } else {
-            $this->save($postId, [
-                'status'       => 'redeemed',
-                'activated_at' => Carbon::now(),
-            ]);
+            $this->redeemed($postId);
         }
+
+        Service::make()->ebooks()
+            ->accessPost()
+            ->consolidateSamples();
+
+        Service::make()->ebooks()
+            ->accessPost()
+            ->clearCustomerCache();
 
         return $redeemed;
     }
@@ -392,5 +393,59 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         $mails = $mailer->get_emails();
         $email = $mails['Alfaomega_Ebooks_Sample_Email'];
         return $email->trigger($this->get($postId));
+    }
+
+    /**
+     * Expire a sample code.
+     *
+     * @param int $postId The ID of the post.
+     *
+     */
+    public function expire(int $postId): void
+    {
+        update_post_meta(
+            $postId,
+            'alfaomega_sample_status',
+            'expired',
+            get_post_meta($postId, 'alfaomega_sample_status', true)
+        );
+    }
+
+    /**
+     * Mark as failed the sample code.
+     *
+     * @param int $postId The ID of the post.
+     *
+     */
+    public function failed(int $postId): void
+    {
+        update_post_meta(
+            $postId,
+            'alfaomega_sample_status',
+            'failed',
+            get_post_meta($postId, 'alfaomega_sample_status', true)
+        );
+    }
+
+    /**
+     * Mark as redeemed the sample code.
+     *
+     * @param int $postId The ID of the post.
+     *
+     */
+    public function redeemed(int $postId): void
+    {
+        update_post_meta(
+            $postId,
+            'alfaomega_sample_status',
+            'redeemed',
+            get_post_meta($postId, 'alfaomega_sample_status', true)
+        );
+        update_post_meta(
+            $postId,
+            'alfaomega_sample_activated_at',
+            Carbon::now()->toDateTimeString(),
+            get_post_meta($postId, 'alfaomega_sample_activated_at', true)
+        );
     }
 }

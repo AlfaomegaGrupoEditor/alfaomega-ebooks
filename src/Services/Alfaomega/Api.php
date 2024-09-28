@@ -175,7 +175,11 @@ class Api
             $uri = $this->getApiUrl($uri);
             $headers = $this->getHeaders();
             if ($headers) {
-                $args = ['headers' => $headers, 'timeout' => 60];
+                $args = [
+                    'headers'   => $headers,
+                    'timeout'   => 60,
+                    'sslverify' => false,
+                ];
                 switch ($method) {
                     case 'post':
                         $args['body'] = json_encode($data);

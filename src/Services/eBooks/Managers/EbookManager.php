@@ -9,6 +9,7 @@ use AlfaomegaEbooks\Services\eBooks\Entities\Alfaomega\SamplePost;
 use AlfaomegaEbooks\Services\eBooks\Process\ImportEbook;
 use AlfaomegaEbooks\Services\eBooks\Process\RefreshEbook;
 use AlfaomegaEbooks\Services\eBooks\Service;
+use Carbon\Carbon;
 use Exception;
 use WC_Product_Query;
 use WP_Query;
@@ -130,18 +131,40 @@ class EbookManager extends AbstractManager
      *
      * @param int $ebookId       The ID of the eBook to download.
      * @param string $downloadId The download ID of the eBook.
+     * @param bool $purchase     The request is from the purchase link.
      *
      * @return string Returns the file path of the downloaded eBook if the download is successful, or an empty string if the download is unsuccessful.
      * @throws \Exception
      */
-    public function download(int $ebookId, string $downloadId): string
+    public function download(int $ebookId, string $downloadId, bool $purchase = true): string
     {
+        if (!$purchase && !$this->validateAccess($ebookId, $downloadId, 'download')) {
+            return '';
+        }
+
         $eBook = $this->ebookPost->get($ebookId);
         if (empty($eBook)) {
             return '';
         }
 
-        $filePath = ALFAOMEGA_EBOOKS_PATH . "downloads/{$eBook['isbn']}_{$downloadId}.acsm";
+        // If the download is not from a purchase, retrieve the downloadId
+        // from the user downloads using the order_id and product_id
+        $accessPost = $this->accessPost->get($downloadId);
+        if (!$purchase && !empty($accessPost['orderId'])) {
+            // TODO: Not tested yet
+            $customerDownloads = Service::make()
+                ->wooCommerce()
+                ->getCustomerDownloads(get_current_user_id());
+            foreach ($customerDownloads as $download) {
+                if ($download->product_id == $eBook['product_id']) {
+                    $downloadId = $download->download_id;
+                    break;
+                }
+            }
+        }
+
+        $filename = md5("{$eBook['isbn']}_{$downloadId}") . '.acsm';
+        $filePath = ALFAOMEGA_EBOOKS_PATH . "downloads/$filename";
         if (file_exists($filePath)) {
             return $filePath;
         }
@@ -170,13 +193,16 @@ class EbookManager extends AbstractManager
      *
      * @param int $ebookId       The ID of the eBook to read.
      * @param string $downloadId The download ID of the eBook.
+     * @param bool $purchase     The request is from the purchase link.
      *
      * @return void
      * @throws \Exception
      */
-    public function read(int $ebookId, string $key): void
+    public function read(int $ebookId, string $key, bool $purchase = true): void
     {
-        $this->validate($ebookId, $key);
+        $valid = $purchase
+            ? $this->validate($ebookId, $key)
+            : $this->validateAccess($ebookId, $key, 'read');
 
         $eBook = $this->ebookPost->get($ebookId);
         if (empty($eBook)) {
@@ -232,6 +258,58 @@ class EbookManager extends AbstractManager
     }
 
     /**
+     * Validates access to an eBook checking the access post.
+     *
+     * @param int $ebookId
+     * @param int $accessId
+     * @param bool $purchase
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    public function validateAccess(int $ebookId, string $accessId = '', bool $purchase = true): bool
+    {
+        // user should be logged in
+        $userId = get_current_user_id();
+        if (empty($userId)) {
+            return false;
+        }
+
+        // ebook should exist
+        $bookPost = $this->ebookPost->get($ebookId);
+        if (empty($bookPost)) {
+            return false;
+        }
+
+        // access should exist
+        $accessPost = empty($accessId)
+            ? $this->accessPost->find($ebookId, $userId)
+            : $this->accessPost->get($accessId);
+        if (empty($accessPost)) {
+            return false;
+        }
+
+        if (!$accessPost['read']) {
+            return false;
+        }
+
+        // Check valid until and expire|activate the access if necessary
+        if (!empty($accessPost['validUntil'])
+            && Carbon::parse($accessPost['validUntil'])->isPast()) {
+            $this->accessPost->expire($accessPost['id']);
+
+            return false;
+        } elseif ($accessPost['status'] === 'created') {
+            $this->accessPost->activate($accessPost['id']);
+        }
+
+        $this->accessPost
+            ->touch($accessPost['id'], $purchase ? 'download' : 'read');
+
+        return true;
+    }
+
+    /**
      * Generates a URL for reading an eBook.
      * This method generates a URL for reading an eBook by its ID and download ID.
      * The URL is constructed using the site URL, the eBook ID, and the download ID.
@@ -279,18 +357,20 @@ class EbookManager extends AbstractManager
     }
 
     /**
-     * Retrieves the post metadata for an eBook.
-     * This method retrieves the post metadata for an eBook by its ID.
-     * It retrieves the post metadata for the eBook post type, including the title, author, ISBN, PDF ID, eBook URL, date, and tag ID.
+     * Retrieves the reader data for an eBook.
+     * @param int $ebookId
+     * @param string $key
+     * @param bool $purchase
      *
-     * @param int $postId The ID of the eBook to retrieve the post metadata for.
-     *
-     * @return array|null Returns an associative array containing the post metadata for the eBook if the post is found, or null if the post is not found.
+     * @return array|null
      * @throws \Exception
      */
-    public function getReaderData(int $ebookId, string $key): ?array
+    public function getReaderData(int $ebookId, string $key, bool $purchase = true): ?array
     {
-        if (!$this->validate($ebookId, $key)) {
+        $validate = $purchase
+            ? $this->validate($ebookId, $key)
+            : $this->validateAccess($ebookId, $key, 'read');
+        if (!$validate) {
             return null;
         };
 

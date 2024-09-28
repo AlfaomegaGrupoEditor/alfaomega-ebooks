@@ -40,14 +40,78 @@ class Alfaomega_Ebooks_Public {
      * Register the stylesheets for the public-facing side of the site.
      */
     public function enqueue_styles() {
-        wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/alfaomega-ebooks-public.css', array(), $this->version, 'all' );
+        if (!defined('WP_DEBUG') || !WP_DEBUG) {
+            wp_enqueue_style(
+                $this->plugin_name,
+                ALFAOMEGA_EBOOKS_URL . 'public/css/bundle.css',
+                [],
+                $this->version,
+                'all'
+            );
+        }
+
+        // Enqueue loader CSS
+        wp_enqueue_style("{$this->plugin_name}-loader-style", ALFAOMEGA_EBOOKS_URL . 'public/css/loader.css');
     }
 
     /**
      * Register the JavaScript for the public-facing side of the site.
      */
-    public function enqueue_scripts() {
-        wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/alfaomega-ebooks-public.js', array( 'jquery' ), $this->version, false );
+    public function enqueue_scripts()
+    {
+        // Enqueue custom JavaScript
+        wp_enqueue_script("{$this->plugin_name}-loader-script", ALFAOMEGA_EBOOKS_URL  . 'public/js/loader.js', array('jquery'), null, true);
+
+        add_action('wp_footer', function() {
+            $plugin_name = $this->plugin_name;
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                // development
+                $plugin_name .= "-dev";
+                wp_enqueue_script(
+                    'vite-client',
+                    'http://localhost:3000/@vite/client',
+                    [],
+                    null,
+                    true
+                );
+                wp_enqueue_script(
+                    $plugin_name,
+                    'http://localhost:3000/Resources/main.ts',
+                    [],
+                    null,
+                    true
+                );
+            } else {
+                // production
+                wp_enqueue_script(
+                    $plugin_name,
+                    ALFAOMEGA_EBOOKS_URL . 'public/js/bundle.js',
+                    [],
+                    $this->version,
+                    true
+                );
+            }
+
+            wp_localize_script($plugin_name, 'wpApiSettings', [
+                'root'  => esc_url_raw(rest_url()), // Root URL for the API
+                'nonce' => wp_create_nonce('wp_rest'), // Create a nonce for secure API calls
+            ]);
+        });
+    }
+
+    /**
+     * Add the type attribute to the script tag.
+     *
+     * @param string $tag The original script tag.
+     * @param string $handle The script handle.
+     * @param string $src The script source.
+     * @return string The modified script tag.
+     */
+    public function alfaomega_add_type_attribute($tag, $handle, $src) {
+        if (in_array($handle, [ "{$this->plugin_name}-dev", "vite-client", $this->plugin_name ])) {
+            $tag = '<script type="module" src="' . esc_url($src) . '"></script>';
+        }
+        return $tag;
     }
 
     /**
@@ -58,7 +122,7 @@ class Alfaomega_Ebooks_Public {
         new Alfaomega_Ebooks_Custom_Route(
             'alfaomega-ebooks/(.+?)/(.+?)/?$',
             ['param_1', 'param_2'],
-            ALFAOMEGA_EBOOKS_PATH . 'public/alfaomega-ebooks-routes.php',
+            ALFAOMEGA_EBOOKS_PATH . 'website/alfaomega-ebooks-routes.php',
             true
         );
     }
@@ -178,5 +242,18 @@ class Alfaomega_Ebooks_Public {
             ->wooCommerce()
             ->order()
             ->onComplete($order_id);
+    }
+
+    /**
+     * Register the shortcode for displaying the customer's purchased eBooks
+     * @return void
+     */
+    function my_ao_ebook_shortcode(): false|string
+    {
+        ob_start();
+
+        require ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_my_ebooks.php';
+
+        return ob_get_clean();
     }
 }

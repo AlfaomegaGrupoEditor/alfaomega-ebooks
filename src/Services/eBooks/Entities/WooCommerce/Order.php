@@ -89,6 +89,9 @@ class Order extends WooAbstractEntity
             }
         }
 
+        Service::make()->ebooks()
+            ->accessPost()
+            ->clearCustomerCache();
         return $result;
     }
 }

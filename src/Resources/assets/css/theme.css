@@ -1,0 +1,19 @@
+/* Error: Undefined mixin.
+ *    ,
+ * 15 |   @include gradient-y-three-colors(tint-color($color, 6%), $color, 6%, shade-color($color, 6%));
+ *    |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ *    '
+ *   node_modules/bootswatch/dist/simplex/_bootswatch.scss 15:3  btn-shadow()
+ *   node_modules/bootswatch/dist/simplex/_bootswatch.scss 52:3  @import
+ *   Resources/assets/css/theme.sass 7:9                         root stylesheet */
+
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: Undefined mixin.\a    \2577 \a 15 \2502    @include gradient-y-three-colors(tint-color($color, 6%), $color, 6%, shade-color($color, 6%));\a    \2502    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\a    \2575 \a   node_modules/bootswatch/dist/simplex/_bootswatch.scss 15:3  btn-shadow()\a   node_modules/bootswatch/dist/simplex/_bootswatch.scss 52:3  @import\a   Resources/assets/css/theme.sass 7:9                         root stylesheet";
+}
