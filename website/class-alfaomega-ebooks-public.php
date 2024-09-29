@@ -64,7 +64,7 @@ class Alfaomega_Ebooks_Public {
 
         add_action('wp_footer', function() {
             $plugin_name = $this->plugin_name;
-            if (defined('WP_DEBUG') && WP_DEBUG) {
+            if (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) {
                 // development
                 $plugin_name .= "-dev";
                 wp_enqueue_script(
