@@ -23,6 +23,7 @@
     const searchQuery = ref<BooksQueryType>(null);
     const toast = ref<ToastType>();
     const toastActive = ref(false);
+    const showSidebar = ref(false);
 
     const accessTypeValue = (pCategory: string | null = null) => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -149,6 +150,7 @@
             }
         };
         eventBus.emit('catalogSelected', {catalog_id: node.id});
+        showSidebar.value = false;
     };
 
     const handleApply = (payload: ToastType) => {
@@ -156,27 +158,53 @@
         showToast(payload);
     };
 
-    onMounted(init);
+    onMounted(() => {
+        init();
+
+        if (window.innerWidth < 768) {
+            showSidebar.value = true;
+        }
+    });
 </script>
 
 <template>
     <b-container fluid class="ff-body ao-ebooks" style="min-height: 700px">
         <b-row>
-            <b-col class="col-8 offset-2">
+            <b-col class="col-12 col-md-8 offset-md-2">
                 <ao-alert />
             </b-col>
         </b-row>
         <b-row>
             <!-- Left panel-->
-            <b-col>
+            <b-col class="col-12 col-md-3 d-none d-md-block">
                 <ao-user-catalog @selected="handleSelected" />
                 <ao-sample-input @apply="handleApply" />
             </b-col>
 
+            <BOffcanvas
+                v-model="showSidebar"
+                class="ao-sidebar d-md-none"
+                placement="start"
+                :hide-backdrop="false"
+                :header="false"
+                :shadow="true"
+                style="z-index: 9999999991"
+            >
+                <div>
+                    <ao-user-catalog @selected="handleSelected" />
+                    <ao-sample-input @apply="handleApply" />
+                </div>
+            </BOffcanvas>
+
             <!-- Main content-->
-            <b-col cols="9">
+            <b-col class="col-12 col-md-9">
                 <!--  Books selected-->
-                <h4 class="text-primary">{{ header }}</h4>
+                <div class="d-flex align-items-center">
+                    <b-button class="d-md-none" @click="showSidebar = true">
+                        <i class="fas fa-bars"></i>
+                    </b-button>
+                    <h4 class="text-primary ms-2">{{ header }}</h4>
+                </div>
                 <ao-filter-bar @filter="handleFiltered" />
                 <ao-library :query="searchQuery" />
             </b-col>
