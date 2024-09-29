@@ -148,15 +148,14 @@
                         :options="accessTypeOptions"
                         :disabled="disableAccessType"
                         size="sm"
-
-                        @change="handleFilter"
-                    />
+                            @change="handleFilter"
+                        />
+                    <!--  status -->
                     <BFormSelect
                         is="access-status-select"
                         v-model="accessStatus"
                         :options="accessStatusOptions"
                         size="sm"
-
                         @change="handleFilter"
                     />
                 </div>
@@ -206,7 +205,7 @@
             <!--  order by -->
             <BFormLabel
                 for="per-page-select"
-                class="form-label-sm fs-8 mx-2 text-nowrap"
+                class="form-label-sm fs-8 mx-2 text-nowrap d-none d-md-block"
             >
                 {{ $t('per_page') }}:
             </BFormLabel>
@@ -220,7 +219,7 @@
             />
             <BFormLabel
                 for="order-by-select"
-                class="form-label-sm fs-8 mx-2 text-nowrap"
+                class="form-label-sm fs-8 mx-2 text-nowrap d-none d-md-block"
             >
                 {{ $t('order_by') }}:
             </BFormLabel>
