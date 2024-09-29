@@ -131,12 +131,12 @@
 
 <template>
     <div class="row">
-        <div class="col">
+        <div class="col-12">
             <div class="row">
-                <div class="col-6 d-flex justify-content-start align-items-center">
+                <div class="col-12 col-md-5 d-flex justify-content-start align-items-center mt-2 mt-md-0">
                     <BFormLabel
                         for="access-type-select"
-                        class="form-label-sm fs-8 mr-2"
+                        class="form-label-sm fs-8 mr-2 text-nowrap"
                     >
                         {{ $t('filter_by') }}:
                     </BFormLabel>
@@ -148,7 +148,7 @@
                         :options="accessTypeOptions"
                         :disabled="disableAccessType"
                         size="sm"
-                        style="max-width: 150px;"
+
                         @change="handleFilter"
                     />
                     <BFormSelect
@@ -156,12 +156,12 @@
                         v-model="accessStatus"
                         :options="accessStatusOptions"
                         size="sm"
-                        style="max-width: 100px;"
+
                         @change="handleFilter"
                     />
                 </div>
                 <!-- search -->
-                <div class="col-6">
+                <div class="col-12 col-md-6 offset-md-1 mt-2 mt-md-0">
                     <BInputGroup size="sm">
                         <BFormInput
                             class="form-control-sm"
@@ -180,20 +180,19 @@
     </div>
     <div class="row mt-3">
         <!--  Books founds -->
-        <div class="col-3">
-            <BFormLabel
-                for="total-books-label"
-                class="form-label-sm"
-            >
-                <span class="fs-8 fw-bold">{{ $t('books_found') }}:</span>
-            </BFormLabel>
-            <BBadge>{{ meta.total }}</BBadge>
-        </div>
-        <!--  order by -->
-        <div class="col-9 d-flex justify-content-end align-items-center">
+        <div class="col-12 col-md-6 d-flex justify-content-between align-items-center order-md-1 order-2 mt-2 mt-md-0">
+            <div>
+                <BFormLabel
+                    for="total-books-label"
+                    class="form-label-sm"
+                >
+                    <span class="fs-8 fw-bold">{{ $t('books_found') }}:</span>
+                </BFormLabel>
+                <BBadge>{{ meta.total }}</BBadge>
+            </div>
             <BButton
                 variant="link"
-                class="fs-8"
+                class="fs-8 text-nowrap"
                 underline-opacity="0"
                 underline-opacity-hover="100"
                 underline-offset="3"
@@ -201,10 +200,13 @@
             >
                 {{ $t('reset_filters') }}
             </BButton>
+        </div>
+        <!--  order by -->
+        <div class="col-12 col-md-6 d-flex justify-content-end align-items-center order-md-2 order-1">
             <!--  order by -->
             <BFormLabel
                 for="per-page-select"
-                class="form-label-sm fs-8 mx-2"
+                class="form-label-sm fs-8 mx-2 text-nowrap"
             >
                 {{ $t('per_page') }}:
             </BFormLabel>
@@ -218,7 +220,7 @@
             />
             <BFormLabel
                 for="order-by-select"
-                class="form-label-sm fs-8 mx-2"
+                class="form-label-sm fs-8 mx-2 text-nowrap"
             >
                 {{ $t('order_by') }}:
             </BFormLabel>

@@ -25,25 +25,23 @@
 
 <template>
     <transition name="fade">
-        <div class="col" v-if="built">
-            <div style="position: relative">
-                <BCard
-                    class="px-1 py-1 border-2"
-                    :class="hover ? 'shadow-lg border-primary' : ''"
-                    v-if="data !== null"
-                    :img-src="data.cover"
-                    :img-alt="data.title"
-                    no-body
-                    role="button"
-                    @click="handleClick"
-                    @mouseover="hover = true"
-                    @mouseleave="hover = false"
-                />
-                <ao-corner-ribbon
-                    :title="$t(data.status)"
-                    :show="data.status === 'expired' || data.status === 'cancelled'"
-                />
-            </div>
+        <div style="position: relative; max-width: 220px;" v-if="built">
+            <BCard
+                class="px-1 py-1 border-2"
+                :class="hover ? 'shadow-lg border-primary' : ''"
+                v-if="data !== null"
+                :img-src="data.cover"
+                :img-alt="data.title"
+                no-body
+                role="button"
+                @click="handleClick"
+                @mouseover="hover = true"
+                @mouseleave="hover = false"
+            />
+            <ao-corner-ribbon
+                :title="$t(data.status)"
+                :show="data.status === 'expired' || data.status === 'cancelled'"
+            />
         </div>
     </transition>
 </template>
