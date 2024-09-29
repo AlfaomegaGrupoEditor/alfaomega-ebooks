@@ -40,7 +40,7 @@ class Alfaomega_Ebooks_Public {
      * Register the stylesheets for the public-facing side of the site.
      */
     public function enqueue_styles() {
-        if (!defined('WP_DEBUG') || !WP_DEBUG) {
+        if (!defined('SCRIPT_DEBUG') || !SCRIPT_DEBUG) {
             wp_enqueue_style(
                 $this->plugin_name,
                 ALFAOMEGA_EBOOKS_URL . 'public/css/bundle.css',
