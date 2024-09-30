@@ -14,6 +14,7 @@
     const show = ref(props.show);
     const book = ref<BookType | null>(null);
     const processing = ref(false);
+    const covers = ref(window.wpApiSettings.covers);
 
     const handleClose = () => {
         emit('update:show', !show.value);
@@ -69,7 +70,7 @@
         <div class="mx-4">
             <img
                 class="img-thumbnail"
-                :src="book.cover"
+                :src="covers + book.cover"
                 :alt="book.title"
             />
         </div>

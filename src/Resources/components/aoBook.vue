@@ -12,6 +12,7 @@
     const emit = defineEmits<{ open: (payload: BookType) => void }>();
     const hover = ref(false);
     const built = ref(false);
+    const covers = ref(window.wpApiSettings.covers);
 
     const handleClick = () => {
         emit('open', props.data);
@@ -30,7 +31,7 @@
                 class="px-1 py-1 border-2"
                 :class="hover ? 'shadow-lg border-primary' : ''"
                 v-if="data !== null"
-                :img-src="data.cover"
+                :img-src="covers + data.cover"
                 :img-alt="data.title"
                 no-body
                 role="button"
