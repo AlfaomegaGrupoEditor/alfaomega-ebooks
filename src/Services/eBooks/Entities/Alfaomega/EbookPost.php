@@ -77,6 +77,7 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
 
         $thumbnail_url = '';
         $details = null;
+        // try to get from get_post_meta($postId, 'alfaomega_ebook_cover', true) first
         $product_sku = get_post_meta($postId, 'alfaomega_ebook_product_sku', true);
         if (!empty($product_sku)) {
             $product_id = wc_get_product_id_by_sku($product_sku);
@@ -254,6 +255,11 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
             'alfaomega_ebook_product_sku' => [
                 'old'     => get_post_meta($postId, 'alfaomega_ebook_product_sku', true),
                 'new'     => ! empty($data['printed_isbn']) ?  $data['printed_isbn'] : 'UNKNOWN',
+                'default' => '',
+            ],
+            'alfaomega_ebook_cover' => [
+                'old'     => get_post_meta($postId, 'alfaomega_ebook_cover', true),
+                'new'     => ! empty($data['cover']) ?  $data['cover'] : '',
                 'default' => '',
             ],
         ];
