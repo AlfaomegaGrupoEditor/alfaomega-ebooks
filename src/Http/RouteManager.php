@@ -104,9 +104,9 @@ class RouteManager
      * - 'link-ebook': Calls the 'massLinkEbooks' method on the EbooksMassActionsController class.
      */
     protected array $massActions = [
-        'update-meta'  => [EbooksMassActionsController::class, 'massUpdateMeta'],
-        'link-product' => [EbooksMassActionsController::class, 'massLinkProducts'],
-        'link-ebook'   => [EbooksMassActionsController::class, 'massLinkEbooks'],
+        'update-meta'   => [EbooksMassActionsController::class, 'massUpdateMeta'],
+        'link-product'  => [EbooksMassActionsController::class, 'massLinkProducts'],
+        'link-ebook'    => [EbooksMassActionsController::class, 'massLinkEbooks'],
     ];
 
     /**
@@ -124,11 +124,12 @@ class RouteManager
      * - 'link-ebook': Calls the 'quickLinkEbook' method on the EbooksQuickActionsController class.
      */
     protected array $quickActions = [
-        'update-meta'  => [EbooksQuickActionsController::class, 'quickUpdateMeta'],
-        'find-product' => [EbooksQuickActionsController::class, 'quickFindProduct'],
-        'link-ebook'   => [EbooksQuickActionsController::class, 'quickLinkEbook'],
-        'unlink-ebook' => [EbooksQuickActionsController::class, 'quickUnlinkEbook'],
+        'update-meta'   => [EbooksQuickActionsController::class, 'quickUpdateMeta'],
+        'find-product'  => [EbooksQuickActionsController::class, 'quickFindProduct'],
+        'link-ebook'    => [EbooksQuickActionsController::class, 'quickLinkEbook'],
+        'unlink-ebook'  => [EbooksQuickActionsController::class, 'quickUnlinkEbook'],
     ];
+
     protected array $apiEndpoints = [
         'check'   => [ApiController::class, 'checkApi', 'GET'],
         'books'   => [ApiController::class, 'getBooks', 'POST'],

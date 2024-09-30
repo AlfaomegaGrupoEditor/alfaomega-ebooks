@@ -14,6 +14,7 @@
     const show = ref(props.show);
     const book = ref<BookType | null>(null);
     const processing = ref(false);
+    const covers = ref(window.wpApiSettings.covers);
 
     const handleClose = () => {
         emit('update:show', !show.value);
@@ -69,8 +70,10 @@
         <div class="mx-4">
             <img
                 class="img-thumbnail"
-                :src="book.cover"
+                style="max-height: 400px"
+                :src="covers + book.cover"
                 :alt="book.title"
+                width="310"
             />
         </div>
 

@@ -49,6 +49,7 @@ define( 'ALFAOMEGA_EBOOKS_POST_TYPE', 'alfaomega-ebook' );
 define( 'ALFAOMEGA_EBOOKS_ACCESS_POST_TYPE', 'alfaomega-access' );
 define( 'ALFAOMEGA_EBOOKS_SAMPLE_POST_TYPE', 'alfaomega-sample' );
 define( 'ALFAOMEGA_SECURITY_PATH', plugin_dir_path( __FILE__ ) . 'security' );
+define( 'ALFAOMEGA_COVER_PATH', 'https://alfaomega-assets.nyc3.cdn.digitaloceanspaces.com/');
 
 if (!function_exists('is_plugin_active')) {
     include_once(ABSPATH . '/wp-admin/includes/plugin.php');

@@ -69,6 +69,7 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
                     'printed_isbn' => $sku,
                     'product_sku'  => $sku,
                     'product_id'   => !empty($sku) ? wc_get_product_id_by_sku($sku) : 0,
+                    'cover'        => $meta['alfaomega_ebook_cover'][0] ?? '',
                 ];
                 $isbn = empty($ebook['isbn']) ? $ebook['printed_isbn'] : $ebook['isbn'];
                 if (empty($isbn)) {
@@ -119,6 +120,7 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
                         $ebook['description'] === $ebookPost['description'] &&
                         $ebook['adobe'] === $ebookPost['adobe'] &&
                         $ebook['html_ebook'] === $ebookPost['html_ebook'] &&
+                        $ebook['cover'] === $ebookPost['cover'] &&
                         $ebook['printed_isbn'] === $ebookPost['printed_isbn'] ) {
                         continue; // didn't change anything, no update needed
                     }
