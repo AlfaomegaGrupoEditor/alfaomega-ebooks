@@ -107,7 +107,7 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
             switch( $column ){
                 case 'alfaomega_ebook_cover':
                     echo '<a href="' . get_site_url() . '/wp-admin/post.php?post=' . $post_id .'&action=edit">';
-                    echo '  <img width="50" height="60" src="' . $ebookPost['cover'] . '"';
+                    echo '  <img width="50" height="60" src="' . ALFAOMEGA_COVER_PATH . $ebookPost['cover'] . '"';
                     echo '    class="attachment-thumbnail size-thumbnail" alt="" decoding="async"';
                     echo '</a>';
                     break;

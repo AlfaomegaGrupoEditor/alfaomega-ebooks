@@ -82,7 +82,7 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
         if (!empty($product_sku)) {
             $product_id = wc_get_product_id_by_sku($product_sku);
             if (!empty($product_id)) {
-                $thumbnail_url = get_the_post_thumbnail_url($product_id, 'full');
+                //$thumbnail_url = get_the_post_thumbnail_url($product_id, 'full');
                 $categories = get_the_terms($product_id, 'product_cat');
                 if (is_wp_error($categories) || empty($categories)) {
                     $categories = null;
@@ -104,7 +104,7 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
             'date'        => $post->post_date,
             'product_sku' => $product_sku,
             'product_id'  => $product_id,
-            'cover'       => $thumbnail_url,
+            'cover'       => get_post_meta($postId, 'alfaomega_ebook_cover', true), //$thumbnail_url,
             'details'     => $details,
             'categories'  => $categories ?? [],
         ];
@@ -190,7 +190,10 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
             throw new Exception(esc_html__('Unable to create post.', 'alfaomega-ebook'));
         }
 
-        return $this->save($postId, $data);
+        $ebook = $this->save($postId, $data);
+        $this->updateAccess($postId, $ebook);
+
+        return $ebook;
     }
 
     /**
@@ -311,5 +314,36 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
         }
 
         return json_decode($response['body'], true)['data'];
+    }
+
+    /**
+     * Update all the access to this ebook
+     *
+     * @param int $postId
+     * @param array $ebook
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function updateAccess(int $postId, array $ebook): void
+    {
+        // get all the access to this ebook
+        $accesses = get_posts([
+            'post_type'   => 'alfaomega-access',
+            'post_parent' => $postId,
+            'numberposts' => -1,
+        ]);
+        $service = Service::make()->ebooks()->accessPost();
+        foreach ($accesses as $access) {
+            $data = $service->get($access->ID);
+            $data = array_merge($data, [
+                'isbn'        => $ebook['isbn'],
+                'cover'       => $ebook['cover'],
+                'title'       => $ebook['title'],
+                'description' => $ebook['description'],
+                'categories'  => $ebook['categories'],
+            ]);
+            $service->save($access->ID, $data);
+        }
     }
 }

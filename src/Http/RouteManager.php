@@ -107,7 +107,6 @@ class RouteManager
         'update-meta'   => [EbooksMassActionsController::class, 'massUpdateMeta'],
         'link-product'  => [EbooksMassActionsController::class, 'massLinkProducts'],
         'link-ebook'    => [EbooksMassActionsController::class, 'massLinkEbooks'],
-        'update-access' => [EbooksMassActionsController::class, 'massUpdateAccess'],
     ];
 
     /**
@@ -129,7 +128,6 @@ class RouteManager
         'find-product'  => [EbooksQuickActionsController::class, 'quickFindProduct'],
         'link-ebook'    => [EbooksQuickActionsController::class, 'quickLinkEbook'],
         'unlink-ebook'  => [EbooksQuickActionsController::class, 'quickUnlinkEbook'],
-        'update-access' => [EbooksQuickActionsController::class, 'quickUpdateAccess'],
     ];
 
     protected array $apiEndpoints = [
