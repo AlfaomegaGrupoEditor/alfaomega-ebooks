@@ -70,6 +70,7 @@
                     v-for="book in books"
                     :key="book.id"
                     :data="book"
+                    :disabled="processing"
                     @open="()=> toggleSidebar(book)"
                 />
             </div>
