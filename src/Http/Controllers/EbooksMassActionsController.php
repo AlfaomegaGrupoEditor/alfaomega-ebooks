@@ -22,16 +22,21 @@ class EbooksMassActionsController
      * @return string The redirect URL with the result of the update process added as a query parameter.
      * @throws Exception If an error occurs during the update process.
      */
-    public function masUpdateMeta(array $postIds, string $redirectUrl): string
+    public function massUpdateMeta(array $postIds, string $redirectUrl): string
     {
         try {
-            $redirectUrl = remove_query_arg('link-product', $redirectUrl);
+            $redirectUrl = remove_query_arg('updated-meta', $redirectUrl);
             $result = Service::make()
                 ->ebooks()
                 ->refreshEbook()
                 ->batch($postIds);
 
-            $redirectUrl = add_query_arg('updated-meta', $result['data']['refreshed'], $redirectUrl);
+            $eBooks = count($result);
+            if ($eBooks === 0) {
+                throw new Exception("Can't update specified ebooks, please add the eBook ISBN to the product.");
+            }
+
+            $redirectUrl = add_query_arg('updated-meta', $eBooks, $redirectUrl);
         } catch (Exception $exception) {
             error_log($exception->getMessage());
             $redirectUrl = add_query_arg('updated-meta', 'fail', $redirectUrl);
@@ -58,12 +63,17 @@ class EbooksMassActionsController
     public function massLinkProducts(array $postIds, string $redirectUrl): string
     {
         try {
-            $redirectUrl = remove_query_arg('updated-meta', $redirectUrl);
+            $redirectUrl = remove_query_arg('link-product', $redirectUrl);
             $result = Service::make()
                 ->wooCommerce()
                 ->linkProduct()
                 ->batch($postIds);
-            $redirectUrl = add_query_arg('link-product', $result['data']['linked'], $redirectUrl);
+
+            $products = count($result);
+            if ($products === 0) {
+                throw new Exception("Can't link specified products, please add the eBook ISBN to the product.");
+            }
+            $redirectUrl = add_query_arg('link-product', $products, $redirectUrl);
         } catch (Exception $exception) {
             error_log($exception->getMessage());
             $redirectUrl = add_query_arg('link-product', 'fail', $redirectUrl);
@@ -90,6 +100,7 @@ class EbooksMassActionsController
     public function massLinkEbooks(array $postIds, string $redirectUrl): string
     {
         try {
+            $redirectUrl = remove_query_arg('link-ebook', $redirectUrl);
             $result = Service::make()
                 ->wooCommerce()
                 ->linkEbook()
@@ -100,7 +111,7 @@ class EbooksMassActionsController
                 throw new Exception("Can't find the related ebook, please add the eBook ISBN to the product.");
             }
 
-            $redirectUrl = add_query_arg('link-ebook', $result['data']['linked'], $redirectUrl);
+            $redirectUrl = add_query_arg('link-ebook', $links, $redirectUrl);
         } catch (Exception $exception) {
             error_log($exception->getMessage());
             $redirectUrl = add_query_arg('link-ebook', 'fail', $redirectUrl);
