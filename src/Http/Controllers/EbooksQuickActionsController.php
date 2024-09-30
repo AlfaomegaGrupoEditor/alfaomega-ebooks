@@ -137,4 +137,17 @@ class EbooksQuickActionsController
         }
         return $redirectUrl;
     }
+
+    /**
+     * Update access metadata
+     * @param int $postId
+     * @param string $redirectUrl
+     *
+     * @return string
+     */
+    public function quickUpdateAccess(int $postId, string $redirectUrl): string
+    {
+        // TODO: Implement quickUpdateAccess() method.
+        return $redirectUrl;
+    }
 }

@@ -119,4 +119,17 @@ class EbooksMassActionsController
 
         return $redirectUrl;
     }
+
+    /**
+     * Update access metadata
+     * @param int $postId
+     * @param string $redirectUrl
+     *
+     * @return string
+     */
+    public function massUpdateAccess(int $postId, string $redirectUrl): string
+    {
+        // TODO: Implement massUpdateAccess() method.
+        return $redirectUrl;
+    }
 }
