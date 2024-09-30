@@ -70,6 +70,7 @@
         <div class="mx-4">
             <img
                 class="img-thumbnail"
+                style="max-height: 400px"
                 :src="covers + book.cover"
                 :alt="book.title"
                 width="310"
