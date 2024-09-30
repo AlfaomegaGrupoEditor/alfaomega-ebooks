@@ -59,43 +59,45 @@
 </script>
 
 <template>
-    <div v-if="!books">
-        <ao-books-skeleton />
-    </div>
-    <div v-else-if="books.length > 0">
-        <ao-horizontal-loader :show="processing"/>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mt-0">
-            <ao-book
-                v-for="book in books"
-                :key="book.id"
+    <div class="ps-md-4">
+        <div v-if="!books">
+            <ao-books-skeleton />
+        </div>
+        <div v-else-if="books.length > 0">
+            <ao-horizontal-loader :show="processing"/>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 mt-0">
+                <ao-book
+                    v-for="book in books"
+                    :key="book.id"
+                    :data="book"
+                    @open="()=> toggleSidebar(book)"
+                />
+            </div>
+            <div class="mt-5 d-flex flex-row justify-content-center">
+                <BPagination
+                    v-if="meta.pages > 1 || processing"
+                    v-model="currentPage"
+                    :total-rows="meta.total"
+                    :per-page="query.filter.perPage"
+                    :prev-text="$t('previous')"
+                    :next-text="$t('next')"
+                    :hide-goto-end-buttons="true"
+                    :hide-goto-start-buttons="true"
+                    pills
+                    @page-click="onPageChange"
+                />
+            </div>
+            <ao-sidebar
+                v-model:show="showSidebar"
                 :data="book"
-                @open="()=> toggleSidebar(book)"
             />
         </div>
-        <div class="mt-5 d-flex flex-row justify-content-center">
-            <BPagination
-                v-if="meta.pages > 1 || processing"
-                v-model="currentPage"
-                :total-rows="meta.total"
-                :per-page="query.filter.perPage"
-                :prev-text="$t('previous')"
-                :next-text="$t('next')"
-                :hide-goto-end-buttons="true"
-                :hide-goto-start-buttons="true"
-                pills
-                @page-click="onPageChange"
+        <div v-else class="row mt-4">
+            <ao-empty-state
+                :title="$t('no_books_found')"
+                :description="$t('no_books_found_description')"
             />
         </div>
-        <ao-sidebar
-            v-model:show="showSidebar"
-            :data="book"
-        />
-    </div>
-    <div v-else class="row mt-4">
-        <ao-empty-state
-            :title="$t('no_books_found')"
-            :description="$t('no_books_found_description')"
-        />
     </div>
 </template>
 

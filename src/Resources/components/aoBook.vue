@@ -26,7 +26,10 @@
 
 <template>
     <transition name="fade">
-        <div style="position: relative; max-width: 220px;" v-if="built">
+        <div v-if="built"
+             style="position: relative; max-width: 185px; padding: 0;"
+             class="d-inline-block mx-3 my-3"
+        >
             <BCard
                 class="px-1 py-1 border-2"
                 :class="hover ? 'shadow-lg border-primary' : ''"

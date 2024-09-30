@@ -72,6 +72,7 @@
                 class="img-thumbnail"
                 :src="covers + book.cover"
                 :alt="book.title"
+                width="310"
             />
         </div>
 
