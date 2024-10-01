@@ -87,7 +87,12 @@ class ApiController
     public function getCatalog(): array
     {
         try {
-            $key = 'ebooks-catalog-' . wp_get_current_user()->ID;
+            $result = Service::make()
+                ->ebooks()
+                ->accessPost()
+                ->catalog();
+
+            /*$key = 'ebooks-catalog-' . wp_get_current_user()->ID;
             //Service::make()->helper()->cacheForget($key);
             $result = Service::make()->helper()
                 ->cacheRemember($key, 24 * HOUR_IN_SECONDS, function () {
@@ -95,7 +100,7 @@ class ApiController
                         ->ebooks()
                         ->accessPost()
                         ->catalog();
-                });
+                });*/
 
             return [
                 'status'  => 'success',

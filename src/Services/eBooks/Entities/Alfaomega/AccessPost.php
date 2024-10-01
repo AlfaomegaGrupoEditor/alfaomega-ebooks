@@ -620,28 +620,30 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
      *
      * @return array The catalog of eBooks for the current user.
      */
-    public function catalog(): array
+    public function catalog(array $results = null): array
     {
         global $wpdb;
         $currentUserId = get_current_user_id();
 
-        // Query to get all alfaomega-access posts for the current user with associated categories
-        $query = $wpdb->prepare("
-            SELECT t.term_id, t.slug, t.name, tt.parent, COUNT(p.ID) as book_count
-            FROM {$wpdb->posts} p
-            LEFT JOIN {$wpdb->term_relationships} tr ON p.ID = tr.object_id
-            LEFT JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
-            LEFT JOIN {$wpdb->terms} t ON tt.term_id = t.term_id
-            WHERE p.post_type = 'alfaomega-access'
-              AND p.post_status = 'publish'
-              AND p.post_author = %d
-              AND tt.taxonomy = 'product_cat'
-            GROUP BY t.term_id
-            ORDER BY t.name ASC
-        ", $currentUserId);
+        if (empty($results)) {
+            // Query to get all alfaomega-access posts for the current user with associated categories
+            $query = $wpdb->prepare("
+                SELECT t.term_id, t.slug, t.name, tt.parent, COUNT(p.ID) as book_count
+                FROM {$wpdb->posts} p
+                LEFT JOIN {$wpdb->term_relationships} tr ON p.ID = tr.object_id
+                LEFT JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+                LEFT JOIN {$wpdb->terms} t ON tt.term_id = t.term_id
+                WHERE p.post_type = 'alfaomega-access'
+                  AND p.post_status = 'publish'
+                  AND p.post_author = %d
+                  AND tt.taxonomy = 'product_cat'
+                GROUP BY t.term_id
+                ORDER BY t.name ASC
+            ", $currentUserId);
 
-        // Execute the query and get the results
-        $results = $wpdb->get_results($query);
+            // Execute the query and get the results
+            $results = $wpdb->get_results($query);
+        }
 
         // Build a tree structure based on the parent-child relationships
         $categoryTree = [];
@@ -697,7 +699,7 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                         }
                     } while ($parent !== 0 || $error);
                     if (!in_array($newKey, $rootCategories)) {
-                        $rootCategories[] = $newKey;
+                        $rootCategories[] = intval($newKey);
                     }
                 }
             }
