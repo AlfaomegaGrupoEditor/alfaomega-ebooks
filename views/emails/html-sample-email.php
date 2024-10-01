@@ -34,7 +34,7 @@
         <?php foreach ( $sample['payload'] as $access ) : ?>
             <tr>
                 <td style="vertical-align: top;">
-                    <img src="<?php echo $access['cover'] ?>" width="200" alt="<?php echo $access['title'] ?>"/>
+                    <img src="<?php echo $access['cover'] ?>" width="200" alt="<?php echo ALFAOMEGA_COVER_PATH . $access['title'] ?>"/>
                 </td>
                 <td style="vertical-align: top;">
                     <h3><?php echo esc_html( $access['title'] . ' (' . $access['isbn'] . ')' ); ?></h3>
