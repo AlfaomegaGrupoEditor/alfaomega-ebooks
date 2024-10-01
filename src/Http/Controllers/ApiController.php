@@ -50,7 +50,7 @@ class ApiController
                 'orderBy'        => $data['filter']['order']['field'],
                 'orderDirection' => $data['filter']['order']['direction'],
             ]);
-            // Service::make()->helper()->cacheForget($key);
+            Service::make()->helper()->cacheForget($key);
             $result = Service::make()->helper()
                 ->cacheRemember($key, 1 * HOUR_IN_SECONDS, function () use ($data) {
                     return Service::make()
