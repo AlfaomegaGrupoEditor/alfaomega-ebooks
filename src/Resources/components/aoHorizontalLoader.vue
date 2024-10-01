@@ -31,19 +31,19 @@
 </script>
 
 <template>
-    <div class="row row-cols-1 mx-0"
+    <div class="row row-cols-1 mx-0 mt-2"
          style="min-height: 25px"
     >
         <BProgress
             v-if="show && progress > 0"
-            class="mt-3 px-0" heigh="2px"
-            style="height: 2px; background-color: transparent; box-shadow: none; border-radius: 0"
+            class="w-100 px-0 mt-2 pb-0"
+            height="2px"
+            style="background-color: transparent;"
         >
             <BProgressBar
-                height="2px"
                 :value="progress"
                 :variant="variant"
-                style="border-radius: 0"
+                style="box-shadow: none; border-radius: 0"
             />
         </BProgress>
     </div>

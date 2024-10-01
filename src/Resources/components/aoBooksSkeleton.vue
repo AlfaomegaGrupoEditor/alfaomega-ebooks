@@ -10,7 +10,7 @@
 </script>
 
 <template>
-    <div class="row row-cols-1 row-cols-md-4 g-4 mt-0">
+    <div class="row row-cols-1 row-cols-md-4 g-4 mt-4">
         <div class="col" v-for="item in items" :key="item">
             <BPlaceholderCard
                 class="px-1 py-1 border-2 ao-book-skeleton placeholder-glow opacity-animation"
