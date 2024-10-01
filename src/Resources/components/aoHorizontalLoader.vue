@@ -20,12 +20,12 @@
                     progress.value += 10;
                 } else {
                     clearInterval(interval.value);
-                    progress.value = 0;
+                    progress.value = 100;
                 }
             }, props.speed);
         } else {
             clearInterval(interval.value);
-            progress.value = 0;
+            progress.value = 100;
         }
     });
 </script>
@@ -35,7 +35,7 @@
          style="min-height: 25px"
     >
         <BProgress
-            v-if="show"
+            v-if="show && progress > 0"
             class="mt-3 px-0" heigh="2px"
             style="height: 2px; background-color: transparent; box-shadow: none; border-radius: 0"
         >
