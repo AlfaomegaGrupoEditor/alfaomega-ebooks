@@ -691,7 +691,7 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                             $categoryTree[$parent] = [
                                 'id'       => $parent,
                                 'title'    => $helper->sanitize($term->name),
-                                'children' => array_merge($children, [$newKey]),
+                                'children' => array_merge($children, [intval($newKey)]),
                             ];
                             $newKey = $parent;
                             $parent = $term->parent;
