@@ -78,4 +78,30 @@ class Helper
 
         return $result;
     }
+
+    /**
+     * Sanitize a string to prevent serialization errors.
+     *
+     * @param string $string The string to sanitize.
+     * @return string The sanitized string.
+     */
+    function sanitize(string $string): string
+    {
+        // Step 1: Trim whitespace
+        $string = trim($string);
+
+        // Step 2: Remove invalid characters
+        $string = preg_replace('/[\x00-\x1F\x7F]/u', '', $string);
+
+        // Step 3: Escape quotes
+        $string = addslashes($string);
+
+        // Step 4: Ensure valid UTF-8 encoding
+        if (!mb_check_encoding($string, 'UTF-8')) {
+            $string = utf8_encode($string);
+        }
+
+        // Step 5: Optionally filter harmful content
+        return filter_var($string, FILTER_SANITIZE_STRING);
+    }
 }

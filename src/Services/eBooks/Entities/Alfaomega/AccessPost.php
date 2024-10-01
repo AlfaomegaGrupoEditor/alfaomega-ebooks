@@ -651,12 +651,13 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
 
         // The categories with parent = 0
         $rootCategories = [];
+        $helper = Service::make()->helper();
 
         foreach ($categories as $key => $result) {
             if (! isset($categoryTree[$key])) {
                 $categoryTree[$key] = [
                     'id'       => $key,
-                    'title'    => $result->name,
+                    'title'    => $helper->sanitize($result->name),
                     'children' => [],
                 ];
             }
@@ -673,7 +674,7 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                     // exists in $categories but is not moved to $categoryTree yet
                     $categoryTree[$result->parent] = [
                         'id'       => $result->parent,
-                        'title'    => $categories[$result->parent]->name,
+                        'title'    => $helper->sanitize($categories[$result->parent]->name),
                         'children' => [$key],
                     ];
                 } else {
@@ -686,7 +687,7 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                         if ($term) {
                             $categoryTree[$parent] = [
                                 'id'       => $parent,
-                                'title'    => $term->name,
+                                'title'    => $helper->sanitize($term->name),
                                 'children' => [$newKey],
                             ];
                             $newKey = $parent;
