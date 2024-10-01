@@ -30,8 +30,8 @@
 <template>
     <transition name="fade">
         <div v-if="built"
-             style="position: relative; max-width: 185px; padding: 0;"
-             class="d-inline-block mx-3 my-3"
+             style="position: relative; max-width: 170px; padding: 0;"
+             class="d-inline-block mx-4 my-3"
              :class="disabled ? 'processing' : ''"
         >
             <BCard

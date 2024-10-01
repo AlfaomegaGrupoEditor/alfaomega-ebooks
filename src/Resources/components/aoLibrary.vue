@@ -74,10 +74,11 @@
                     @open="()=> toggleSidebar(book)"
                 />
             </div>
-            <div class="mt-5 d-flex flex-row justify-content-center">
+            <div class="mt-0 d-flex flex-row justify-content-center">
                 <BPagination
                     v-if="meta.pages > 1 || processing"
                     v-model="currentPage"
+                    class="mt-2"
                     :total-rows="meta.total"
                     :per-page="query.filter.perPage"
                     :prev-text="$t('previous')"
