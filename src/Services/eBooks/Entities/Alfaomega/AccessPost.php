@@ -696,7 +696,7 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                             $error = true;
                         }
                     } while ($parent !== 0 || $error);
-                    if (!in_array($key, $rootCategories)) {
+                    if (!in_array($newKey, $rootCategories)) {
                         $rootCategories[] = $newKey;
                     }
                 }
