@@ -78,7 +78,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                     '180' => sprintf(__('%s months', 'alfaomega-ebooks'), 6),
                     '365' => sprintf(__('%s year', 'alfaomega-ebooks'), 1),
                     '0'   => __('Unlimited', 'alfaomega-ebooks'),
-                    default => __('Unknown', 'alfaomega-ebooks'),
+                    default => __('Remaining time', 'alfaomega-ebooks'),
                 };
                 $item['details'] = !empty($eBookPost) ? $eBookPost['details'] : '';
             }
@@ -468,9 +468,23 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             throw new Exception(esc_html__('Invalid folder.', 'alfaomega-ebooks'));
         }
 
+        if (empty($data['customer'])) {
+            throw new Exception(esc_html__('Customer is required.', 'alfaomega-ebooks'));
+        }
+
+        if (empty($data['email'])) {
+            throw new Exception(esc_html__('Email is required.', 'alfaomega-ebooks'));
+        }
+
+        if (empty($data['store'])) {
+            throw new Exception(esc_html__('Store is required.', 'alfaomega-ebooks'));
+        }
+
         if (empty($data['books'])) {
             throw new Exception(esc_html__('No books found.', 'alfaomega-ebooks'));
         }
+
+        $date = Carbon::now()->toDateTimeString();
 
         // get the json file from S3, if exists
         $jsonContent = [];
@@ -484,15 +498,35 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             ],
         ], $jsonContent, $data);
 
+        $codeData = [
+            'destination' => '',
+            'promoter'    => '',
+            'description' => "Imported from {$data['customer']} account ({$data['email']}) from {$data['store']} on $date",
+            'payload'     => [],
+            'due_date'    => null,
+            'count'       => 1,
+        ];
+
         foreach ($data['books'] as $book) {
             if (empty($book['isbn'])) {
-                throw new Exception(esc_html__('Isbn not assigned.', 'alfaomega-ebooks'));
+                throw new Exception(esc_html__('Isbn is required.', 'alfaomega-ebooks'));
             }
 
-
+            $codeData['payload'][] = [
+                'isbn'        => $book['isbn'],
+                'read'        => $book['read'] ?? false,
+                'download'    => $book['download'] ?? false,
+                'access_time' => empty('due_date') ? 0
+                    : Carbon::parse($book['due_date'])->diffInDays(Carbon::now()),
+            ];
         }
 
-        return $result;
+        $accessPost = $this->updateOrCreate(null, $codeData);
+        $result['code'] = $accessPost['code'];
+        $result['status'] = $accessPost['status'];
+
+        // TODO: upload the json file to S3
+        return $accessPost['code'];
     }
 
     /**
