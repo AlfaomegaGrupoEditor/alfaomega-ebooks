@@ -5,16 +5,20 @@
     import {useI18n} from 'vue-i18n';
 
     const props = defineProps({
-        data: {type: Object as () => BookType | null, default: null}
+        data: {type: Object as () => BookType | null, default: null},
+        disabled: {type: Boolean, default: false}
     });
 
     const {t} = useI18n();
     const emit = defineEmits<{ open: (payload: BookType) => void }>();
     const hover = ref(false);
     const built = ref(false);
+    const covers = ref(window.wpApiSettings.covers);
 
     const handleClick = () => {
-        emit('open', props.data);
+        if (!props.disabled) {
+            emit('open', props.data);
+        }
     };
 
     onMounted(() => {
@@ -25,15 +29,19 @@
 
 <template>
     <transition name="fade">
-        <div style="position: relative; max-width: 220px;" v-if="built">
+        <div v-if="built"
+             style="position: relative; max-width: 170px; padding: 0;"
+             class="d-inline-block mx-4 my-3"
+             :class="disabled ? 'processing' : ''"
+        >
             <BCard
                 class="px-1 py-1 border-2"
                 :class="hover ? 'shadow-lg border-primary' : ''"
                 v-if="data !== null"
-                :img-src="data.cover"
+                :img-src="covers + data.cover"
                 :img-alt="data.title"
                 no-body
-                role="button"
+                :role="!disabled ? 'button' : ''"
                 @click="handleClick"
                 @mouseover="hover = true"
                 @mouseleave="hover = false"
@@ -54,5 +62,12 @@
     .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */
     {
         opacity: 0;
+    }
+
+    .processing {
+        cursor: progress;
+        pointer-events: none;
+        opacity: 0.6;
+        filter: grayscale(100%);
     }
 </style>

@@ -133,6 +133,8 @@ const messages = {
         title: 'Título',
         // V
         valid_until: 'Válido hasta',
+        // W
+        welcome: 'Bienvenido',
     }
 };
 

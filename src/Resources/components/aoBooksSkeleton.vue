@@ -10,8 +10,11 @@
 </script>
 
 <template>
-    <div class="row row-cols-1 row-cols-md-4 g-4 mt-0">
-        <div class="col" v-for="item in items" :key="item">
+    <div class="row row-cols-1 row-cols-md-4 mt-4">
+        <div v-for="item in items" :key="item"
+            class="col mx-4 my-3"
+            style="position: relative; max-width: 170px; padding: 0;"
+        >
             <BPlaceholderCard
                 class="px-1 py-1 border-2 ao-book-skeleton placeholder-glow opacity-animation"
                 :imgSrc="`${publicUrl}/img/book_skeleton.png`"

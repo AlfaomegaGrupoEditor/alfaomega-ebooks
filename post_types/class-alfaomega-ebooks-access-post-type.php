@@ -103,7 +103,7 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
             switch( $column ){
                 case 'alfaomega_access_cover':
                     echo '<a href="' . get_site_url() . '/wp-admin/post.php?post=' . $post_id .'&action=edit">';
-                    echo '  <img width="50" height="60" src="' . get_post_meta( $post_id, 'alfaomega_access_cover', true ) . '"';
+                    echo '  <img width="50" height="60" src="' . ALFAOMEGA_COVER_PATH . get_post_meta( $post_id, 'alfaomega_access_cover', true ) . '"';
                     echo '    class="attachment-thumbnail size-thumbnail" alt="" decoding="async"';
                     echo '</a>';
                     break;

@@ -144,7 +144,8 @@
                     ...searchQuery.value.filter,
                     ...{
                         category: node.categories,
-                        accessType: accessTypeValue(node.id)
+                        accessType: accessTypeValue(node.id),
+                        currentPage: 1
                     }
                 }
             }

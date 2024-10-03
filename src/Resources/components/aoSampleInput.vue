@@ -47,7 +47,7 @@
 
 <template>
     <b-card>
-        <b-card-title>
+        <b-card-title class="mt-0">
             <span class="fs-8">
                 {{ $t('add_ebooks') }}
             </span>
