@@ -84,6 +84,10 @@ switch (get_query_var('param_1')) {
         $routeManager = new RouteManager();
         $routeManager->callEndpoint(get_query_var('param_2'));
         exit;
+    case 'webhook':
+        $routeManager = new RouteManager();
+        //$routeManager->callWebhook(get_query_var('param_2'));
+        exit;
     default:
         $_SESSION['alfaomega_ebooks_msg'] = [
             'type' => 'error',

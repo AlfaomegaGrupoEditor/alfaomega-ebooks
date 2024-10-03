@@ -171,4 +171,62 @@ class AlfaomegaAccessTest extends WordpressTest
 
         $this->assertTrue($result);
     }
+
+    /**
+     * Generate code webhook.
+     *
+     * @param array $data
+     *
+     * @return void
+     * @throws \Exception
+     */
+    #[DataProvider('webhookProvider')]
+    public function testGenerateCodeWebhook(array $data = []): void
+    {
+        $endpoint = get_site_url(). '/alfaomega-ebooks/webhook/generate-code';
+
+        $response = $this->jsonRequest('POST', $endpoint, $data, [
+            'AO-TOKEN' => 'Bearer ' . WEBHOOK_TOKEN
+        ]);
+
+        $this->assertEquals(200, $response->get_status());
+        $data = $response->get_data();
+        $this->assertEquals('success', $data['status']);
+    }
+
+    /**
+     * Webhook provider
+     * @return array[]
+     */
+    public static function webhookProvider(): array
+    {
+        return [
+            'livan2r' => [
+                'data' => [
+                    "json_file" => "15_livan2r_gmail_com.json",
+                    "folder"    => "\/testing\/",
+                    "books"     => [
+                        [
+                            "isbn"     => "9786075381862",
+                            "read"     => true,
+                            "download" => false,
+                            "due_date" => null
+                        ],
+                        [
+                            "isbn"     => "9786075386577",
+                            "read"     => true,
+                            "download" => false,
+                            "due_date" => "2024-12-31"
+                        ],
+                        [
+                            "isbn"     => "PENISBN1600",
+                            "read"     => true,
+                            "download" => true,
+                            "due_date" => null
+                        ],
+                    ],
+                ],
+            ]
+        ];
+    }
 }
