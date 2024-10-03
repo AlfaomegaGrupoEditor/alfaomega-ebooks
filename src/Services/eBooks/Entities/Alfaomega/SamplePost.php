@@ -489,7 +489,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                 throw new Exception(esc_html__('Isbn not assigned.', 'alfaomega-ebooks'));
             }
 
-            $result[] = $this->updateOrCreate(null, $item);
+
         }
 
         return $result;
