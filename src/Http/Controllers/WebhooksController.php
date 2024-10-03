@@ -7,21 +7,22 @@ use AlfaomegaEbooks\Services\eBooks\Service;
 class WebhooksController
 {
     /**
-     * Check API
+     * Import access and generate the sample codes
      *
      * @param array $data
      *
      * @return array
+     * @throws \Exception
      */
     public function generateCode(array $data = []): array
     {
-        $code = 'generate';
+        $service = Service::make()->ebooks()->samplePost();
 
         return [
             'status'  => 'success',
-            'data'    => [
-                'code' => $code,
-            ],
+            'data'    => $data['type'] === 'single'
+                ? $service->import($data)
+                : $service->importBatch($data),
             'message' => esc_html__('God Job!', 'alfaomega-ebooks'),
         ];
     }

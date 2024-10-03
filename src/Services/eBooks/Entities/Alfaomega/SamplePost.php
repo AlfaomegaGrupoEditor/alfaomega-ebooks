@@ -448,4 +448,68 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             get_post_meta($postId, 'alfaomega_sample_activated_at', true)
         );
     }
+
+    /**
+     * Import sample codes.
+     *
+     * @param array $data The sample codes to import.
+     *
+     * @return array The imported sample codes.
+     * @throws \Exception
+     */
+    public function import(array $data): array
+    {
+        if (empty($data['json_file'])) {
+            throw new Exception(esc_html__('Invalid JSON file.', 'alfaomega-ebooks'));
+        }
+
+        if (empty($data['folder'])
+            || !in_array($data['folder'], ['/testing/', '/mexico/', '/argentina/', '/ferias/', '/spain/'])) {
+            throw new Exception(esc_html__('Invalid folder.', 'alfaomega-ebooks'));
+        }
+
+        if (empty($data['books'])) {
+            throw new Exception(esc_html__('No books found.', 'alfaomega-ebooks'));
+        }
+
+        // get the json file from S3, if exists
+        $jsonContent = [];
+        $result = array_merge([
+            'status'   => 'created',
+            'code'     => '',
+            'redeemed' => [
+                'date'    => '',
+                'user'    => '',
+                'website' => '',
+            ],
+        ], $jsonContent, $data);
+
+        foreach ($data['books'] as $book) {
+            if (empty($book['isbn'])) {
+                throw new Exception(esc_html__('Isbn not assigned.', 'alfaomega-ebooks'));
+            }
+
+            $result[] = $this->updateOrCreate(null, $item);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Import sample codes in batch.
+     *
+     * @param array $data The sample codes to import.
+     *
+     * @return array The imported sample codes.
+     * @throws \Exception
+     */
+    public function importBatch(array $data): array
+    {
+        $result = [];
+        foreach ($data as $item) {
+            $result[] = $this->updateOrCreate(null, $item);
+        }
+
+        return $result;
+    }
 }
