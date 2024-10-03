@@ -5,12 +5,22 @@ namespace AlfaomegaEbooks\Services\eBooks\Entities\Alfaomega;
 use AlfaomegaEbooks\Services\Alfaomega\Api;
 use AlfaomegaEbooks\Services\eBooks\Entities\AbstractEntity;
 use AlfaomegaEbooks\Services\eBooks\Service;
+use Aws\S3\S3Client;
 use Carbon\Carbon;
 use Exception;
 use WP_Query;
 
 class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
 {
+    protected S3Client $client;
+
+    /**
+     * The bucket name.
+     *
+     * @var string
+     */
+    protected string $bucked = 'alfaomega-codes';
+
     /**
      * Make a new instance of the class.
      *
@@ -19,6 +29,25 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
     public static function make(): self
     {
         return new self();
+    }
+
+    /**
+     * The SamplePost constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->client = new S3Client([
+            'version'                 => 'latest',
+            'region'                  => 'nyc3',
+            'endpoint'                => 'https://nyc3.digitaloceanspaces.com',
+            'use_path_style_endpoint' => false,
+            'credentials'             => [
+                'key'    => AWS_S3_ACCESS_KEY,
+                'secret' => AWS_S3_SECRECT_KEY,
+            ],
+        ]);
     }
 
     /**
@@ -487,7 +516,17 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         $date = Carbon::now()->toDateTimeString();
 
         // get the json file from S3, if exists
-        $jsonContent = [];
+        $filename = $data['folder'] . $data['json_file'];
+        if ($this->client->doesObjectExist($this->bucked, $filename)) {
+            $result = $this->client->getObject([
+                'Bucket' => $this->bucked,
+                'Key'    => $filename,
+            ]);
+            $jsonContent = json_decode($result['Body'], true);
+        } else {
+            $jsonContent = [];
+        }
+
         $result = array_merge([
             'status'   => 'created',
             'code'     => '',
@@ -525,7 +564,15 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         $result['code'] = $accessPost['code'];
         $result['status'] = $accessPost['status'];
 
-        // TODO: upload the json file to S3
+        $result = $this->client->putObject([
+            'Bucket' => $this->bucked,
+            'Key'    => $filename,
+            'Body'   => json_encode($result),
+        ]);
+        if (empty($result)) {
+            throw new Exception(esc_html__('Unable to save the JSON file.', 'alfaomega-ebooks'));
+        }
+
         return $accessPost['code'];
     }
 
