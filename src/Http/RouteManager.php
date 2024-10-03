@@ -6,6 +6,7 @@ use AlfaomegaEbooks\Http\Controllers\EbooksController;
 use AlfaomegaEbooks\Http\Controllers\EbooksMassActionsController;
 use AlfaomegaEbooks\Http\Controllers\EbooksQuickActionsController;
 use AlfaomegaEbooks\Http\Controllers\QueueController;
+use AlfaomegaEbooks\Http\Controllers\WebhooksController;
 
 /**
  * Class RouteManger
@@ -129,11 +130,22 @@ class RouteManager
         'link-ebook'   => [EbooksQuickActionsController::class, 'quickLinkEbook'],
         'unlink-ebook' => [EbooksQuickActionsController::class, 'quickUnlinkEbook'],
     ];
+
+    /**
+     * @var array $apiEndpoints
+     */
     protected array $apiEndpoints = [
         'check'   => [ApiController::class, 'checkApi', 'GET'],
         'books'   => [ApiController::class, 'getBooks', 'POST'],
         'catalog' => [ApiController::class, 'getCatalog', 'GET'],
-        'redeem' => [ApiController::class, 'redeemCode', 'POST'],
+        'redeem'  => [ApiController::class, 'redeemCode', 'POST'],
+    ];
+
+    /**
+     * @var array $apiEndpoints
+     */
+    protected array $webhooks = [
+        'generate-code'   => [WebhooksController::class, 'generateCode', 'POST'],
     ];
 
     /**
@@ -248,6 +260,45 @@ class RouteManager
 
         try {
             [$class, $method] = $this->apiEndpoints[$endpoint];
+            $controller = new $class;
+            $response = $controller->{$method}($this->getRequest());
+            wp_send_json($response, 200);
+        } catch (\Exception $e) {
+            wp_send_json([
+                'status'  => 'fail',
+                'data'    => null,
+                'message' => esc_html__($e->getMessage(), 'alfaomega-ebooks'),
+            ], 500);
+        }
+    }
+
+    /**
+     * Calls a Webhook endpoint.
+     * @param string $webhook
+     *
+     * @return array
+     */
+    public function callWebhooks(string $webhook): array
+    {
+        $headers = getallheaders();
+        $aoToken = $headers['Ao-Token'] ?? null;
+        if ($aoToken !== WEBHOOK_TOKEN) {
+            wp_send_json([
+                'status'  => 'fail',
+                'message' => esc_html__('Unauthorized', 'alfaomega-ebooks'),
+            ], 401);
+        }
+
+        if (! array_key_exists($webhook, $this->webhooks)) {
+            wp_send_json([
+                'status'  => 'fail',
+                'data'    => null,
+                'message' => esc_html__('Not found', 'alfaomega-ebooks'),
+            ], 404);
+        }
+
+        try {
+            [$class, $method] = $this->webhooks[$webhook];
             $controller = new $class;
             $response = $controller->{$method}($this->getRequest());
             wp_send_json($response, 200);
