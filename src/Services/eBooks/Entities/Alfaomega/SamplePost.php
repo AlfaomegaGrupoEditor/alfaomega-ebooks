@@ -480,110 +480,115 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
     /**
      * Import sample codes.
      *
-     * @param array $data The sample codes to import.
+     * @param array $dataCollection The sample codes to import.
      *
      * @return array The imported sample codes.
      * @throws \Exception
      */
-    public function import(array $data): array
+    public function import(array $dataCollection): array
     {
-        if (empty($data['json_file'])) {
-            throw new Exception(esc_html__('Invalid JSON file.', 'alfaomega-ebooks'));
-        }
-
-        if (empty($data['folder'])
-            || !in_array($data['folder'], ['testing', 'mexico', 'argentina', 'ferias', 'spain'])) {
-            throw new Exception(esc_html__('Invalid folder.', 'alfaomega-ebooks'));
-        }
-
-        if (empty($data['customer'])) {
-            throw new Exception(esc_html__('Customer is required.', 'alfaomega-ebooks'));
-        }
-
-        if (empty($data['email'])) {
-            throw new Exception(esc_html__('Email is required.', 'alfaomega-ebooks'));
-        }
-
-        if (empty($data['store'])) {
-            throw new Exception(esc_html__('Store is required.', 'alfaomega-ebooks'));
-        }
-
-        if (empty($data['books'])) {
-            throw new Exception(esc_html__('No books found.', 'alfaomega-ebooks'));
-        }
-
-        $date = Carbon::now()->toDateTimeString();
-
-        // get the json file from S3, if exists
-        $filename = "{$data['folder']}/{$data['json_file']}";
-        if ($this->client->doesObjectExist($this->bucked, $filename)) {
-            $result = $this->client->getObject([
-                'Bucket' => $this->bucked,
-                'Key'    => $filename,
-            ]);
-            $jsonContent = json_decode($result['Body'], true);
-        } else {
-            $jsonContent = [];
-        }
-
-        if (!empty($jsonContent['code'])) {
-            return [
-                'status' => $jsonContent['status'] ?? 'created',
-                'code'   => $jsonContent['code'],
-            ];
-        }
-
-        $result = array_merge([
-            'status'   => 'created',
-            'code'     => '',
-            'redeemed' => [
-                'date'    => '',
-                'user'    => '',
-                'website' => '',
-            ],
-        ], $jsonContent, $data);
-
-        $codeData = [
-            'destination' => '',
-            'promoter'    => '',
-            'description' => "Imported from {$data['customer']} account ({$data['email']}) from {$data['store']} on $date",
-            'payload'     => [],
-            'due_date'    => null,
-            'count'       => 1,
-        ];
-
-        foreach ($data['books'] as $book) {
-            if (empty($book['isbn'])) {
-                throw new Exception(esc_html__('Isbn is required.', 'alfaomega-ebooks'));
+        $result = [];
+        foreach ($dataCollection as $data) {
+            if (empty($data['json_file'])) {
+                throw new Exception(esc_html__('Invalid JSON file.', 'alfaomega-ebooks'));
             }
 
-            $codeData['payload'][] = [
-                'isbn'        => $book['isbn'],
-                'read'        => $book['read'] ?? false,
-                'download'    => $book['download'] ?? false,
-                'access_time' => empty('due_date') ? 0
-                    : Carbon::parse($book['due_date'])->diffInDays(Carbon::now()),
+            if (empty($data['folder'])
+                || !in_array($data['folder'], ['testing', 'mexico', 'argentina', 'ferias', 'spain'])) {
+                throw new Exception(esc_html__('Invalid folder.', 'alfaomega-ebooks'));
+            }
+
+            if (empty($data['customer'])) {
+                throw new Exception(esc_html__('Customer is required.', 'alfaomega-ebooks'));
+            }
+
+            if (empty($data['email'])) {
+                throw new Exception(esc_html__('Email is required.', 'alfaomega-ebooks'));
+            }
+
+            if (empty($data['store'])) {
+                throw new Exception(esc_html__('Store is required.', 'alfaomega-ebooks'));
+            }
+
+            if (empty($data['books'])) {
+                throw new Exception(esc_html__('No books found.', 'alfaomega-ebooks'));
+            }
+
+            $date = Carbon::now()->toDateTimeString();
+
+            // get the json file from S3, if exists
+            $filename = "{$data['folder']}/{$data['json_file']}";
+            if ($this->client->doesObjectExist($this->bucked, $filename)) {
+                $result = $this->client->getObject([
+                    'Bucket' => $this->bucked,
+                    'Key'    => $filename,
+                ]);
+                $jsonContent = json_decode($result['Body'], true);
+            } else {
+                $jsonContent = [];
+            }
+
+            if (!empty($jsonContent['code'])) {
+                return [
+                    'status' => $jsonContent['status'] ?? 'created',
+                    'code'   => $jsonContent['code'],
+                ];
+            }
+
+            $result = array_merge([
+                'status'   => 'created',
+                'code'     => '',
+                'redeemed' => [
+                    'date'    => '',
+                    'user'    => '',
+                    'website' => '',
+                ],
+            ], $jsonContent, $data);
+
+            $codeData = [
+                'destination' => '',
+                'promoter'    => '',
+                'description' => "Imported from {$data['customer']} account ({$data['email']}) from {$data['store']} on $date",
+                'payload'     => [],
+                'due_date'    => null,
+                'count'       => 1,
+            ];
+
+            foreach ($data['books'] as $book) {
+                if (empty($book['isbn'])) {
+                    throw new Exception(esc_html__('Isbn is required.', 'alfaomega-ebooks'));
+                }
+
+                $codeData['payload'][] = [
+                    'isbn'        => $book['isbn'],
+                    'read'        => $book['read'] ?? false,
+                    'download'    => $book['download'] ?? false,
+                    'access_time' => empty('due_date') ? 0
+                        : Carbon::parse($book['due_date'])->diffInDays(Carbon::now()),
+                ];
+            }
+
+            $accessPost = $this->updateOrCreate(null, $codeData);
+            $result['code'] = $accessPost['code'];
+            $result['status'] = $accessPost['status'];
+
+            $result = $this->client->putObject([
+                'Bucket' => $this->bucked,
+                'Key'    => $filename,
+                'Body'   => json_encode($result),
+                'ACL'    => 'private'
+            ]);
+            if ($result['@metadata']['statusCode'] !== 200) {
+                throw new Exception(esc_html__('Unable to save the JSON file.', 'alfaomega-ebooks'));
+            }
+
+            $result[$data['json_file']] = [
+                'status' => $accessPost['status'],
+                'code'   => $accessPost['code'],
             ];
         }
 
-        $accessPost = $this->updateOrCreate(null, $codeData);
-        $result['code'] = $accessPost['code'];
-        $result['status'] = $accessPost['status'];
-
-        $result = $this->client->putObject([
-            'Bucket' => $this->bucked,
-            'Key'    => $filename,
-            'Body'   => json_encode($result),
-            'ACL'    => 'private'
-        ]);
-        if ($result['@metadata']['statusCode'] !== 200) {
-            throw new Exception(esc_html__('Unable to save the JSON file.', 'alfaomega-ebooks'));
-        }
-
-        return [
-            'status' => $accessPost['status'],
-            'code'   => $accessPost['code'],
-        ];
+        return $result;
     }
 
     /**

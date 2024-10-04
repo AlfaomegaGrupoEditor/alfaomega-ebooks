@@ -23,9 +23,7 @@ class WebhooksController
 
         return [
             'status'  => 'success',
-            'data'    => $data['type'] === 'single'
-                ? $service->import($data)
-                : $service->importBatch($data),
+            'data'    => $service->import($data),
             'message' => esc_html__('God Job!', 'alfaomega-ebooks'),
         ];
     }
