@@ -275,7 +275,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             $code[] = wp_generate_password($size, false);
         }
 
-        $result = strtoupper(join('-', $code));
+        $result = join('-', $code);
         return $this->codeExists($result)
             ? $this->generateCode($groups, $size)
             : $result;
