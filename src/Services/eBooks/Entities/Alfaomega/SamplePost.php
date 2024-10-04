@@ -576,7 +576,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             'Body'   => json_encode($result),
             'ACL'    => 'private'
         ]);
-        if (empty($result['ObjectURL'])) {
+        if ($result['@metadata']['statusCode'] !== 200) {
             throw new Exception(esc_html__('Unable to save the JSON file.', 'alfaomega-ebooks'));
         }
 
