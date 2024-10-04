@@ -84,6 +84,9 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         $status = get_post_meta($postId, 'alfaomega_sample_status', true);
         $status = !empty($status) ? $status : 'created';
 
+        $type = get_post_meta($postId, 'alfaomega_sample_type', true);
+        $status = !empty($status) ? $status : 'sample';
+
         $payloadJson = get_post_meta($postId, 'alfaomega_sample_payload', true);
         $payload = json_decode($payloadJson, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
@@ -106,7 +109,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                     '180' => sprintf(__('%s months', 'alfaomega-ebooks'), 6),
                     '365' => sprintf(__('%s year', 'alfaomega-ebooks'), 1),
                     '0'   => __('Unlimited', 'alfaomega-ebooks'),
-                    default => __('Remaining time', 'alfaomega-ebooks'),
+                    default => sprintf(__('%s days', 'alfaomega-ebooks'), $item['access_time']),
                 };
                 $item['details'] = !empty($eBookPost) ? $eBookPost['details'] : '';
             }
@@ -126,6 +129,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             'destination'  => $destination,
             'promoter'     => $promoter,
             'status'       => $status,
+            'type'         => $type,
             'payload'      => $payload,
             'due_date'     => $dueDate,
             'activated_at' => $activatedAt,
@@ -230,6 +234,11 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                 'old'     => get_post_meta($postId, 'alfaomega_sample_status', true),
                 'new'     => $data['status'],
                 'default' => 'created', // created, redeemed, expired, failed
+            ],
+            'alfaomega_sample_type'   => [
+                'old'     => get_post_meta($postId, 'alfaomega_sample_type', true),
+                'new'     => $data['type'],
+                'default' => 'sample', // sample, import
             ],
             'alfaomega_sample_payload'   => [
                 'old'     => get_post_meta($postId, 'alfaomega_sample_payload', true),
@@ -554,6 +563,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                 'payload'     => [],
                 'due_date'    => null,
                 'count'       => 1,
+                'type'        => 'import',
             ];
 
             foreach ($data['books'] as $book) {
