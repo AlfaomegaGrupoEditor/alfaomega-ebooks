@@ -633,8 +633,9 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             }
 
             $result[$data['json_file']] = [
-                'status' => $accessPost['status'],
-                'code'   => $accessPost['code'],
+                'status'   => $accessPost['status'],
+                'code'     => $accessPost['code'],
+                'redeemed' => $payload['redeemed'],
             ];
         }
 
