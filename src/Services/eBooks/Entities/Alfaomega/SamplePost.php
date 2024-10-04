@@ -139,6 +139,32 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
     }
 
     /**
+     * Find a post by its code.
+     * This method finds a post by its code and returns the metadata of the post.
+     * If the post is not found, it returns an empty array.
+     *
+     * @param string $code The code of the post to find.
+     *
+     * @return array The metadata of the post.
+     * @throws \Exception
+     */
+    public function find(string $code): ?array
+    {
+        $query = new WP_Query([
+            'post_type'   => 'alfaomega-sample',
+            'title'       => $code,
+            'numberposts' => 1,
+        ]);
+
+        if (!$query->have_posts()) {
+            return null;
+        }
+
+        $query->the_post();
+        return $this->get(get_the_ID());
+    }
+
+    /**
      * Updates or creates a new eBook post.
      *
      * This method updates an existing eBook post or creates a new one if it doesn't exist.
@@ -537,13 +563,23 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                 $jsonContent = [];
             }
 
+            $post = null;
             if (!empty($jsonContent['code'])) {
                 $result[$data['json_file']] = [
                     'status'   => $jsonContent['status'] ?? 'created',
                     'code'     => $jsonContent['code'],
                     'redeemed' => $jsonContent['redeemed'] ?? null,
                 ];
-                continue;
+
+                // update current code
+                if (!empty($data['update'])) {
+                    $post = $this->find($jsonContent['code']);
+                    if (!empty($post)) {
+                        $data['code'] = $jsonContent['code'];
+                    }
+                } else {
+                    continue;
+                }
             }
 
             $payload = array_merge([
@@ -564,6 +600,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                 'due_date'    => null,
                 'count'       => 1,
                 'type'        => 'import',
+                'code'        => $data['code'] ?? '',
             ];
 
             foreach ($data['books'] as $book) {
@@ -580,7 +617,8 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                 ];
             }
 
-            $accessPost = $this->updateOrCreate(null, $codeData);
+            $postId = $post ? $post['id'] : null;
+            $accessPost = $this->updateOrCreate($postId, $codeData);
             $payload['code'] = $accessPost['code'];
             $payload['status'] = $accessPost['status'];
 
