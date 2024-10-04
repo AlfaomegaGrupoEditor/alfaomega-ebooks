@@ -530,8 +530,9 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
 
             if (!empty($jsonContent['code'])) {
                 $result[$data['json_file']] = [
-                    'status' => $jsonContent['status'] ?? 'created',
-                    'code'   => $jsonContent['code'],
+                    'status'   => $jsonContent['status'] ?? 'created',
+                    'code'     => $jsonContent['code'],
+                    'redeemed' => $jsonContent['redeemed'] ?? null,
                 ];
                 continue;
             }
