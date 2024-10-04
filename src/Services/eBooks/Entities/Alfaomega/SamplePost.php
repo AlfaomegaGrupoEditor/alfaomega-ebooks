@@ -42,7 +42,6 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             'version'                 => 'latest',
             'region'                  => 'nyc3',
             'endpoint'                => 'https://nyc3.digitaloceanspaces.com',
-            'use_path_style_endpoint' => false,
             'credentials'             => [
                 'key'    => AWS_S3_ACCESS_KEY,
                 'secret' => AWS_S3_SECRECT_KEY,
@@ -493,7 +492,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         }
 
         if (empty($data['folder'])
-            || !in_array($data['folder'], ['/testing/', '/mexico/', '/argentina/', '/ferias/', '/spain/'])) {
+            || !in_array($data['folder'], ['testing', 'mexico', 'argentina', 'ferias', 'spain'])) {
             throw new Exception(esc_html__('Invalid folder.', 'alfaomega-ebooks'));
         }
 
@@ -516,7 +515,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         $date = Carbon::now()->toDateTimeString();
 
         // get the json file from S3, if exists
-        $filename = $data['folder'] . $data['json_file'];
+        $filename = "{$data['folder']}/{$data['json_file']}";
         if ($this->client->doesObjectExist($this->bucked, $filename)) {
             $result = $this->client->getObject([
                 'Bucket' => $this->bucked,
@@ -568,8 +567,9 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             'Bucket' => $this->bucked,
             'Key'    => $filename,
             'Body'   => json_encode($result),
+            'ACL'    => 'private'
         ]);
-        if (empty($result)) {
+        if (empty($result['ObjectURL'])) {
             throw new Exception(esc_html__('Unable to save the JSON file.', 'alfaomega-ebooks'));
         }
 

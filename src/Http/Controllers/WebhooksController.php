@@ -17,6 +17,9 @@ class WebhooksController
     public function generateCode(array $data = []): array
     {
         $service = Service::make()->ebooks()->samplePost();
+        if (!is_user_logged_in()) {
+            wp_set_current_user(1);
+        }
 
         return [
             'status'  => 'success',
