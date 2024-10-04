@@ -65,7 +65,7 @@
         <html-book
             id = "book"
             book-isbn = "<?php echo $data['isbn']; ?>"
-            theme-name = "default"
+            theme-name = "store"
             class = "bibliotecas"
             library-scr = "<?php echo $data['libraryBaseUrl']; ?>"
             mode = "local"
