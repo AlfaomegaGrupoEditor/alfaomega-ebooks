@@ -526,6 +526,13 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             $jsonContent = [];
         }
 
+        if (!empty($jsonContent['code'])) {
+            return [
+                'status' => $jsonContent['status'] ?? 'created',
+                'code'   => $jsonContent['code'],
+            ];
+        }
+
         $result = array_merge([
             'status'   => 'created',
             'code'     => '',
@@ -573,7 +580,10 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             throw new Exception(esc_html__('Unable to save the JSON file.', 'alfaomega-ebooks'));
         }
 
-        return $accessPost['code'];
+        return [
+            'status' => $accessPost['status'],
+            'code'   => $accessPost['code'],
+        ];
     }
 
     /**
