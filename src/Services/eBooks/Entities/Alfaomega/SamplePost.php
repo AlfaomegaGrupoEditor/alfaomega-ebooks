@@ -536,7 +536,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                 continue;
             }
 
-            $result = array_merge([
+            $payload = array_merge([
                 'status'   => 'created',
                 'code'     => '',
                 'redeemed' => [
@@ -570,16 +570,16 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             }
 
             $accessPost = $this->updateOrCreate(null, $codeData);
-            $result['code'] = $accessPost['code'];
-            $result['status'] = $accessPost['status'];
+            $payload['code'] = $accessPost['code'];
+            $payload['status'] = $accessPost['status'];
 
-            $result = $this->client->putObject([
+            $response = $this->client->putObject([
                 'Bucket' => $this->bucked,
                 'Key'    => $filename,
-                'Body'   => json_encode($result),
+                'Body'   => json_encode($payload),
                 'ACL'    => 'private',
             ]);
-            if ($result['@metadata']['statusCode'] !== 200) {
+            if ($response['@metadata']['statusCode'] !== 200) {
                 throw new Exception(esc_html__('Unable to save the JSON file.', 'alfaomega-ebooks'));
             }
 
