@@ -380,7 +380,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
     {
         $query = new WP_Query([
             'post_type'   => 'alfaomega-sample',
-            's'           => $code
+            's'           => $code,
         ]);
 
         return $query->have_posts();
@@ -529,10 +529,11 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             }
 
             if (!empty($jsonContent['code'])) {
-                return [
+                $result[$data['json_file']] = [
                     'status' => $jsonContent['status'] ?? 'created',
                     'code'   => $jsonContent['code'],
                 ];
+                continue;
             }
 
             $result = array_merge([
@@ -576,7 +577,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                 'Bucket' => $this->bucked,
                 'Key'    => $filename,
                 'Body'   => json_encode($result),
-                'ACL'    => 'private'
+                'ACL'    => 'private',
             ]);
             if ($result['@metadata']['statusCode'] !== 200) {
                 throw new Exception(esc_html__('Unable to save the JSON file.', 'alfaomega-ebooks'));
@@ -586,24 +587,6 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                 'status' => $accessPost['status'],
                 'code'   => $accessPost['code'],
             ];
-        }
-
-        return $result;
-    }
-
-    /**
-     * Import sample codes in batch.
-     *
-     * @param array $data The sample codes to import.
-     *
-     * @return array The imported sample codes.
-     * @throws \Exception
-     */
-    public function importBatch(array $data): array
-    {
-        $result = [];
-        foreach ($data as $item) {
-            $result[] = $this->updateOrCreate(null, $item);
         }
 
         return $result;
