@@ -98,7 +98,7 @@
         </div>
 
         <ao-access-details
-            :type="book.type"
+            :type="book.accessType"
             :status="book.status"
             :added_at="book.addedAt"
             :valid_until="book.validUntil"
