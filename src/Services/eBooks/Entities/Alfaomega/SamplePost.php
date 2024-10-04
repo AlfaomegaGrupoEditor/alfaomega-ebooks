@@ -519,11 +519,11 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             // get the json file from S3, if exists
             $filename = "{$data['folder']}/{$data['json_file']}";
             if ($this->client->doesObjectExist($this->bucked, $filename)) {
-                $result = $this->client->getObject([
+                $response = $this->client->getObject([
                     'Bucket' => $this->bucked,
                     'Key'    => $filename,
                 ]);
-                $jsonContent = json_decode($result['Body'], true);
+                $jsonContent = json_decode($response['Body'], true);
             } else {
                 $jsonContent = [];
             }
