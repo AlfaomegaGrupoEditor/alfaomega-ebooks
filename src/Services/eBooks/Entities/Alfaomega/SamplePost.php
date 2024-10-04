@@ -266,6 +266,11 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                 'new'     => $data['type'],
                 'default' => 'sample', // sample, import
             ],
+            'alfaomega_sample_json_file'   => [
+                'old'     => get_post_meta($postId, 'alfaomega_sample_json_file', true),
+                'new'     => $data['json_file'],
+                'default' => '',
+            ],
             'alfaomega_sample_payload'   => [
                 'old'     => get_post_meta($postId, 'alfaomega_sample_payload', true),
                 'new'     => is_string($data['payload']) ? $data['payload'] : json_encode($data['payload']),
@@ -391,6 +396,35 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             throw new Exception(esc_html__('Code redeem failed.', 'alfaomega-ebooks'));
         } else {
             $this->redeemed($postId);
+
+            // update the code status in S3 too
+            if ($samplePost['type'] === 'import' && !empty($filename = $samplePost['json_file'])) {
+                try {
+                    if ($this->client->doesObjectExist($this->bucked, $filename)) {
+                        $response = $this->client->getObject([
+                            'Bucket' => $this->bucked,
+                            'Key'    => $filename,
+                        ]);
+                        $jsonContent = json_decode($response['Body'], true);
+                        if ($jsonContent['code'] === $code) {
+                            $jsonContent['status'] = 'redeemed';
+                            $jsonContent['redeemed'] = [
+                                'date'    => Carbon::now()->toDateTimeString(),
+                                'user'    => $user->user_email,
+                                'website' => get_site_url(),
+                            ];
+                            $this->client->putObject([
+                                'Bucket' => $this->bucked,
+                                'Key'    => $filename,
+                                'Body'   => json_encode($jsonContent),
+                                'ACL'    => 'private',
+                            ]);
+                        }
+                    }
+                } catch (Exception $e) {
+                    // do nothing
+                }
+            }
         }
 
         Service::make()->ebooks()
@@ -600,6 +634,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                 'due_date'    => null,
                 'count'       => 1,
                 'type'        => 'import',
+                'json_file'   => $filename,
                 'code'        => $data['code'] ?? '',
             ];
 
