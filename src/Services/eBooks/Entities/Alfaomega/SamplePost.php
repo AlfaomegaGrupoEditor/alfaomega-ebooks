@@ -629,7 +629,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             $codeData = [
                 'destination' => '',
                 'promoter'    => '',
-                'description' => "Imported from {$data['customer']} account ({$data['email']}) from {$data['store']} on $date",
+                'description' => "Imported from {$data['email']} at {$data['folder']} store",
                 'payload'     => [],
                 'due_date'    => null,
                 'count'       => 1,
