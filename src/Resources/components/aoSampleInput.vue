@@ -11,7 +11,7 @@
     const libraryStore = useLibraryStore();
     const code = ref('');
     const processing = ref(false);
-    const invalidCode = computed(() => !/^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code.value));
+    const invalidCode = computed(() => !/^[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$/.test(code.value));
 
     const handleClick = async () => {
         processing.value = true;
