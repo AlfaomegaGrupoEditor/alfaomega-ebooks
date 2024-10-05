@@ -398,8 +398,9 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             $this->redeemed($postId);
 
             // update the code status in S3 too
-            if ($samplePost['type'] === 'import' && !empty($filename = $samplePost['json_file'])) {
+            if ($samplePost['type'] === 'import' && !empty($jsonFile = $samplePost['json_file'])) {
                 try {
+                    [$folder, $filename] = explode('/', $jsonFile);
                     if ($this->client->doesObjectExist($this->bucked, $filename)) {
                         $response = $this->client->getObject([
                             'Bucket' => $this->bucked,
@@ -629,7 +630,11 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             $codeData = [
                 'destination' => '',
                 'promoter'    => '',
-                'description' => "Imported from {$data['email']} at {$data['folder']} store",
+                'description' => sprintf(
+                    esc_html__('Imported from %s account at %s store', 'alfaomega-ebooks'),
+                    $data['email'],
+                    $data['folder']
+                ),
                 'payload'     => [],
                 'due_date'    => null,
                 'count'       => 1,
