@@ -415,10 +415,11 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                                 'website' => get_site_url(),
                             ];
                             $this->client->putObject([
-                                'Bucket' => $this->bucked,
-                                'Key'    => $filename,
-                                'Body'   => json_encode($jsonContent),
-                                'ACL'    => 'private',
+                                'Bucket'       => $this->bucked,
+                                'Key'          => $filename,
+                                'Body'         => json_encode($jsonContent),
+                                'CacheControl' => 'no-cache',
+                                'ACL'          => 'private',
                             ]);
                         }
                     }
@@ -663,10 +664,11 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             $payload['status'] = $accessPost['status'];
 
             $response = $this->client->putObject([
-                'Bucket' => $this->bucked,
-                'Key'    => $filename,
-                'Body'   => json_encode($payload),
-                'ACL'    => 'private',
+                'Bucket'       => $this->bucked,
+                'Key'          => $filename,
+                'Body'         => json_encode($payload),
+                'CacheControl' => 'no-cache',
+                'ACL'          => 'private',
             ]);
             if ($response['@metadata']['statusCode'] !== 200) {
                 throw new Exception(esc_html__('Unable to save the JSON file.', 'alfaomega-ebooks'));
