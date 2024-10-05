@@ -5,12 +5,22 @@ namespace AlfaomegaEbooks\Services\eBooks\Entities\Alfaomega;
 use AlfaomegaEbooks\Services\Alfaomega\Api;
 use AlfaomegaEbooks\Services\eBooks\Entities\AbstractEntity;
 use AlfaomegaEbooks\Services\eBooks\Service;
+use Aws\S3\S3Client;
 use Carbon\Carbon;
 use Exception;
 use WP_Query;
 
 class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
 {
+    protected S3Client $client;
+
+    /**
+     * The bucket name.
+     *
+     * @var string
+     */
+    protected string $bucked = 'alfaomega-codes';
+
     /**
      * Make a new instance of the class.
      *
@@ -19,6 +29,24 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
     public static function make(): self
     {
         return new self();
+    }
+
+    /**
+     * The SamplePost constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->client = new S3Client([
+            'version'                 => 'latest',
+            'region'                  => 'nyc3',
+            'endpoint'                => 'https://nyc3.digitaloceanspaces.com',
+            'credentials'             => [
+                'key'    => AWS_S3_ACCESS_KEY,
+                'secret' => AWS_S3_SECRECT_KEY,
+            ],
+        ]);
     }
 
     /**
@@ -56,6 +84,9 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         $status = get_post_meta($postId, 'alfaomega_sample_status', true);
         $status = !empty($status) ? $status : 'created';
 
+        $type = get_post_meta($postId, 'alfaomega_sample_type', true);
+        $status = !empty($status) ? $status : 'sample';
+
         $payloadJson = get_post_meta($postId, 'alfaomega_sample_payload', true);
         $payload = json_decode($payloadJson, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
@@ -78,7 +109,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                     '180' => sprintf(__('%s months', 'alfaomega-ebooks'), 6),
                     '365' => sprintf(__('%s year', 'alfaomega-ebooks'), 1),
                     '0'   => __('Unlimited', 'alfaomega-ebooks'),
-                    default => __('Unknown', 'alfaomega-ebooks'),
+                    default => sprintf(__('%s days', 'alfaomega-ebooks'), $item['access_time']),
                 };
                 $item['details'] = !empty($eBookPost) ? $eBookPost['details'] : '';
             }
@@ -98,12 +129,39 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             'destination'  => $destination,
             'promoter'     => $promoter,
             'status'       => $status,
+            'type'         => $type,
             'payload'      => $payload,
             'due_date'     => $dueDate,
             'activated_at' => $activatedAt,
         ];
 
         return $this->meta;
+    }
+
+    /**
+     * Find a post by its code.
+     * This method finds a post by its code and returns the metadata of the post.
+     * If the post is not found, it returns an empty array.
+     *
+     * @param string $code The code of the post to find.
+     *
+     * @return array The metadata of the post.
+     * @throws \Exception
+     */
+    public function find(string $code): ?array
+    {
+        $query = new WP_Query([
+            'post_type'   => 'alfaomega-sample',
+            'title'       => $code,
+            'numberposts' => 1,
+        ]);
+
+        if (!$query->have_posts()) {
+            return null;
+        }
+
+        $query->the_post();
+        return $this->get(get_the_ID());
     }
 
     /**
@@ -203,6 +261,16 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                 'new'     => $data['status'],
                 'default' => 'created', // created, redeemed, expired, failed
             ],
+            'alfaomega_sample_type'   => [
+                'old'     => get_post_meta($postId, 'alfaomega_sample_type', true),
+                'new'     => $data['type'],
+                'default' => 'sample', // sample, import
+            ],
+            'alfaomega_sample_json_file'   => [
+                'old'     => get_post_meta($postId, 'alfaomega_sample_json_file', true),
+                'new'     => $data['json_file'],
+                'default' => '',
+            ],
             'alfaomega_sample_payload'   => [
                 'old'     => get_post_meta($postId, 'alfaomega_sample_payload', true),
                 'new'     => is_string($data['payload']) ? $data['payload'] : json_encode($data['payload']),
@@ -247,7 +315,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             $code[] = wp_generate_password($size, false);
         }
 
-        $result = strtoupper(join('-', $code));
+        $result = join('-', $code);
         return $this->codeExists($result)
             ? $this->generateCode($groups, $size)
             : $result;
@@ -328,6 +396,35 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             throw new Exception(esc_html__('Code redeem failed.', 'alfaomega-ebooks'));
         } else {
             $this->redeemed($postId);
+
+            // update the code status in S3 too
+            if ($samplePost['type'] === 'import' && !empty($filename = $samplePost['json_file'])) {
+                try {
+                    if ($this->client->doesObjectExist($this->bucked, $filename)) {
+                        $response = $this->client->getObject([
+                            'Bucket' => $this->bucked,
+                            'Key'    => $filename,
+                        ]);
+                        $jsonContent = json_decode($response['Body'], true);
+                        if ($jsonContent['code'] === $code) {
+                            $jsonContent['status'] = 'redeemed';
+                            $jsonContent['redeemed'] = [
+                                'date'    => Carbon::now()->toDateTimeString(),
+                                'user'    => $user->user_email,
+                                'website' => get_site_url(),
+                            ];
+                            $this->client->putObject([
+                                'Bucket' => $this->bucked,
+                                'Key'    => $filename,
+                                'Body'   => json_encode($jsonContent),
+                                'ACL'    => 'private',
+                            ]);
+                        }
+                    }
+                } catch (Exception $e) {
+                    // do nothing
+                }
+            }
         }
 
         Service::make()->ebooks()
@@ -352,7 +449,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
     {
         $query = new WP_Query([
             'post_type'   => 'alfaomega-sample',
-            's'           => $code
+            's'           => $code,
         ]);
 
         return $query->have_posts();
@@ -447,5 +544,136 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             Carbon::now()->toDateTimeString(),
             get_post_meta($postId, 'alfaomega_sample_activated_at', true)
         );
+    }
+
+    /**
+     * Import sample codes.
+     *
+     * @param array $dataCollection The sample codes to import.
+     *
+     * @return array The imported sample codes.
+     * @throws \Exception
+     */
+    public function import(array $dataCollection): array
+    {
+        $result = [];
+        foreach ($dataCollection as $data) {
+            if (empty($data['json_file'])) {
+                throw new Exception(esc_html__('Invalid JSON file.', 'alfaomega-ebooks'));
+            }
+
+            if (empty($data['folder'])
+                || !in_array($data['folder'], ['testing', 'mexico', 'argentina', 'ferias', 'spain'])) {
+                throw new Exception(esc_html__('Invalid folder.', 'alfaomega-ebooks'));
+            }
+
+            if (empty($data['customer'])) {
+                throw new Exception(esc_html__('Customer is required.', 'alfaomega-ebooks'));
+            }
+
+            if (empty($data['email'])) {
+                throw new Exception(esc_html__('Email is required.', 'alfaomega-ebooks'));
+            }
+
+            if (empty($data['store'])) {
+                throw new Exception(esc_html__('Store is required.', 'alfaomega-ebooks'));
+            }
+
+            if (empty($data['books'])) {
+                throw new Exception(esc_html__('No books found.', 'alfaomega-ebooks'));
+            }
+
+            $date = Carbon::now()->toDateTimeString();
+
+            // get the json file from S3, if exists
+            $filename = "{$data['folder']}/{$data['json_file']}";
+            if ($this->client->doesObjectExist($this->bucked, $filename)) {
+                $response = $this->client->getObject([
+                    'Bucket' => $this->bucked,
+                    'Key'    => $filename,
+                ]);
+                $jsonContent = json_decode($response['Body'], true);
+            } else {
+                $jsonContent = [];
+            }
+
+            $post = null;
+            if (!empty($jsonContent['code'])) {
+                $result[$data['json_file']] = [
+                    'status'   => $jsonContent['status'] ?? 'created',
+                    'code'     => $jsonContent['code'],
+                    'redeemed' => $jsonContent['redeemed'] ?? null,
+                ];
+
+                // update current code
+                if (!empty($data['update'])) {
+                    $post = $this->find($jsonContent['code']);
+                    if (!empty($post)) {
+                        $data['code'] = $jsonContent['code'];
+                    }
+                } else {
+                    continue;
+                }
+            }
+
+            $payload = array_merge([
+                'status'   => 'created',
+                'code'     => '',
+                'redeemed' => [
+                    'date'    => '',
+                    'user'    => '',
+                    'website' => '',
+                ],
+            ], $jsonContent, $data);
+
+            $codeData = [
+                'destination' => '',
+                'promoter'    => '',
+                'description' => "Imported from {$data['customer']} account ({$data['email']}) from {$data['store']} on $date",
+                'payload'     => [],
+                'due_date'    => null,
+                'count'       => 1,
+                'type'        => 'import',
+                'json_file'   => $filename,
+                'code'        => $data['code'] ?? '',
+            ];
+
+            foreach ($data['books'] as $book) {
+                if (empty($book['isbn'])) {
+                    throw new Exception(esc_html__('Isbn is required.', 'alfaomega-ebooks'));
+                }
+
+                $codeData['payload'][] = [
+                    'isbn'        => $book['isbn'],
+                    'read'        => $book['read'] ?? false,
+                    'download'    => $book['download'] ?? false,
+                    'access_time' => empty('due_date') ? 0
+                        : Carbon::parse($book['due_date'])->diffInDays(Carbon::now()),
+                ];
+            }
+
+            $postId = $post ? $post['id'] : null;
+            $accessPost = $this->updateOrCreate($postId, $codeData);
+            $payload['code'] = $accessPost['code'];
+            $payload['status'] = $accessPost['status'];
+
+            $response = $this->client->putObject([
+                'Bucket' => $this->bucked,
+                'Key'    => $filename,
+                'Body'   => json_encode($payload),
+                'ACL'    => 'private',
+            ]);
+            if ($response['@metadata']['statusCode'] !== 200) {
+                throw new Exception(esc_html__('Unable to save the JSON file.', 'alfaomega-ebooks'));
+            }
+
+            $result[$data['json_file']] = [
+                'status'   => $accessPost['status'],
+                'code'     => $accessPost['code'],
+                'redeemed' => $payload['redeemed'],
+            ];
+        }
+
+        return $result;
     }
 }
