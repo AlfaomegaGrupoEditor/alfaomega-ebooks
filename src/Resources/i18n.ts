@@ -27,14 +27,18 @@ const messages = {
         digital_library: 'Digital Library',
         download: 'Download',
         download_tooltip: 'Download the adobe token to import in your ebook reader.',
+        dont_show_again: 'Don\'t show this again',
         // E
         expired: 'Expired',
         error_fetching_data: 'An error occurred while fetching the data.',
         error_no_data: 'No data found!',
+        // I
+        important_info: 'Important Information!',
         // F
         filter_by: 'Filter by',
         // M
         message: 'Hello, World!',
+        migration_notice: 'If you have an account in out previous store %s, you can import all your books to access them from here. Please open your account in %s, copy the access code and paste it here in the Add <b>Sample box</b>',
         // N
         next: 'Next',
         note: 'Note',
@@ -93,6 +97,7 @@ const messages = {
         digital_library: 'Biblioteca Digital',
         download: 'Descargar',
         download_tooltip: 'Descarga el token de Adobe (.acsm) para cargar el PDF en tu lector.',
+        dont_show_again: 'No mostrar nuevamente',
         // E
         expired: 'Expirado',
         error_fetching_data: 'Ocurrió un error al obtener los datos.',
@@ -100,10 +105,13 @@ const messages = {
         // F
         filter_by: 'Filtrar por',
         failed: 'El proceso ha fallado!',
+        // I
+        important_info: 'Información Importante!',
         // M
         message: 'Hola, mundo!',
         muestra: 'Muestra',
         muestras: 'Muestras',
+        migration_notice: 'Si tienes una cuenta en nuestra tienda anterior <b>:website</b>, puedes importar todos tus libros para acceder a ellos desde aquí. Por favor, abre la sección <b>Mis Libros</b> en el sitio anterior, copia el <b>código de acceso</b> y pégalo aquí en el cuadro de <b>Agregar Muestras.</b>',
         // N
         next: 'Siguiente',
         note: 'Nota',

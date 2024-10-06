@@ -24,6 +24,8 @@
     const toast = ref<ToastType>();
     const toastActive = ref(false);
     const showSidebar = ref(false);
+    const migrationNotice = computed(() => t('migration_notice')
+        .replace(':website', `<a class="text-primary" href="${window.wpApiSettings.oldStore}" target="_blank">${window.wpApiSettings.oldStore}</a>`));
 
     const accessTypeValue = (pCategory: string | null = null) => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -171,11 +173,6 @@
 <template>
     <b-container fluid class="ff-body ao-ebooks" style="min-height: 700px">
         <b-row>
-            <b-col class="col-12 col-md-8 offset-md-2">
-                <ao-alert />
-            </b-col>
-        </b-row>
-        <b-row>
             <!-- Left panel-->
             <b-col class="col-12 col-md-3 d-none d-md-block">
                 <ao-user-catalog @selected="handleSelected" />
@@ -206,6 +203,12 @@
                     </b-button>
                     <h4 class="text-primary ms-2">{{ header }}</h4>
                 </div>
+                <ao-alert
+                    :caption="$t('important_info')"
+                    :action="$t('dont_show_again')"
+                >
+                    {{ migrationNotice }}
+                </ao-alert>
                 <ao-filter-bar @filter="handleFiltered" />
                 <ao-library :query="searchQuery" />
             </b-col>
