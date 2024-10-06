@@ -85,7 +85,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         $status = !empty($status) ? $status : 'created';
 
         $type = get_post_meta($postId, 'alfaomega_sample_type', true);
-        $type = !empty($type) ? $status : 'sample';
+        $type = !empty($type) ? $type : 'sample';
 
         $jsonFile = get_post_meta($postId, 'alfaomega_sample_json_file', true);
         $jsonFile = !empty($jsonFile) ? $jsonFile : '';
@@ -398,11 +398,10 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         // update the code status in S3 too
         if ($samplePost['type'] === 'import' && !empty($jsonFile = $samplePost['json_file'])) {
             try {
-                [$folder, $filename] = explode('/', $jsonFile);
-                if ($this->client->doesObjectExist($this->bucked, $filename)) {
+                if ($this->client->doesObjectExist($this->bucked, $jsonFile)) {
                     $response = $this->client->getObject([
                         'Bucket' => $this->bucked,
-                        'Key'    => $filename,
+                        'Key'    => $jsonFile,
                     ]);
                     $jsonContent = json_decode($response['Body'], true);
                     $status = count($redeemed) === 0 ? 'failed' : 'redeemed';
@@ -417,7 +416,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                         }
                         $this->client->putObject([
                             'Bucket'       => $this->bucked,
-                            'Key'          => $filename,
+                            'Key'          => $jsonFile,
                             'Body'         => json_encode($jsonContent),
                             'CacheControl' => 'no-cache',
                             'ACL'          => 'private',
