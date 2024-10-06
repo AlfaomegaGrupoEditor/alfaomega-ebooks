@@ -85,7 +85,10 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         $status = !empty($status) ? $status : 'created';
 
         $type = get_post_meta($postId, 'alfaomega_sample_type', true);
-        $status = !empty($status) ? $status : 'sample';
+        $type = !empty($type) ? $status : 'sample';
+
+        $jsonFile = get_post_meta($postId, 'alfaomega_sample_json_file', true);
+        $jsonFile = !empty($jsonFile) ? $jsonFile : '';
 
         $payloadJson = get_post_meta($postId, 'alfaomega_sample_payload', true);
         $payload = json_decode($payloadJson, true);
@@ -130,6 +133,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             'promoter'     => $promoter,
             'status'       => $status,
             'type'         => $type,
+            'json_file'    => $jsonFile,
             'payload'      => $payload,
             'due_date'     => $dueDate,
             'activated_at' => $activatedAt,
