@@ -85,7 +85,10 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         $status = !empty($status) ? $status : 'created';
 
         $type = get_post_meta($postId, 'alfaomega_sample_type', true);
-        $status = !empty($status) ? $status : 'sample';
+        $type = !empty($type) ? $type : 'sample';
+
+        $jsonFile = get_post_meta($postId, 'alfaomega_sample_json_file', true);
+        $jsonFile = !empty($jsonFile) ? $jsonFile : '';
 
         $payloadJson = get_post_meta($postId, 'alfaomega_sample_payload', true);
         $payload = json_decode($payloadJson, true);
@@ -130,6 +133,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             'promoter'     => $promoter,
             'status'       => $status,
             'type'         => $type,
+            'json_file'    => $jsonFile,
             'payload'      => $payload,
             'due_date'     => $dueDate,
             'activated_at' => $activatedAt,
@@ -391,40 +395,44 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             }
         }
 
-        if (count($redeemed) === 0) {
-            $this->failed($postId);
-            throw new Exception(esc_html__('Code redeem failed.', 'alfaomega-ebooks'));
-        } else {
-            $this->redeemed($postId);
-
-            // update the code status in S3 too
-            if ($samplePost['type'] === 'import' && !empty($filename = $samplePost['json_file'])) {
-                try {
-                    if ($this->client->doesObjectExist($this->bucked, $filename)) {
-                        $response = $this->client->getObject([
-                            'Bucket' => $this->bucked,
-                            'Key'    => $filename,
-                        ]);
-                        $jsonContent = json_decode($response['Body'], true);
-                        if ($jsonContent['code'] === $code) {
-                            $jsonContent['status'] = 'redeemed';
+        // update the code status in S3 too
+        if ($samplePost['type'] === 'import' && !empty($jsonFile = $samplePost['json_file'])) {
+            try {
+                if ($this->client->doesObjectExist($this->bucked, $jsonFile)) {
+                    $response = $this->client->getObject([
+                        'Bucket' => $this->bucked,
+                        'Key'    => $jsonFile,
+                    ]);
+                    $jsonContent = json_decode($response['Body'], true);
+                    $status = count($redeemed) === 0 ? 'failed' : 'redeemed';
+                    if ($jsonContent['code'] === $code) {
+                        $jsonContent['status'] = $status;
+                        if ($status === 'redeemed') {
                             $jsonContent['redeemed'] = [
                                 'date'    => Carbon::now()->toDateTimeString(),
                                 'user'    => $user->user_email,
                                 'website' => get_site_url(),
                             ];
-                            $this->client->putObject([
-                                'Bucket' => $this->bucked,
-                                'Key'    => $filename,
-                                'Body'   => json_encode($jsonContent),
-                                'ACL'    => 'private',
-                            ]);
                         }
+                        $this->client->putObject([
+                            'Bucket'       => $this->bucked,
+                            'Key'          => $jsonFile,
+                            'Body'         => json_encode($jsonContent),
+                            'CacheControl' => 'no-cache',
+                            'ACL'          => 'private',
+                        ]);
                     }
-                } catch (Exception $e) {
-                    // do nothing
                 }
+            } catch (Exception $e) {
+                // do nothing
             }
+        }
+
+        if (count($redeemed) === 0) {
+            $this->failed($postId);
+            throw new Exception(esc_html__('Code redeem failed.', 'alfaomega-ebooks'));
+        } else {
+            $this->redeemed($postId);
         }
 
         Service::make()->ebooks()
@@ -629,7 +637,11 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             $codeData = [
                 'destination' => '',
                 'promoter'    => '',
-                'description' => "Imported from {$data['email']} at {$data['folder']} store",
+                'description' => sprintf(
+                    esc_html__('Imported from %s account at %s store', 'alfaomega-ebooks'),
+                    $data['email'],
+                    $data['folder']
+                ),
                 'payload'     => [],
                 'due_date'    => null,
                 'count'       => 1,
@@ -658,10 +670,11 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             $payload['status'] = $accessPost['status'];
 
             $response = $this->client->putObject([
-                'Bucket' => $this->bucked,
-                'Key'    => $filename,
-                'Body'   => json_encode($payload),
-                'ACL'    => 'private',
+                'Bucket'       => $this->bucked,
+                'Key'          => $filename,
+                'Body'         => json_encode($payload),
+                'CacheControl' => 'no-cache',
+                'ACL'          => 'private',
             ]);
             if ($response['@metadata']['statusCode'] !== 200) {
                 throw new Exception(esc_html__('Unable to save the JSON file.', 'alfaomega-ebooks'));
