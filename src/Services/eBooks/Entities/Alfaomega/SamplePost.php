@@ -391,42 +391,45 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             }
         }
 
-        if (count($redeemed) === 0) {
-            $this->failed($postId);
-            throw new Exception(esc_html__('Code redeem failed.', 'alfaomega-ebooks'));
-        } else {
-            $this->redeemed($postId);
-
-            // update the code status in S3 too
-            if ($samplePost['type'] === 'import' && !empty($jsonFile = $samplePost['json_file'])) {
-                try {
-                    [$folder, $filename] = explode('/', $jsonFile);
-                    if ($this->client->doesObjectExist($this->bucked, $filename)) {
-                        $response = $this->client->getObject([
-                            'Bucket' => $this->bucked,
-                            'Key'    => $filename,
-                        ]);
-                        $jsonContent = json_decode($response['Body'], true);
-                        if ($jsonContent['code'] === $code) {
-                            $jsonContent['status'] = 'redeemed';
+        // update the code status in S3 too
+        if ($samplePost['type'] === 'import' && !empty($jsonFile = $samplePost['json_file'])) {
+            try {
+                [$folder, $filename] = explode('/', $jsonFile);
+                if ($this->client->doesObjectExist($this->bucked, $filename)) {
+                    $response = $this->client->getObject([
+                        'Bucket' => $this->bucked,
+                        'Key'    => $filename,
+                    ]);
+                    $jsonContent = json_decode($response['Body'], true);
+                    $status = count($redeemed) === 0 ? 'failed' : 'redeemed';
+                    if ($jsonContent['code'] === $code) {
+                        $jsonContent['status'] = $status;
+                        if ($status === 'redeemed') {
                             $jsonContent['redeemed'] = [
                                 'date'    => Carbon::now()->toDateTimeString(),
                                 'user'    => $user->user_email,
                                 'website' => get_site_url(),
                             ];
-                            $this->client->putObject([
-                                'Bucket'       => $this->bucked,
-                                'Key'          => $filename,
-                                'Body'         => json_encode($jsonContent),
-                                'CacheControl' => 'no-cache',
-                                'ACL'          => 'private',
-                            ]);
                         }
+                        $this->client->putObject([
+                            'Bucket'       => $this->bucked,
+                            'Key'          => $filename,
+                            'Body'         => json_encode($jsonContent),
+                            'CacheControl' => 'no-cache',
+                            'ACL'          => 'private',
+                        ]);
                     }
-                } catch (Exception $e) {
-                    // do nothing
                 }
+            } catch (Exception $e) {
+                // do nothing
             }
+        }
+
+        if (count($redeemed) === 0) {
+            $this->failed($postId);
+            throw new Exception(esc_html__('Code redeem failed.', 'alfaomega-ebooks'));
+        } else {
+            $this->redeemed($postId);
         }
 
         Service::make()->ebooks()
