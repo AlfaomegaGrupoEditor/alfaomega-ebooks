@@ -131,3 +131,6 @@ div.ao-sidebar .offcanvas-title {
 .tooltip.bs-tooltip-right .tooltip-arrow::before {
     border-right-color: dimgray; /* Replace with desired color */
 }
+.my-ebook-content {
+    margin-top: -50px;
+}
