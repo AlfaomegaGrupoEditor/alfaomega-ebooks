@@ -1,16 +1,47 @@
 <script setup lang="ts">
+import {computed, ref} from 'vue';
+import {BookType} from '@/types';
+
+    const props = defineProps({
+        caption: {type: String, default: 'caption'},
+        type: { type: String as () => 'info' | 'warning' | 'danger', default: 'info' },
+        action: { type: String, default: null }
+    });
+
+    const emit = defineEmits<{ action: () => void }>();
+
+    const variant = computed(() => {
+        switch (props.type) {
+            case 'info':
+                return 'info';
+            case 'warning':
+                return 'warning';
+            case 'danger':
+                return 'danger';
+        }
+    });
+    const show = ref(true);
 
 </script>
 
 <template>
-    <BAlert class="d-none"
-            variant="success" :model-value="true" dismissible>
-        <h4 class="alert-heading">Well done!</h4>
-        <p>
-            Aww yeah, you successfully read this important alert message. This example text is going to
-            run a bit longer so that you can see how spacing within an alert works with this kind of
-            content.
-        </p>
+    <BAlert
+        class="fs-7 mx-md-5 mx-0"
+        :variant="variant"
+        :model-value="show"
+        dismissible
+    >
+        <h6 class="alert-heading fs-7">{{ caption }}</h6>
+        <p v-html="$slots.default ? $slots.default()[0].children : ''"></p>
+        <div v-if="action" class="text-end">
+            <BButton
+                class="fs-7 fw-bold"
+                variant="link"
+                size="sm"
+                @click="$emit('action')"
+            >{{ action }}
+            </BButton>
+        </div>
     </BAlert>
 </template>
 
