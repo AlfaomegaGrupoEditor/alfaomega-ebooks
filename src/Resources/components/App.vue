@@ -24,8 +24,10 @@
     const toast = ref<ToastType>();
     const toastActive = ref(false);
     const showSidebar = ref(false);
+    const hideMigrationNotice = ref(localStorage.getItem('hideMigrationNotice') === 'true');
     const migrationNotice = computed(() => t('migration_notice')
         .replace(':website', `<a class="text-primary" href="${window.wpApiSettings.oldStore}" target="_blank">${window.wpApiSettings.oldStore}</a>`));
+    const showMigrationNotice = computed(() => window.wpApiSettings.migration && !hideMigrationNotice.value);
 
     const accessTypeValue = (pCategory: string | null = null) => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -82,7 +84,6 @@
                 } as OrderType
             } as BooksFilterType
         };
-        console.log(searchQuery.value.filter.currentPage);
     };
 
     /**
@@ -161,6 +162,14 @@
         showToast(payload);
     };
 
+    /**
+     * Hides the migration notice
+     */
+    const handleHideMigrationAlert = () => {
+        localStorage.setItem('hideMigrationNotice', 'true');
+        hideMigrationNotice.value = true;
+    };
+
     onMounted(() => {
         init();
 
@@ -203,9 +212,10 @@
                     </b-button>
                     <h4 class="text-primary ms-2">{{ header }}</h4>
                 </div>
-                <ao-alert
+                <ao-alert v-if="showMigrationNotice"
                     :caption="$t('important_info')"
                     :action="$t('dont_show_again')"
+                    @action="handleHideMigrationAlert"
                 >
                     {{ migrationNotice }}
                 </ao-alert>

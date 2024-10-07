@@ -271,7 +271,7 @@ class AlfaomegaAccessTest extends WordpressTest
         $endpoint = get_site_url(). '/alfaomega-ebooks/webhook/generate-code';
 
         $response = $this->jsonRequest('POST', $endpoint, $data, [
-            'AO-TOKEN' => WEBHOOK_TOKEN
+            'AO-TOKEN' => AO_WEBHOOK_TOKEN
         ]);
 
         $this->assertEquals(200, $response->get_status());

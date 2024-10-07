@@ -282,7 +282,7 @@ class RouteManager
     {
         $headers = getallheaders();
         $aoToken = $headers['Ao-Token'] ?? null;
-        if ($aoToken !== WEBHOOK_TOKEN) {
+        if ($aoToken !== AO_WEBHOOK_TOKEN) {
             wp_send_json([
                 'status'  => 'fail',
                 'message' => esc_html__('Unauthorized', 'alfaomega-ebooks'),
