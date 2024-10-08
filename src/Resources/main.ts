@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import {createBootstrap} from 'bootstrap-vue-next'
 import App from '@/components/App.vue';
-import Dashboard from '@/components/Dashboard.vue.vue';
+import Dashboard from '@/components/Dashboard.vue';
 import i18n from '@/i18n';
 import { createPinia } from 'pinia';
 

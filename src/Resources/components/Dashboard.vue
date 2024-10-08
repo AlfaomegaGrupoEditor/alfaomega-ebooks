@@ -4,7 +4,7 @@
 
 <template>
     <div>
-        <h1>Dashboard</h1>
+        <BButton>Dashboard</BButton>
     </div>
 </template>
 
