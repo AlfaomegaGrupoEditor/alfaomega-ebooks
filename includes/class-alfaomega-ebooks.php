@@ -459,7 +459,8 @@ class Alfaomega_Ebooks {
 
         settings_errors('alfaomega_ebook_options');
 
-        require(ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_home_page.php');
+        //require(ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_home_page.php');
+        require(ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_dashboard.php');
     }
 
     /**
