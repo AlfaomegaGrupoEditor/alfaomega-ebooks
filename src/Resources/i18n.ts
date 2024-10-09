@@ -24,6 +24,7 @@ const messages = {
         created_at: 'Created at',
         code_applied_successfully: 'Code applied successfully.',
         // D
+        dashboard: 'Alfaomega eBooks [Dashboard]',
         digital_library: 'Digital Library',
         download: 'Download',
         download_tooltip: 'Download the adobe token to import in your ebook reader.',
@@ -34,8 +35,15 @@ const messages = {
         error_no_data: 'No data found!',
         // I
         important_info: 'Important Information!',
+        import: 'Import',
+        import_ebooks: 'Import eBooks',
+        import_ebooks_description: 'imported/available',
         // F
         filter_by: 'Filter by',
+        // L
+        link: 'Link',
+        link_products: 'Link Products',
+        link_products_description: 'Linked/Catalog',
         // M
         message: 'Hello, World!',
         migration_notice: 'If you have an account in out previous store %s, you can import all your books to access them from here. Please open your account in %s, copy the access code and paste it here in the Add <b>Sample box</b>',
@@ -61,11 +69,18 @@ const messages = {
         sample: 'Sample',
         samples: 'Samples',
         search: 'Type to search amount your books...',
+        setup: 'Setup',
+        setup_prices: 'Setup Prices',
+        setup_prices_description: 'Linked eBooks',
         status: 'Status',
         success: 'Success',
         something_went_wrong: 'Something went wrong!',
         // T
         title: 'Title',
+        // U
+        update: 'Update',
+        update_ebooks: 'Update eBooks',
+        update_ebooks_description: 'Imported eBooks',
         // V
         valid_until: 'Valid Until',
         // W
@@ -81,7 +96,7 @@ const messages = {
         add_ebooks: 'Agregar muestras',
         add_sample_text: 'Si recibiste un código de muestra, puedes ingresarlo aquí para agregar libros.',
         all: 'Todos los libros',
-        all_ebooks: 'Catálogo de Libros',
+        all_ebooks: 'Catálogo de eBooks',
         apply_btn: 'Aplicar',
         attention: 'Atención!',
         // B
@@ -94,6 +109,7 @@ const messages = {
         created_at: 'Creado el',
         code_applied_successfully: 'Código aplicado correctamente.',
         // D
+        dashboard: 'Alfaomega eBooks [Panel de Control]',
         digital_library: 'Biblioteca Digital',
         download: 'Descargar',
         download_tooltip: 'Descarga el token de Adobe (.acsm) para cargar el PDF en tu lector.',
@@ -107,11 +123,18 @@ const messages = {
         failed: 'El proceso ha fallado!',
         // I
         important_info: 'Información Importante!',
+        import: 'Importar',
+        import_ebooks: 'Importar eBooks',
+        import_ebooks_description: 'Importados/Disponibles',
+        // L
+        link: 'Vincular',
+        link_products: 'Vincular Productos',
+        link_products_description: 'Vinculados/Catálogo',
         // M
         message: 'Hola, mundo!',
         muestra: 'Muestra',
         muestras: 'Muestras',
-        migration_notice: 'Si tienes una cuenta en nuestra tienda anterior <b>:website</b>, puedes importar todos tus libros para acceder a ellos desde aquí. Por favor, abre la sección <b>Mis Libros</b> en el sitio anterior, copia el <b>código de acceso</b> y pégalo en el cuadro <b>Agregar Muestras.</b>',
+        migration_notice: 'Si tienes una cuenta en nuestra tienda anterior <b>:website</b>, puedes importar todos tus libros para acceder a ellos desde aquí. Por favor, abre la sección <b>Mis eBooks</b> en el sitio anterior, copia el <b>código de acceso</b> y pégalo en el cuadro <b>Agregar Muestras.</b>',
         // N
         next: 'Siguiente',
         note: 'Nota',
@@ -134,11 +157,18 @@ const messages = {
         sample: 'Muestra',
         samples: 'Muestras de cortesía',
         search: 'Escribir para buscar entre sus libros...',
+        setup: 'Configurar',
+        setup_prices: 'Configurar Precios',
+        setup_prices_description: 'eBooks Vinculados',
         status: 'Estado',
         success: 'Acción exitosa',
         something_went_wrong: 'Algo ha salido mal!',
         // T
         title: 'Título',
+        // U
+        update: 'Actualizar',
+        update_ebooks: 'Actualizar eBooks',
+        update_ebooks_description: 'eBooks importados',
         // V
         valid_until: 'Válido hasta',
         // W

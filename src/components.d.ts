@@ -28,6 +28,7 @@ declare module 'vue' {
     BRow: typeof import('bootstrap-vue-next/components/BContainer')['BRow']
     BSpinner: typeof import('bootstrap-vue-next/components/BSpinner')['BSpinner']
     BToast: typeof import('bootstrap-vue-next/components/BToast')['BToast']
+    IBiActivity: typeof import('~icons/bi/activity')['default']
   }
   export interface ComponentCustomProperties {
     vBTooltip: typeof import('bootstrap-vue-next/directives/BTooltip')['vBTooltip']

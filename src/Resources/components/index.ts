@@ -12,6 +12,7 @@ import aoToast from '@/components/aoToast.vue';
 import aoBooksSkeleton from '@/components/aoBooksSkeleton.vue';
 import aoCornerRibbon from '@/components/aoCornerRibbon.vue';
 import aoHorizontalLoader from '@/components/aoHorizontalLoader.vue';
+import aoWidget from '@/components/aoWidget.vue';
 
 export {
     aoSampleInput,
@@ -27,5 +28,6 @@ export {
     aoToast,
     aoBooksSkeleton,
     aoCornerRibbon,
-    aoHorizontalLoader
+    aoHorizontalLoader,
+    aoWidget,
 };

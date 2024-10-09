@@ -11,8 +11,9 @@
         "baseUrl": ".",
         "paths": {
             "@/*": ["Resources/*"]
-        }
+        },
+        "types": ["unplugin-icons/types/vue"]
     },
-    "include": ["Resources/**/*.ts", "Resources/**/*.vue", "Resources/**/*.d.ts"],
+    "include": ["Resources/**/*.ts", "Resources/**/*.vue", "Resources/**/*.d.ts", "components.d.ts"],
     "exclude": ["node_modules"]
 }

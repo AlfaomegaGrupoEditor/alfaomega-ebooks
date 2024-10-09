@@ -1,6 +1,8 @@
 import { defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
+import Icons from 'unplugin-icons/vite'
 import Components from 'unplugin-vue-components/vite';
+import IconsResolve from 'unplugin-icons/resolver'
 import { BootstrapVueNextResolver } from 'bootstrap-vue-next';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import path from 'path';
@@ -14,8 +16,13 @@ export default defineConfig(({mode}) => {
             vue(),
             vueJsx(),
             Components({
-                resolvers: [BootstrapVueNextResolver()]
-            })
+                resolvers: [BootstrapVueNextResolver(), IconsResolve()],
+                dts: true,
+            }),
+            Icons({
+                compiler: 'vue3',
+                autoInstall: true,
+            }),
         ],
         resolve: {
             alias: {
