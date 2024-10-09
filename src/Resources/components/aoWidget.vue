@@ -66,7 +66,7 @@
 </template>
 
 <style scoped>
-    .widget-icon {
+    .bootstrap-app  .widget-icon {
         background-color: #e4e3e3;
     }
 </style>

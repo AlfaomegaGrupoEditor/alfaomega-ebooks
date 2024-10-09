@@ -46,7 +46,7 @@ import {BookType} from '@/types';
 </template>
 
 <style scoped>
-    .alert-heading {
+    .bootstrap-app .alert-heading {
         margin-top: 0;
         margin-bottom: 15px;
     }
