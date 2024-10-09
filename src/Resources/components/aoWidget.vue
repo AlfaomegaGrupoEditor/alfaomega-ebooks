@@ -34,14 +34,16 @@
 
 <template>
     <div class="col-xl-3 col-sm-6 col-12">
-        <div class="card mx-2 shadow p-3 mb-5 bg-body rounded">
+        <div class="card mx-2 shadow p-3 mb-5 bg-body">
             <div class="card-content">
                 <div class="card-title fw-bold fs-5">
                     {{ title }}
                 </div>
                 <div class="card-body d-flex justify-content-between">
-                    <div>
-                        <span v-html="iconClass" :style="{color: variant}"/>
+                    <div class="widget-icon rounded-circle px-1 py-1">
+                        <span v-html="iconClass"
+                              :style="{color: variant}"
+                        />
                     </div>
                     <div class="text-end">
                         <h3 class="fw-bold fs-4 text-secondary">{{ value }}</h3>
@@ -64,7 +66,7 @@
 </template>
 
 <style scoped>
-    .widget-description {
-        font-size: 10px;
+    .widget-icon {
+        background-color: #e4e3e3;
     }
 </style>
