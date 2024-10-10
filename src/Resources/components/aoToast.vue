@@ -36,7 +36,7 @@
 </script>
 
 <template>
-    <Teleport to="body">
+    <Teleport to="#ao-container">
         <div class="top-0 end-0 toast-container position-fixed p-3 ao-toast">
             <BToast
                 v-model="showToast"
