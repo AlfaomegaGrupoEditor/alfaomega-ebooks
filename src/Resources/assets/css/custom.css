@@ -10,42 +10,42 @@ table.variations td.label label:after {
     content: ': ';
 }
 
-.bootstrap-app .ff-body {
-    font-family: var(--bs-body-font-family);
+.ff-body {
+    font-family: var(--bs-body-font-family) !important;
 }
 
-.bootstrap-app .fs-7 {
+.fs-7 {
     font-size: .7rem;
 }
 
-.bootstrap-app .fs-8 {
+.fs-8 {
     font-size: .8rem;
 }
 
-.bootstrap-app .fs-9 {
+.fs-9 {
     font-size: .9rem;
 }
 
-.bootstrap-app .ao-ebooks .form-select,
-.bootstrap-app .ao-ebooks input[type=text] {
+.ao-ebooks .form-select,
+.ao-ebooks input[type=text] {
     font-size: 0.8rem;
     height: 35px;
 }
 
-.bootstrap-app .ao-ebooks input[type=text] {
+.ao-ebooks input[type=text] {
     border: var(--bs-border-width) solid var(--bs-border-color);
     border-radius: 5px;
 }
-.bootstrap-app .ao-ebooks .input-group input[type=text] {
+.ao-ebooks .input-group input[type=text] {
     padding-right: 20px;
 }
 
-.bootstrap-app div.ao-sidebar .offcanvas-title {
+div.ao-sidebar .offcanvas-title {
     font-size: .8rem;
     font-weight: bold;
 }
 
-.bootstrap-app .ao-ebooks .input-group-text {
+.ao-ebooks .input-group-text {
     background-color: #D82310;
     color: white;
     margin-left: -31px !important;
@@ -54,83 +54,83 @@ table.variations td.label label:after {
     border-bottom-right-radius: 5px;
 }
 
-.bootstrap-app .ao-ebooks .input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
+.ao-ebooks .input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }
 
-.bootstrap-app .node-wrapper.focused {
+.node-wrapper.focused {
     font-weight: bold;
     background-color: transparent;
     color: #D4230F
 }
 
-.bootstrap-app .node-wrapper.focused .node-text{
+.node-wrapper.focused .node-text{
     font-weight: bold;
     color: #D4230F
 }
 
-.bootstrap-app .node-wrapper:hover {
+.node-wrapper:hover {
     background-color: transparent;
     cursor: pointer;
 }
 
-.bootstrap-app .node-input, .node-text,
-.bootstrap-app .node-wrapper {
+.node-input, .node-text,
+.node-wrapper {
     font-size: 0.8rem;
     font-family: var(--bs-body-font-family);
     min-height: 24px;
     line-height: 24px;
 }
 
-.bootstrap-app .offcanvas-backdrop {
+.offcanvas-backdrop {
     background-color: transparent;
 }
 
-.bootstrap-app .ao-toast {
+.ao-toast {
     z-index: 9999999999;
 }
 
-.bootstrap-app .ao-ebooks .pagination {
+.ao-ebooks .pagination {
     --bs-pagination-font-size: 0.8rem;
 }
 
-.bootstrap-app .ao-book-skeleton .card-body {
+.ao-book-skeleton .card-body {
     display: none;
 }
 
-.bootstrap-app .ao-ebooks .card-img-top {
+.ao-ebooks .card-img-top {
     width: 160px;
     height: 200px;
 }
 
-.bootstrap-app .b-tooltip {
+.b-tooltip {
     font-size: 0.8rem;
     border: 1px solid dimgray;
     border-radius: 10px;
 }
 
-.bootstrap-app .b-tooltip .tooltip-inner {
+.b-tooltip .tooltip-inner {
     background-color: dimgray;
     color: white;
 }
 
 /* Custom Tooltip Arrow Color */
-.bootstrap-app .tooltip.bs-tooltip-top .tooltip-arrow::before {
+.tooltip.bs-tooltip-top .tooltip-arrow::before {
     border-top-color: dimgray; /* Replace with desired color */
 }
 
-.bootstrap-app .tooltip.bs-tooltip-bottom .tooltip-arrow::before {
+.tooltip.bs-tooltip-bottom .tooltip-arrow::before {
     border-bottom-color: dimgray; /* Replace with desired color */
 }
 
-.bootstrap-app .tooltip.bs-tooltip-left .tooltip-arrow::before {
+.tooltip.bs-tooltip-left .tooltip-arrow::before {
     border-left-color: dimgray; /* Replace with desired color */
 }
 
-.bootstrap-app .tooltip.bs-tooltip-right .tooltip-arrow::before {
+.tooltip.bs-tooltip-right .tooltip-arrow::before {
     border-right-color: dimgray; /* Replace with desired color */
 }
-.bootstrap-app .my-ebook-content {
+.my-ebook-content {
     margin-top: -50px;
 }

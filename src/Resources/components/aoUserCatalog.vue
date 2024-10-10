@@ -139,7 +139,7 @@
 
 <template>
     <div class="mb-2">
-        <h4>{{ $t('digital_library') }}</h4>
+        <h4 class="fs-6">{{ $t('digital_library') }}</h4>
         <Tree
             :nodes="nodes"
             :config="config"

@@ -180,6 +180,10 @@
 </script>
 
 <template>
+    <teleport to="body">
+        <div id="ao-container" class="bootstrap-app">
+        </div>
+    </teleport>
     <b-container fluid class="ff-body ao-ebooks" style="min-height: 700px">
         <b-row>
             <!-- Left panel-->
@@ -195,6 +199,7 @@
                 :hide-backdrop="false"
                 :header="false"
                 :shadow="true"
+                teleport-to="#ao-container"
                 style="z-index: 9999999991"
             >
                 <div>
@@ -210,7 +215,7 @@
                     <b-button class="d-md-none" @click="showSidebar = true">
                         <i class="fas fa-bars"></i>
                     </b-button>
-                    <h4 class="text-primary ms-2">{{ header }}</h4>
+                    <h4 class="text-primary ms-2 fs-6">{{ header }}</h4>
                 </div>
                 <ao-alert v-if="showMigrationNotice"
                     :caption="$t('important_info')"
