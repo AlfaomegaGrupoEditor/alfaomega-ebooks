@@ -4,6 +4,7 @@ import App from '@/components/App.vue';
 import Dashboard from '@/components/Dashboard.vue';
 import i18n from '@/i18n';
 import { createPinia } from 'pinia';
+import router from '@/router';
 
 // Import Bootstrap and BootstrapVueNext CSS
 import 'bootstrap/dist/css/bootstrap.css';
@@ -34,6 +35,7 @@ if (appElement) {
         app.use(i18n);
         app.use(createBootstrap());
         app.use(pinia);
+        app.use(router)
 
         app.mount('#ao-dashboard-app');
     }

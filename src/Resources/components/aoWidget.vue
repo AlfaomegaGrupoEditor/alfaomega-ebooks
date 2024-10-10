@@ -9,6 +9,7 @@
 
     const {t} = useI18n();
     const props = defineProps({
+        slug: { type: String, default: 'slug' },
         icon: { type: String, default: 'MdiImport'},
         value: { type: [String, Number], default: 0 },
         description: { type: String, default: 'description' },
@@ -34,9 +35,9 @@
 
 <template>
     <div class="col-xl-3 col-sm-6 col-12">
-        <div class="card mx-2 shadow p-3 mb-5 bg-body">
+        <div class="card shadow mx-2 mb-5 px-0 pb-0 bg-body">
             <div class="card-content">
-                <div class="card-title fw-bold fs-6">
+                <div class="card-title fw-bold fs-6 px-3 pt-2">
                     {{ title }}
                 </div>
                 <div class="card-body d-flex justify-content-between">
@@ -56,6 +57,7 @@
                         variant="outline-primary"
                         size="sm"
                         style="min-width: 100px"
+                        :to="{name: slug}"
                     >
                         {{ $t(action) }}
                     </BButton>

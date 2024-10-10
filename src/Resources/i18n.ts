@@ -16,6 +16,7 @@ const messages = {
         apply_btn: 'Apply',
         attention: 'Attention!',
         // B
+        back: 'Back',
         book_details: 'View Book Details',
         books_found: "Books found",
         // C
@@ -24,7 +25,7 @@ const messages = {
         created_at: 'Created at',
         code_applied_successfully: 'Code applied successfully.',
         // D
-        dashboard: 'Alfaomega eBooks [Dashboard]',
+        dashboard: 'Dashboard',
         digital_library: 'Digital Library',
         download: 'Download',
         download_tooltip: 'Download the adobe token to import in your ebook reader.',
@@ -100,6 +101,7 @@ const messages = {
         apply_btn: 'Aplicar',
         attention: 'Atención!',
         // B
+        back: 'Regresar',
         book_details: 'Ver Detalles del Libro',
         bienvenido: 'Bienvenido',
         books_found: "Resultados",
@@ -109,7 +111,7 @@ const messages = {
         created_at: 'Creado el',
         code_applied_successfully: 'Código aplicado correctamente.',
         // D
-        dashboard: 'Alfaomega eBooks [Panel de Control]',
+        dashboard: 'Panel de Control',
         digital_library: 'Biblioteca Digital',
         download: 'Descargar',
         download_tooltip: 'Descarga el token de Adobe (.acsm) para cargar el PDF en tu lector.',
