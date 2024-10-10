@@ -29,7 +29,4 @@ declare module 'vue' {
     BSpinner: typeof import('bootstrap-vue-next/components/BSpinner')['BSpinner']
     BToast: typeof import('bootstrap-vue-next/components/BToast')['BToast']
   }
-  export interface ComponentCustomProperties {
-    vBTooltip: typeof import('bootstrap-vue-next/directives/BTooltip')['vBTooltip']
-  }
 }
