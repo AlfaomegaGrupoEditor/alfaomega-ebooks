@@ -26,7 +26,7 @@ import {BookType} from '@/types';
 
 <template>
     <BAlert
-        class="fs-7 my-2"
+        class="fs-7 my-2 my-md-3"
         :variant="variant"
         :model-value="show"
         dismissible
