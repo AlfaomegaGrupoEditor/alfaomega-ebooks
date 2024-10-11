@@ -76,6 +76,36 @@ type RedeemStatusType = {
     data: null;
 }
 
+type EbookInfoType = {
+    catalog: number;
+    imported: number;
+}
+
+type ProductsInfoType = {
+    catalog: number;
+    unlinked: number;
+    linked: number;
+}
+
+type EbookAccessInfoType = {
+    sample: number;
+    purchase: number;
+    active: number;
+    expired: number;
+    cancelled: number;
+    total: number;
+}
+
+type AccessCodeInfoType = {
+    samples: number;
+    import: number;
+    sent: number;
+    redeemed: number;
+    expired: number;
+    cancelled: number;
+    total: number;
+}
+
 export {
     ColorVariantType,
     SizeVariantType,
@@ -88,5 +118,8 @@ export {
     ToastType,
     CatalogType,
     CatalogItemsType,
-
+    EbookInfoType,
+    ProductsInfoType,
+    EbookAccessInfoType,
+    AccessCodeInfoType,
 };

@@ -1,11 +1,20 @@
 <script setup lang="ts">
     import {useI18n} from 'vue-i18n';
-    import {computed} from 'vue';
+    import {computed, onMounted} from 'vue';
     import { useRoute } from 'vue-router';
+    import {useEbookStore} from '@/stores';
 
     const {t} = useI18n();
+    const ebookStore = useEbookStore();
     const route = useRoute();
     const pageTitle = computed(() => `Alfaomega eBooks [${t(route?.name || 'dashboard')}]`);
+
+    onMounted(() => {
+        ebookStore.dispatchRetrieveEbooksInfo();
+        ebookStore.dispatchRetrieveProductsInfo();
+        ebookStore.dispatchRetrieveAccessInfo();
+        ebookStore.dispatchRetrieveCodesInfo();
+    });
 </script>
 
 <template>

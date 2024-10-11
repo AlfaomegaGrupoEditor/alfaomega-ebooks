@@ -1,16 +1,23 @@
 <script setup lang="ts">
     import {useI18n} from 'vue-i18n';
-    import {ref} from 'vue';
+    import {ref, computed, watch} from 'vue';
     import {aoWidget, aoListActionItem} from '@/components';
+    import {useEbookStore} from '@/stores';
 
     const {t} = useI18n();
+    const ebookStore = useEbookStore();
+    const ebooksInfo = computed(() => ebookStore.getEbooksInfo);
+    const productsInfo = computed(() => ebookStore.getProductsInfo);
+    const accessInfo = computed(() => ebookStore.getAccessInfo);
+    const codesInfo = computed(() => ebookStore.getCodesInfo);
+
     const widgets = ref([
         {
             slug: 'import_ebooks',
             title: t('import_ebooks'),
             icon: 'MdiImport',
             variant: 'green',
-            value: "60/1400",
+            value: `${ebooksInfo.value.imported}/${ebooksInfo.value.catalog}`,
             description: t('import_ebooks_description'),
             action: 'import',
         },
@@ -19,7 +26,7 @@
             title: t('update_ebooks'),
             icon: 'MdiUpdate',
             variant: 'navy',
-            value: 60,
+            value: ebooksInfo.value.imported,
             description: t('update_ebooks_description'),
             action: 'update',
         },
@@ -28,7 +35,7 @@
             title: t('link_products'),
             icon: 'MdiLinkVariant',
             variant: 'orangered',
-            value: '1160/1200',
+            value: `${productsInfo.value.unlinked}/${productsInfo.value.catalog}`,
             description: t('link_products_description'),
             action: 'link',
         },
@@ -37,7 +44,7 @@
             title: t('setup_prices'),
             icon: 'MdiLabelPercentOutline',
             variant: 'maroon',
-            value: '40',
+            value: ebooksInfo.value.imported,
             description: t('setup_prices_description'),
             action: 'setup',
         }
@@ -47,28 +54,28 @@
             slug: 'linked_products',
             title: 'linked_products',
             description: 'linked_products_description',
-            count: 14,
+            count: productsInfo.value.linked,
             action: '/wp-admin/edit.php?s&post_status=all&post_type=product&action=-1&ebooks_filter=sync&product_cat&product_type&stock_status&fb_sync_enabled&filter_action=Filtrar&paged=1&action2=-1'
         },
         {
             slug: 'all_ebooks',
             title: 'all_ebooks',
             description: 'all_ebooks_description',
-            count: 2,
+            count: ebooksInfo.value.imported,
             action: '/wp-admin/edit.php?post_type=alfaomega-ebook'
         },
         {
             slug: 'ebook_access',
             title: 'ebook_access',
             description: 'ebook_access_description',
-            count: 0,
+            count: accessInfo.value.total,
             action: '/wp-admin/edit.php?post_type=alfaomega-access'
         },
         {
             slug: 'sample_codes',
             title: 'sample_codes',
             description: 'sample_codes_description',
-            count: 0,
+            count: codesInfo.value.total,
             action: '/wp-admin/edit.php?post_type=alfaomega-sample'
         },
         {
@@ -84,6 +91,26 @@
             action: '#/about'
         }
     ]);
+
+    watch(ebooksInfo, () => {
+        widgets.value[0].value = `${ebooksInfo.value.imported}/${ebooksInfo.value.catalog}`;
+        widgets.value[1].value = ebooksInfo.value.imported;
+        widgets.value[3].value = ebooksInfo.value.imported;
+        actions.value[1].count = ebooksInfo.value.imported;
+    });
+
+    watch(productsInfo, () => {
+        widgets.value[2].value = `${productsInfo.value.unlinked}/${productsInfo.value.catalog}`;
+        actions.value[0].count = productsInfo.value.linked;
+    });
+
+    watch(accessInfo, () => {
+        actions.value[2].count = accessInfo.value.total;
+    });
+
+    watch(codesInfo, () => {
+        actions.value[3].count = codesInfo.value.total;
+    });
 </script>
 
 <template>

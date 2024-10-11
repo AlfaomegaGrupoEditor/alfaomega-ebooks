@@ -144,4 +144,118 @@ class ApiController
             ];
         }
     }
+
+    /**
+     * Get eBooks Info
+     *
+     * @return array
+     */
+    public function getEbooksInfo(): array
+    {
+        try {
+            $result = [
+                'catalog' => 1400,
+                'imported' => 60,
+            ];
+
+            return [
+                'status'  => 'success',
+                'data' => $result,
+                'message' => esc_html__('God Job!', 'alfaomega-ebooks'),
+            ];
+        } catch (\Exception $e) {
+            return [
+                'status'  => 'error',
+                'message' => esc_html__($e->getMessage(), 'alfaomega-ebooks'),
+            ];
+        }
+    }
+
+    /**
+     * Get products Info
+     *
+     * @return array
+     */
+    public function getProductsInfo(): array
+    {
+        try {
+            $result = [
+                'catalog'  => 1200,
+                'unlinked' => 1160,
+                'linked'   => 40,
+            ];
+
+            return [
+                'status'  => 'success',
+                'data' => $result,
+                'message' => esc_html__('God Job!', 'alfaomega-ebooks'),
+            ];
+        } catch (\Exception $e) {
+            return [
+                'status'  => 'error',
+                'message' => esc_html__($e->getMessage(), 'alfaomega-ebooks'),
+            ];
+        }
+    }
+
+    /**
+     * Get access Info
+     *
+     * @return array
+     */
+    public function getAccessInfo(): array
+    {
+        try {
+            $result = [
+                'sample'    => 10,
+                'purchase'  => 10,
+                'active'    => 10,
+                'expired'   => 10,
+                'cancelled' => 10,
+                'total'     => 20,
+            ];
+
+            return [
+                'status'  => 'success',
+                'data' => $result,
+                'message' => esc_html__('God Job!', 'alfaomega-ebooks'),
+            ];
+        } catch (\Exception $e) {
+            return [
+                'status'  => 'error',
+                'message' => esc_html__($e->getMessage(), 'alfaomega-ebooks'),
+            ];
+        }
+    }
+
+    /**
+     * Get codes Info
+     *
+     * @return array
+     */
+    public function getCodesInfo(): array
+    {
+        try {
+            $result = [
+                'samples'   => 1200,
+                'import'    => 1160,
+                'sent'      => 40,
+                'redeemed'  => 40,
+                'expired'   => 40,
+                'cancelled' => 40,
+                'total'     => 40,
+            ];
+
+            return [
+                'status'  => 'success',
+                'data' => $result,
+                'message' => esc_html__('God Job!', 'alfaomega-ebooks'),
+            ];
+        } catch (\Exception $e) {
+            return [
+                'status'  => 'error',
+                'message' => esc_html__($e->getMessage(), 'alfaomega-ebooks'),
+            ];
+        }
+    }
 }
