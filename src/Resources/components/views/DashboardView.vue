@@ -28,7 +28,7 @@
             title: t('link_products'),
             icon: 'MdiLinkVariant',
             variant: 'orangered',
-            value: '40/1200',
+            value: '1160/1200',
             description: t('link_products_description'),
             action: 'link',
         },

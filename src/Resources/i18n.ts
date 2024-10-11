@@ -44,7 +44,7 @@ const messages = {
         // L
         link: 'Link',
         link_products: 'Link Products',
-        link_products_description: 'Linked/Catalog',
+        link_products_description: 'Unlinked/Catalog',
         // M
         message: 'Hello, World!',
         migration_notice: 'If you have an account in out previous store %s, you can import all your books to access them from here. Please open your account in %s, copy the access code and paste it here in the Add <b>Sample box</b>',
@@ -131,7 +131,7 @@ const messages = {
         // L
         link: 'Vincular',
         link_products: 'Vincular Productos',
-        link_products_description: 'Vinculados/Catálogo',
+        link_products_description: 'Desvinculados/Catálogo',
         // M
         message: 'Hola, mundo!',
         muestra: 'Muestra',

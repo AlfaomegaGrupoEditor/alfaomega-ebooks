@@ -40,7 +40,7 @@
                 <div class="card-title fw-bold fs-6 px-3 pt-2">
                     {{ title }}
                 </div>
-                <div class="card-body d-flex justify-content-between">
+                <div class="card-body d-flex justify-content-between pt-2">
                     <div class="widget-icon rounded-circle px-2 py-2">
                         <span v-html="iconClass"
                               :style="{color: variant}"
@@ -51,12 +51,11 @@
                         <span class="text-secondary fs-7">{{ description }}</span>
                     </div>
                 </div>
-                <div class="card-body d-flex justify-content-end">
+                <div class="card-body d-flex justify-content-end pt-0">
                     <BButton
-                        class="fw-bold"
-                        variant="outline-primary"
+                        variant="primary"
                         size="sm"
-                        style="min-width: 100px"
+                        style="min-width: 100px; background-image: linear-gradient(#257ec5, #267fc6 6%, #2171B1); border: 1px solid #1b5e93;"
                         :to="{name: slug}"
                     >
                         {{ $t(action) }}

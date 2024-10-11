@@ -5,7 +5,7 @@
 
     const {t} = useI18n();
     const route = useRoute();
-    const pageTitle = computed(() => `Alfaomega eBooks [${t(route.name as string)}]`);
+    const pageTitle = computed(() => `Alfaomega eBooks [${t(route?.name || 'dashboard')}]`);
 </script>
 
 <template>
@@ -16,10 +16,9 @@
                     <h1 class="h2 fs-6 fw-bold">{{ pageTitle }}</h1>
                     <BButton
                         v-if="route.name !== 'dashboard'"
-                        class="fw-bold"
-                        variant="outline-primary"
+                        variant="primary"
                         size="sm"
-                        style="min-width: 100px"
+                        style="min-width: 100px; background-image: linear-gradient(#257ec5, #267fc6 6%, #2171B1); border: 1px solid #1b5e93;"
                         :to="{name: 'dashboard'}"
                     >
                         {{ $t('back') }}
