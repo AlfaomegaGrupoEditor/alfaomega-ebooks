@@ -204,9 +204,9 @@ class Product extends WooAbstractEntity implements ProductEntity
         }
 
         return [
-            'catalog'  => $formattedResults['simple'] + $formattedResults['variable'],
-            'unlinked' => $formattedResults['simple'],
-            'linked'   => $formattedResults['variable'],
+            'catalog'  => ($formattedResults['simple'] ?? 0) + ($formattedResults['variable'] ?? 0),
+            'unlinked' => $formattedResults['simple'] ?? 0,
+            'linked'   => $formattedResults['variable'] ?? 0,
         ];
     }
 }

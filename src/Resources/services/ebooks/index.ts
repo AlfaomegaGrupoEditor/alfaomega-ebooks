@@ -66,7 +66,7 @@ async function getCodesInfo(): Promise<APIResponse<AccessCodeInfoType | null>>
     appStore.setError(null);
     appStore.setLoading(true);
 
-    const response = await request<APIResponse<AccessCodeInfoType[]>>('GET', `/alfaomega-ebooks/api/access-info/`);
+    const response = await request<APIResponse<AccessCodeInfoType[]>>('GET', `/alfaomega-ebooks/api/codes-info/`);
     appStore.setLoading(false);
 
     if (response.status == 'success') {
