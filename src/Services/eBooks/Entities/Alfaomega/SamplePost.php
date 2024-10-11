@@ -697,14 +697,40 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
      */
     public function getInfo(): array
     {
+        global $wpdb;
+
+        $fields = ['alfaomega_sample_type', 'alfaomega_sample_status'];
+        $formattedResults = [];
+        $total = 0;
+        foreach ($fields as $field) {
+            // Prepare the SQL query
+            $dataQuery = "SELECT pm.meta_value AS field_type, COUNT(p.ID) AS total_posts
+                FROM {$wpdb->prefix}posts AS p
+                INNER JOIN {$wpdb->prefix}postmeta AS pm ON p.ID = pm.post_id
+                WHERE p.post_type = 'alfaomega-sample'
+                AND p.post_status = 'publish'
+                AND pm.meta_key = '{$field}'
+                GROUP BY pm.meta_value;";
+
+            // Execute the query
+            $results = $wpdb->get_results($dataQuery, 'ARRAY_A');
+            foreach ($results as $row) {
+                $formattedResults[$row['field_type']] = intval($row['total_posts']);
+                if (!in_array($row['field_type'], ['import', 'sample'])) {
+                    $total += intval($row['total_posts']);
+                }
+            }
+        }
+
         return [
-            'samples'   => 1200,
-            'import'    => 1160,
-            'sent'      => 40,
-            'redeemed'  => 40,
-            'expired'   => 40,
-            'cancelled' => 40,
-            'total'     => 40,
+            'samples'   => $total - ($formattedResults['import'] ?? 0),
+            'import'    => $formattedResults['import'] ?? 0,
+            'sent'      => $formattedResults['sent'] ?? 0,
+            'redeemed'  => $formattedResults['redeemed'] ?? 0,
+            'expired'   => $formattedResults['expired'] ?? 0,
+            'failed'    => $formattedResults['failed'] ?? 0,
+            'cancelled' => $formattedResults['cancelled'] ?? 0,
+            'total'     => $total,
         ];
     }
 }
