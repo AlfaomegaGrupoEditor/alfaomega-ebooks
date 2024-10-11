@@ -14,6 +14,8 @@ import aoCornerRibbon from '@/components/aoCornerRibbon.vue';
 import aoHorizontalLoader from '@/components/aoHorizontalLoader.vue';
 import aoWidget from '@/components/aoWidget.vue';
 import aoListActionItem from '@/components/aoListActionItem.vue';
+import aoProcessingQueue from '@/components/aoProcessingQueue.vue';
+import aoProcessingActions from '@/components/aoProcessingActions.vue';
 
 export {
     aoSampleInput,
@@ -32,4 +34,6 @@ export {
     aoHorizontalLoader,
     aoWidget,
     aoListActionItem,
+    aoProcessingQueue,
+    aoProcessingActions
 };

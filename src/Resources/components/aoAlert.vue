@@ -5,7 +5,8 @@ import {BookType} from '@/types';
     const props = defineProps({
         caption: {type: String, default: 'caption'},
         type: { type: String as () => 'info' | 'warning' | 'danger', default: 'info' },
-        action: { type: String, default: null }
+        action: { type: String, default: null },
+        dismissible: { type: Boolean, default: true }
     });
 
     const emit = defineEmits<{ action: () => void }>();
@@ -29,9 +30,9 @@ import {BookType} from '@/types';
         class="fs-7 my-2 my-md-3"
         :variant="variant"
         :model-value="show"
-        dismissible
+        :dismissible="dismissible"
     >
-        <h6 class="alert-heading fs-7">{{ caption }}</h6>
+        <h6 class="alert-heading">{{ caption }}</h6>
         <p v-html="$slots.default ? $slots.default()[0].children : ''"></p>
         <div v-if="action" class="text-end">
             <BButton

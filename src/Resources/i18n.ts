@@ -22,6 +22,7 @@ const messages = {
         back: 'Back',
         book_details: 'View Book Details',
         books_found: "Books found",
+        clear_cache: 'Clear Cache',
         // C
         cancelled: 'Cancelled',
         created: 'Created',
@@ -29,6 +30,7 @@ const messages = {
         code_applied_successfully: 'Code applied successfully.',
         config: 'Configuration',
         config_description: 'All configuration settings for Alfaomega eBooks.',
+        completed: 'Completed',
         // D
         dashboard: 'Dashboard',
         digital_library: 'Digital Library',
@@ -44,13 +46,17 @@ const messages = {
         error_no_data: 'No data found!',
         ebooks_stats: 'eBooks Statistics',
         ebooks: 'eBooks',
+        // F
+        filter_by: 'Filter by',
+        // H
+        has_failed: 'Failed',
         // I
         important_info: 'Important Information!',
         import: 'Import',
         import_ebooks: 'Import eBooks',
         import_ebooks_description: 'imported/available',
-        // F
-        filter_by: 'Filter by',
+        import_ebooks_notice: 'Import new eBooks from the Alfaomega Editors Panel and try to link the related product with each new imported digital book.',
+        idle: 'Idle',
         // L
         link: 'Link',
         link_products: 'Link Products',
@@ -77,6 +83,9 @@ const messages = {
         per_page: 'Per Page',
         paste_code_here: 'Paste the code here',
         products: 'Products',
+        processing_queue_status: 'Processing queue status',
+        processing: 'Processing',
+        pending: 'Pending',
         // R
         read_online: 'Read Online',
         reset_filters: 'Reset Filters',
@@ -136,6 +145,8 @@ const messages = {
         code_applied_successfully: 'Código aplicado correctamente.',
         config: 'Ajustes',
         config_description: 'Todos los ajustes de configuración de Alfaomega eBooks.',
+        clear_cache: 'Limpiar Cache',
+        completed: 'Completados',
         // D
         dashboard: 'Panel de Control',
         digital_library: 'Biblioteca Digital',
@@ -149,16 +160,20 @@ const messages = {
         expired: 'Expirado',
         error_fetching_data: 'Ocurrió un error al obtener los datos.',
         error_no_data: 'No se encontraron datos.',
-        ebooks_stats: 'Estadísticas de eBooks',
+        ebooks_stats: 'Estadísticas',
         ebooks: 'eBooks',
         // F
         filter_by: 'Filtrar por',
         failed: 'El proceso ha fallado!',
+        // H
+        has_failed: 'Fallidos',
         // I
         important_info: 'Información Importante!',
         import: 'Importar',
         import_ebooks: 'Importar eBooks',
         import_ebooks_description: 'Importados/Disponibles',
+        import_ebooks_notice: 'Importa nuevos libros electrónicos desde el Panel de editores de Alfaomega e intenta vincular el producto relacionado con cada nuevo libro digital importado.',
+        idle: 'Inactivo',
         // L
         link: 'Vincular',
         link_products: 'Vincular Productos',
@@ -187,6 +202,9 @@ const messages = {
         per_page: 'Por Página',
         paste_code_here: 'Copia el código aquí',
         products: 'Productos',
+        processing_queue_status: 'Cola de procesamiento',
+        processing: 'Procesando',
+        pending: 'Pendientes',
         // R
         read_online: 'Leer en línea',
         reset_filters: 'Limpiar Filtros',
