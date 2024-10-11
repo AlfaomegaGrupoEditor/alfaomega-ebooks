@@ -13,6 +13,7 @@ import aoBooksSkeleton from '@/components/aoBooksSkeleton.vue';
 import aoCornerRibbon from '@/components/aoCornerRibbon.vue';
 import aoHorizontalLoader from '@/components/aoHorizontalLoader.vue';
 import aoWidget from '@/components/aoWidget.vue';
+import aoListActionItem from '@/components/aoListActionItem.vue';
 
 export {
     aoSampleInput,
@@ -30,4 +31,5 @@ export {
     aoCornerRibbon,
     aoHorizontalLoader,
     aoWidget,
+    aoListActionItem,
 };

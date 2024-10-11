@@ -4,6 +4,8 @@ import { createI18n } from 'vue-i18n';
 const messages = {
     en: {
         // A
+        about: 'About at',
+        about_description: 'Information about Alfaomega eBooks plugin.',
         access_type: 'Access Type',
         access_at: 'Access at',
         active: 'Active',
@@ -13,6 +15,7 @@ const messages = {
         add_sample_text: 'If you received by mail with a sample code of the ebook, you can type it in here to add the book to your digital library.',
         all_books: 'All books',
         all_ebooks: 'All eBooks',
+        all_ebooks_description: 'All available eBooks',
         apply_btn: 'Apply',
         attention: 'Attention!',
         // B
@@ -24,6 +27,8 @@ const messages = {
         created: 'Created',
         created_at: 'Created at',
         code_applied_successfully: 'Code applied successfully.',
+        config: 'Configuration',
+        config_description: 'All configuration settings for Alfaomega eBooks.',
         // D
         dashboard: 'Dashboard',
         digital_library: 'Digital Library',
@@ -31,6 +36,9 @@ const messages = {
         download_tooltip: 'Download the adobe token to import in your ebook reader.',
         dont_show_again: 'Don\'t show this again',
         // E
+        ebook_access: 'eBook Access',
+        ebook_access_description: 'All configured access to the eBooks.',
+        ebooks_manager: 'eBooks Manager',
         expired: 'Expired',
         error_fetching_data: 'An error occurred while fetching the data.',
         error_no_data: 'No data found!',
@@ -45,6 +53,8 @@ const messages = {
         link: 'Link',
         link_products: 'Link Products',
         link_products_description: 'Unlinked/Catalog',
+        linked_products: 'Linked Products',
+        linked_products_description: 'Products linked successfully to the eBook.',
         // M
         message: 'Hello, World!',
         migration_notice: 'If you have an account in out previous store %s, you can import all your books to access them from here. Please open your account in %s, copy the access code and paste it here in the Add <b>Sample box</b>',
@@ -69,6 +79,8 @@ const messages = {
         // S
         sample: 'Sample',
         samples: 'Samples',
+        sample_codes: 'Sample Codes',
+        sample_codes_description: 'All sample codes added to the account.',
         search: 'Type to search amount your books...',
         setup: 'Setup',
         setup_prices: 'Setup Prices',
@@ -89,6 +101,8 @@ const messages = {
     },
     es: {
         // A
+        about: 'Acerca de',
+        about_description: 'Información sobre el plugin Alfaomega eBooks.',
         access_type: 'Tipo de Acceso',
         active: 'Activo',
         access_at: 'Acceso el',
@@ -98,6 +112,7 @@ const messages = {
         add_sample_text: 'Si recibiste un código de muestra, puedes ingresarlo aquí para agregar libros.',
         all: 'Todos los libros',
         all_ebooks: 'Catálogo de eBooks',
+        all_ebooks_description: 'Todos los eBooks cuya información se ha descargado.',
         apply_btn: 'Aplicar',
         attention: 'Atención!',
         // B
@@ -110,6 +125,8 @@ const messages = {
         created: 'Creado',
         created_at: 'Creado el',
         code_applied_successfully: 'Código aplicado correctamente.',
+        config: 'Ajustes',
+        config_description: 'Todos los ajustes de configuración de Alfaomega eBooks.',
         // D
         dashboard: 'Panel de Control',
         digital_library: 'Biblioteca Digital',
@@ -117,6 +134,9 @@ const messages = {
         download_tooltip: 'Descarga el token de Adobe (.acsm) para cargar el PDF en tu lector.',
         dont_show_again: 'No mostrar nuevamente',
         // E
+        ebook_access: 'Accesos a eBooks',
+        ebook_access_description: 'Listado accessos a eBooks, ya sea compra o muestra.',
+        ebooks_manager: 'Administrador de eBooks',
         expired: 'Expirado',
         error_fetching_data: 'Ocurrió un error al obtener los datos.',
         error_no_data: 'No se encontraron datos.',
@@ -132,6 +152,8 @@ const messages = {
         link: 'Vincular',
         link_products: 'Vincular Productos',
         link_products_description: 'Desvinculados/Catálogo',
+        linked_products: 'Productos Vinculados',
+        linked_products_description: 'WooCommerce productos con el eBook configurado y activo.',
         // M
         message: 'Hola, mundo!',
         muestra: 'Muestra',
@@ -158,6 +180,8 @@ const messages = {
         // S
         sample: 'Muestra',
         samples: 'Muestras de cortesía',
+        sample_codes: 'Cógigos de Muestra',
+        sample_codes_description: 'Listado de códigos de muestra generados.',
         search: 'Escribir para buscar entre sus libros...',
         setup: 'Configurar',
         setup_prices: 'Configurar Precios',

@@ -35,34 +35,32 @@
 
 <template>
     <div class="col-xl-3 col-sm-6 col-12">
-        <div class="card shadow mx-2 mb-5 px-0 pb-0 bg-body">
-            <div class="card-content">
-                <div class="card-title fw-bold fs-6 px-3 pt-2">
-                    {{ title }}
+        <BCard class="shadow mx-2 mb-5 px-0 pb-0">
+            <div class="card-title fw-bold fs-6 px-0 py-0">
+                {{ title }}
+            </div>
+            <div class="card-body d-flex justify-content-between pt-2 px-0">
+                <div class="widget-icon rounded-circle px-2 py-2">
+                    <span v-html="iconClass"
+                          :style="{color: variant}"
+                    />
                 </div>
-                <div class="card-body d-flex justify-content-between pt-2">
-                    <div class="widget-icon rounded-circle px-2 py-2">
-                        <span v-html="iconClass"
-                              :style="{color: variant}"
-                        />
-                    </div>
-                    <div class="text-end">
-                        <h3 class="fw-bold fs-4 text-secondary">{{ value }}</h3>
-                        <span class="text-secondary fs-7">{{ description }}</span>
-                    </div>
-                </div>
-                <div class="card-body d-flex justify-content-end pt-0">
-                    <BButton
-                        variant="primary"
-                        size="sm"
-                        style="min-width: 100px; background-image: linear-gradient(#257ec5, #267fc6 6%, #2171B1); border: 1px solid #1b5e93;"
-                        :to="{name: slug}"
-                    >
-                        {{ $t(action) }}
-                    </BButton>
+                <div class="text-end">
+                    <h3 class="fw-bold fs-4 text-secondary">{{ value }}</h3>
+                    <span class="text-secondary fs-7">{{ description }}</span>
                 </div>
             </div>
-        </div>
+            <div class="card-body d-flex justify-content-end px-0 py-0">
+                <BButton
+                    variant="info"
+                    size="sm"
+                    style="min-width: 100px;"
+                    :to="{name: slug}"
+                >
+                    {{ $t(action) }}
+                </BButton>
+            </div>
+        </BCard>
     </div>
 </template>
 

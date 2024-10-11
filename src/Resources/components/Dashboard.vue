@@ -16,9 +16,9 @@
                     <h1 class="h2 fs-6 fw-bold">{{ pageTitle }}</h1>
                     <BButton
                         v-if="route.name !== 'dashboard'"
-                        variant="primary"
+                        variant="info"
                         size="sm"
-                        style="min-width: 100px; background-image: linear-gradient(#257ec5, #267fc6 6%, #2171B1); border: 1px solid #1b5e93;"
+                        style="min-width: 100px;"
                         :to="{name: 'dashboard'}"
                     >
                         {{ $t('back') }}

@@ -20,6 +20,8 @@ declare module 'vue' {
     BInputGroup: typeof import('bootstrap-vue-next/components/BInputGroup')['BInputGroup']
     BInputGroupText: typeof import('bootstrap-vue-next/components/BInputGroup')['BInputGroupText']
     BLink: typeof import('bootstrap-vue-next/components/BLink')['BLink']
+    BListGroup: typeof import('bootstrap-vue-next/components/BListGroup')['BListGroup']
+    BListGroupItem: typeof import('bootstrap-vue-next/components/BListGroup')['BListGroupItem']
     BOffcanvas: typeof import('bootstrap-vue-next/components/BOffcanvas')['BOffcanvas']
     BPagination: typeof import('bootstrap-vue-next/components/BPagination')['BPagination']
     BPlaceholderCard: typeof import('bootstrap-vue-next/components/BPlaceholder')['BPlaceholderCard']
