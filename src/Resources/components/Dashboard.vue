@@ -33,5 +33,4 @@
 </template>
 
 <style scoped>
-
 </style>
