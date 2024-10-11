@@ -227,4 +227,13 @@ class WooCommerceManager extends AbstractManager
                 'download_id' => $key,
             ]);
     }
+
+    /**
+     * Get the WooCommerce product entity
+     * @return \AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\Product
+     */
+    public function product(): Product
+    {
+        return $this->product;
+    }
 }

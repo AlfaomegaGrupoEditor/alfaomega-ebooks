@@ -689,4 +689,22 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
 
         return $result;
     }
+
+    /**
+     * Get the information of the samples.
+     *
+     * @return array The information of the samples.
+     */
+    public function getInfo(): array
+    {
+        return [
+            'samples'   => 1200,
+            'import'    => 1160,
+            'sent'      => 40,
+            'redeemed'  => 40,
+            'expired'   => 40,
+            'cancelled' => 40,
+            'total'     => 40,
+        ];
+    }
 }

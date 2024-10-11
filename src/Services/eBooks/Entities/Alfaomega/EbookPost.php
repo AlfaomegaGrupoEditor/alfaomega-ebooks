@@ -346,4 +346,17 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
             $service->save($access->ID, $data);
         }
     }
+
+    /**
+     * Get the information of the eBooks.
+     *
+     * @return array The information of the eBooks.
+     */
+    public function getInfo(): array
+    {
+        return [
+            'catalog' => 1400,
+            'imported' => 60,
+        ];
+    }
 }

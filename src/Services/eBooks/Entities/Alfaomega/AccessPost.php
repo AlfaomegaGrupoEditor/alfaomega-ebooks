@@ -728,4 +728,21 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         $catalogKey = 'ebooks-catalog-' . wp_get_current_user()->ID;
         Service::make()->helper()->cacheForget($catalogKey);
     }
+
+    /**
+     * Get the information of the access.
+     *
+     * @return array The information of the access.
+     */
+    public function getInfo(): array
+    {
+        return [
+            'sample'    => 10,
+            'purchase'  => 10,
+            'active'    => 10,
+            'expired'   => 10,
+            'cancelled' => 10,
+            'total'     => 20,
+        ];
+    }
 }

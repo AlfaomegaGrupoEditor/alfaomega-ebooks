@@ -177,4 +177,18 @@ class Product extends WooAbstractEntity implements ProductEntity
     {
         return $this->variant;
     }
+
+    /**
+     * Get the product info.
+     *
+     * @return array
+     */
+    public function getInfo(): array
+    {
+        return [
+            'catalog'  => 1200,
+            'unlinked' => 1160,
+            'linked'   => 40,
+        ];
+    }
 }

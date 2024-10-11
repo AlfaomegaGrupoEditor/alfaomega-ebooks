@@ -31,4 +31,11 @@ abstract class AlfaomegaPostAbstract extends AbstractEntity
         $result = wp_delete_post($postId, true);
         return !empty($result);
     }
+
+    /**
+     * Get the information of the entity.
+     *
+     * @return array The information of the entity.
+     */
+    abstract public function getInfo(): array;
 }

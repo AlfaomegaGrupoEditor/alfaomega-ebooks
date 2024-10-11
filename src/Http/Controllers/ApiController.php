@@ -153,11 +153,10 @@ class ApiController
     public function getEbooksInfo(): array
     {
         try {
-            //TODO: Implement getInfo() method in ebookPost.
-            $result = [
-                'catalog' => 1400,
-                'imported' => 60,
-            ];
+            $result = Service::make()
+                ->ebooks()
+                ->ebookPost()
+                ->getInfo();
 
             return [
                 'status'  => 'success',
@@ -180,12 +179,10 @@ class ApiController
     public function getProductsInfo(): array
     {
         try {
-            //TODO: Implement getProductInfo() ebookPost.
-            $result = [
-                'catalog'  => 1200,
-                'unlinked' => 1160,
-                'linked'   => 40,
-            ];
+            $result = Service::make()
+                ->wooCommerce()
+                ->product()
+                ->getInfo();
 
             return [
                 'status'  => 'success',
@@ -208,15 +205,10 @@ class ApiController
     public function getAccessInfo(): array
     {
         try {
-            //TODO: Implement getInfo() accessPost.
-            $result = [
-                'sample'    => 10,
-                'purchase'  => 10,
-                'active'    => 10,
-                'expired'   => 10,
-                'cancelled' => 10,
-                'total'     => 20,
-            ];
+            $result = Service::make()
+                ->ebooks()
+                ->accessPost()
+                ->getInfo();
 
             return [
                 'status'  => 'success',
@@ -239,16 +231,10 @@ class ApiController
     public function getCodesInfo(): array
     {
         try {
-            //TODO: Implement getInfo() samplePost.
-            $result = [
-                'samples'   => 1200,
-                'import'    => 1160,
-                'sent'      => 40,
-                'redeemed'  => 40,
-                'expired'   => 40,
-                'cancelled' => 40,
-                'total'     => 40,
-            ];
+            $result = Service::make()
+                ->ebooks()
+                ->samplePost()
+                ->getInfo();
 
             return [
                 'status'  => 'success',
