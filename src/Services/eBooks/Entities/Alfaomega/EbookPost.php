@@ -317,6 +317,26 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
     }
 
     /**
+     * Return the count of ebooks in the catalog.
+     * @return array
+     * @throws \Exception
+     */
+    public function catalogStats(): array
+    {
+        $response = $this->api->get('/book/catalog/stats');
+        if ($response['response']['code'] !== 200) {
+            throw new Exception($response['response']['message']);
+        }
+
+        $content = json_decode($response['body'], true);
+        if ($content['status'] !== 'success') {
+            throw new Exception($content['message']);
+        }
+
+        return $content['data'];
+    }
+
+    /**
      * Update all the access to this ebook
      *
      * @param int $postId
@@ -351,12 +371,34 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
      * Get the information of the eBooks.
      *
      * @return array The information of the eBooks.
+     * @throws \Exception
      */
     public function getInfo(): array
     {
+        global $wpdb;
+
+        // Prepare the SQL query
+        $dataQuery = "SELECT COUNT(p.ID) AS total_posts
+            FROM {$wpdb->prefix}posts AS p
+            WHERE p.post_type = 'alfaomega-ebook'
+            AND p.post_status = 'publish'";
+
+        // Execute the query
+        $results = $wpdb->get_results($dataQuery, 'ARRAY_A');
+        $formattedResults = [];
+        foreach ($results as $row) {
+            $formattedResults['total_posts'] = intval($row['total_posts']);
+        }
+
+        try {
+            $stats = $this->catalogStats();
+        } catch (Exception $e) {
+            $stats = null;
+        }
+
         return [
-            'catalog' => 1400,
-            'imported' => 60,
+            'catalog' => empty($stats) ? 0 : $stats['size'],
+            'imported' => $formattedResults['total_posts'] ?? 0,
         ];
     }
 }
