@@ -153,6 +153,7 @@ class ApiController
     public function getEbooksInfo(): array
     {
         try {
+            //TODO: Implement getInfo() method in ebookPost.
             $result = [
                 'catalog' => 1400,
                 'imported' => 60,
@@ -179,6 +180,7 @@ class ApiController
     public function getProductsInfo(): array
     {
         try {
+            //TODO: Implement getProductInfo() ebookPost.
             $result = [
                 'catalog'  => 1200,
                 'unlinked' => 1160,
@@ -206,6 +208,7 @@ class ApiController
     public function getAccessInfo(): array
     {
         try {
+            //TODO: Implement getInfo() accessPost.
             $result = [
                 'sample'    => 10,
                 'purchase'  => 10,
@@ -236,6 +239,7 @@ class ApiController
     public function getCodesInfo(): array
     {
         try {
+            //TODO: Implement getInfo() samplePost.
             $result = [
                 'samples'   => 1200,
                 'import'    => 1160,
