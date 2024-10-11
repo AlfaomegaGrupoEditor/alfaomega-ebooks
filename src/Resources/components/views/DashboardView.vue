@@ -98,16 +98,13 @@
         widgets.value[3].value = ebooksInfo.value.imported;
         actions.value[1].count = ebooksInfo.value.imported;
     });
-
     watch(productsInfo, () => {
         widgets.value[2].value = `${productsInfo.value.unlinked}/${productsInfo.value.catalog}`;
         actions.value[0].count = productsInfo.value.linked;
     });
-
     watch(accessInfo, () => {
         actions.value[2].count = accessInfo.value.total;
     });
-
     watch(codesInfo, () => {
         actions.value[3].count = codesInfo.value.total;
     });
