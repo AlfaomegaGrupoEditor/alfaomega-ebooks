@@ -42,6 +42,8 @@ const messages = {
         expired: 'Expired',
         error_fetching_data: 'An error occurred while fetching the data.',
         error_no_data: 'No data found!',
+        ebooks_stats: 'eBooks Statistics',
+        ebooks: 'eBooks',
         // I
         important_info: 'Important Information!',
         import: 'Import',
@@ -55,6 +57,7 @@ const messages = {
         link_products_description: 'Unlinked/Catalog',
         linked_products: 'Linked Products',
         linked_products_description: 'Products linked successfully to the eBook.',
+        linked: 'Linked',
         // M
         message: 'Hello, World!',
         migration_notice: 'If you have an account in out previous store %s, you can import all your books to access them from here. Please open your account in %s, copy the access code and paste it here in the Add <b>Sample box</b>',
@@ -68,14 +71,17 @@ const messages = {
         // P
         purchase: 'Purchase',
         purchased: 'Purchased',
+        purchases: 'Purchases',
         purchase_note: 'Purchased books are added automatically.',
         previous: 'Previous',
         per_page: 'Per Page',
         paste_code_here: 'Paste the code here',
+        products: 'Products',
         // R
         read_online: 'Read Online',
         reset_filters: 'Reset Filters',
         read_tooltip: 'Load the e-book into your browser to read it online.',
+        redeemed: 'Redeemed',
         // S
         sample: 'Sample',
         samples: 'Samples',
@@ -88,8 +94,11 @@ const messages = {
         status: 'Status',
         success: 'Success',
         something_went_wrong: 'Something went wrong!',
+        sent: 'Sent',
         // T
         title: 'Title',
+        type: 'Type',
+        total: 'Total',
         // U
         update: 'Update',
         update_ebooks: 'Update eBooks',
@@ -136,10 +145,12 @@ const messages = {
         // E
         ebook_access: 'Accesos a eBooks',
         ebook_access_description: 'Listado accessos a eBooks, ya sea compra o muestra.',
-        ebooks_manager: 'Administrador de eBooks',
+        ebooks_manager: 'Administrador de recursos',
         expired: 'Expirado',
         error_fetching_data: 'Ocurrió un error al obtener los datos.',
         error_no_data: 'No se encontraron datos.',
+        ebooks_stats: 'Estadísticas de eBooks',
+        ebooks: 'eBooks',
         // F
         filter_by: 'Filtrar por',
         failed: 'El proceso ha fallado!',
@@ -154,6 +165,7 @@ const messages = {
         link_products_description: 'Desvinculados/Catálogo',
         linked_products: 'Productos Vinculados',
         linked_products_description: 'WooCommerce productos con el eBook configurado y activo.',
+        linked: 'Vinculados',
         // M
         message: 'Hola, mundo!',
         muestra: 'Muestra',
@@ -170,13 +182,16 @@ const messages = {
         purchase: 'Compra',
         purchase_note: 'Los libros comprados son adicionados automáticamente.',
         purchased: 'Mis Compras',
+        purchases: 'Compras',
         previous: 'Anterior',
         per_page: 'Por Página',
         paste_code_here: 'Copia el código aquí',
+        products: 'Productos',
         // R
         read_online: 'Leer en línea',
         reset_filters: 'Limpiar Filtros',
         read_tooltip: 'Carga el libro digital en tu navegador para leerlo en línea.',
+        redeemed: 'Canjeado',
         // S
         sample: 'Muestra',
         samples: 'Muestras de cortesía',
@@ -189,8 +204,11 @@ const messages = {
         status: 'Estado',
         success: 'Acción exitosa',
         something_went_wrong: 'Algo ha salido mal!',
+        sent: 'Enviado',
         // T
         title: 'Título',
+        type: 'Tipo',
+        total: 'Total',
         // U
         update: 'Actualizar',
         update_ebooks: 'Actualizar eBooks',

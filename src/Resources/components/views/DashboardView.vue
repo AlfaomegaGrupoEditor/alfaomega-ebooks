@@ -118,7 +118,7 @@
         />
     </div>
     <div class="row">
-        <div class="d-flex justify-content-center w-100">
+        <div class="d-flex justify-content-center mx-3">
             <BCard class="px-0 w-100"
                 border-variant="dark"
             >
@@ -132,7 +132,64 @@
                                          v-bind="action"
                     />
                 </BListGroup>
+            </BCard>
 
+            <BCard class="px-0 mx-3"
+                   border-variant="dark"
+            >
+                <div class="card-title fw-bold fs-6 px-0 pt-0 pb-2 text-muted text-uppercase border-bottom">
+                    {{ $t('ebooks_stats') }}
+                </div>
+
+                <div class="px-2 mt-2">
+                    <div class="row">
+                        <div class="fw-bold">{{ $t('ebooks')}}:</div>
+                    </div>
+                    <div class="row mt-1 px-2">
+                        <div class="pl-2 pb-1">{{ $t('products')}}: <BBadge class="fs-7">{{ productsInfo.catalog }}</BBadge></div>
+                        <div class="pl-2 pb-1">{{ $t('ebooks')}}: <BBadge class="fs-7">{{ ebooksInfo.imported }}</BBadge></div>
+                        <div class="pl-2 pb-1">{{ $t('linked')}}: <BBadge class="fs-7" variant="success">{{ productsInfo.linked }}</BBadge></div>
+                    </div>
+                </div>
+
+                <div class="px-2 mt-2">
+                    <div class="row">
+                        <div class="fw-bold">{{ $t('samples')}}:</div>
+                    </div>
+                    <div class="row mt-1 px-2">
+                        <div class="col">
+                            <div class="pl-2 pb-1">{{ $t('import')}}: <BBadge class="fs-7">{{ codesInfo.import }}</BBadge></div>
+                            <div class="pl-2 pb-1">{{ $t('sample')}}: <BBadge class="fs-7" variant="primary">{{ codesInfo.samples }}</BBadge></div>
+                            <div class="pl-2 pb-1">{{ $t('total')}}: <BBadge class="fs-7">{{ codesInfo.total }}</BBadge></div>
+                        </div>
+                        <div class="col">
+                            <div class="pl-2 pb-1">{{ $t('created')}}: <BBadge class="fs-7">{{ codesInfo.created }}</BBadge></div>
+                            <div class="pl-2 pb-1">{{ $t('sent')}}: <BBadge class="fs-7">{{ codesInfo.sent }}</BBadge></div>
+                            <div class="pl-2 pb-1">{{ $t('redeemed')}}: <BBadge class="fs-7" variant="success">{{ codesInfo.redeemed }}</BBadge></div>
+                            <div class="pl-2 pb-1">{{ $t('expired')}}: <BBadge class="fs-7">{{ codesInfo.expired }}</BBadge></div>
+                            <div class="pl-2 pb-1">{{ $t('cancelled')}}: <BBadge class="fs-7">{{ codesInfo.cancelled }}</BBadge></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="px-2 mt-2">
+                    <div class="row">
+                        <div class="fw-bold">{{ $t('ebook_access')}}:</div>
+                    </div>
+                    <div class="row mt-1 px-2">
+                        <div class="col">
+                            <div class="pl-2 pb-1">{{ $t('sample')}}: <BBadge>{{ accessInfo.sample }}</BBadge></div>
+                            <div class="pl-2 pb-1">{{ $t('purchase')}}: <BBadge variant="info">{{ accessInfo.purchase }}</BBadge></div>
+                            <div class="pl-2 pb-1">{{ $t('total')}}: <BBadge>{{ accessInfo.total }}</BBadge></div>
+                        </div>
+                        <div class="col">
+                            <div class="pl-2 pb-1">{{ $t('created')}}: <BBadge>{{ accessInfo.created }}</BBadge></div>
+                            <div class="pl-2 pb-1">{{ $t('active')}}: <BBadge variant="success">{{ accessInfo.active }}</BBadge></div>
+                            <div class="pl-2 pb-1">{{ $t('expired')}}: <BBadge>{{ accessInfo.expired }}</BBadge></div>
+                            <div class="pl-2 pb-1">{{ $t('cancelled')}}: <BBadge>{{ accessInfo.cancelled }}</BBadge></div>
+                        </div>
+                    </div>
+                </div>
             </BCard>
         </div>
     </div>

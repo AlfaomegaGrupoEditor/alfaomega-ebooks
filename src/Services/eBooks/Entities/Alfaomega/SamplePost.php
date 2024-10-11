@@ -725,6 +725,7 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         return [
             'samples'   => $total - ($formattedResults['import'] ?? 0),
             'import'    => $formattedResults['import'] ?? 0,
+            'created'   => $formattedResults['created'] ?? 0,
             'sent'      => $formattedResults['sent'] ?? 0,
             'redeemed'  => $formattedResults['redeemed'] ?? 0,
             'expired'   => $formattedResults['expired'] ?? 0,

@@ -90,6 +90,7 @@ type ProductsInfoType = {
 type EbookAccessInfoType = {
     sample: number;
     purchase: number;
+    created: number;
     active: number;
     expired: number;
     cancelled: number;
@@ -99,6 +100,7 @@ type EbookAccessInfoType = {
 type AccessCodeInfoType = {
     samples: number;
     import: number;
+    created: number;
     sent: number;
     redeemed: number;
     expired: number;

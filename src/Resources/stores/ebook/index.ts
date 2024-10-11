@@ -17,6 +17,7 @@ export const useEbookStore = defineStore('ebookStore', {
             access: {
                 sample: 0,
                 purchase: 0,
+                created: 0,
                 active: 0,
                 expired: 0,
                 cancelled: 0,
@@ -25,6 +26,7 @@ export const useEbookStore = defineStore('ebookStore', {
             codes: {
                 samples: 0,
                 import: 0,
+                created: 0,
                 sent: 0,
                 redeemed: 0,
                 expired: 0,
