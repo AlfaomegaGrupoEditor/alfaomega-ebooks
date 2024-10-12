@@ -19,8 +19,7 @@
 
 <template>
     <teleport to="body">
-        <div id="ao-container" class="bootstrap-app">
-        </div>
+        <div id="ao-container" class="bootstrap-app"></div>
     </teleport>
     <div class="container-fluid">
         <div class="row">

@@ -181,8 +181,7 @@
 
 <template>
     <teleport to="body">
-        <div id="ao-container" class="bootstrap-app">
-        </div>
+        <div id="ao-container" class="bootstrap-app"></div>
     </teleport>
     <b-container fluid class="ff-body ao-ebooks" style="min-height: 700px">
         <b-row>
