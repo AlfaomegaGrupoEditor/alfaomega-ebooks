@@ -14,9 +14,9 @@
         pending: 0,
         failed: 0
     });
-    const modalName = 'import-ebooks-modal';
     const processing = computed(() => importStatus.value.status === 'processing');
-    const {show} = useModal(modalName)
+    const modalName = 'import-ebooks-modal';
+    const {show} = useModal(modalName);
 
     const handleImport = () => {
         console.log('Importing ebooks...');

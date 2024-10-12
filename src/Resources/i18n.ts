@@ -131,6 +131,7 @@ const messages = {
         update_ebooks: 'Update eBooks',
         update_ebooks_description: 'Imported eBooks',
         update_ebooks_notice: 'Update the information of the eBooks already downloaded from the Alfaomega Editors Panel and check if the link between the product and the eBook is correct.',
+        update_ebooks_confirmation: 'This process will take some time but you will be able to see the status of the update process in the queue. Are you sure you want to update the imported eBooks?',
         // V
         valid_until: 'Valid Until',
         value: 'Value',
@@ -270,6 +271,7 @@ const messages = {
         update_ebooks: 'Actualizar eBooks',
         update_ebooks_description: 'eBooks importados',
         update_ebooks_notice: 'Actualiza la información de los eBooks ya descargados desde el Panel de Editores Alfaomega y comprueba que si el vínculo entre el producto y el eBook es correcto.',
+        update_ebooks_confirmation: 'Esta tarea tomará algo de tiempo pero podrás ver el estado del proceso de actualización en la cola. ¿Estás seguro de que deseas actualizar los eBooks ya importados?',
         // V
         valid_until: 'Válido hasta',
         value: 'Valor',

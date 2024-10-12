@@ -2,6 +2,9 @@
 import {computed, ref} from 'vue';
     import {aoAlert, aoProcessingQueue, aoProcessingActions} from '@/components';
     import {useI18n} from 'vue-i18n';
+    import AoDialog from '@/components/aoDialog.vue';
+    import { useModal } from 'bootstrap-vue-next';
+    import {eventBus} from '@/events';
 
     const {t} = useI18n();
     const updateStatus = ref({
@@ -12,9 +15,15 @@ import {computed, ref} from 'vue';
         failed: 0
     });
     const processing = computed(() => updateStatus.value.status === 'processing');
+    const modalName = 'update-ebooks-modal';
+    const {show} = useModal(modalName);
 
     const handleUpdate = () => {
         console.log('updating ebooks...');
+        eventBus.emit('notification', {
+            message: 'tasks_added',
+            type: 'success'
+        })
     };
 </script>
 
@@ -38,9 +47,16 @@ import {computed, ref} from 'vue';
                 <ao-processing-actions
                     :action="'update'"
                     :processing="processing"
-                    @action="handleUpdate"
+                    @action="show"
                 />
             </div>
         </div>
     </div>
+    <ao-dialog
+        :name="modalName"
+        :title="$t('confirmation')"
+        @action="handleUpdate"
+    >
+        {{ $t('update_ebooks_confirmation') }}
+    </ao-dialog>
 </template>
