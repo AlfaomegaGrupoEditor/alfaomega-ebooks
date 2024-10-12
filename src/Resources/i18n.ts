@@ -25,6 +25,7 @@ const messages = {
         clear_cache: 'Clear Cache',
         // C
         cancelled: 'Cancelled',
+        cancel: 'Cancel',
         created: 'Created',
         created_at: 'Created at',
         code_applied_successfully: 'Code applied successfully.',
@@ -75,6 +76,7 @@ const messages = {
         no_books_found_description: 'Please change the filters or search query. You can also buy more books to enlarge your library.',
         // O
         order_by: 'Order by',
+        ok: 'Ok',
         // P
         purchase: 'Purchase',
         purchased: 'Purchased',
@@ -144,6 +146,7 @@ const messages = {
         books_found: "Resultados",
         // C
         cancelled: 'Cancelado',
+        cancel: 'Cancelar',
         created: 'Creado',
         created_at: 'Creado el',
         code_applied_successfully: 'Código aplicado correctamente.',
@@ -198,6 +201,7 @@ const messages = {
         no_books_found_description: 'Por favor, cambia los filtros o el criterio de búsqueda para encontrar resultados. También puedes comprar más libros para ampliar tu biblioteca.',
         // O
         order_by: 'Ordenar por',
+        ok: 'Aceptar',
         // P
         purchase: 'Compra',
         purchase_note: 'Los libros comprados son adicionados automáticamente.',

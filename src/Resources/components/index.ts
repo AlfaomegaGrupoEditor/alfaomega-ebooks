@@ -16,6 +16,7 @@ import aoWidget from '@/components/aoWidget.vue';
 import aoListActionItem from '@/components/aoListActionItem.vue';
 import aoProcessingQueue from '@/components/aoProcessingQueue.vue';
 import aoProcessingActions from '@/components/aoProcessingActions.vue';
+import aoDialog from '@/components/aoDialog.vue';
 
 export {
     aoSampleInput,
@@ -35,5 +36,6 @@ export {
     aoWidget,
     aoListActionItem,
     aoProcessingQueue,
-    aoProcessingActions
+    aoProcessingActions,
+    aoDialog
 };

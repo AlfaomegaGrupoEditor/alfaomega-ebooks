@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import {computed, ref} from 'vue';
-    import {aoAlert, aoProcessingQueue, aoProcessingActions} from '@/components';
+    import {computed, ref} from 'vue';
+    import {aoAlert, aoProcessingQueue, aoProcessingActions, aoDialog} from '@/components';
     import {useI18n} from 'vue-i18n';
+    import { useModal } from 'bootstrap-vue-next';
 
     const {t} = useI18n();
     const setupStatus = ref({
@@ -12,11 +13,12 @@ import {computed, ref} from 'vue';
         failed: 0
     });
     const processing = computed(() => setupStatus.value.status === 'processing');
+    const modalName = 'setup-prices-modal';
+    const {show, hide, modal} = useModal(modalName)
 
     const handleSetup = () => {
         console.log('Setting ebooks prices...');
     };
-
 </script>
 
 <template>
@@ -39,9 +41,16 @@ import {computed, ref} from 'vue';
                 <ao-processing-actions
                     :action="'setup'"
                     :processing="processing"
-                    @action="handleSetup"
+                    @action="show"
                 />
             </div>
         </div>
     </div>
+    <ao-dialog
+        :name="modalName"
+        :title="$t('setup_prices')"
+        @action="handleSetup"
+    >
+        <div>the dialog content</div>
+    </ao-dialog>
 </template>
