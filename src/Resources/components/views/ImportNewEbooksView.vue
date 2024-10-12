@@ -23,7 +23,7 @@
         eventBus.emit('notification', {
             message: 'tasks_added',
             type: 'success'
-        })
+        });
     };
 
 </script>

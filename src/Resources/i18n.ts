@@ -71,6 +71,7 @@ const messages = {
         linked_products_description: 'Products linked successfully to the eBook.',
         linked: 'Linked',
         link_products_notice: 'Link the products that are not related yet by searching the corresponding digital book in the list of already imported eBooks.',
+        link_products_confirmation: 'This process will take some time but you will be able to see the status of the link process in the queue. Are you sure you want to link the products with the eBooks?',
         // M
         message: 'Hello, World!',
         migration_notice: 'If you have an account in out previous store %s, you can import all your books to access them from here. Please open your account in %s, copy the access code and paste it here in the Add <b>Sample box</b>',
@@ -200,7 +201,8 @@ const messages = {
         import_ebooks_description: 'Importados/Disponibles',
         import_ebooks_notice: 'Importa nuevos libros electrónicos desde el Panel de editores de Alfaomega e intenta vincular el producto relacionado con cada nuevo libro digital importado.',
         idle: 'Inactivo',
-        import_ebooks_confirmation: 'Esta tarea tomará algo de tiempo pero podrás ver el estado del proceso de importación en la cola. ¿Estás seguro de que deseas importar nuevos eBooks desde el Panel de Editores de Alfaomega?',
+        import_ebooks_confirmation: 'Esta tarea tomará algo de tiempo pero podrás ver el estado del proceso de importación en las estadísticas de la cola de processamiento. ¿Estás seguro de que deseas importar nuevos eBooks desde el Panel de Editores de Alfaomega?',
+        link_products_confirmation: 'Esta tarea tomará algo de tiempo pero podrás ver el estado del proceso de vinculación en las estadísticas de la cola de processamiento. ¿Estás seguro de que deseas intentar vincular todos los productos desvinculados con los eBooks existentes?',
         // L
         link: 'Vincular',
         link_products: 'Vincular Productos',
@@ -271,7 +273,7 @@ const messages = {
         update_ebooks: 'Actualizar eBooks',
         update_ebooks_description: 'eBooks importados',
         update_ebooks_notice: 'Actualiza la información de los eBooks ya descargados desde el Panel de Editores Alfaomega y comprueba que si el vínculo entre el producto y el eBook es correcto.',
-        update_ebooks_confirmation: 'Esta tarea tomará algo de tiempo pero podrás ver el estado del proceso de actualización en la cola. ¿Estás seguro de que deseas actualizar los eBooks ya importados?',
+        update_ebooks_confirmation: 'Esta tarea tomará algo de tiempo pero podrás ver el estado del proceso de actualización en las estadísticas de la cola de processamiento. ¿Estás seguro de que deseas actualizar los eBooks ya importados?',
         // V
         valid_until: 'Válido hasta',
         value: 'Valor',
