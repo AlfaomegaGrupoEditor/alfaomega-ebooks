@@ -1,22 +1,20 @@
 <script setup lang="ts">
-import {computed, ref} from 'vue';
+import {computed, onMounted, onUnmounted, ref} from 'vue';
     import {aoAlert, aoProcessingQueue, aoProcessingActions} from '@/components';
     import {useI18n} from 'vue-i18n';
     import AoDialog from '@/components/aoDialog.vue';
     import { useModal } from 'bootstrap-vue-next';
     import {eventBus} from '@/events';
+    import {useProcessStore} from '@/stores';
 
     const {t} = useI18n();
-    const linkStatus = ref({
-        status: 'idle', // idle, completed, processing, pending, failed
-        completed: 0,
-        processing: 0,
-        pending: 0,
-        failed: 0
-    });
+    const processStore = useProcessStore();
+    const linkStatus = computed(() => processStore.getLinkProducts);
     const processing = computed(() => linkStatus.value.status === 'processing');
     const modalName = 'link-products-modal';
     const {show} = useModal(modalName);
+    const intervalId = ref(null);
+    const poolTimeout = 60 * 1000;
 
     const handleLink = () => {
         console.log('Linking products...');
@@ -25,6 +23,18 @@ import {computed, ref} from 'vue';
             type: 'success'
         });
     };
+
+    onMounted(() => {
+        intervalId.value = setInterval(() => {
+            processStore.dispatchRetrieveQueueStatus('link-products');
+        }, poolTimeout);
+
+        processStore.dispatchRetrieveQueueStatus('link-products');
+    });
+
+    onUnmounted(() => {
+        clearInterval(intervalId.value);
+    });
 
 </script>
 

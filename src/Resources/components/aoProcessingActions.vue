@@ -2,25 +2,44 @@
     import AoDialog from '@/components/aoDialog.vue';
     import { useModal } from 'bootstrap-vue-next';
     import {eventBus} from '@/events';
+    import {useProcessStore} from '@/stores';
+    import {computed} from 'vue';
+    import {ProcessType, ProcessNameType} from '@/types';
 
     const props = defineProps({
-        action: {type: String as () => 'import' | 'update' | 'link' | 'setup' , default: 'import'},
+        action: {type: String as () => ProcessNameType , default: 'import'},
         processing: {type: Boolean, default: false},
     });
 
     const emit = defineEmits(['action']);
-    const modalName = 'clear-cache-modal';
+    const modalName = 'clear-queue-modal';
     const {show} = useModal(modalName);
+    const processStore = useProcessStore();
+    const process = computed((): ProcessType => {
+        switch (props.action) {
+            case 'import':
+                return 'import-new-ebooks';
+            case 'update':
+                return 'update-ebooks';
+            case 'link':
+                return 'link-products';
+            case 'setup':
+                return 'setup-prices';
+        }
+    });
 
-    const handleClearCache = () => {
-        console.log('Clear cache');
+    const handleClearQueue = () => {
         eventBus.emit('notification', {
-            message: 'clear_cache_success',
+            message: 'clear_queue_success',
             type: 'success'
         });
     };
     const handleAction = () => {
         emit('action');
+    };
+
+    const handleRefresh = () => {
+        processStore.dispatchRetrieveQueueStatus(process.value);
     };
 </script>
 
@@ -40,17 +59,25 @@
                  variant="info"
                  size="sm"
                  style="max-width: 120px"
+                 @click="handleRefresh"
+        >
+            {{ $t('refresh_queue') }}
+        </BButton>
+        <BButton class="my-1"
+                 variant="info"
+                 size="sm"
+                 style="max-width: 120px"
                  @click="show"
         >
-            {{ $t('clear_cache') }}
+            {{ $t('clear_queue') }}
         </BButton>
     </div>
     <ao-dialog
         :name="modalName"
         :title="$t('confirmation')"
-        @action="handleClearCache"
+        @action="handleClearQueue"
     >
-        {{ $t('clear_cache_confirmation') }}
+        {{ $t('clear_queue_confirmation') }}
     </ao-dialog>
 </template>
 

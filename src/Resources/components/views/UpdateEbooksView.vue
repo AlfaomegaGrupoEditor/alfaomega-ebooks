@@ -1,22 +1,20 @@
 <script setup lang="ts">
-import {computed, ref} from 'vue';
+import {computed, onMounted, onUnmounted, ref} from 'vue';
     import {aoAlert, aoProcessingQueue, aoProcessingActions} from '@/components';
     import {useI18n} from 'vue-i18n';
     import AoDialog from '@/components/aoDialog.vue';
     import { useModal } from 'bootstrap-vue-next';
     import {eventBus} from '@/events';
+    import {useProcessStore} from '@/stores';
 
     const {t} = useI18n();
-    const updateStatus = ref({
-        status: 'idle', // idle,
-        completed: 0,
-        processing: 0,
-        pending: 0,
-        failed: 0
-    });
+    const processStore = useProcessStore();
+    const updateStatus = computed(() => processStore.getUpdateEbooks);
     const processing = computed(() => updateStatus.value.status === 'processing');
     const modalName = 'update-ebooks-modal';
     const {show} = useModal(modalName);
+    const intervalId = ref(null);
+    const poolTimeout = 60 * 1000;
 
     const handleUpdate = () => {
         console.log('updating ebooks...');
@@ -25,6 +23,18 @@ import {computed, ref} from 'vue';
             type: 'success'
         })
     };
+
+    onMounted(() => {
+        intervalId.value = setInterval(() => {
+            processStore.dispatchRetrieveQueueStatus('update-ebooks');
+        }, poolTimeout);
+
+        processStore.dispatchRetrieveQueueStatus('update-ebooks');
+    });
+
+    onUnmounted(() => {
+        clearInterval(intervalId.value);
+    });
 </script>
 
 <template>

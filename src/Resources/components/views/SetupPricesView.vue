@@ -1,18 +1,14 @@
 <script setup lang="ts">
-    import {computed, ref} from 'vue';
+import {computed, onMounted, onUnmounted, ref} from 'vue';
     import {aoAlert, aoProcessingQueue, aoProcessingActions} from '@/components';
     import {useI18n} from 'vue-i18n';
     import { useModal } from 'bootstrap-vue-next';
     import {eventBus} from '@/events';
+    import {useProcessStore} from '@/stores';
 
     const {t} = useI18n();
-    const setupStatus = ref({
-        status: 'idle',
-        completed: 0,
-        processing: 0,
-        pending: 0,
-        failed: 0
-    });
+    const processStore = useProcessStore();
+    const setupStatus = computed(() => processStore.getSetupPrices);
     const processing = computed(() => setupStatus.value.status === 'processing');
     const modalName = 'setup-prices-modal';
     const {show, hide, modal} = useModal(modalName)
@@ -32,6 +28,8 @@
         }
     });
     const validateSetup = computed(() => factor.value !== '' && value.value != 0);
+    const intervalId = ref(null);
+    const poolTimeout = 60 * 1000;
 
     const handleSetup = () => {
         console.log('Setting ebooks prices...', factor.value, value.value);
@@ -40,6 +38,18 @@
             type: 'success'
         })
     };
+
+    onMounted(() => {
+        intervalId.value = setInterval(() => {
+            processStore.dispatchRetrieveQueueStatus('setup-prices');
+        }, poolTimeout);
+
+        processStore.dispatchRetrieveQueueStatus('setup-prices');
+    });
+
+    onUnmounted(() => {
+        clearInterval(intervalId.value);
+    });
 </script>
 
 <template>

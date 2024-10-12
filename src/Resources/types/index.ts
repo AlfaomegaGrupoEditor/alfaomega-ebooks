@@ -110,6 +110,8 @@ type AccessCodeInfoType = {
 
 type ProcessType = 'import-new-ebooks' | 'update-ebooks' | 'link-products' | 'setup-prices';
 
+type ProcessNameType = 'import' | 'update' | 'link' | 'setup';
+
 type AsyncProcessStatusType = 'idle' | 'processing' | 'failed' | 'completed';
 
 type AsyncProcessType = {
@@ -137,6 +139,7 @@ export {
     EbookAccessInfoType,
     AccessCodeInfoType,
     ProcessType,
+    ProcessNameType,
     AsyncProcessStatusType,
     AsyncProcessType
 };
