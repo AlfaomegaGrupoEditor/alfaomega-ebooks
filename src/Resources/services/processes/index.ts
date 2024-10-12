@@ -12,7 +12,9 @@ async function getProcessStatus(process: ProcessType): Promise<APIResponse<Async
     appStore.setError(null);
     appStore.setLoading(true);
 
-    const response = await request<APIResponse<AsyncProcessType>>('GET', `/alfaomega-ebooks/api/process-info/${process}`);
+    const response = await request<APIResponse<AsyncProcessType>>('POST', `/alfaomega-ebooks/api/process-info/`, {
+        process: process
+    });
     appStore.setLoading(false);
 
     if (response.status == 'success') {

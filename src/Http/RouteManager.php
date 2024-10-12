@@ -143,6 +143,7 @@ class RouteManager
         'products-info' => [ApiController::class, 'getProductsInfo', 'GET'],
         'access-info'   => [ApiController::class, 'getAccessInfo', 'GET'],
         'codes-info'    => [ApiController::class, 'getCodesInfo', 'GET'],
+        'process-info'  => [ApiController::class, 'getProcessInfo', 'GET'],
     ];
 
     /**

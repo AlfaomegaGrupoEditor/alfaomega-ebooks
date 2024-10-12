@@ -26,10 +26,10 @@ import {computed, onMounted, onUnmounted, ref} from 'vue';
 
     onMounted(() => {
         intervalId.value = setInterval(() => {
-            processStore.dispatchRetrieveQueueStatus('import-ebook');
+            processStore.dispatchRetrieveQueueStatus('import-new-ebooks');
         }, poolTimeout);
 
-        processStore.dispatchRetrieveQueueStatus('import-ebook');
+        processStore.dispatchRetrieveQueueStatus('import-new-ebooks');
     });
 
     onUnmounted(() => {

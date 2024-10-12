@@ -13,15 +13,14 @@ class QueueManager extends AbstractManager
 
     /**
      * Retrieves the status of a queue.
-     * This method retrieves the status of a queue by querying the WordPress actionscheduler_actions table.
-     * It retrieves the number of actions with the specified queue name and status.
+     * This method retrieves the status of a queue by counting the number of actions with the specified queue name and status.
      *
-     * @param string $queue The queue name to query.
+     * @param string $queue The queue name.
+     * @param bool $transform Whether to transform the result.
      *
-     * @return array Returns an associative array containing the queue name and the number of actions with the
-     *               specified status.
+     * @return array The status of the queue.
      */
-    public function status(string $queue): array
+    public function status(string $queue, bool $transform = false): array
     {
         global $wpdb;
 
@@ -36,16 +35,17 @@ class QueueManager extends AbstractManager
             ");
 
         $data = [
-            'queue'    => $queue,
-            'complete' => 0,
-            'failed'   => 0,
-            'pending'  => 0,
+            'queue'      => $queue,
+            'complete'   => 0,
+            'failed'     => 0,
+            'pending'    => 0,
+            'in-process' => 0,
         ];
         foreach ($results as $result) {
             $data[$result->status] = intval($result->count);
         }
 
-        return $data;
+        return $transform ? $this->transform($data) : $data;
     }
 
     /**
@@ -80,5 +80,26 @@ class QueueManager extends AbstractManager
         $this->table = $table_prefix . $this->table;
 
         return $this->table;
+    }
+
+    public function transform(array $result): array
+    {
+        if ($result['in-process'] > 0 || $result['pending'] > 0) {
+            $status = 'processing';
+        } elseif ($result['failed'] > 0) {
+            $status = 'failed';
+        } elseif ($result['complete'] > 0) {
+            $status = 'completed';
+        } else {
+            $status = 'idle';
+        }
+
+        return [
+            'status'    => $status,
+            'completed' => $result['complete'],
+            'processing'=> $result['in-process'],
+            'pending'   => $result['pending'],
+            'failed'    => $result['failed'],
+        ];
     }
 }
