@@ -33,6 +33,7 @@ const messages = {
         config_description: 'All configuration settings for Alfaomega eBooks.',
         completed: 'Completed',
         confirm_update_process: 'Are you sure you want for all linked Products add a price update process to the task queue?',
+        confirmation: 'Confirmation required!',
         // D
         dashboard: 'Dashboard',
         digital_library: 'Digital Library',
@@ -61,6 +62,7 @@ const messages = {
         import_ebooks_description: 'imported/available',
         import_ebooks_notice: 'Import new eBooks from the Alfaomega Editors Panel and try to link the related product with each new imported digital book.',
         idle: 'Idle',
+        import_ebooks_confirmation: 'This process will take some time but you will be able to see the status of the import process in the queue. Are you sure you want to import the eBooks from the Alfaomega Editors Panel?',
         // L
         link: 'Link',
         link_products: 'Link Products',
@@ -167,6 +169,7 @@ const messages = {
         clear_cache: 'Limpiar Cache',
         completed: 'Completados',
         confirm_update_process: '¿Estás seguro de que deseas agregar un proceso de actualización de precios a la cola de tareas para todos los productos vinculados?',
+        confirmation: '¡Confirmación requerida!',
         // D
         dashboard: 'Panel de Control',
         digital_library: 'Biblioteca Digital',
@@ -196,6 +199,7 @@ const messages = {
         import_ebooks_description: 'Importados/Disponibles',
         import_ebooks_notice: 'Importa nuevos libros electrónicos desde el Panel de editores de Alfaomega e intenta vincular el producto relacionado con cada nuevo libro digital importado.',
         idle: 'Inactivo',
+        import_ebooks_confirmation: 'Esta tarea tomará algo de tiempo pero podrás ver el estado del proceso de importación en la cola. ¿Estás seguro de que deseas importar nuevos eBooks desde el Panel de Editores de Alfaomega?',
         // L
         link: 'Vincular',
         link_products: 'Vincular Productos',

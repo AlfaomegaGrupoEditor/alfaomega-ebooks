@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import {computed, ref} from 'vue';
+    import {computed, ref} from 'vue';
     import {aoAlert, aoProcessingQueue, aoProcessingActions} from '@/components';
     import {useI18n} from 'vue-i18n';
+    import AoDialog from '@/components/aoDialog.vue';
+    import { useModal } from 'bootstrap-vue-next';
+    import {eventBus} from '@/events';
 
     const {t} = useI18n();
     const importStatus = ref({
@@ -11,10 +14,16 @@ import {computed, ref} from 'vue';
         pending: 0,
         failed: 0
     });
+    const modalName = 'import-ebooks-modal';
     const processing = computed(() => importStatus.value.status === 'processing');
+    const {show} = useModal(modalName)
 
     const handleImport = () => {
         console.log('Importing ebooks...');
+        eventBus.emit('notification', {
+            message: 'tasks_added',
+            type: 'success'
+        })
     };
 
 </script>
@@ -39,9 +48,16 @@ import {computed, ref} from 'vue';
                 <ao-processing-actions
                     :action="'import'"
                     :processing="processing"
-                    @action="handleImport"
+                    @action="show"
                 />
             </div>
         </div>
     </div>
+    <ao-dialog
+        :name="modalName"
+        :title="$t('confirmation')"
+        @action="handleImport"
+    >
+        {{ $t('import_ebooks_confirmation') }}
+    </ao-dialog>
 </template>

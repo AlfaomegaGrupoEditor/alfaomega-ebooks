@@ -19,18 +19,16 @@
             :id="name"
             :title="title"
             title-class="fs-6"
-            header-border-variant="secondary"
+            header-class="py-2"
             footer-border-variant="secondary"
             :cancel-title="$t('cancel')"
-            cancel-variant="secondary"
+            cancel-variant="light"
             :ok-title="$t('ok')"
             ok-variant="info"
             button-size="sm"
             @ok="emit('action')"
     >
         <slot></slot>
-<!--        <div v-html="$slots.default ? $slots.default()[0].children : ''">
-        </div>-->
     </BModal>
 </template>
 
