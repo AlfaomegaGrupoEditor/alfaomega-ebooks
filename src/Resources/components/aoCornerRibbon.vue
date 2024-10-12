@@ -22,15 +22,15 @@
 <style scoped>
     @import url(https://fonts.googleapis.com/css?family=Lato:700);
 
-    .bootstrap-app .ribbon {
+    .ribbon {
         width: var(--ribbon-size);
         height: var(--ribbon-size);
         overflow: hidden;
         position: absolute;
     }
 
-    .bootstrap-app .ribbon::before,
-    .bootstrap-app .ribbon::after {
+    .ribbon::before,
+    .ribbon::after {
         position: absolute;
         z-index: -1;
         content: '';
@@ -38,7 +38,7 @@
         border: calc(var(--ribbon-size) / 30) solid #2980b9;
     }
 
-    .bootstrap-app .ribbon span {
+    .ribbon span {
         position: absolute;
         display: block;
         width: calc(var(--ribbon-size) * 1.5);
@@ -52,122 +52,122 @@
         text-align: center;
     }
 
-    .bootstrap-app .ribbon.primary::before,
-    .bootstrap-app .ribbon.primary::after {
+    .ribbon.primary::before,
+    .ribbon.primary::after {
         border: calc(var(--ribbon-size) / 30) solid #771004;
     }
 
-    .bootstrap-app .ribbon.primary span {
+    .ribbon.primary span {
         background-color: #D4230F;
     }
 
     /* top left */
-    .bootstrap-app .ribbon-top-left {
+    .ribbon-top-left {
         top: calc(var(--ribbon-size) / -15);
         left: calc(var(--ribbon-size) / -15);
     }
 
-    .bootstrap-app .ribbon-top-left::before,
-    .bootstrap-app .ribbon-top-left::after {
+    .ribbon-top-left::before,
+    .ribbon-top-left::after {
         border-top-color: transparent;
         border-left-color: transparent;
     }
 
-    .bootstrap-app .ribbon-top-left::before {
+    .ribbon-top-left::before {
         top: 0;
         right: 0;
     }
 
-    .bootstrap-app .ribbon-top-left::after {
+    .ribbon-top-left::after {
         bottom: 0;
         left: 0;
     }
 
-    .bootstrap-app .ribbon-top-left span {
+    .ribbon-top-left span {
         right: calc(var(--ribbon-size) / -6);
         top: calc(var(--ribbon-size) / 5);
         transform: rotate(-45deg);
     }
 
     /* top right */
-    .bootstrap-app .ribbon-top-right {
+    .ribbon-top-right {
         top: calc(var(--ribbon-size) / -15);
         right: calc(var(--ribbon-size) / -15);
     }
 
-    .bootstrap-app .ribbon-top-right::before,
-    .bootstrap-app .ribbon-top-right::after {
+    .ribbon-top-right::before,
+    .ribbon-top-right::after {
         border-top-color: transparent;
         border-right-color: transparent;
     }
 
-    .bootstrap-app .ribbon-top-right::before {
+    .ribbon-top-right::before {
         top: 0;
         left: 0;
     }
 
-    .bootstrap-app .ribbon-top-right::after {
+    .ribbon-top-right::after {
         bottom: 0;
         right: 0;
     }
 
-    .bootstrap-app .ribbon-top-right span {
+    .ribbon-top-right span {
         left: calc(var(--ribbon-size) / -6);
         top: calc(var(--ribbon-size) / 5);
         transform: rotate(45deg);
     }
 
     /* bottom left */
-    .bootstrap-app .ribbon-bottom-left {
+    .ribbon-bottom-left {
         bottom: calc(var(--ribbon-size) / -15);
         left: calc(var(--ribbon-size) / -15);
     }
 
-    .bootstrap-app .ribbon-bottom-left::before,
-    .bootstrap-app .ribbon-bottom-left::after {
+    .ribbon-bottom-left::before,
+    .ribbon-bottom-left::after {
         border-bottom-color: transparent;
         border-left-color: transparent;
     }
 
-    .bootstrap-app .ribbon-bottom-left::before {
+    .ribbon-bottom-left::before {
         bottom: 0;
         right: 0;
     }
 
-    .bootstrap-app .ribbon-bottom-left::after {
+    .ribbon-bottom-left::after {
         top: 0;
         left: 0;
     }
 
-    .bootstrap-app .ribbon-bottom-left span {
+    .ribbon-bottom-left span {
         right: calc(var(--ribbon-size) / -6);
         bottom: calc(var(--ribbon-size) / 5);
         transform: rotate(225deg);
     }
 
     /* bottom right */
-    .bootstrap-app .ribbon-bottom-right {
+    .ribbon-bottom-right {
         bottom: calc(var(--ribbon-size) / -15);
         right: calc(var(--ribbon-size) / -15);
     }
 
-    .bootstrap-app .ribbon-bottom-right::before,
-    .bootstrap-app .ribbon-bottom-right::after {
+    .ribbon-bottom-right::before,
+    .ribbon-bottom-right::after {
         border-bottom-color: transparent;
         border-right-color: transparent;
     }
 
-    .bootstrap-app .ribbon-bottom-right::before {
+    .ribbon-bottom-right::before {
         bottom: 0;
         left: 0;
     }
 
-    .bootstrap-app .ribbon-bottom-right::after {
+    .ribbon-bottom-right::after {
         top: 0;
         right: 0;
     }
 
-    .bootstrap-app .ribbon-bottom-right span {
+    .ribbon-bottom-right span {
         left: calc(var(--ribbon-size) / -6);
         bottom: calc(var(--ribbon-size) / 5);
         transform: rotate(-225deg);
