@@ -1,22 +1,20 @@
 <script setup lang="ts">
-    import {computed, ref} from 'vue';
+import {computed, onMounted, onUnmounted, ref} from 'vue';
     import {aoAlert, aoProcessingQueue, aoProcessingActions} from '@/components';
     import {useI18n} from 'vue-i18n';
     import AoDialog from '@/components/aoDialog.vue';
     import { useModal } from 'bootstrap-vue-next';
     import {eventBus} from '@/events';
+    import {useProcessStore} from '@/stores';
 
     const {t} = useI18n();
-    const importStatus = ref({
-        status: 'idle', // idle, completed, processing, pending, failed
-        completed: 0,
-        processing: 0,
-        pending: 0,
-        failed: 0
-    });
+    const processStore = useProcessStore();
+    const importStatus = computed(() => processStore.getImportNewEbooks);
     const processing = computed(() => importStatus.value.status === 'processing');
     const modalName = 'import-ebooks-modal';
     const {show} = useModal(modalName);
+    const intervalId = ref(null);
+    const poolTimeout = 60 * 1000;
 
     const handleImport = () => {
         console.log('Importing ebooks...');
@@ -25,6 +23,18 @@
             type: 'success'
         });
     };
+
+    onMounted(() => {
+        intervalId.value = setInterval(() => {
+            processStore.dispatchRetrieveQueueStatus('import-ebook');
+        }, poolTimeout);
+
+        processStore.dispatchRetrieveQueueStatus('import-ebook');
+    });
+
+    onUnmounted(() => {
+        clearInterval(intervalId.value);
+    });
 
 </script>
 

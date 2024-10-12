@@ -1,8 +1,10 @@
 <script setup lang="ts">
-    import {computed} from 'vue';import {useI18n} from 'vue-i18n';
+    import {computed} from 'vue';
+    import {useI18n} from 'vue-i18n';
+    import {AsyncProcessStatusType} from '@/types';
 
     const props = defineProps({
-        status: {type: String as () => 'idle' | 'processing' | 'failed' | 'completed' , default: 'idle'},
+        status: {type: String as () => AsyncProcessStatusType , default: 'idle'},
         completed: { type: Number, default: 0 },
         processing: { type: Number, default: 0 },
         pending: { type: Number, default: 0 },

@@ -108,6 +108,18 @@ type AccessCodeInfoType = {
     total: number;
 }
 
+type ProcessType = 'import-new-ebooks' | 'update-ebooks' | 'link-products' | 'setup-prices';
+
+type AsyncProcessStatusType = 'idle' | 'processing' | 'failed' | 'completed';
+
+type AsyncProcessType = {
+    status: AsyncProcessStatusType;
+    completed: Number,
+    processing: Number,
+    pending: Number,
+    failed: Number
+}
+
 export {
     ColorVariantType,
     SizeVariantType,
@@ -124,4 +136,7 @@ export {
     ProductsInfoType,
     EbookAccessInfoType,
     AccessCodeInfoType,
+    ProcessType,
+    AsyncProcessStatusType,
+    AsyncProcessType
 };
