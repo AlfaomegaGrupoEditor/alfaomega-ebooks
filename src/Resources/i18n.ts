@@ -123,6 +123,7 @@ const messages = {
         title: 'Title',
         type: 'Type',
         total: 'Total',
+        tasks_added: 'Tasks added to the queue successfully! You can come back to this page at any time to see the status of the task queue.',
         // U
         update: 'Update',
         update_ebooks: 'Update eBooks',
@@ -259,6 +260,7 @@ const messages = {
         title: 'Título',
         type: 'Tipo',
         total: 'Total',
+        tasks_added: 'Tareas agregadas a la cola correctamente! Puede regresar a esta página en cualquier momento para ver el estado de la cola de tareas.',
         // U
         update: 'Actualizar',
         update_ebooks: 'Actualizar eBooks',

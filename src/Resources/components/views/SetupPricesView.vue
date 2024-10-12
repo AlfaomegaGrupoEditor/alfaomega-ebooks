@@ -36,7 +36,7 @@
     const handleSetup = () => {
         console.log('Setting ebooks prices...', factor.value, value.value);
         eventBus.emit('notification', {
-            message: 'test',
+            message: 'tasks_added',
             type: 'success'
         })
     };
