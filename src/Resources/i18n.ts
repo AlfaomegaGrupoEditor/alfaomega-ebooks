@@ -219,7 +219,7 @@ const messages = {
         message: 'Hola, mundo!',
         muestra: 'Muestra',
         muestras: 'Muestras',
-        migration_notice: 'Si tienes una cuenta en nuestra tienda anterior <b>:website</b>, puedes importar todos tus libros para acceder a ellos desde aquí. Por favor, abre la sección <b>Mis eBooks</b> en el sitio anterior, copia el <b>código de acceso</b> y pégalo en el cuadro <b>Agregar Muestras.</b>',
+        migration_notice: 'Si tienes una cuenta en nuestra tienda anterior <b>:website</b>, puedes importar todos tus libros para acceder a ellos desde aquí. Por favor, abre la sección <b>Mis Libros</b> en el sitio anterior, copia el <b>código de acceso</b> y pégalo en el cuadro <b>Agregar Muestras.</b>',
         // N
         next: 'Siguiente',
         note: 'Nota',
