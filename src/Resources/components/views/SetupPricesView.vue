@@ -71,7 +71,7 @@
             title-class="fs-6"
             footer-border-variant="secondary"
             :cancel-title="$t('cancel')"
-            cancel-variant="secondary"
+            cancel-variant="light"
             :ok-title="$t('ok')"
             ok-variant="info"
             :ok-disabled="factor === '' || value === 0"
