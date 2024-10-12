@@ -5,7 +5,7 @@ import {computed, ref} from 'vue';
 
     const {t} = useI18n();
     const linkStatus = ref({
-        status: 'processing', // idle, completed, processing, pending, failed
+        status: 'idle', // idle, completed, processing, pending, failed
         completed: 0,
         processing: 0,
         pending: 0,

@@ -5,7 +5,7 @@ import {computed, ref} from 'vue';
 
     const {t} = useI18n();
     const updateStatus = ref({
-        status: 'idle',
+        status: 'idle', // idle,
         completed: 0,
         processing: 0,
         pending: 0,
