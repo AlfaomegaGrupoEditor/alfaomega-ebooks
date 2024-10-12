@@ -4,7 +4,7 @@ import {BookType} from '@/types';
 
     const props = defineProps({
         caption: {type: String, default: 'caption'},
-        type: { type: String as () => 'info' | 'warning' | 'danger', default: 'info' },
+        type: { type: String as () => 'info' | 'warning' | 'danger' | 'notice', default: 'info' },
         action: { type: String, default: null },
         dismissible: { type: Boolean, default: true }
     });
@@ -19,6 +19,8 @@ import {BookType} from '@/types';
                 return 'warning';
             case 'danger':
                 return 'danger';
+            case 'notice':
+                return 'light';
         }
     });
     const show = ref(true);

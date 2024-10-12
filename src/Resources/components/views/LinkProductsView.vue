@@ -23,10 +23,11 @@ import {computed, ref} from 'vue';
         <div class="row d-flex justify-content-center">
             <div class="col-12 col-md-8 col-md-offset-2">
                 <ao-alert
-                    :caption="$t('link_ebooks')"
+                    :caption="$t('link_products')"
                     :dismissible="false"
+                    type="notice"
                 >
-                    {{ $t('link_ebooks_notice') }}
+                    {{ $t('link_products_notice') }}
                 </ao-alert>
             </div>
         </div>

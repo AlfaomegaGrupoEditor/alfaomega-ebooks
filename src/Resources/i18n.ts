@@ -64,6 +64,7 @@ const messages = {
         linked_products: 'Linked Products',
         linked_products_description: 'Products linked successfully to the eBook.',
         linked: 'Linked',
+        link_products_notice: 'Link the products that are not related yet by searching the corresponding digital book in the list of already imported eBooks.',
         // M
         message: 'Hello, World!',
         migration_notice: 'If you have an account in out previous store %s, you can import all your books to access them from here. Please open your account in %s, copy the access code and paste it here in the Add <b>Sample box</b>',
@@ -103,6 +104,8 @@ const messages = {
         status: 'Status',
         success: 'Success',
         something_went_wrong: 'Something went wrong!',
+        setup_ebooks_price: 'Setup Prices',
+        setup_ebooks_price_notice: 'Taking as a base the price of the printed book and an update factor, the price of the digital book and the printed and digital package is calculated according to the price settings and the new price of the printed book.',
         sent: 'Sent',
         // T
         title: 'Title',
@@ -112,6 +115,7 @@ const messages = {
         update: 'Update',
         update_ebooks: 'Update eBooks',
         update_ebooks_description: 'Imported eBooks',
+        update_ebooks_notice: 'Update the information of the eBooks already downloaded from the Alfaomega Editors Panel and check if the link between the product and the eBook is correct.',
         // V
         valid_until: 'Valid Until',
         // W
@@ -181,6 +185,7 @@ const messages = {
         linked_products: 'Productos Vinculados',
         linked_products_description: 'WooCommerce productos con el eBook configurado y activo.',
         linked: 'Vinculados',
+        link_products_notice: 'Vincula los productos que aún no están relacionados buscando el libro digital correspondiente en la lista de eBooks ya importados.',
         // M
         message: 'Hola, mundo!',
         muestra: 'Muestra',
@@ -223,6 +228,8 @@ const messages = {
         success: 'Acción exitosa',
         something_went_wrong: 'Algo ha salido mal!',
         sent: 'Enviado',
+        setup_ebooks_price: 'Configurar Precios',
+        setup_ebooks_price_notice: 'Tomando como base el precio del libro impreso y un factor de actualización, se calcula el precio del libro digital y del paquete impreso y digital según la configuración de precios y el nuevo precio del impreso.',
         // T
         title: 'Título',
         type: 'Tipo',
@@ -231,6 +238,7 @@ const messages = {
         update: 'Actualizar',
         update_ebooks: 'Actualizar eBooks',
         update_ebooks_description: 'eBooks importados',
+        update_ebooks_notice: 'Actualiza la información de los eBooks ya descargados desde el Panel de Editores Alfaomega y comprueba que si el vínculo entre el producto y el eBook es correcto.',
         // V
         valid_until: 'Válido hasta',
         // W

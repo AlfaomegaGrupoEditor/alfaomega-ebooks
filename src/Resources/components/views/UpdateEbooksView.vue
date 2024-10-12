@@ -25,6 +25,7 @@ import {computed, ref} from 'vue';
                 <ao-alert
                     :caption="$t('update_ebooks')"
                     :dismissible="false"
+                    type="notice"
                 >
                     {{ $t('update_ebooks_notice') }}
                 </ao-alert>
