@@ -1,16 +1,17 @@
 <script setup lang="ts">
-    import {ref} from 'vue';
+import {computed, ref} from 'vue';
     import {aoAlert, aoProcessingQueue, aoProcessingActions} from '@/components';
     import {useI18n} from 'vue-i18n';
 
     const {t} = useI18n();
     const linkStatus = ref({
-        status: 'idle',
+        status: 'processing', // idle, completed, processing, pending, failed
         completed: 0,
         processing: 0,
         pending: 0,
         failed: 0
     });
+    const processing = computed(() => linkStatus.value.status === 'processing');
     const handleLink = () => {
         console.log('Linking products...');
     };
@@ -35,6 +36,7 @@
                 <ao-processing-queue v-bind="linkStatus" />
                 <ao-processing-actions
                     :action="'link'"
+                    :processing="processing"
                     @action="handleLink"
                 />
             </div>

@@ -2,6 +2,7 @@
 
     const props = defineProps({
         action: {type: String as () => 'import' | 'update' | 'link' | 'setup' , default: 'import'},
+        processing: {type: Boolean, default: false},
     });
 
     const emit = defineEmits(['action']);
@@ -20,8 +21,10 @@
                  variant="info"
                  size="sm"
                  style="max-width: 120px"
+                 :disabled="processing"
                  @click="handleAction"
         >
+            <BSpinner small v-if="processing"/>
             {{ $t(action) }}
         </BButton>
         <BButton class="my-1"

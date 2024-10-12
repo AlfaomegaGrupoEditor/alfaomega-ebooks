@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import {ref} from 'vue';
+import {computed, ref} from 'vue';
     import {aoAlert, aoProcessingQueue, aoProcessingActions} from '@/components';
     import {useI18n} from 'vue-i18n';
 
@@ -11,6 +11,8 @@
         pending: 0,
         failed: 0
     });
+    const processing = computed(() => setupStatus.value.status === 'processing');
+
     const handleSetup = () => {
         console.log('Setting ebooks prices...');
     };
@@ -35,6 +37,7 @@
                 <ao-processing-queue v-bind="setupStatus" />
                 <ao-processing-actions
                     :action="'setup'"
+                    :processing="processing"
                     @action="handleSetup"
                 />
             </div>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import {ref} from 'vue';
+import {computed, ref} from 'vue';
     import {aoAlert, aoProcessingQueue, aoProcessingActions} from '@/components';
     import {useI18n} from 'vue-i18n';
 
@@ -11,6 +11,8 @@
         pending: 0,
         failed: 0
     });
+    const processing = computed(() => updateStatus.value.status === 'processing');
+
     const handleUpdate = () => {
         console.log('updating ebooks...');
     };
@@ -34,6 +36,7 @@
                 <ao-processing-queue v-bind="updateStatus" />
                 <ao-processing-actions
                     :action="'update'"
+                    :processing="processing"
                     @action="handleUpdate"
                 />
             </div>

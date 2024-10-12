@@ -1,16 +1,18 @@
 <script setup lang="ts">
-    import {ref} from 'vue';
+import {computed, ref} from 'vue';
     import {aoAlert, aoProcessingQueue, aoProcessingActions} from '@/components';
     import {useI18n} from 'vue-i18n';
 
     const {t} = useI18n();
     const importStatus = ref({
-        status: 'idle',
+        status: 'idle', // idle, completed, processing, pending, failed
         completed: 0,
         processing: 0,
         pending: 0,
         failed: 0
     });
+    const processing = computed(() => importStatus.value.status === 'processing');
+
     const handleImport = () => {
         console.log('Importing ebooks...');
     };
@@ -35,6 +37,7 @@
                 <ao-processing-queue v-bind="importStatus" />
                 <ao-processing-actions
                     :action="'import'"
+                    :processing="processing"
                     @action="handleImport"
                 />
             </div>
