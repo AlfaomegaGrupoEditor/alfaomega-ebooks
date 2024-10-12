@@ -28,8 +28,9 @@
             button-size="sm"
             @ok="emit('action')"
     >
-        <div v-html="$slots.default ? $slots.default()[0].children : ''">
-        </div>
+        <slot></slot>
+<!--        <div v-html="$slots.default ? $slots.default()[0].children : ''">
+        </div>-->
     </BModal>
 </template>
 

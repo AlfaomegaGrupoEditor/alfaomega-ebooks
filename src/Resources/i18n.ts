@@ -49,6 +49,8 @@ const messages = {
         ebooks: 'eBooks',
         // F
         filter_by: 'Filter by',
+        factor: 'Factor',
+        fixed_number_description: 'Add the specified value to the current price of each book',
         // H
         has_failed: 'Failed',
         // I
@@ -74,10 +76,12 @@ const messages = {
         note: 'Note',
         no_books_found: 'No books found.',
         no_books_found_description: 'Please change the filters or search query. You can also buy more books to enlarge your library.',
+        fixed_number: 'Fixed Number',
         // O
         order_by: 'Order by',
         ok: 'Ok',
         // P
+        percent: 'Percent',
         purchase: 'Purchase',
         purchased: 'Purchased',
         purchases: 'Purchases',
@@ -89,6 +93,10 @@ const messages = {
         processing_queue_status: 'Processing queue status',
         processing: 'Processing',
         pending: 'Pending',
+        page_count: 'Page Count',
+        please_select_factor: 'Please select a factor to update the book prices',
+        page_count_description: 'Multiply the number of pages of the book by the specified value.',
+        percent_description: 'Add the specified percentage to the current price of each book',
         // R
         read_online: 'Read Online',
         reset_filters: 'Reset Filters',
@@ -109,6 +117,7 @@ const messages = {
         setup_ebooks_price: 'Setup Prices',
         setup_ebooks_price_notice: 'Taking as a base the price of the printed book and an update factor, the price of the digital book and the printed and digital package is calculated according to the price settings and the new price of the printed book.',
         sent: 'Sent',
+        select_factor: 'Select a factor',
         // T
         title: 'Title',
         type: 'Type',
@@ -120,6 +129,7 @@ const messages = {
         update_ebooks_notice: 'Update the information of the eBooks already downloaded from the Alfaomega Editors Panel and check if the link between the product and the eBook is correct.',
         // V
         valid_until: 'Valid Until',
+        value: 'Value',
         // W
         welcome: 'Welcome',
     },
@@ -172,6 +182,8 @@ const messages = {
         // F
         filter_by: 'Filtrar por',
         failed: 'El proceso ha fallado!',
+        factor: 'Factor',
+        fixed_number_description: 'Adiciona el valor especificado al precio actual de cada libro',
         // H
         has_failed: 'Fallidos',
         // I
@@ -199,10 +211,12 @@ const messages = {
         note: 'Nota',
         no_books_found: 'No se encontraron libros.',
         no_books_found_description: 'Por favor, cambia los filtros o el criterio de búsqueda para encontrar resultados. También puedes comprar más libros para ampliar tu biblioteca.',
+        fixed_number: 'Número fijo',
         // O
         order_by: 'Ordenar por',
         ok: 'Aceptar',
         // P
+        percent: 'Porcentaje',
         purchase: 'Compra',
         purchase_note: 'Los libros comprados son adicionados automáticamente.',
         purchased: 'Mis Compras',
@@ -214,6 +228,10 @@ const messages = {
         processing_queue_status: 'Cola de procesamiento',
         processing: 'Procesando',
         pending: 'Pendientes',
+        page_count: 'Cantidad de Páginas',
+        please_select_factor: 'Por favor, seleccione un factor para actualizar los precios de los libros',
+        page_count_description: 'Multiplica el número de páginas del libro por el valor especificado.',
+        percent_description: 'Adiciona el porcentaje especificado al precio actual de cada libro',
         // R
         read_online: 'Leer en línea',
         reset_filters: 'Limpiar Filtros',
@@ -234,6 +252,7 @@ const messages = {
         sent: 'Enviado',
         setup_ebooks_price: 'Configurar Precios',
         setup_ebooks_price_notice: 'Tomando como base el precio del libro impreso y un factor de actualización, se calcula el precio del libro digital y del paquete impreso y digital según la configuración de precios y el nuevo precio del impreso.',
+        select_factor: 'Selecione el factor',
         // T
         title: 'Título',
         type: 'Tipo',
@@ -245,6 +264,7 @@ const messages = {
         update_ebooks_notice: 'Actualiza la información de los eBooks ya descargados desde el Panel de Editores Alfaomega y comprueba que si el vínculo entre el producto y el eBook es correcto.',
         // V
         valid_until: 'Válido hasta',
+        value: 'Valor',
         // W
         welcome: 'Bienvenido',
     }
