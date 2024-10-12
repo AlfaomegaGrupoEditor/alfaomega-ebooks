@@ -31,6 +31,7 @@
     >
         <div class="card-title fw-bold fs-6 px-0 pt-0 pb-2 text-muted text-uppercase border-bottom">
             {{ $t('processing_queue_status') }}
+            <i class="bi bi-alarm"></i>
         </div>
 
         <div class="mx-2 py-2">

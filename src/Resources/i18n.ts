@@ -32,6 +32,7 @@ const messages = {
         config: 'Configuration',
         config_description: 'All configuration settings for Alfaomega eBooks.',
         completed: 'Completed',
+        confirm_update_process: 'Are you sure you want for all linked Products add a price update process to the task queue?',
         // D
         dashboard: 'Dashboard',
         digital_library: 'Digital Library',
@@ -164,6 +165,7 @@ const messages = {
         config_description: 'Todos los ajustes de configuración de Alfaomega eBooks.',
         clear_cache: 'Limpiar Cache',
         completed: 'Completados',
+        confirm_update_process: '¿Estás seguro de que deseas agregar un proceso de actualización de precios a la cola de tareas para todos los productos vinculados?',
         // D
         dashboard: 'Panel de Control',
         digital_library: 'Biblioteca Digital',

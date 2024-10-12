@@ -3,6 +3,7 @@
     import {aoAlert, aoProcessingQueue, aoProcessingActions} from '@/components';
     import {useI18n} from 'vue-i18n';
     import { useModal } from 'bootstrap-vue-next';
+    import {eventBus} from '@/events';
 
     const {t} = useI18n();
     const setupStatus = ref({
@@ -30,9 +31,14 @@
                 return t('please_select_factor');
         }
     });
+    const validateSetup = computed(() => factor.value !== '' && value.value != 0);
 
     const handleSetup = () => {
         console.log('Setting ebooks prices...', factor.value, value.value);
+        eventBus.emit('notification', {
+            message: 'test',
+            type: 'success'
+        })
     };
 </script>
 
@@ -74,10 +80,13 @@
             cancel-variant="light"
             :ok-title="$t('ok')"
             ok-variant="info"
-            :ok-disabled="factor === '' || value === 0"
+            :ok-disabled="!validateSetup"
             button-size="sm"
             @ok="handleSetup"
     >
+        <div class="row px-4 pb-3">
+            {{ $t('confirm_update_process') }}
+        </div>
         <div class="row">
             <div class="col mx-2">
                 <label for="update-factor"

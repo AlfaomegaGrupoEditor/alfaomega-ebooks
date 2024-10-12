@@ -11,7 +11,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue-next/dist/bootstrap-vue-next.css';
 import 'bootswatch/dist/simplex/bootstrap.min.css'; // using the compiled CSS from Bootswatch
 
-
 // Optionally import your custom CSS
 import '@/assets/css/custom.css';
 

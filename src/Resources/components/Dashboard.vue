@@ -3,11 +3,42 @@
     import {computed, onMounted} from 'vue';
     import { useRoute } from 'vue-router';
     import {useEbookStore} from '@/stores';
+    import AoToast from '@/components/aoToast.vue';
+    import { useToast } from '@/composables/useToast';
+    import {eventBus, useMittEvents} from '@/events';
+    import {NotificationEvent} from '@/events/types';
+
+    /**
+     * Registers the event the App will be listing to.
+     */
+    useMittEvents(eventBus, {
+        notification: (event: NotificationEvent) => notificationHandler(event),
+    });
 
     const {t} = useI18n();
     const ebookStore = useEbookStore();
     const route = useRoute();
+    const { toast, toastActive, showToast } = useToast();
     const pageTitle = computed(() => `Alfaomega eBooks [${t(route?.name || 'dashboard')}]`);
+
+    /**
+     * When a notification is sent
+     */
+    const notificationHandler = (data: NotificationEvent) => {
+        if (data.type === 'success') {
+            showToast({
+                variant: 'success',
+                title: t('success'),
+                content: t(data.message)
+            });
+        } else if (data.type === 'error') {
+            showToast({
+                variant: 'primary',
+                title: t('attention'),
+                content: t(data.message)
+            });
+        }
+    };
 
     onMounted(() => {
         ebookStore.dispatchRetrieveEbooksInfo();
@@ -42,6 +73,14 @@
             </section>
         </div>
     </div>
+
+    <!--  Toast message-->
+    <ao-toast
+        :active="toastActive"
+        :variant="toast?.variant || 'success'"
+        :title="toast?.title || ''"
+        :content="toast?.content || 'test'"
+    />
 </template>
 
 <style scoped>

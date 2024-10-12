@@ -15,14 +15,14 @@
     import {eventBus, useMittEvents} from '@/events';
     import {ApiCheckEvent, NotificationEvent} from '@/events/types';
     import {getValue} from '@/services/Helper';
+    import { useToast } from '@/composables/useToast';
 
     const {t} = useI18n();
     const appStore = useAppStore();
     const isLoading = computed(() => appStore.isLoading);
     const header = ref<string>(t('welcome'));
     const searchQuery = ref<BooksQueryType>(null);
-    const toast = ref<ToastType>();
-    const toastActive = ref(false);
+    const { toast, toastActive, showToast } = useToast();
     const showSidebar = ref(false);
     const hideMigrationNotice = ref(localStorage.getItem('hideMigrationNotice') === 'true');
     const migrationNotice = computed(() => t('migration_notice')
@@ -106,19 +106,6 @@
     };
 
     /**
-     * Show a toast message
-     * @param newToast
-     */
-    const showToast = (newToast: ToastType) => {
-        toast.value = newToast;
-
-        toastActive.value = true;
-        setTimeout(() => {
-            toastActive.value = false;
-        }, 5000);
-    };
-
-    /**
      * Handle the filters update
      * @param filter
      */
@@ -158,7 +145,6 @@
     };
 
     const handleApply = (payload: ToastType) => {
-        // TODO: actually apply the code
         showToast(payload);
     };
 

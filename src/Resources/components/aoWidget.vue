@@ -1,9 +1,11 @@
 <script setup lang="ts">
-    import MdiImport from '~icons/mdi/import?raw&width=3.2rem&height=3.2rem';
-    import MdiUpdate from '~icons/mdi/update?raw&width=3.2rem&height=3.2rem';
-    import MdiLinkVariant from '~icons/mdi/link-variant?raw&width=3.2rem&height=3.2rem';
-    import MdiLabelPercentOutline from '~icons/mdi/label-percent-outline?raw&width=3.2rem&height=3.2rem';
-    import MdiBoxOutline from '~icons/mdi/box-outline?raw&width=1.2rem&height=1.2rem';
+    import {
+        MdiImport,
+        MdiUpdate,
+        MdiLinkVariant,
+        MdiLabelPercentOutline,
+        MdiBoxOutline
+    } from "@/components/icons"
     import {useI18n} from 'vue-i18n';
     import {computed} from 'vue';
 
