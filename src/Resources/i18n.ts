@@ -34,6 +34,8 @@ const messages = {
         completed: 'Completed',
         confirm_update_process: 'Are you sure you want for all linked Products add a price update process to the task queue?',
         confirmation: 'Confirmation required!',
+        clear_cache_confirmation: 'Are you sure you want to clear the processing queue cache for this task?',
+        clear_cache_success: 'The processing queue cache has been cleared successfully.',
         // D
         dashboard: 'Dashboard',
         digital_library: 'Digital Library',
@@ -172,6 +174,8 @@ const messages = {
         completed: 'Completados',
         confirm_update_process: '¿Estás seguro de que deseas agregar un proceso de actualización de precios a la cola de tareas para todos los productos vinculados?',
         confirmation: '¡Confirmación requerida!',
+        clear_cache_confirmation: '¿Estás seguro de que deseas limpiar la caché de la cola de procesamiento para esta tarea?',
+        clear_cache_success: 'La caché de la cola de procesamiento se ha limpiado correctamente.',
         // D
         dashboard: 'Panel de Control',
         digital_library: 'Biblioteca Digital',
