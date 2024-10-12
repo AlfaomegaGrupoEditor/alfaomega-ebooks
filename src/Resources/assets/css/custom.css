@@ -138,3 +138,18 @@ div.ao-sidebar .offcanvas-title {
 .my-ebook-content {
     margin-top: -50px;
 }
+
+table.wp-list-table .column-ebook_isbn{
+    width: 10%;
+}
+table.wp-list-table .column-date {
+    width: 10% !important;
+}
+
+.ebook_isbn span{
+    background-color: #1C6EA4;
+    color: #FFFFFF;
+    padding: 3px 5px;
+    border-radius: 5px;
+    white-space: nowrap;
+}

@@ -337,8 +337,8 @@ class Alfaomega_Ebooks {
 
         add_submenu_page(
             'alfaomega_ebooks_admin',
-            esc_html__('Home', 'alfaomega-ebooks'),
-            esc_html__('Home', 'alfaomega-ebooks'),
+            esc_html__('Dashboard', 'alfaomega-ebooks'),
+            esc_html__('Dashboard', 'alfaomega-ebooks'),
             'install_plugins',
             'alfaomega_ebooks_admin',
             null,
