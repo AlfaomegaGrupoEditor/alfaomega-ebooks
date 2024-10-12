@@ -25,9 +25,8 @@
 </script>
 
 <template>
-    <BCard class="px-0 w-100"
+    <BCard class="px-0 w-100 border-light"
            style="max-width: 100%; margin-right: 15px;"
-           border-variant="dark"
     >
         <div class="card-title fw-bold fs-6 px-0 pt-0 pb-2 text-muted text-uppercase border-bottom">
             {{ $t('processing_queue_status') }}
@@ -61,5 +60,7 @@
 </template>
 
 <style scoped>
-
+    .border-light{
+        border-color: var(--bs-light-border-subtle) !important;
+    }
 </style>

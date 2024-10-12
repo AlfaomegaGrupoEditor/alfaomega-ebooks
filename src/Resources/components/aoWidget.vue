@@ -37,7 +37,7 @@
 
 <template>
     <div class="col-xl-3 col-sm-6 col-12">
-        <BCard class="shadow mx-2 mb-5 px-0 pb-0">
+        <BCard class="shadow-sm mx-2 mb-5 px-0 pb-0 border-light">
             <div class="card-title fw-bold fs-6 px-0 py-0">
                 {{ title }}
             </div>
@@ -69,5 +69,8 @@
 <style scoped>
     .widget-icon {
         background-color: #e4e3e3;
+    }
+    .border-light{
+        border-color: var(--bs-light-border-subtle) !important;
     }
 </style>

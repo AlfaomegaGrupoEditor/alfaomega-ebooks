@@ -119,9 +119,7 @@
     </div>
     <div class="row">
         <div class="d-flex justify-content-center mx-3">
-            <BCard class="px-0 w-100"
-                border-variant="dark"
-            >
+            <BCard class="px-0 w-100 border-light">
                 <div class="card-title fw-bold fs-6 px-0 pt-0 pb-2 text-muted text-uppercase border-bottom">
                     {{ $t('ebooks_manager') }}
                 </div>
@@ -134,9 +132,7 @@
                 </BListGroup>
             </BCard>
 
-            <BCard class="px-0 mx-3"
-                   border-variant="dark"
-            >
+            <BCard class="px-0 mx-3 border-light">
                 <div class="card-title fw-bold fs-6 px-0 pt-0 pb-2 text-muted text-uppercase border-bottom">
                     {{ $t('ebooks_stats') }}
                 </div>
@@ -194,3 +190,9 @@
         </div>
     </div>
 </template>
+
+<style scoped>
+    .border-light{
+        border-color: var(--bs-light-border-subtle) !important;
+    }
+</style>
