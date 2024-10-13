@@ -172,6 +172,9 @@
         padding-bottom: 1px;
         border-color: var(--bs-light-border-subtle) !important;
     }
+    .info-variant {
+        margin-bottom: 0;
+    }
     .info-variant .page-link {
         color: #2171b1;
     }
