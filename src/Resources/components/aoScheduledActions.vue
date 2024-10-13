@@ -2,6 +2,10 @@
     import {AsyncProcessStatusType, ProcessNameType} from '@/types';
     import {computed, ref} from 'vue';
     import AoProcessingActions from '@/components/aoProcessingActions.vue';
+    import {useI18n} from 'vue-i18n';
+    import {BiTrash3Fill, BiArrowRepeat} from '@/components/icons';
+    import AoDialog from '@/components/aoDialog.vue';
+    import { useModal } from 'bootstrap-vue-next';
 
     const props = defineProps({
         action: {type: String as () => ProcessNameType , default: 'import'},
@@ -12,6 +16,10 @@
         failed: { type: Number, default: 0 },
     });
 
+    const {t} = useI18n();
+    const modalName = 'action-process-modal';
+    const {show} = useModal(modalName);
+    const action = ref({ type: '', item: null });
     const variant = computed(() => {
         switch (props.status) {
             case 'idle':
@@ -29,28 +37,135 @@
         event.preventDefault();
         activeTab.value = page;
     };
-
-    interface SortPerson {
-        first_name: string
-        last_name: string
-        age: number
-        isActive: boolean
+    const statusVariant = (status: string) => {
+        switch (status) {
+            case 'processing':
+                return 'info';
+            case 'completed':
+                return 'success';
+            case 'failed':
+                return 'primary';
+            default:
+                return 'warning';
+        }
+    }
+    const formatDate = (date: string) => {
+        return new Date(date).toLocaleString(
+            'es-ES',
+            {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            });
+    }
+    const handleShowDialog = (actionType, item) => {
+        action.value = { type: actionType, item: item };
+        show();
+    }
+    const handleAction = () => {
+        console.log('Action:', action.value);
     }
 
-    const sortItems: TableItem<Person>[] = [
-        {isActive: true, age: 40, first_name: 'Dickerson', last_name: 'Macdonald'},
-        {isActive: true, age: 45, first_name: 'Zelda', last_name: 'Macdonald'},
-        {isActive: false, age: 21, first_name: 'Larsen', last_name: 'Shaw'},
-        {isActive: false, age: 89, first_name: 'Geneva', last_name: 'Wilson'},
-        {isActive: false, age: 89, first_name: 'Gary', last_name: 'Wilson'},
-        {isActive: true, age: 38, first_name: 'Jami', last_name: 'Carney'},
-    ]
+    interface ProcessItem {
+        id: number
+        isbn: string
+        title: string
+        status: string
+        schedule_date: string
+        last_attend_date: string
+    }
 
-    const sortFields: Exclude<TableFieldRaw<SortPerson>, string>[] = [
-        {key: 'last_name', sortable: true},
-        {key: 'first_name', sortable: true},
-        {key: 'age', sortable: true},
-        {key: 'isActive', sortable: false},
+    const sortItems = computed(() => {
+        switch (activeTab.value) {
+            case 'processing':
+                return [
+                    {
+                        id: 2345,
+                        isbn: '9786076221600',
+                        title: 'SOLIDWORKS PRACTICO I - Ensamblaje y Dibujo',
+                        status: 'processing',
+                        schedule_date: '2021-10-01 12:00:00',
+                        last_attend_date: '2021-10-01 12:00:00',
+                    },
+                    {
+                        id: 2346,
+                        isbn: '9786076221601',
+                        title: 'CUANDO LAS PERSONAS SON EL CENTRO - Cómo abordar la gestión de RR.HH. sin medios',
+                        status: 'pending',
+                        schedule_date: '2021-10-01 12:00:00',
+                        last_attend_date: '2021-10-01 12:00:00',
+                    },
+                    {
+                        id: 2347,
+                        isbn: '9786076221602',
+                        title: 'TERMOTECNIA',
+                        status: 'pending',
+                        schedule_date: '2021-10-01 12:00:00',
+                        last_attend_date: '2021-10-01 12:00:00',
+                    },
+                    {
+                        id: 2348,
+                        isbn: '9786076221603',
+                        title: 'SISTEMAS SCADA - 3ª Edición',
+                        status: 'pending',
+                        schedule_date: '2021-10-01 12:00:00',
+                        last_attend_date: '2021-10-01 12:00:00',
+                    },
+                ]
+            case 'completed':
+                return [
+                    {
+                        id: 2345,
+                        isbn: '9786076221600',
+                        title: 'SISTEMAS DE INFORMACIÓN EN LA EMPRESA - El impacto de la nube, la movilidad y los medios sociales',
+                        status: 'completed',
+                        schedule_date: '2021-10-01 12:00:00',
+                        last_attend_date: '2021-10-01 12:00:00',
+                    },
+                ]
+            case 'failed':
+                return [
+                    {
+                        id: 2345,
+                        isbn: '9786076221600',
+                        title: 'SEGURIDAD E HIGIENE INDUSTRIAL - Gestión de riesgos',
+                        status: 'failed',
+                        schedule_date: '2021-10-01 12:00:00',
+                        last_attend_date: '2021-10-01 12:00:00',
+                    },
+                    {
+                        id: 2346,
+                        isbn: '9786076221601',
+                        title: 'ROCK MARKETING - Una historia del rock diferente',
+                        status: 'failed',
+                        schedule_date: '2021-10-01 12:00:00',
+                        last_attend_date: '2021-10-01 12:00:00',
+                    },
+                ]
+        }
+    });
+
+    const sortFields: Exclude<TableFieldRaw<ProcessItem>, string>[] = [
+        {key: 'id', sortable: true, label: 'ID'},
+        {key: 'isbn', sortable: true, label: 'ISBN'},
+        {key: 'title', sortable: true, label: t('title').toUpperCase()},
+        {key: 'status', sortable: true, label: t('status').toUpperCase()},
+        {
+            key: 'schedule_date',
+            sortable: true,
+            label: t('scheduled').toUpperCase(),
+            formatter: (value) => (value ? formatDate(value) : ''),
+        },
+        {
+            key: 'last_attend_date',
+            sortable: true,
+            label: t('last_attend').toUpperCase(),
+            formatter: (value) => (value ? formatDate(value) : ''),
+        },
+        {key: 'actions', label: '', sortable: false},
     ]
 
     const currentPage = ref(1)
@@ -61,7 +176,6 @@
         {value: 25, text: 25},
         {value: 60, text: 60},
     ]
-
 </script>
 
 <template>
@@ -134,34 +248,82 @@
                     </BNavItem>
                 </BNav>
             </template>
-            <BTable
-                :sort-by="[{key: 'first_name', order: 'desc'}]"
-                :items="sortItems"
-                :fields="sortFields"
-            />
+            <div style="min-height: 300px">
+                <BTable
+                    :sort-by="[{key: 'first_name', order: 'desc'}]"
+                    :items="sortItems"
+                    :fields="sortFields"
+                    :per-page="pageSize"
+                    :current-page="currentPage"
+                    :small="false"
+                    :borderless="false"
+                    :bordered="false"
+                    :hover="true"
+                >
+                    <template #cell(isbn)="row">
+                        <BBadge variant="info">{{ row.value }}</BBadge>
+                    </template>
+                    <template #cell(title)="row">
+                        {{ row.value.length > 60 ? row.value.substring(0, 60) + '...' : row.value }}
+                    </template>
+                    <template #cell(status)="row">
+                        <BBadge :variant="statusVariant(row.value)">{{ $t(row.value) }}</BBadge>
+                    </template>
+                    <template #cell(actions)="row">
+                        <BButton
+                            v-if="activeTab === 'failed'"
+                            size="sm"
+                            class="mx-1"
+                            variant="secondary"
+                            :title="t('retry')"
+                            @click="handleShowDialog('retry', row.item)"
+                        >
+                            <span v-html="BiArrowRepeat" />
+                        </BButton>
+                        <BButton
+                            size="sm"
+                            class="mx-1"
+                            :variant="row.item.status === 'processing' ? 'secondary' : 'primary'"
+                            :disabled="row.item.status === 'processing'"
+                            :title="t('delete')"
+                            @click="handleShowDialog('delete', row.item)"
+                        >
+                            <span v-html="BiTrash3Fill" />
+                        </BButton>
+                    </template>
+                </BTable>
+            </div>
         </BCard>
 
         <div class="row mt-3">
             <div class="col">
+                <BPagination
+                    class="my-0 info-variant"
+                    v-model="currentPage"
+                    :total-rows="rows"
+                    :per-page="pageSize"
+                    hide-goto-end-buttons
+                    align="end"
+                />
+            </div>
+            <div class="col-1">
                 <BFormSelect
-                    class="float-end"
+                    class="float-end fs-8"
                     v-model="pageSize"
                     :options="pageOptions"
                     size="sm"
                     style="max-width: 100px;"
                 />
             </div>
-            <div class="col-3">
-                <BPagination
-                    class="info-variant"
-                    v-model="currentPage"
-                    :total-rows="rows"
-                    hide-goto-end-buttons
-                    align="end"
-                />
-            </div>
         </div>
     </BCard>
+    <ao-dialog
+        :name="modalName"
+        :title="$t('confirmation')"
+        @action="handleAction"
+    >
+        {{ $t(`${action.type}_process_confirmation`) }}
+    </ao-dialog>
 </template>
 
 <style>
@@ -172,11 +334,10 @@
         padding-bottom: 1px;
         border-color: var(--bs-light-border-subtle) !important;
     }
-    .info-variant {
-        margin-bottom: 0;
-    }
+
     .info-variant .page-link {
         color: #2171b1;
+        font-size: .8rem;
     }
 
     .info-variant .page-link:hover {

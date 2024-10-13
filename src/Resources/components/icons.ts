@@ -11,6 +11,11 @@ import BiExclamationCircle from '~icons/bi/exclamation-circle?raw&width=1.2rem&h
 import BiExclamationTriangle from '~icons/bi/exclamation-triangle?raw&width=1.2rem&height=1.2rem';
 import BiInfoCircle from '~icons/bi/info-circle?raw&width=1.2rem&height=1.2rem';
 
+//aoScheduledActions
+import BiTrash3Fill from '~icons/bi/trash3-fill?raw';
+import BiArrowRepeat from '~icons/bi/arrow-repeat?raw';
+
+// @see https://icon-sets.iconify.design/bi/
 export {
     MdiImport,
     MdiUpdate,
@@ -21,5 +26,8 @@ export {
     BiCheckCircle,
     BiExclamationCircle,
     BiExclamationTriangle,
-    BiInfoCircle
+    BiInfoCircle,
+
+    BiTrash3Fill,
+    BiArrowRepeat
 };

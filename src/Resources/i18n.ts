@@ -42,6 +42,8 @@ const messages = {
         download: 'Download',
         download_tooltip: 'Download the adobe token to import in your ebook reader.',
         dont_show_again: 'Don\'t show this again',
+        delete: 'Delete',
+        delete_process_confirmation: 'Are you sure you want to delete this process?',
         // E
         ebook_access: 'eBook Access',
         ebook_access_description: 'All configured access to the eBooks.',
@@ -75,6 +77,7 @@ const messages = {
         linked: 'Linked',
         link_products_notice: 'Link the products that are not related yet by searching the corresponding digital book in the list of already imported eBooks.',
         link_products_confirmation: 'This process will take some time but you will be able to see the status of the link process in the queue. Are you sure you want to link the products with the eBooks?',
+        last_attend: 'Last Attend',
         // M
         message: 'Hello, World!',
         migration_notice: 'If you have an account in out previous store %s, you can import all your books to access them from here. Please open your account in %s, copy the access code and paste it here in the Add <b>Sample box</b>',
@@ -113,6 +116,8 @@ const messages = {
         read_tooltip: 'Load the e-book into your browser to read it online.',
         redeemed: 'Redeemed',
         refresh_queue: 'Refresh Queue',
+        retry: 'Retry',
+        retry_process_confirmation: 'Are you sure you want to retry the process?',
         // S
         sample: 'Sample',
         samples: 'Samples',
@@ -129,6 +134,7 @@ const messages = {
         setup_ebooks_price_notice: 'Taking as a base the price of the printed book and an update factor, the price of the digital book and the printed and digital package is calculated according to the price settings and the new price of the printed book.',
         sent: 'Sent',
         select_factor: 'Select a factor',
+        scheduled: 'Scheduled',
         // T
         title: 'Title',
         type: 'Type',
@@ -187,6 +193,8 @@ const messages = {
         download: 'Descargar',
         download_tooltip: 'Descarga el token de Adobe (.acsm) para cargar el PDF en tu lector.',
         dont_show_again: 'No mostrar nuevamente',
+        delete: 'Eliminar',
+        delete_process_confirmation: '¿Estás seguro de que deseas eliminar este proceso?',
         // E
         ebook_access: 'Accesos a eBooks',
         ebook_access_description: 'Listado accessos a eBooks, ya sea compra o muestra.',
@@ -221,6 +229,7 @@ const messages = {
         linked_products_description: 'WooCommerce productos con el eBook configurado y activo.',
         linked: 'Vinculados',
         link_products_notice: 'Vincula los productos que aún no están relacionados buscando el libro digital correspondiente en la lista de eBooks ya importados.',
+        last_attend: 'Intentado',
         // M
         message: 'Hola, mundo!',
         muestra: 'Muestra',
@@ -247,7 +256,7 @@ const messages = {
         products: 'Productos',
         processing_queue_status: 'Cola de procesamiento',
         processing: 'Procesando',
-        pending: 'Pendientes',
+        pending: 'Pendiente',
         page_count: 'Cantidad de Páginas',
         please_select_factor: 'Por favor, seleccione un factor para actualizar los precios de los libros',
         page_count_description: 'Multiplica el número de páginas del libro por el valor especificado.',
@@ -259,6 +268,8 @@ const messages = {
         read_tooltip: 'Carga el libro digital en tu navegador para leerlo en línea.',
         redeemed: 'Canjeado',
         refresh_queue: 'Refrescar',
+        retry: 'Reintentar',
+        retry_process_confirmation: '¿Estás seguro de que deseas reintentar el proceso?',
         // S
         sample: 'Muestra',
         samples: 'Muestras de cortesía',
@@ -275,6 +286,7 @@ const messages = {
         setup_ebooks_price: 'Configurar Precios',
         setup_ebooks_price_notice: 'Tomando como base el precio del libro impreso y un factor de actualización, se calcula el precio del libro digital y del paquete impreso y digital según la configuración de precios y el nuevo precio del impreso.',
         select_factor: 'Selecione el factor',
+        scheduled: 'Programado',
         // T
         title: 'Título',
         type: 'Tipo',
