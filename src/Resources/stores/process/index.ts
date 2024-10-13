@@ -1,7 +1,7 @@
 import {defineStore} from 'pinia';
 import type {State} from '@/services/processes/types';
 import {API} from '@/services';
-import {ProcessType} from '@/types';
+import {ProcessStatusType, ProcessType} from '@/types';
 
 export const useProcessStore = defineStore('processStore', {
     state: (): State => (
@@ -33,6 +33,14 @@ export const useProcessStore = defineStore('processStore', {
                 processing: 0,
                 pending: 0,
                 failed: 0
+            },
+            processData: {
+                actions: [],
+                meta: {
+                    total: 0,
+                    current_page: 0,
+                    pages: 0
+                }
             }
         }
     ),
@@ -42,6 +50,7 @@ export const useProcessStore = defineStore('processStore', {
         getUpdateEbooks: (state) => state.updateEbooks,
         getLinkProducts: (state) => state.linkProducts,
         getSetupPrices: (state) => state.setupPrices,
+        getProcessData: (state) => state.processData
     },
 
     actions: {
@@ -68,5 +77,19 @@ export const useProcessStore = defineStore('processStore', {
                 }
             }
         },
+
+        async dispatchRetrieveProcessData(process: ProcessType,
+                                          status: ProcessStatusType,
+                                          page: number,
+                                          perPage: number
+        ){
+            const response = await API.process.getProcessActions(process, status, page, perPage);
+            if (response?.status === 'success' && response.data) {
+                this.processData = {
+                    actions: response.data,
+                    meta: response.meta
+                };
+            }
+        }
     },
 });

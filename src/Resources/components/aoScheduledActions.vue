@@ -1,15 +1,16 @@
 <script setup lang="ts">
-    import {AsyncProcessStatusType, ProcessNameType} from '@/types';
-    import {computed, ref} from 'vue';
+    import {ProcessStatusType, ProcessNameType, ProcessItem} from '@/types';
+    import {computed, onMounted, ref} from 'vue';
     import AoProcessingActions from '@/components/aoProcessingActions.vue';
     import {useI18n} from 'vue-i18n';
     import {BiTrash3Fill, BiArrowRepeat} from '@/components/icons';
     import AoDialog from '@/components/aoDialog.vue';
     import { useModal } from 'bootstrap-vue-next';
+    import {useProcessStore} from '@/stores';
 
     const props = defineProps({
         action: {type: String as () => ProcessNameType , default: 'import'},
-        status: {type: String as () => AsyncProcessStatusType , default: 'idle'},
+        status: {type: String as () => ProcessStatusType , default: 'idle'},
         completed: { type: Number, default: 0 },
         processing: { type: Number, default: 0 },
         pending: { type: Number, default: 0 },
@@ -17,6 +18,7 @@
     });
 
     const {t} = useI18n();
+    const processStore = useProcessStore();
     const modalName = 'action-process-modal';
     const {show} = useModal(modalName);
     const action = ref({ type: '', item: null });
@@ -32,12 +34,8 @@
                 return 'primary';
         }
     });
-    const activeTab = ref('failed');
-    const navigateHandle = (page, event: Event) => {
-        event.preventDefault();
-        activeTab.value = page;
-    };
-    const statusVariant = (status: string) => {
+    const activeTab = ref('processing'); // initialize with the first tab
+    const statusVariant = (status: ProcessStatusType) => {
         switch (status) {
             case 'processing':
                 return 'info';
@@ -61,23 +59,35 @@
                 hour12: false
             });
     }
-    const handleShowDialog = (actionType, item) => {
-        action.value = { type: actionType, item: item };
-        show();
-    }
-    const handleAction = () => {
-        console.log('Action:', action.value);
-    }
+    const sortFields: Exclude<TableFieldRaw<ProcessItem>, string>[] = [
+        {key: 'id', sortable: true, label: 'ID'},
+        {key: 'isbn', sortable: true, label: 'ISBN'},
+        {key: 'title', sortable: true, label: t('title').toUpperCase()},
+        {key: 'status', sortable: true, label: t('status').toUpperCase()},
+        {
+            key: 'schedule_date',
+            sortable: true,
+            label: t('scheduled').toUpperCase(),
+            formatter: (value) => (value ? formatDate(value) : ''),
+        },
+        {
+            key: 'last_attend_date',
+            sortable: true,
+            label: t('last_attend').toUpperCase(),
+            formatter: (value) => (value ? formatDate(value) : ''),
+        },
+        {key: 'actions', label: '', sortable: false},
+    ]
+    const pageOptions = [
+        {value: 10, text: 10},
+        {value: 25, text: 25},
+        {value: 60, text: 60},
+    ]
+    const processData = computed(() => processStore.getActions);
 
-    interface ProcessItem {
-        id: number
-        isbn: string
-        title: string
-        status: string
-        schedule_date: string
-        last_attend_date: string
-    }
-
+    const currentPage = ref(1)
+    const pageSize = ref(10)
+    const rows = ref(100)
     const sortItems = computed(() => {
         switch (activeTab.value) {
             case 'processing':
@@ -148,34 +158,33 @@
         }
     });
 
-    const sortFields: Exclude<TableFieldRaw<ProcessItem>, string>[] = [
-        {key: 'id', sortable: true, label: 'ID'},
-        {key: 'isbn', sortable: true, label: 'ISBN'},
-        {key: 'title', sortable: true, label: t('title').toUpperCase()},
-        {key: 'status', sortable: true, label: t('status').toUpperCase()},
-        {
-            key: 'schedule_date',
-            sortable: true,
-            label: t('scheduled').toUpperCase(),
-            formatter: (value) => (value ? formatDate(value) : ''),
-        },
-        {
-            key: 'last_attend_date',
-            sortable: true,
-            label: t('last_attend').toUpperCase(),
-            formatter: (value) => (value ? formatDate(value) : ''),
-        },
-        {key: 'actions', label: '', sortable: false},
-    ]
+    const navigateHandle = (page, event: Event) => {
+        event.preventDefault();
+        activeTab.value = page;
+        retrieveProcessData();
+    };
 
-    const currentPage = ref(1)
-    const rows = ref(100)
-    const pageSize = ref(10)
-    const pageOptions = [
-        {value: 10, text: 10},
-        {value: 25, text: 25},
-        {value: 60, text: 60},
-    ]
+    const handleShowDialog = (actionType, item) => {
+        action.value = { type: actionType, item: item };
+        show();
+    }
+
+    const handleAction = () => {
+        console.log('Action:', action.value);
+    }
+
+    const retrieveProcessData = () => {
+        processStore.dispatchRetrieveProcessData(
+            props.action,
+            activeTab.value,
+            currentPage.value,
+            pageSize.value
+        );
+    }
+
+    onMounted(() => {
+        retrieveProcessData();
+    });
 </script>
 
 <template>
@@ -306,6 +315,7 @@
                     :per-page="pageSize"
                     hide-goto-end-buttons
                     align="end"
+                    @pageClick="retrieveProcessData"
                 />
             </div>
             <div class="col-1">
@@ -315,6 +325,7 @@
                     :options="pageOptions"
                     size="sm"
                     style="max-width: 100px;"
+                    @change="retrieveProcessData"
                 />
             </div>
         </div>
