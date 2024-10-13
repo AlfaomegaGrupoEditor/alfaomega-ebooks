@@ -259,6 +259,8 @@
                     :borderless="false"
                     :bordered="false"
                     :hover="true"
+                    :selectable="false"
+                    tbody-tr-class="ao-table-row"
                 >
                     <template #cell(isbn)="row">
                         <BBadge variant="info">{{ row.value }}</BBadge>
@@ -350,5 +352,11 @@
         background-color: #2171b1;
         border-color: #2171b1;
         color: white;
+    }
+    .ao-table-row td{
+        vertical-align: middle;
+    }
+    li.nav-item a:focus {
+        box-shadow: none;
     }
 </style>
