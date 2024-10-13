@@ -54,9 +54,10 @@ const messages = {
         // F
         filter_by: 'Filter by',
         factor: 'Factor',
+        failed: 'Failed',
         fixed_number_description: 'Add the specified value to the current price of each book',
         // H
-        has_failed: 'Failed',
+
         // I
         important_info: 'Important Information!',
         import: 'Import',
@@ -103,6 +104,9 @@ const messages = {
         please_select_factor: 'Please select a factor to update the book prices',
         page_count_description: 'Multiply the number of pages of the book by the specified value.',
         percent_description: 'Add the specified percentage to the current price of each book',
+        process_failed: 'The process has failed!',
+        // Q
+        queue: 'Queue',
         // R
         read_online: 'Read Online',
         reset_filters: 'Reset Filters',
@@ -172,7 +176,7 @@ const messages = {
         config: 'Ajustes',
         config_description: 'Todos los ajustes de configuración de Alfaomega eBooks.',
         clear_queue: 'Limpiar Cola',
-        completed: 'Completados',
+        completed: 'Completado',
         confirm_update_process: '¿Estás seguro de que deseas agregar un proceso de actualización de precios a la cola de tareas para todos los productos vinculados?',
         confirmation: '¡Confirmación requerida!',
         clear_queue_confirmation: '¿Estás seguro de que deseas limpiar la cola de procesamiento para esta tarea?',
@@ -194,11 +198,12 @@ const messages = {
         ebooks: 'eBooks',
         // F
         filter_by: 'Filtrar por',
-        failed: 'El proceso ha fallado!',
+        failed: 'Fallido',
         factor: 'Factor',
         fixed_number_description: 'Adiciona el valor especificado al precio actual de cada libro',
+        // Q
+        queue: 'Cola',
         // H
-        has_failed: 'Fallidos',
         // I
         important_info: 'Información Importante!',
         import: 'Importar',
@@ -247,6 +252,7 @@ const messages = {
         please_select_factor: 'Por favor, seleccione un factor para actualizar los precios de los libros',
         page_count_description: 'Multiplica el número de páginas del libro por el valor especificado.',
         percent_description: 'Adiciona el porcentaje especificado al precio actual de cada libro',
+        process_failed: 'El proceso ha fallado!',
         // R
         read_online: 'Leer en línea',
         reset_filters: 'Limpiar Filtros',

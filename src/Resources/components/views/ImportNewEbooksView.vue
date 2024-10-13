@@ -6,6 +6,7 @@ import {computed, onMounted, onUnmounted, ref} from 'vue';
     import { useModal } from 'bootstrap-vue-next';
     import {eventBus} from '@/events';
     import {useProcessStore} from '@/stores';
+import AoScheduledActions from '@/components/aoScheduledActions.vue';
 
     const {t} = useI18n();
     const processStore = useProcessStore();
@@ -43,27 +44,8 @@ import {computed, onMounted, onUnmounted, ref} from 'vue';
 
 <template>
     <div class="container">
-        <div class="row d-flex justify-content-center">
-            <div class="col-12 col-md-8 col-md-offset-2">
-                <ao-alert
-                    :caption="$t('import_ebooks')"
-                    :dismissible="false"
-                    type="notice"
-                >
-                    {{ $t('import_ebooks_notice') }}
-                </ao-alert>
-            </div>
-        </div>
-
-        <div class="row mt-3">
-            <div class="col-12 col-md-6 offset-md-3 d-flex justify-content-center">
-                <ao-processing-queue v-bind="importStatus" />
-                <ao-processing-actions
-                    :action="'import'"
-                    :processing="processing"
-                    @action="show"
-                />
-            </div>
+        <div class="row mt-2">
+            <ao-scheduled-actions v-bind="importStatus"/>
         </div>
     </div>
     <ao-dialog

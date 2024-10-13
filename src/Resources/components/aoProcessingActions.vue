@@ -8,6 +8,7 @@
 
     const props = defineProps({
         action: {type: String as () => ProcessNameType , default: 'import'},
+        direction: {type: String, default: 'column'},
         processing: {type: Boolean, default: false},
     });
 
@@ -44,8 +45,26 @@
 </script>
 
 <template>
-    <div class="col-3 d-flex flex-column justify-content-end">
-        <BButton class="my-1"
+    <div class="col-3 d-flex justify-content-end"
+         :class="`flex-${direction}`"
+    >
+        <BButton class="my-1 mx-1"
+                 variant="secondary"
+                 size="sm"
+                 style="max-width: 120px"
+                 @click="handleRefresh"
+        >
+            {{ $t('refresh_queue') }}
+        </BButton>
+        <BButton class="my-1 mx-1"
+                 variant="secondary"
+                 size="sm"
+                 style="max-width: 120px"
+                 @click="show"
+        >
+            {{ $t('clear_queue') }}
+        </BButton>
+        <BButton class="my-1 mx-1"
                  variant="info"
                  size="sm"
                  style="max-width: 120px"
@@ -54,22 +73,6 @@
         >
             <BSpinner small v-if="processing"/>
             {{ $t(action) }}
-        </BButton>
-        <BButton class="my-1"
-                 variant="info"
-                 size="sm"
-                 style="max-width: 120px"
-                 @click="handleRefresh"
-        >
-            {{ $t('refresh_queue') }}
-        </BButton>
-        <BButton class="my-1"
-                 variant="info"
-                 size="sm"
-                 style="max-width: 120px"
-                 @click="show"
-        >
-            {{ $t('clear_queue') }}
         </BButton>
     </div>
     <ao-dialog
