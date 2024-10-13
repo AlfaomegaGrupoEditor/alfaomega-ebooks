@@ -30,6 +30,7 @@ import {computed, onMounted, onUnmounted, ref} from 'vue';
     const validateSetup = computed(() => factor.value !== '' && value.value != 0);
     const intervalId = ref(null);
     const poolTimeout = 60 * 1000;
+    const enablePolling = ref(false);
 
     const handleSetup = () => {
         console.log('Setting ebooks prices...', factor.value, value.value);
@@ -40,9 +41,11 @@ import {computed, onMounted, onUnmounted, ref} from 'vue';
     };
 
     onMounted(() => {
-        intervalId.value = setInterval(() => {
-            processStore.dispatchRetrieveQueueStatus('setup-prices');
-        }, poolTimeout);
+        if (enablePolling.value) {
+            intervalId.value = setInterval(() => {
+                processStore.dispatchRetrieveQueueStatus('setup-prices');
+            }, poolTimeout);
+        }
 
         processStore.dispatchRetrieveQueueStatus('setup-prices');
     });

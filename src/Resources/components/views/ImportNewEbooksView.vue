@@ -15,6 +15,7 @@ import {computed, onMounted, onUnmounted, ref} from 'vue';
     const {show} = useModal(modalName);
     const intervalId = ref(null);
     const poolTimeout = 60 * 1000;
+    const enablePolling = ref(false);
 
     const handleImport = () => {
         console.log('Importing ebooks...');
@@ -25,9 +26,11 @@ import {computed, onMounted, onUnmounted, ref} from 'vue';
     };
 
     onMounted(() => {
-        intervalId.value = setInterval(() => {
-            processStore.dispatchRetrieveQueueStatus('import-new-ebooks');
-        }, poolTimeout);
+        if (enablePolling.value) {
+            intervalId.value = setInterval(() => {
+                processStore.dispatchRetrieveQueueStatus('import-new-ebooks');
+            }, poolTimeout);
+        }
 
         processStore.dispatchRetrieveQueueStatus('import-new-ebooks');
     });

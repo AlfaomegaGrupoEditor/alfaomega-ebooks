@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, onMounted, onUnmounted, ref} from 'vue';
+    import {computed, onMounted, onUnmounted, ref} from 'vue';
     import {aoAlert, aoProcessingQueue, aoProcessingActions} from '@/components';
     import {useI18n} from 'vue-i18n';
     import AoDialog from '@/components/aoDialog.vue';
@@ -15,6 +15,7 @@ import {computed, onMounted, onUnmounted, ref} from 'vue';
     const {show} = useModal(modalName);
     const intervalId = ref(null);
     const poolTimeout = 60 * 1000;
+    const enablePolling = ref(false);
 
     const handleUpdate = () => {
         console.log('updating ebooks...');
@@ -25,9 +26,13 @@ import {computed, onMounted, onUnmounted, ref} from 'vue';
     };
 
     onMounted(() => {
-        intervalId.value = setInterval(() => {
+        if (enablePolling.value) {
+            intervalId.value = setInterval(() => {
+                processStore.dispatchRetrieveQueueStatus('update-ebooks');
+            }, poolTimeout);
+
             processStore.dispatchRetrieveQueueStatus('update-ebooks');
-        }, poolTimeout);
+        }
 
         processStore.dispatchRetrieveQueueStatus('update-ebooks');
     });
