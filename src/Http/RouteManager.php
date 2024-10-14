@@ -135,15 +135,16 @@ class RouteManager
      * @var array $apiEndpoints
      */
     protected array $apiEndpoints = [
-        'check'         => [ApiController::class, 'checkApi', 'GET'],
-        'books'         => [ApiController::class, 'getBooks', 'POST'],
-        'catalog'       => [ApiController::class, 'getCatalog', 'GET'],
-        'redeem'        => [ApiController::class, 'redeemCode', 'POST'],
-        'ebooks-info'   => [ApiController::class, 'getEbooksInfo', 'GET'],
-        'products-info' => [ApiController::class, 'getProductsInfo', 'GET'],
-        'access-info'   => [ApiController::class, 'getAccessInfo', 'GET'],
-        'codes-info'    => [ApiController::class, 'getCodesInfo', 'GET'],
-        'process-info'  => [ApiController::class, 'getProcessInfo', 'GET'],
+        'check'           => [ApiController::class, 'checkApi', 'GET'],
+        'books'           => [ApiController::class, 'getBooks', 'POST'],
+        'catalog'         => [ApiController::class, 'getCatalog', 'GET'],
+        'redeem'          => [ApiController::class, 'redeemCode', 'POST'],
+        'ebooks-info'     => [ApiController::class, 'getEbooksInfo', 'GET'],
+        'products-info'   => [ApiController::class, 'getProductsInfo', 'GET'],
+        'access-info'     => [ApiController::class, 'getAccessInfo', 'GET'],
+        'codes-info'      => [ApiController::class, 'getCodesInfo', 'GET'],
+        'process-info'    => [ApiController::class, 'getProcessInfo', 'POST'],
+        'process-actions' => [ApiController::class, 'getProcessActions', 'POST'],
     ];
 
     /**

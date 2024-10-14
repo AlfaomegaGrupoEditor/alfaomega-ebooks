@@ -295,5 +295,62 @@ class ApiController
         }
     }
 
+    /**
+     * Get process actions
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    public function getProcessActions(array $data): array
+    {
+        try {
+            if (empty($data['process'])) {
+                throw new \Exception('The process is required.');
+            }
 
+            if (!in_array($data['process'], ['import', 'update', 'link', 'setup'])) {
+                throw new \Exception('The process is invalid.');
+            }
+
+            $queue = match($data['process']) {
+                'import' => 'alfaomega_ebooks_queue_import',
+                'update' => 'alfaomega_ebooks_queue_refresh',
+                'link' => 'alfaomega_ebooks_queue_link',
+                'setup' => 'alfaomega_ebooks_queue_prices',
+                default => null,
+            };
+            if (empty($queue)) {
+                throw new \Exception('The process is invalid.');
+            }
+
+            if (empty($data['status'])) {
+                throw new \Exception('The status is required.');
+            }
+
+            if (!in_array($data['status'], ['processing', 'completed', 'failed'])) {
+                throw new \Exception('The status is invalid.');
+            }
+
+            $result = Service::make()
+                ->queue()
+                ->actions(
+                    $queue,
+                    $data['status'] === 'processing' ? [ 'in-process', 'pending' ] :  [ $data['status'] ],
+                    $data['page'] ?? 1,
+                    $data['perPage'] ?? 10
+                );
+
+            return [
+                'status'  => 'success',
+                'data'    => $result,
+                'message' => esc_html__('God Job!', 'alfaomega-ebooks'),
+            ];
+        } catch (\Exception $e) {
+            return [
+                'status'  => 'error',
+                'message' => esc_html__($e->getMessage(), 'alfaomega-ebooks'),
+            ];
+        }
+    }
 }

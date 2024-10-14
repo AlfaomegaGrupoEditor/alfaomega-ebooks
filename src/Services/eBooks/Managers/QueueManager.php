@@ -102,4 +102,35 @@ class QueueManager extends AbstractManager
             'failed'    => $result['failed'],
         ];
     }
+
+    /**
+     * Retrieves the actions of a queue.
+     * This method retrieves the actions of a queue by selecting all actions with the specified queue name and status.
+     *
+     * @param string $queue The queue name.
+     * @param array $status The status of the actions.
+     * @param int $page The page number.
+     * @param int $perPage The number of actions per page.
+     *
+     * @return array The actions of the queue.
+     */
+    public function actions(string $queue, array $status, int $page = 1, int $perPage = 10): array
+    {
+        global $wpdb;
+
+        $table = $this->getTable();
+        $offset = ($page - 1) * $perPage;
+        $results = $wpdb->get_results("
+            SELECT *
+            FROM $table a
+            WHERE (a.hook like '$queue%' OR
+                   (a.extended_args IS NULL AND a.args like '$queue%') OR
+                   a.extended_args like '$queue%')
+                AND a.status in (" . join(',', $status) . ")
+            LIMIT $perPage OFFSET $offset
+            ORDER BY status, a.date_created DESC
+        ");
+
+        return $results;
+    }
 }
