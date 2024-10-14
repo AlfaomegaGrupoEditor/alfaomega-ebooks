@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import {ProcessStatusType, ProcessNameType, ProcessItem} from '@/types';
     import {computed, onMounted, ref} from 'vue';
-    import AoProcessingActions from '@/components/aoProcessingActions.vue';
+    import {aoProcessingActions} from '@/components';
     import {useI18n} from 'vue-i18n';
     import {BiTrash3Fill, BiArrowRepeat} from '@/components/icons';
     import AoDialog from '@/components/aoDialog.vue';
@@ -193,7 +193,7 @@
     >
         <div class="card-title fw-bold fs-6 px-0 pt-0 pb-2 mb-1 text-muted text-uppercase d-flex justify-content-between align-items-center">
             <div>
-                <span>{{ $t('processing_queue_status') }} [ </span>
+                <span>{{ $t('import_ebooks') }} [ </span>
                 <span :class="`text-${variant}`">{{ $t(status) }}</span>
                 <span> ]</span>
             </div>
@@ -204,6 +204,8 @@
                 @action="show"
             />
         </div>
+
+        <div class="mb-2" v-html="$t('import_ebooks_notice')"></div>
 
         <BCard
             class="mt-0 status-tab"
