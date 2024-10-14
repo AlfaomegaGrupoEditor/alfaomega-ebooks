@@ -142,6 +142,8 @@ type MetaType = {
     pages: number;
 }
 
+type QueueType = 'import-new-ebooks' | 'update-ebooks' | 'link-products' | 'setup-prices';
+
 export {
     ColorVariantType,
     SizeVariantType,
@@ -164,5 +166,6 @@ export {
     AsyncProcessType,
     ProcessItem,
     MetaType,
-    ProcessDataType
+    ProcessDataType,
+    QueueType
 };

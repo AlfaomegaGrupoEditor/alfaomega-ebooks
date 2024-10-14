@@ -3,35 +3,39 @@
         ProcessStatusType,
         ProcessNameType,
         ProcessItem,
-        ProcessDataType
+        ProcessDataType,
+        QueueType
     } from '@/types';
-    import {computed, onMounted, ref, watch} from 'vue';
+    import {computed, onMounted, ref} from 'vue';
     import {aoProcessingActions} from '@/components';
     import {useI18n} from 'vue-i18n';
     import {BiTrash3Fill, BiArrowRepeat, BiEye} from '@/components/icons';
     import AoDialog from '@/components/aoDialog.vue';
     import { useModal } from 'bootstrap-vue-next';
     import {useProcessStore, useAppStore } from '@/stores';
+    import {eventBus} from '@/events';
 
     const props = defineProps({
         action: {type: String as () => ProcessNameType , default: 'import'},
+        queue: {type: String as () => QueueType},
         status: {type: String as () => ProcessStatusType , default: 'idle'},
         completed: { type: Number, default: 0 },
         processing: { type: Number, default: 0 },
         pending: { type: Number, default: 0 },
         failed: { type: Number, default: 0 },
     });
-
     const emit = defineEmits(['action']);
 
     const {t} = useI18n();
     const processStore = useProcessStore();
     const appStore = useAppStore();
+
     const confirmModalName = 'action-process-confirm-modal';
     const dlgModalName = 'action-process-dlg-modal';
     const dlgModalTitle = 'action_details';
     const {show: showConfirm} = useModal(confirmModalName);
     const {show: showDlg} = useModal(dlgModalName);
+
     const selectedAction = ref({ type: '', item: null });
     const variant = computed(() => {
         switch (props.status) {
@@ -45,7 +49,8 @@
                 return 'primary';
         }
     });
-    const activeTab = ref('failed'); // initialize with the first tab
+    const activeTab = ref('processing'); // initialize with the first tab
+
     const statusVariant = (status: ProcessStatusType) => {
         switch (status) {
             case 'processing':
@@ -162,12 +167,21 @@
         );
     }
 
+    const handleRefreshQueue = () => {
+        processStore.dispatchRetrieveQueueStatus(props.queue);
+        retrieveProcessData();
+    }
+
+    const handleClearQueue = () => {
+        console.log('Clear queue action', props.queue);
+        eventBus.emit('notification', {
+            message: 'clear_queue_success',
+            type: 'success'
+        });
+    }
+
     onMounted(() => {
         retrieveProcessData();
-    });
-
-    watch(processData, (newValue, oldValue) => {
-        console.log('processData updated:', newValue);
     });
 </script>
 
@@ -183,9 +197,12 @@
             </div>
             <ao-processing-actions
                 :action="'import'"
+                :status="activeTab"
                 :processing="processing"
                 direction="row"
                 @action="handleShowDialog('primary', null)"
+                @refresh="handleRefreshQueue"
+                @clear="handleClearQueue"
             />
         </div>
 

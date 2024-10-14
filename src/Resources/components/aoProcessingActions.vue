@@ -2,7 +2,6 @@
     import AoDialog from '@/components/aoDialog.vue';
     import { useModal } from 'bootstrap-vue-next';
     import {eventBus} from '@/events';
-    import {useProcessStore} from '@/stores';
     import {computed} from 'vue';
     import {ProcessType, ProcessNameType} from '@/types';
 
@@ -12,10 +11,9 @@
         processing: {type: Boolean, default: false},
     });
 
-    const emit = defineEmits(['action']);
+    const emit = defineEmits(['action', 'refresh', 'clear']);
     const modalName = 'clear-queue-modal';
     const {show} = useModal(modalName);
-    const processStore = useProcessStore();
     const process = computed((): ProcessType => {
         switch (props.action) {
             case 'import':
@@ -30,17 +28,14 @@
     });
 
     const handleClearQueue = () => {
-        eventBus.emit('notification', {
-            message: 'clear_queue_success',
-            type: 'success'
-        });
+        emit('clear');
     };
     const handleAction = () => {
         emit('action');
     };
 
     const handleRefresh = () => {
-        processStore.dispatchRetrieveQueueStatus(process.value);
+        emit('refresh');
     };
 </script>
 

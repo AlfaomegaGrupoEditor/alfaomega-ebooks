@@ -47,6 +47,7 @@ import {computed, onMounted, onUnmounted, ref} from 'vue';
             <ao-scheduled-actions
                 v-bind="importStatus"
                 @action="handleImport"
+                queue="import-new-ebooks"
             />
         </div>
     </div>
