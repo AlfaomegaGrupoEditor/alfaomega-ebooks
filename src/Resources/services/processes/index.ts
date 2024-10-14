@@ -91,8 +91,68 @@ async function clearQueue(process: ProcessType): Promise<APIResponse<AsyncProces
     }
 }
 
+/**
+ * Delete action.
+ * @param process
+ * @param ids
+ */
+async function deleteAction(process: ProcessType, ids: Number[]): Promise<APIResponse<AsyncProcessType | null>>
+{
+    const appStore = useAppStore();
+    appStore.setError(null);
+    appStore.setLoading(true);
+
+    const response = await request<APIResponse<AsyncProcessType>>('POST', `/alfaomega-ebooks/api/delete-action/`, {
+        process: process,
+        ids: ids
+    });
+    appStore.setLoading(false);
+
+    if (response.status == 'success') {
+        eventBus.emit('notification', {
+            message: 'action_deleted_success',
+            type: 'success'
+        });
+        return response.data as APIResponse<AsyncProcessType>;
+    } else {
+        appStore.setError(response.message);
+        return null;
+    }
+}
+
+/**
+ * Retry action.
+ * @param process
+ * @param ids
+ */
+async function retryAction(process: ProcessType, ids: Number[]): Promise<APIResponse<AsyncProcessType | null>>
+{
+    const appStore = useAppStore();
+    appStore.setError(null);
+    appStore.setLoading(true);
+
+    const response = await request<APIResponse<AsyncProcessType>>('POST', `/alfaomega-ebooks/api/retry-action/`, {
+        process: process,
+        ids: ids
+    });
+    appStore.setLoading(false);
+
+    if (response.status == 'success') {
+        eventBus.emit('notification', {
+            message: 'retry_action_success',
+            type: 'success'
+        });
+        return response.data as APIResponse<AsyncProcessType>;
+    } else {
+        appStore.setError(response.message);
+        return null;
+    }
+}
+
 export default {
     getProcessStatus,
     getProcessActions,
-    clearQueue
+    clearQueue,
+    deleteAction,
+    retryAction
 };

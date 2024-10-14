@@ -398,4 +398,104 @@ class ApiController
             ];
         }
     }
+
+    /**
+     * Delete action
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    public function deleteAction(array $data): array
+    {
+        try {
+            if (empty($data['process'])) {
+                throw new \Exception('The process is required.');
+            }
+
+            if (!in_array($data['process'], ['import-new-ebooks', 'update-ebooks', 'link-products', 'setup-prices'])) {
+                throw new \Exception('The process is invalid.');
+            }
+
+            $queue = match($data['process']) {
+                'import-new-ebooks' => 'alfaomega_ebooks_queue_import',
+                'update-ebooks' => 'alfaomega_ebooks_queue_refresh',
+                'link-products' => 'alfaomega_ebooks_queue_link',
+                'setup-prices' => 'alfaomega_ebooks_queue_prices',
+                default => null,
+            };
+            if (empty($queue)) {
+                throw new \Exception('The process is invalid.');
+            }
+
+            if (empty($data['ids'])) {
+                throw new \Exception('The ids are required.');
+            }
+
+            $result = Service::make()
+                ->queue()
+                ->delete($queue, $data['ids']);
+
+            return [
+                'status'  => 'success',
+                'data'    => $result,
+                'message' => esc_html__('God Job!', 'alfaomega-ebooks'),
+            ];
+        } catch (\Exception $e) {
+            return [
+                'status'  => 'error',
+                'message' => esc_html__($e->getMessage(), 'alfaomega-ebooks'),
+            ];
+        }
+    }
+
+    /**
+     * Retry action
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    public function retryAction(array $data): array
+    {
+        try {
+            if (empty($data['process'])) {
+                throw new \Exception('The process is required.');
+            }
+
+            if (!in_array($data['process'], ['import-new-ebooks', 'update-ebooks', 'link-products', 'setup-prices'])) {
+                throw new \Exception('The process is invalid.');
+            }
+
+            $queue = match($data['process']) {
+                'import-new-ebooks' => 'alfaomega_ebooks_queue_import',
+                'update-ebooks' => 'alfaomega_ebooks_queue_refresh',
+                'link-products' => 'alfaomega_ebooks_queue_link',
+                'setup-prices' => 'alfaomega_ebooks_queue_prices',
+                default => null,
+            };
+            if (empty($queue)) {
+                throw new \Exception('The process is invalid.');
+            }
+
+            if (empty($data['ids'])) {
+                throw new \Exception('The ids are required.');
+            }
+
+            $result = Service::make()
+                ->queue()
+                ->retry($queue, $data['ids']);
+
+            return [
+                'status'  => 'success',
+                'data'    => $result,
+                'message' => esc_html__('God Job!', 'alfaomega-ebooks'),
+            ];
+        } catch (\Exception $e) {
+            return [
+                'status'  => 'error',
+                'message' => esc_html__($e->getMessage(), 'alfaomega-ebooks'),
+            ];
+        }
+    }
 }

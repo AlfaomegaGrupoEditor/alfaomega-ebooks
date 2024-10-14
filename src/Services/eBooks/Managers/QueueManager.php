@@ -133,4 +133,52 @@ class QueueManager extends AbstractManager
             ],
         ];
     }
+
+    /**
+     * Deletes an action from the queue.
+     * This method deletes an action from the queue by removing the action with the specified queue name and action ID.
+     *
+     * @param string $queue The queue name.
+     * @param array $actionId The action IDs.
+     *
+     * @return array The status of the queue.
+     */
+    public function delete(string $queue, array $actionId): array
+    {
+        global $wpdb;
+
+        $table = $this->getTable();
+        $wpdb->get_results("
+                DELETE
+                FROM $table a
+                WHERE a.hook = '$queue'
+                    AND a.action_id in (" . join(",", $actionId) . ");
+            ");
+
+        return $this->status($queue, true);
+    }
+
+    /**
+     * Retries an action in the queue.
+     * This method retries an action in the queue by updating the status of the action with the specified queue name and action ID to 'pending'.
+     *
+     * @param string $queue The queue name.
+     * @param array $actionId The action ID.
+     *
+     * @return array The status of the queue.
+     */
+    public function retry(string $queue, array $actionId): array
+    {
+        global $wpdb;
+
+        $table = $this->getTable();
+        $wpdb->get_results("
+                UPDATE $table
+                SET status = 'pending'
+                WHERE hook = '$queue'
+                    AND a.action_id in (" . join(",", $actionId) . ");
+            ");
+
+        return $this->status($queue, true);
+    }
 }

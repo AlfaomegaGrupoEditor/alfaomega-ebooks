@@ -98,10 +98,31 @@ const setClass = (cssQuery, className: string, add = true): void =>
     }, 100);
 };
 
+/**
+ * Get the process name
+ * @param process
+ */
+const getProcess = (process: ProcessType): ProcessType =>
+{
+    switch (process) {
+        case 'import-new-ebooks':
+            return 'importNewEbooks';
+        case 'update-ebooks':
+            return 'updateEbooks';
+        case 'link-products':
+            return 'linkProducts';
+        case 'setup-prices':
+            return 'setupPrices';
+        default:
+            return 'importNewEbooks';
+    }
+}
+
 export {
     empty,
     updateHistory,
     isNull,
     getValue,
-    setClass
+    setClass,
+    getProcess
 };

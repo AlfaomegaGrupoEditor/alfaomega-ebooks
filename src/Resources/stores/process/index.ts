@@ -2,6 +2,7 @@ import {defineStore} from 'pinia';
 import type {State} from '@/services/processes/types';
 import {API} from '@/services';
 import {ProcessStatusType, ProcessType} from '@/types';
+import {getProcess} from '@/services/Helper';
 
 export const useProcessStore = defineStore('processStore', {
     state: (): State => (
@@ -61,20 +62,7 @@ export const useProcessStore = defineStore('processStore', {
         {
             const response = await API.process.getProcessStatus(process);
             if (response?.status === 'success' && response.data) {
-                switch (process) {
-                    case 'import-new-ebooks':
-                        this.importNewEbooks = response.data;
-                        break;
-                    case 'update-ebooks':
-                        this.updateEbooks = response.data;
-                        break;
-                    case 'link-products':
-                        this.linkProducts = response.data;
-                        break;
-                    case 'setup-prices':
-                        this.setupPrices = response.data;
-                        break;
-                }
+                this[getProcess(process)] = response.data;
             }
         },
 
@@ -102,21 +90,28 @@ export const useProcessStore = defineStore('processStore', {
             const response = await API.process.clearQueue(process);
             if (response.status === 'success' && response.data) {
                 if (response?.status === 'success' && response.data) {
-                    switch (process) {
-                        case 'import-new-ebooks':
-                            this.importNewEbooks = response.data;
-                            break;
-                        case 'update-ebooks':
-                            this.updateEbooks = response.data;
-                            break;
-                        case 'link-products':
-                            this.linkProducts = response.data;
-                            break;
-                        case 'setup-prices':
-                            this.setupPrices = response.data;
-                            break;
-                    }
+                    this[getProcess(process)] = response.data;
                 }
+            }
+        },
+
+        /**
+         * Delete action.
+         */
+        async dispatchDeleteAction(process: ProcessType, ids: number[]) {
+            const response = await API.process.deleteAction(process, ids);
+            if (response.status === 'success') {
+                this[getProcess(process)] = response.data;
+            }
+        },
+
+        /**
+         * Retry action.
+         */
+        async dispatchRetryAction(process: ProcessType, ids: number[]) {
+            const response = await API.process.retryAction(process, ids);
+            if (response.status === 'success') {
+                this[getProcess(process)] = response.data;
             }
         }
     },
