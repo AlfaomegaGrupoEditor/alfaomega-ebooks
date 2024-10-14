@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import {computed, onMounted, onUnmounted, ref} from 'vue';
-    import {aoAlert, aoProcessingQueue, aoProcessingActions} from '@/components';
     import {useI18n} from 'vue-i18n';
     import { useModal } from 'bootstrap-vue-next';
     import {eventBus} from '@/events';
     import {useProcessStore} from '@/stores';
+import AoScheduledActions from '@/components/aoScheduledActions.vue';
 
     const {t} = useI18n();
     const processStore = useProcessStore();
@@ -57,27 +57,13 @@ import {computed, onMounted, onUnmounted, ref} from 'vue';
 
 <template>
     <div class="container">
-        <div class="row d-flex justify-content-center">
-            <div class="col-12 col-md-8 col-md-offset-2">
-                <ao-alert
-                    :caption="$t('setup_ebooks_price')"
-                    :dismissible="false"
-                    type="notice"
-                >
-                    {{ $t('setup_ebooks_price_notice') }}
-                </ao-alert>
-            </div>
-        </div>
-
-        <div class="row mt-3">
-            <div class="col-12 col-md-6 offset-md-3 d-flex justify-content-center">
-                <ao-processing-queue v-bind="setupStatus" />
-                <ao-processing-actions
-                    :action="'setup'"
-                    :processing="processing"
-                    @action="show"
-                />
-            </div>
+        <div class="row mt-2">
+            <ao-scheduled-actions
+                v-bind="setupStatus"
+                action="setup"
+                queue="setup-prices"
+                @action="show"
+            />
         </div>
     </div>
     <BModal v-model="dialog"

@@ -196,7 +196,7 @@
                 <span> ]</span>
             </div>
             <ao-processing-actions
-                :action="'import'"
+                :action="action"
                 :status="activeTab"
                 :processing="processing"
                 direction="row"
@@ -250,8 +250,7 @@
                         @click="navigateHandle('failed', $event)"
                     >
                         {{ $t('failed')}}
-                        <BBadge v-if="failed > 0"
-                                class="fs-7"
+                        <BBadge class="fs-7"
                                 variant="primary"
                         >
                             {{ failed }}

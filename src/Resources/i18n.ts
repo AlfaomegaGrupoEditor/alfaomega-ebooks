@@ -229,7 +229,7 @@ const messages = {
         link_products: 'Vincular Productos',
         link_products_confirmation: 'Esta tarea tomará algo de tiempo pero podrás ver el estado del proceso de vinculación en las estadísticas de la cola de processamiento. ¿Estás seguro de que deseas intentar vincular todos los productos desvinculados con los eBooks existentes?',
         link_products_description: 'Desvinculados/Catálogo',
-        link_products_notice: 'Vincula los productos que aún no están relacionados buscando el libro digital correspondiente en la lista de eBooks ya importados.',
+        link_products_notice: '<b>Vincula</b> los productos que aún no están relacionados buscando el libro digital correspondiente en la lista de <b>eBooks ya importados</b>.',
         linked: 'Vinculados',
         linked_products: 'Productos Vinculados',
         linked_products_description: 'WooCommerce productos con el eBook configurado y activo.',
@@ -303,7 +303,7 @@ const messages = {
         update_ebooks: 'Actualizar eBooks',
         update_ebooks_confirmation: 'Esta tarea tomará algo de tiempo pero podrás ver el estado del proceso de actualización en las estadísticas de la cola de processamiento. ¿Estás seguro de que deseas actualizar los eBooks ya importados?',
         update_ebooks_description: 'eBooks importados',
-        update_ebooks_notice: 'Actualiza la información de los eBooks ya descargados desde el Panel de Editores Alfaomega y comprueba que si el vínculo entre el producto y el eBook es correcto.',
+        update_ebooks_notice: '<b>Actualiza</b> la información de los eBooks ya descargados desde el <b>Panel Alfaomega</b> y comprueba que si el <b>vínculo</b> entre el producto y el eBook es correcto.',
         // V
         valid_until: 'Válido hasta',
         value: 'Valor',
