@@ -5,6 +5,7 @@
         name: {type: String, default: 'ao-modal'},
         title: {type: String, default: 'The title'},
         type: {type: String as ('confirm' | 'dlg'), default: 'confirm'},
+        size: {type: String as ('sm' | 'md' | 'lg' | 'xl'), default: 'md'},
     });
     const emit = defineEmits(['action']);
 
@@ -19,6 +20,7 @@
             teleport-to="#ao-container"
             :id="name"
             :title="title"
+            :size="size"
             title-class="fs-6"
             header-class="py-2"
             footer-border-variant="secondary"

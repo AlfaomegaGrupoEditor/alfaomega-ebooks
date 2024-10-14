@@ -80,11 +80,13 @@ const messages = {
         link_products_confirmation: 'This process will take some time but you will be able to see the status of the link process in the queue. Are you sure you want to link the products with the eBooks?',
         link_products_description: 'Unlinked/Catalog',
         link_products_notice: 'Link the products that are not related yet by searching the corresponding digital book in the list of already imported eBooks.',
+        loading: 'Loading',
         // M
         message: 'Hello, World!',
         migration_notice: 'If you have an account in out previous store %s, you can import all your books to access them from here. Please open your account in %s, copy the access code and paste it here in the Add <b>Sample box</b>',
         // N
         next: 'Next',
+        no_data: 'No data found!',
         no_books_found: 'No books found.',
         no_books_found_description: 'Please change the filters or search query. You can also buy more books to enlarge your library.',
         note: 'Note',
@@ -231,6 +233,7 @@ const messages = {
         linked: 'Vinculados',
         linked_products: 'Productos Vinculados',
         linked_products_description: 'WooCommerce productos con el eBook configurado y activo.',
+        loading: 'Cargando',
         // M
         message: 'Hola, mundo!',
         migration_notice: 'Si tienes una cuenta en nuestra tienda anterior <b>:website</b>, puedes importar todos tus libros para acceder a ellos desde aquí. Por favor, abre la sección <b>Mis Libros</b> en el sitio anterior, copia el <b>código de acceso</b> y pégalo en el cuadro <b>Agregar Muestras.</b>',
@@ -238,6 +241,7 @@ const messages = {
         muestras: 'Muestras',
         // N
         next: 'Siguiente',
+        no_data: 'No se encontraron datos!',
         no_books_found: 'No se encontraron libros.',
         no_books_found_description: 'Por favor, cambia los filtros o el criterio de búsqueda para encontrar resultados. También puedes comprar más libros para ampliar tu biblioteca.',
         note: 'Nota',
