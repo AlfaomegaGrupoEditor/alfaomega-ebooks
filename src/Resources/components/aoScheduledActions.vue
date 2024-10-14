@@ -173,11 +173,7 @@
     }
 
     const handleClearQueue = () => {
-        console.log('Clear queue action', props.queue);
-        eventBus.emit('notification', {
-            message: 'clear_queue_success',
-            type: 'success'
-        });
+        processStore.dispatchClearQueue(props.queue);
     }
 
     onMounted(() => {

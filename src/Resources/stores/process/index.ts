@@ -78,6 +78,9 @@ export const useProcessStore = defineStore('processStore', {
             }
         },
 
+        /**
+         * Retrieve process data.
+         */
         async dispatchRetrieveProcessData(process: ProcessType,
                                           status: ProcessStatusType,
                                           page: number,
@@ -89,6 +92,31 @@ export const useProcessStore = defineStore('processStore', {
                     actions: response.data,
                     meta: response.meta
                 };
+            }
+        },
+
+        /**
+         * Clear queue.
+         */
+        async dispatchClearQueue(process: ProcessType) {
+            const response = await API.process.clearQueue(process);
+            if (response.status === 'success' && response.data) {
+                if (response?.status === 'success' && response.data) {
+                    switch (process) {
+                        case 'import-new-ebooks':
+                            this.importNewEbooks = response.data;
+                            break;
+                        case 'update-ebooks':
+                            this.updateEbooks = response.data;
+                            break;
+                        case 'link-products':
+                            this.linkProducts = response.data;
+                            break;
+                        case 'setup-prices':
+                            this.setupPrices = response.data;
+                            break;
+                    }
+                }
             }
         }
     },

@@ -7,6 +7,7 @@ import {
     ProcessStatusType,
     ProcessType
 } from '@/types';
+import {eventBus} from '@/events';
 
 /**
  * Retrieve process status.
@@ -63,7 +64,35 @@ async function getProcessActions(process: ProcessType,
     }
 }
 
+/**
+ * Clear queue.
+ * @param process
+ */
+async function clearQueue(process: ProcessType): Promise<APIResponse<AsyncProcessType | null>>
+{
+    const appStore = useAppStore();
+    appStore.setError(null);
+    appStore.setLoading(true);
+
+    const response = await request<APIResponse<AsyncProcessType>>('POST', `/alfaomega-ebooks/api/clear-queue/`, {
+        process: process
+    });
+    appStore.setLoading(false);
+
+    if (response.status == 'success') {
+        eventBus.emit('notification', {
+            message: 'clear_queue_success',
+            type: 'success'
+        });
+        return response.data as APIResponse<AsyncProcessType>;
+    } else {
+        appStore.setError(response.message);
+        return null;
+    }
+}
+
 export default {
     getProcessStatus,
-    getProcessActions
+    getProcessActions,
+    clearQueue
 };
