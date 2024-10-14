@@ -11,7 +11,7 @@ msgstr ""
 "Livan Rodriguez "
 "<livan2r@gmail.com>\n"
 "POT-Creation-Date: "
-"2024-10-12 11:22-0400\n"
+"2024-10-14 15:24-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Livan "
 "Rodriguez <livan2r@gmail."
@@ -1734,17 +1734,22 @@ msgid "Auto Draft"
 msgstr ""
 
 #: src/Http/Controllers/ApiController.php:23
-#: src/Http/Controllers/ApiController.php:72
-#: src/Http/Controllers/ApiController.php:108
-#: src/Http/Controllers/ApiController.php:164
-#: src/Http/Controllers/ApiController.php:190
-#: src/Http/Controllers/ApiController.php:216
-#: src/Http/Controllers/ApiController.php:242
+#: src/Http/Controllers/ApiController.php:71
+#: src/Http/Controllers/ApiController.php:98
+#: src/Http/Controllers/ApiController.php:146
+#: src/Http/Controllers/ApiController.php:165
+#: src/Http/Controllers/ApiController.php:185
+#: src/Http/Controllers/ApiController.php:205
+#: src/Http/Controllers/ApiController.php:245
+#: src/Http/Controllers/ApiController.php:285
+#: src/Http/Controllers/ApiController.php:337
+#: src/Http/Controllers/ApiController.php:381
+#: src/Http/Controllers/ApiController.php:425
 #: src/Http/Controllers/WebhooksController.php:27
 msgid "God Job!"
 msgstr ""
 
-#: src/Http/Controllers/ApiController.php:138
+#: src/Http/Controllers/ApiController.php:126
 msgid ""
 "Code redeemed "
 "successfully, the "
@@ -1752,6 +1757,45 @@ msgid ""
 "added to your personal "
 "library. Enjoy the "
 "reading!"
+msgstr ""
+
+#: src/Http/Controllers/ApiController.php:220
+#: src/Http/Controllers/ApiController.php:260
+#: src/Http/Controllers/ApiController.php:300
+#: src/Http/Controllers/ApiController.php:352
+#: src/Http/Controllers/ApiController.php:396
+msgid ""
+"The process is required."
+msgstr ""
+
+#: src/Http/Controllers/ApiController.php:224
+#: src/Http/Controllers/ApiController.php:235
+#: src/Http/Controllers/ApiController.php:264
+#: src/Http/Controllers/ApiController.php:275
+#: src/Http/Controllers/ApiController.php:304
+#: src/Http/Controllers/ApiController.php:315
+#: src/Http/Controllers/ApiController.php:356
+#: src/Http/Controllers/ApiController.php:367
+#: src/Http/Controllers/ApiController.php:400
+#: src/Http/Controllers/ApiController.php:411
+msgid ""
+"The process is invalid."
+msgstr ""
+
+#: src/Http/Controllers/ApiController.php:319
+msgid ""
+"The status is required."
+msgstr ""
+
+#: src/Http/Controllers/ApiController.php:323
+msgid ""
+"The status is invalid."
+msgstr ""
+
+#: src/Http/Controllers/ApiController.php:371
+#: src/Http/Controllers/ApiController.php:415
+msgid ""
+"The ids are required."
 msgstr ""
 
 #: src/Http/Controllers/EbooksController.php:28
@@ -1773,18 +1817,18 @@ msgid ""
 "Queue ID is required"
 msgstr ""
 
-#: src/Http/RouteManager.php:253
+#: src/Http/RouteManager.php:258
 msgid ""
 "Please log in to access "
 "ebooks."
 msgstr ""
 
-#: src/Http/RouteManager.php:261
-#: src/Http/RouteManager.php:300
+#: src/Http/RouteManager.php:266
+#: src/Http/RouteManager.php:305
 msgid "Not found"
 msgstr ""
 
-#: src/Http/RouteManager.php:292
+#: src/Http/RouteManager.php:297
 msgid "Unauthorized"
 msgstr ""
 

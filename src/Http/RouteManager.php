@@ -277,7 +277,7 @@ class RouteManager
                 'status'  => 'fail',
                 'data'    => null,
                 'message' => esc_html__($e->getMessage(), 'alfaomega-ebooks'),
-            ], 500);
+            ], $e->getCode() ?: 500);
         }
     }
 

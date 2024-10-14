@@ -108,7 +108,7 @@ async function deleteAction(process: ProcessType, ids: Number[]): Promise<APIRes
     });
     appStore.setLoading(false);
 
-    if (response.status == 'success') {
+    if (response.status == 'success' && response.data.status === 'success') {
         eventBus.emit('notification', {
             message: 'action_deleted_success',
             type: 'success'

@@ -148,10 +148,10 @@
     const handleAction = () => {
         switch (selectedAction.value.type) {
             case 'retry':
-                console.log('Retry action:', selectedAction.value);
+                processStore.dispatchRetryAction(props.action, [selectedAction.value.item.id]);
                 break;
             case 'delete':
-                console.log('Delete action:', selectedAction.value);
+                processStore.dispatchDeleteAction(props.action, [selectedAction.value.item.id]);
                 break;
             default: // primary
                 emit('action', props.action);

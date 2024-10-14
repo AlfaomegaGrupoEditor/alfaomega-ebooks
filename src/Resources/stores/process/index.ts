@@ -63,6 +63,8 @@ export const useProcessStore = defineStore('processStore', {
             const response = await API.process.getProcessStatus(process);
             if (response?.status === 'success' && response.data) {
                 this[getProcess(process)] = response.data;
+            } else {
+
             }
         },
 
