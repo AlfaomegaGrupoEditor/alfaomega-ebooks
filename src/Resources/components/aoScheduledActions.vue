@@ -1,5 +1,10 @@
 <script setup lang="ts">
-    import {ProcessStatusType, ProcessNameType, ProcessItem} from '@/types';
+    import {
+        ProcessStatusType,
+        ProcessNameType,
+        ProcessItem,
+        ProcessDataType
+    } from '@/types';
     import {computed, onMounted, ref} from 'vue';
     import {aoProcessingActions} from '@/components';
     import {useI18n} from 'vue-i18n';
@@ -22,8 +27,11 @@
     const {t} = useI18n();
     const processStore = useProcessStore();
     const confirmModalName = 'action-process-confirm-modal';
+    const dlgModalName = 'action-process-dlg-modal';
+    const dlgModalTitle = 'action_details';
     const {show: showConfirm} = useModal(confirmModalName);
-    const action = ref({ type: '', item: null });
+    const {show: showDlg} = useModal(dlgModalName);
+    const selectedAction = ref({ type: '', item: null });
     const variant = computed(() => {
         switch (props.status) {
             case 'idle':
@@ -86,6 +94,30 @@
         {value: 60, text: 60},
     ]
     const processData = computed(() => processStore.getActions);
+    const actionTitle = computed(() => {
+        switch (props.action) {
+            case 'import':
+                return 'import_ebooks';
+            case 'update':
+                return 'update_ebooks';
+            case 'link':
+                return 'link_products';
+            case 'setup':
+                return 'setup_prices';
+        }
+    });
+    const actionNotice = computed(() => {
+        switch (props.action) {
+            case 'import':
+                return 'import_ebooks_notice';
+            case 'update':
+                return 'update_ebooks_notice';
+            case 'link':
+                return 'link_products_notice';
+            case 'setup':
+                return 'setup_prices_notice';
+        }
+    });
 
     const currentPage = ref(1)
     const pageSize = ref(10)
@@ -229,18 +261,23 @@
         retrieveProcessData();
     };
 
-    const handleShowDialog = (actionType, item) => {
-        action.value = { type: actionType, item: item };
-        showConfirm();
+    const handleShowDialog = (actionType: String, item: ProcessDataType) => {
+        selectedAction.value = { type: actionType, item: item };
+        actionType === 'view' ? showDlg() : showConfirm();
+    }
+
+    const handleRowClick = (item) => {
+        selectedAction.value = { type: 'view', item: item };
+        showDlg();
     }
 
     const handleAction = () => {
-        switch (action.value.type) {
+        switch (selectedAction.value.type) {
             case 'retry':
-                console.log('Retry action:', action.value);
+                console.log('Retry action:', selectedAction.value);
                 break;
             case 'delete':
-                console.log('Delete action:', action.value);
+                console.log('Delete action:', selectedAction.value);
                 break;
             default: // primary
                 emit('action', props.action);
@@ -267,7 +304,7 @@
     >
         <div class="card-title fw-bold fs-6 px-0 pt-0 pb-2 mb-1 text-muted text-uppercase d-flex justify-content-between align-items-center">
             <div>
-                <span>{{ $t('import_ebooks') }} [ </span>
+                <span>{{ $t(actionTitle) }} [ </span>
                 <span :class="`text-${variant}`">{{ $t(status) }}</span>
                 <span> ]</span>
             </div>
@@ -279,7 +316,7 @@
             />
         </div>
 
-        <div class="mb-2" v-html="$t('import_ebooks_notice')"></div>
+        <div class="mb-2" v-html="$t(actionNotice)"></div>
 
         <BCard
             class="mt-0 status-tab"
@@ -346,6 +383,7 @@
                     :hover="true"
                     :selectable="false"
                     tbody-tr-class="ao-table-row"
+                    @row-clicked="handleRowClick"
                 >
                     <template #cell(isbn)="row">
                         <BBadge variant="info">{{ row.value }}</BBadge>
@@ -420,12 +458,26 @@
         :title="$t('confirmation')"
         @action="handleAction"
     >
-        <span v-if="action.type==='primary'">
+        <span v-if="selectedAction.type==='primary'">
             {{ $t('import_ebooks_confirmation') }}
         </span>
         <span v-else>
-            {{ $t(`${action.type}_process_confirmation`) }}
+            {{ $t(`${selectedAction.type}_process_confirmation`) }}
         </span>
+    </ao-dialog>
+    <ao-dialog
+        :name="dlgModalName"
+        type="dlg"
+        :title="$t(dlgModalTitle) + ' [' + $t(actionTitle) + ']'"
+    >
+        <div class="row py-1"
+             v-if="selectedAction.item && selectedAction.item.data"
+            v-for="(value, key) in selectedAction.item.data"
+            :key="key"
+        >
+            <div class="col-2 fw-bold fs-7">{{ key }}</div>
+            <div class="col">{{ value }}</div>
+        </div>
     </ao-dialog>
 </template>
 

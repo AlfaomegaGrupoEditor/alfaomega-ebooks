@@ -3,7 +3,8 @@
 
     const props = defineProps({
         name: {type: String, default: 'ao-modal'},
-        title: {type: String, default: 'The title'}
+        title: {type: String, default: 'The title'},
+        type: {type: String as ('confirm' | 'dlg'), default: 'confirm'},
     });
     const emit = defineEmits(['action']);
 
@@ -23,6 +24,7 @@
             footer-border-variant="secondary"
             :cancel-title="$t('cancel')"
             cancel-variant="light"
+            :ok-only="type==='dlg'"
             :ok-title="$t('ok')"
             ok-variant="info"
             button-size="sm"
