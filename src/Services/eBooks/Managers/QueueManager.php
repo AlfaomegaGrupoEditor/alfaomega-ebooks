@@ -2,6 +2,9 @@
 
 namespace AlfaomegaEbooks\Services\eBooks\Managers;
 
+use AlfaomegaEbooks\Services\eBooks\Transformers\ActionTransformer;
+use AlfaomegaEbooks\Services\eBooks\Transformers\QueueTransformer;
+
 class QueueManager extends AbstractManager
 {
     /**
@@ -45,7 +48,7 @@ class QueueManager extends AbstractManager
             $data[$result->status] = intval($result->count);
         }
 
-        return $transform ? $this->transform($data) : $data;
+        return $transform ? QueueTransformer::transform($data) : $data;
     }
 
     /**
@@ -82,27 +85,6 @@ class QueueManager extends AbstractManager
         return $this->table;
     }
 
-    public function transform(array $result): array
-    {
-        if ($result['in-process'] > 0 || $result['pending'] > 0) {
-            $status = 'processing';
-        } elseif ($result['failed'] > 0) {
-            $status = 'failed';
-        } elseif ($result['complete'] > 0) {
-            $status = 'completed';
-        } else {
-            $status = 'idle';
-        }
-
-        return [
-            'status'    => $status,
-            'completed' => $result['complete'],
-            'processing'=> $result['in-process'],
-            'pending'   => $result['pending'],
-            'failed'    => $result['failed'],
-        ];
-    }
-
     /**
      * Retrieves the actions of a queue.
      * This method retrieves the actions of a queue by selecting all actions with the specified queue name and status.
@@ -131,15 +113,19 @@ class QueueManager extends AbstractManager
             LIMIT $perPage OFFSET $offset;
         ");
 
-        // todo transform into
-        /*interface ProcessItem {
-            id: number
-            isbn: string
-            title: string
-            status: string
-            schedule_date: string
-            last_attend_date: string
-        }*/
-        return $results;
+        // TODO: Implement this.
+        $data = [];
+        foreach ($results as $result) {
+            $data[] = ActionTransformer::transform($result);
+        }
+
+        return [
+            'data' => $data,
+            'meta' => [
+                'page'    => $page,
+                'perPage' => $perPage,
+                'pages'   => ceil(count($data) / $perPage),
+            ],
+        ];
     }
 }
