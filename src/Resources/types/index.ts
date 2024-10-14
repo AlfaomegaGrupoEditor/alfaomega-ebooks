@@ -112,7 +112,7 @@ type ProcessType = 'import-new-ebooks' | 'update-ebooks' | 'link-products' | 'se
 
 type ProcessNameType = 'import' | 'update' | 'link' | 'setup';
 
-type ProcessStatusType = 'idle' | 'processing' | 'failed' | 'completed | pending';
+type ProcessStatusType = 'idle' | 'processing' | 'failed' | 'completed' | 'pending';
 
 type AsyncProcessType = {
     status: ProcessStatusType;
@@ -122,13 +122,18 @@ type AsyncProcessType = {
     failed: Number
 }
 
+type ProcessDataType = {
+    [key: string]: any;
+}
+
 interface ProcessItem {
     id: number
     isbn: string
     title: string
     status: string
     schedule_date: string
-    last_attend_date: string
+    last_attend_date: string,
+    data: ProcessDataType | null
 }
 
 type MetaType = {
@@ -158,5 +163,6 @@ export {
     ProcessStatusType,
     AsyncProcessType,
     ProcessItem,
-    MetaType
+    MetaType,
+    ProcessDataType
 };

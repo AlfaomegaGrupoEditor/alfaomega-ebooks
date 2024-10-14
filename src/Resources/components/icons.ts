@@ -14,6 +14,7 @@ import BiInfoCircle from '~icons/bi/info-circle?raw&width=1.2rem&height=1.2rem';
 //aoScheduledActions
 import BiTrash3Fill from '~icons/bi/trash3-fill?raw';
 import BiArrowRepeat from '~icons/bi/arrow-repeat?raw';
+import BiEye from '~icons/bi/eye?raw';
 
 // @see https://icon-sets.iconify.design/bi/
 export {
@@ -29,5 +30,6 @@ export {
     BiInfoCircle,
 
     BiTrash3Fill,
-    BiArrowRepeat
+    BiArrowRepeat,
+    BiEye
 };

@@ -17,8 +17,8 @@ import {computed, onMounted, onUnmounted, ref} from 'vue';
     const poolTimeout = 60 * 1000;
     const enablePolling = ref(false);
 
-    const handleImport = () => {
-        console.log('Importing ebooks...');
+    const handleImport = (action) => {
+        console.log('Importing ebooks...', action);
         eventBus.emit('notification', {
             message: 'tasks_added',
             type: 'success'
@@ -44,7 +44,10 @@ import {computed, onMounted, onUnmounted, ref} from 'vue';
 <template>
     <div class="container">
         <div class="row mt-2">
-            <ao-scheduled-actions v-bind="importStatus"/>
+            <ao-scheduled-actions
+                v-bind="importStatus"
+                @action="handleImport"
+            />
         </div>
     </div>
     <ao-dialog

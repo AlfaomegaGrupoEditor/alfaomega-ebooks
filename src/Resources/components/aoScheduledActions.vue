@@ -3,7 +3,7 @@
     import {computed, onMounted, ref} from 'vue';
     import {aoProcessingActions} from '@/components';
     import {useI18n} from 'vue-i18n';
-    import {BiTrash3Fill, BiArrowRepeat} from '@/components/icons';
+    import {BiTrash3Fill, BiArrowRepeat, BiEye} from '@/components/icons';
     import AoDialog from '@/components/aoDialog.vue';
     import { useModal } from 'bootstrap-vue-next';
     import {useProcessStore} from '@/stores';
@@ -17,10 +17,12 @@
         failed: { type: Number, default: 0 },
     });
 
+    const emit = defineEmits(['action']);
+
     const {t} = useI18n();
     const processStore = useProcessStore();
-    const modalName = 'action-process-modal';
-    const {show} = useModal(modalName);
+    const confirmModalName = 'action-process-confirm-modal';
+    const {show: showConfirm} = useModal(confirmModalName);
     const action = ref({ type: '', item: null });
     const variant = computed(() => {
         switch (props.status) {
@@ -88,7 +90,7 @@
     const currentPage = ref(1)
     const pageSize = ref(10)
     const rows = ref(100)
-    const sortItems = computed(() => {
+    const sortItems = computed(():ProcessItem[] => {
         switch (activeTab.value) {
             case 'processing':
                 return [
@@ -99,6 +101,15 @@
                         status: 'processing',
                         schedule_date: '2021-10-01 12:00:00',
                         last_attend_date: '2021-10-01 12:00:00',
+                        data: {
+                            isbn: "9786076221600",
+                            printed_isbn: "9786077075707",
+                            title: "SOLIDWORKS PR\u00c1CTICO I - Ensamblaje y Dibujo",
+                            description: "<p>&Eacute;ste libro es un recopilatorio de ejercicios pr&aacute;cticos de SolidWorks. Contiene 85 tutoriales sobre el dise&ntilde;o de piezas, ensamb...",
+                            adobe: "urn:uuid:e7a03e2e-0ffb-4c7b-abb1-4c97efdf3969",
+                            html_ebook: "2014\/alfaomega\/computacion-e-informatica\/9786076221600",
+                            product_id: 27218
+                        }
                     },
                     {
                         id: 2346,
@@ -107,6 +118,15 @@
                         status: 'pending',
                         schedule_date: '2021-10-01 12:00:00',
                         last_attend_date: '2021-10-01 12:00:00',
+                        data: {
+                            isbn: "9786076221600",
+                            printed_isbn: "9786077075707",
+                            title: "CUANDO LAS PERSONAS SON EL CENTRO - Cómo abordar la gestión de RR.HH. sin medios",
+                            description: "<p>&Eacute;ste libro es un recopilatorio de ejercicios pr&aacute;cticos de SolidWorks. Contiene 85 tutoriales sobre el dise&ntilde;o de piezas, ensamb...",
+                            adobe: "urn:uuid:e7a03e2e-0ffb-4c7b-abb1-4c97efdf3969",
+                            html_ebook: "2014\/alfaomega\/computacion-e-informatica\/9786076221600",
+                            product_id: 27218
+                        }
                     },
                     {
                         id: 2347,
@@ -115,6 +135,15 @@
                         status: 'pending',
                         schedule_date: '2021-10-01 12:00:00',
                         last_attend_date: '2021-10-01 12:00:00',
+                        data: {
+                            isbn: "9786076221600",
+                            printed_isbn: "9786077075707",
+                            title: "TERMOTECNIA",
+                            description: "<p>&Eacute;ste libro es un recopilatorio de ejercicios pr&aacute;cticos de SolidWorks. Contiene 85 tutoriales sobre el dise&ntilde;o de piezas, ensamb...",
+                            adobe: "urn:uuid:e7a03e2e-0ffb-4c7b-abb1-4c97efdf3969",
+                            html_ebook: "2014\/alfaomega\/computacion-e-informatica\/9786076221600",
+                            product_id: 27218
+                        }
                     },
                     {
                         id: 2348,
@@ -123,6 +152,15 @@
                         status: 'pending',
                         schedule_date: '2021-10-01 12:00:00',
                         last_attend_date: '2021-10-01 12:00:00',
+                        data: {
+                            isbn: "9786076221600",
+                            printed_isbn: "9786077075707",
+                            title: "SISTEMAS SCADA - 3ª Edición",
+                            description: "<p>&Eacute;ste libro es un recopilatorio de ejercicios pr&aacute;cticos de SolidWorks. Contiene 85 tutoriales sobre el dise&ntilde;o de piezas, ensamb...",
+                            adobe: "urn:uuid:e7a03e2e-0ffb-4c7b-abb1-4c97efdf3969",
+                            html_ebook: "2014\/alfaomega\/computacion-e-informatica\/9786076221600",
+                            product_id: 27218
+                        }
                     },
                 ]
             case 'completed':
@@ -134,6 +172,15 @@
                         status: 'completed',
                         schedule_date: '2021-10-01 12:00:00',
                         last_attend_date: '2021-10-01 12:00:00',
+                        data: {
+                            isbn: "9786076221600",
+                            printed_isbn: "9786077075707",
+                            title: "SISTEMAS DE INFORMACIÓN EN LA EMPRESA - El impacto de la nube, la movilidad y los medios sociales",
+                            description: "<p>&Eacute;ste libro es un recopilatorio de ejercicios pr&aacute;cticos de SolidWorks. Contiene 85 tutoriales sobre el dise&ntilde;o de piezas, ensamb...",
+                            adobe: "urn:uuid:e7a03e2e-0ffb-4c7b-abb1-4c97efdf3969",
+                            html_ebook: "2014\/alfaomega\/computacion-e-informatica\/9786076221600",
+                            product_id: 27218
+                        }
                     },
                 ]
             case 'failed':
@@ -145,6 +192,15 @@
                         status: 'failed',
                         schedule_date: '2021-10-01 12:00:00',
                         last_attend_date: '2021-10-01 12:00:00',
+                        data: {
+                            isbn: "9786076221600",
+                            printed_isbn: "9786077075707",
+                            title: "SEGURIDAD E HIGIENE INDUSTRIAL - Gestión de riesgos",
+                            description: "<p>&Eacute;ste libro es un recopilatorio de ejercicios pr&aacute;cticos de SolidWorks. Contiene 85 tutoriales sobre el dise&ntilde;o de piezas, ensamb...",
+                            adobe: "urn:uuid:e7a03e2e-0ffb-4c7b-abb1-4c97efdf3969",
+                            html_ebook: "2014\/alfaomega\/computacion-e-informatica\/9786076221600",
+                            product_id: 27218
+                        }
                     },
                     {
                         id: 2346,
@@ -153,6 +209,15 @@
                         status: 'failed',
                         schedule_date: '2021-10-01 12:00:00',
                         last_attend_date: '2021-10-01 12:00:00',
+                        data: {
+                            isbn: "9786076221600",
+                            printed_isbn: "9786077075707",
+                            title: "ROCK MARKETING - Una historia del rock diferente",
+                            description: "<p>&Eacute;ste libro es un recopilatorio de ejercicios pr&aacute;cticos de SolidWorks. Contiene 85 tutoriales sobre el dise&ntilde;o de piezas, ensamb...",
+                            adobe: "urn:uuid:e7a03e2e-0ffb-4c7b-abb1-4c97efdf3969",
+                            html_ebook: "2014\/alfaomega\/computacion-e-informatica\/9786076221600",
+                            product_id: 27218
+                        }
                     },
                 ]
         }
@@ -166,11 +231,20 @@
 
     const handleShowDialog = (actionType, item) => {
         action.value = { type: actionType, item: item };
-        show();
+        showConfirm();
     }
 
     const handleAction = () => {
-        console.log('Action:', action.value);
+        switch (action.value.type) {
+            case 'retry':
+                console.log('Retry action:', action.value);
+                break;
+            case 'delete':
+                console.log('Delete action:', action.value);
+                break;
+            default: // primary
+                emit('action', props.action);
+        }
     }
 
     const retrieveProcessData = () => {
@@ -201,7 +275,7 @@
                 :action="'import'"
                 :processing="processing"
                 direction="row"
-                @action="show"
+                @action="handleShowDialog('primary', null)"
             />
         </div>
 
@@ -284,6 +358,15 @@
                     </template>
                     <template #cell(actions)="row">
                         <BButton
+                            size="sm"
+                            class="mx-1"
+                            variant="secondary"
+                            :title="t('view')"
+                            @click="handleShowDialog('view', row.item)"
+                        >
+                            <span v-html="BiEye" />
+                        </BButton>
+                        <BButton
                             v-if="activeTab === 'failed'"
                             size="sm"
                             class="mx-1"
@@ -333,11 +416,16 @@
         </div>
     </BCard>
     <ao-dialog
-        :name="modalName"
+        :name="confirmModalName"
         :title="$t('confirmation')"
         @action="handleAction"
     >
-        {{ $t(`${action.type}_process_confirmation`) }}
+        <span v-if="action.type==='primary'">
+            {{ $t('import_ebooks_confirmation') }}
+        </span>
+        <span v-else>
+            {{ $t(`${action.type}_process_confirmation`) }}
+        </span>
     </ao-dialog>
 </template>
 
