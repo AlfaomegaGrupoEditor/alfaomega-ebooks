@@ -341,11 +341,10 @@ class ApiController
                     $data['perPage'] ?? 10
                 );
 
-            return [
+            return array_merge([
                 'status'  => 'success',
-                'data'    => $result,
                 'message' => esc_html__('God Job!', 'alfaomega-ebooks'),
-            ];
+            ], $result);
         } catch (\Exception $e) {
             return [
                 'status'  => 'error',

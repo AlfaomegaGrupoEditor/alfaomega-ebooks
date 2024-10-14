@@ -82,9 +82,9 @@ export const useProcessStore = defineStore('processStore', {
                                           status: ProcessStatusType,
                                           page: number,
                                           perPage: number
-        ){
+        ) {
             const response = await API.process.getProcessActions(process, status, page, perPage);
-            if (response?.status === 'success' && response.data) {
+            if (response.status === 'success' && response.data) {
                 this.processData = {
                     actions: response.data,
                     meta: response.meta

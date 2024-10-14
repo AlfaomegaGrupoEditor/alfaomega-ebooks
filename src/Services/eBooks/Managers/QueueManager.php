@@ -131,9 +131,9 @@ class QueueManager extends AbstractManager
         return [
             'data' => $data,
             'meta' => [
-                'page'    => $page,
-                'perPage' => $perPage,
-                'pages'   => ceil(intval($pages[0]->count) / $perPage),
+                'total'        => intval($pages[0]->count),
+                'current_page' => $page,
+                'pages'        => ceil(intval($pages[0]->count) / $perPage),
             ],
         ];
     }

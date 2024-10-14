@@ -56,10 +56,7 @@ async function getProcessActions(process: ProcessType,
     appStore.setLoading(false);
 
     if (response.status == 'success') {
-        return {
-            data: response.data as APIResponse<ProcessItem[]>,
-            meta: response.meta as SearchResultType
-        };
+        return response.data as APIResponse<ProcessItem[]>;
     } else {
         appStore.setError(response.message);
         return null;

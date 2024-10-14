@@ -5,7 +5,7 @@
         ProcessItem,
         ProcessDataType
     } from '@/types';
-    import {computed, onMounted, ref} from 'vue';
+    import {computed, onMounted, ref, watch} from 'vue';
     import {aoProcessingActions} from '@/components';
     import {useI18n} from 'vue-i18n';
     import {BiTrash3Fill, BiArrowRepeat, BiEye} from '@/components/icons';
@@ -93,7 +93,7 @@
         {value: 25, text: 25},
         {value: 60, text: 60},
     ]
-    const processData = computed(() => processStore.getActions);
+    const processData = computed(() => processStore.getProcessData);
     const actionTitle = computed(() => {
         switch (props.action) {
             case 'import':
@@ -296,6 +296,10 @@
     onMounted(() => {
         retrieveProcessData();
     });
+
+    watch(processData, (newValue, oldValue) => {
+        console.log('processData updated:', newValue);
+    });
 </script>
 
 <template>
@@ -373,7 +377,7 @@
             <div style="min-height: 300px">
                 <BTable
                     :sort-by="[{key: 'first_name', order: 'desc'}]"
-                    :items="sortItems"
+                    :items="processData.actions"
                     :fields="sortFields"
                     :per-page="pageSize"
                     :current-page="currentPage"
@@ -432,9 +436,10 @@
         <div class="row mt-3">
             <div class="col">
                 <BPagination
+                    v-if="processData.meta.total > pageSize"
                     class="my-0 info-variant"
                     v-model="currentPage"
-                    :total-rows="rows"
+                    :total-rows="processData.meta.total"
                     :per-page="pageSize"
                     hide-goto-end-buttons
                     align="end"
