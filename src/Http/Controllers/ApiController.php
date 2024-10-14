@@ -296,6 +296,52 @@ class ApiController
     }
 
     /**
+     * Clear the queue
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    public function clearQueue(array $data): array
+    {
+        try {
+            if (empty($data['process'])) {
+                throw new \Exception('The process is required.');
+            }
+
+            if (!in_array($data['process'], ['import-new-ebooks', 'update-ebooks', 'link-products', 'setup-prices'])) {
+                throw new \Exception('The process is invalid.');
+            }
+
+            $queue = match($data['process']) {
+                'import-new-ebooks' => 'alfaomega_ebooks_queue_import',
+                'update-ebooks' => 'alfaomega_ebooks_queue_refresh',
+                'link-products' => 'alfaomega_ebooks_queue_link',
+                'setup-prices' => 'alfaomega_ebooks_queue_prices',
+                default => null,
+            };
+            if (empty($queue)) {
+                throw new \Exception('The process is invalid.');
+            }
+
+            $result = Service::make()
+                ->queue()
+                ->clear($queue);
+
+            return [
+                'status'  => 'success',
+                'data'    => $result,
+                'message' => esc_html__('God Job!', 'alfaomega-ebooks'),
+            ];
+        } catch (\Exception $e) {
+            return [
+                'status'  => 'error',
+                'message' => esc_html__($e->getMessage(), 'alfaomega-ebooks'),
+            ];
+        }
+    }
+
+    /**
      * Get process actions
      *
      * @param array $data

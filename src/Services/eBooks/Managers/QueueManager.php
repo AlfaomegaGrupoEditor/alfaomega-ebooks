@@ -52,24 +52,24 @@ class QueueManager extends AbstractManager
     }
 
     /**
-     * Clears a queue.
-     * This method clears a queue by deleting all actions with the specified queue name and status.
+     * Clear the queue data
+     * @param string $queue
      *
-     * @return array Returns an empty array.
+     * @return array
      */
-    public function clear(): array
+    public function clear(string $queue): array
     {
         global $wpdb;
 
         $table = $this->getTable();
         $wpdb->get_results("
                 DELETE
-                FROM $table
-                WHERE hook like '%alfaomega_ebooks_queue%'
-                    AND status not in ('pending', 'in-process');
+                FROM $table a
+                WHERE hook = '$queue'
+                    AND status not in ('in-process');
             ");
 
-        return [];
+        return $this->status($queue, true);
     }
 
     /**
@@ -105,9 +105,7 @@ class QueueManager extends AbstractManager
         $results = $wpdb->get_results("
             SELECT *
             FROM $table a
-            WHERE (a.hook like '$queue%' OR
-                   (a.extended_args IS NULL AND a.args like '$queue%') OR
-                   a.extended_args like '$queue%')
+            WHERE a.hook = '$queue%'
                 AND a.status in ('" . join("','", $status) . "')
             ORDER BY a.status, a.scheduled_date_gmt DESC
             LIMIT $perPage OFFSET $offset;

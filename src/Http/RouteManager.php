@@ -145,6 +145,7 @@ class RouteManager
         'codes-info'      => [ApiController::class, 'getCodesInfo', 'GET'],
         'process-info'    => [ApiController::class, 'getProcessInfo', 'POST'],
         'process-actions' => [ApiController::class, 'getProcessActions', 'POST'],
+        'clear-queue'     => [ApiController::class, 'clearQueue', 'POST'],
     ];
 
     /**
