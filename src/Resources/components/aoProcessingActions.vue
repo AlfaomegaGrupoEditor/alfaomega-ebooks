@@ -64,7 +64,7 @@
                  size="sm"
                  style="max-width: 120px"
                  :disabled="processing"
-                 @click="handleAction"
+                 @click="emit('action')"
         >
             <BSpinner small v-if="processing"/>
             {{ $t(action) }}

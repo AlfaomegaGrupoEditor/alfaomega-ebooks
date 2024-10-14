@@ -49,7 +49,7 @@
             <ao-scheduled-actions
                 v-bind="updateStatus"
                 action="update"
-                @action="handleImport"
+                @action="show"
                 queue="update-ebooks"
             />
         </div>

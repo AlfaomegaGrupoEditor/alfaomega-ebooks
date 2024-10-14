@@ -48,7 +48,7 @@ import {computed, onMounted, onUnmounted, ref} from 'vue';
                 v-bind="importStatus"
                 action="import"
                 queue="import-new-ebooks"
-                @action="handleImport"
+                @action="show"
             />
         </div>
     </div>

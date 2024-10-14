@@ -49,7 +49,7 @@ import AoScheduledActions from '@/components/aoScheduledActions.vue';
                 v-bind="linkStatus"
                 action="link"
                 queue="link-products"
-                @action="handleLink"
+                @action="show"
             />
         </div>
     </div>

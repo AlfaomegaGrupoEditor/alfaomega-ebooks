@@ -200,7 +200,7 @@
                 :status="activeTab"
                 :processing="processing"
                 direction="row"
-                @action="handleShowDialog('primary', null)"
+                @action="emit('action')"
                 @refresh="handleRefreshQueue"
                 @clear="handleClearQueue"
             />
