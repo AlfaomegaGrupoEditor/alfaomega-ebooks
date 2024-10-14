@@ -415,10 +415,10 @@
                             <span v-html="BiArrowRepeat" />
                         </BButton>
                         <BButton
+                            v-if="row.item.status !== 'processing'"
                             size="sm"
                             class="mx-1"
                             :variant="row.item.status === 'processing' ? 'secondary' : 'primary'"
-                            :disabled="row.item.status === 'processing'"
                             :title="t('delete')"
                             @click="handleShowDialog('delete', row.item)"
                         >
