@@ -3,6 +3,7 @@ import type {State} from '@/services/processes/types';
 import {API} from '@/services';
 import {ProcessStatusType, ProcessType} from '@/types';
 import {getProcess} from '@/services/Helper';
+import {eventBus} from '@/events';
 
 export const useProcessStore = defineStore('processStore', {
     state: (): State => (

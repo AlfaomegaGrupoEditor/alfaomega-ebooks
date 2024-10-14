@@ -9,7 +9,7 @@
     import {NotificationEvent} from '@/events/types';
 
     /**
-     * Registers the event the App will be listing to.
+     * Registers the event the App will be listening to.
      */
     useMittEvents(eventBus, {
         notification: (event: NotificationEvent) => notificationHandler(event),

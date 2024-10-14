@@ -13,7 +13,8 @@
     import AoDialog from '@/components/aoDialog.vue';
     import { useModal } from 'bootstrap-vue-next';
     import {useProcessStore, useAppStore } from '@/stores';
-    import {eventBus} from '@/events';
+    import {RefreshActionsEvent} from '@/events/types';
+    import {eventBus, useMittEvents} from '@/events';
 
     const props = defineProps({
         action: {type: String as () => ProcessNameType , default: 'import'},
@@ -24,7 +25,11 @@
         pending: { type: Number, default: 0 },
         failed: { type: Number, default: 0 },
     });
+
     const emit = defineEmits(['action']);
+    useMittEvents(eventBus, {
+        refreshActions: (event: RefreshActionsEvent) => handleRefreshQueue(),
+    });
 
     const {t} = useI18n();
     const processStore = useProcessStore();

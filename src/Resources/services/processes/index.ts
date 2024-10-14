@@ -84,6 +84,7 @@ async function clearQueue(process: ProcessType): Promise<APIResponse<AsyncProces
             message: 'clear_queue_success',
             type: 'success'
         });
+        eventBus.emit('refreshActions', {process: process});
         return response.data as APIResponse<AsyncProcessType>;
     } else {
         appStore.setError(response.message);
@@ -113,6 +114,7 @@ async function deleteAction(process: ProcessType, ids: Number[]): Promise<APIRes
             message: 'action_deleted_success',
             type: 'success'
         });
+        eventBus.emit('refreshActions', {process: process});
         return response.data as APIResponse<AsyncProcessType>;
     } else {
         appStore.setError(response.message);
@@ -142,6 +144,7 @@ async function retryAction(process: ProcessType, ids: Number[]): Promise<APIResp
             message: 'retry_action_success',
             type: 'success'
         });
+        eventBus.emit('refreshActions', {process: process});
         return response.data as APIResponse<AsyncProcessType>;
     } else {
         appStore.setError(response.message);

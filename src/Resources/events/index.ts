@@ -15,6 +15,7 @@ type EventBus = {
   notification: NotificationEvent;
   apiSuccess: ApiCheckEvent;
   catalogSelected: CatalogSelectedEvent;
+  refreshActions: RefreshActionsEvent;
 }
 
 /**

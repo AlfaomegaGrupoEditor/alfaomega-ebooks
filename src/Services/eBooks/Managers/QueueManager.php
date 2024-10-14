@@ -8,7 +8,6 @@ use AlfaomegaEbooks\Services\eBooks\Transformers\QueueTransformer;
 
 class QueueManager extends AbstractManager
 {
-
     /**
      * The table name.
      *
