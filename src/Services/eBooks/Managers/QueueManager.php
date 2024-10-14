@@ -119,12 +119,21 @@ class QueueManager extends AbstractManager
             $data[] = ActionTransformer::transform($result);
         }
 
+        $pages = $wpdb->get_results("
+            SELECT count(*) as 'count'
+            FROM $table a
+            WHERE (a.hook like '$queue%' OR
+                   (a.extended_args IS NULL AND a.args like '$queue%') OR
+                   a.extended_args like '$queue%')
+                AND a.status in ('" . join("','", $status) . "')
+        ");
+
         return [
             'data' => $data,
             'meta' => [
                 'page'    => $page,
                 'perPage' => $perPage,
-                'pages'   => ceil(count($data) / $perPage),
+                'pages'   => ceil(intval($pages[0]->count) / $perPage),
             ],
         ];
     }
