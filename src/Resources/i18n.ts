@@ -8,6 +8,7 @@ const messages = {
         about_description: 'Information about Alfaomega eBooks plugin.',
         access_at: 'Access at',
         access_type: 'Access Type',
+        action_deleted_success: 'Actions deleted successfully!',
         action_details: 'Action Details',
         active: 'Active',
         add_ebooks: 'Add eBooks',
@@ -120,6 +121,7 @@ const messages = {
         refresh_queue: 'Refresh Queue',
         reset_filters: 'Reset Filters',
         retry: 'Retry',
+        retry_action_success: 'Actions added to pending queue successfully!',
         retry_process_confirmation: 'Are you sure you want to retry the process?',
         // S
         sample: 'Sample',
@@ -162,6 +164,7 @@ const messages = {
         about_description: 'Información sobre el plugin Alfaomega eBooks.',
         access_at: 'Acceso el',
         access_type: 'Tipo de Acceso',
+        action_deleted_success: '¡Acciones eliminadas con éxito!',
         action_details: 'Detalles de la Acción',
         active: 'Activo',
         add_ebooks: 'Agregar muestras',
@@ -275,6 +278,7 @@ const messages = {
         refresh_queue: 'Refrescar',
         reset_filters: 'Limpiar Filtros',
         retry: 'Reintentar',
+        retry_action_success: 'Acciones agregadas a la cola de pendientes correctamente!',
         retry_process_confirmation: '¿Estás seguro de que deseas reintentar el proceso?',
         // S
         sample: 'Muestra',
