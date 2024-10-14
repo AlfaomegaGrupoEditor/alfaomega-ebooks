@@ -2,17 +2,31 @@
 
 namespace AlfaomegaEbooks\Services\eBooks\Managers;
 
+use AlfaomegaEbooks\Services\Alfaomega\Api;
 use AlfaomegaEbooks\Services\eBooks\Transformers\ActionTransformer;
 use AlfaomegaEbooks\Services\eBooks\Transformers\QueueTransformer;
 
 class QueueManager extends AbstractManager
 {
+
     /**
      * The table name.
      *
      * @var string
      */
     protected string $table = 'actionscheduler_actions';
+
+    /**
+     * QueueManager constructor.
+     */
+    public function __construct(Api $api,
+                                array $settings)
+    {
+        global $table_prefix;
+
+        parent::__construct($api, $settings);
+        $this->table = $table_prefix . $this->table;
+    }
 
     /**
      * Retrieves the status of a queue.
@@ -27,14 +41,11 @@ class QueueManager extends AbstractManager
     {
         global $wpdb;
 
-        $table = $this->getTable();
         $results = $wpdb->get_results("
                 SELECT status, count(*) as 'count'
-                FROM $table a
-                WHERE (a.hook like '$queue%' OR
-                       (a.extended_args IS NULL AND a.args like '$queue%') OR
-                       a.extended_args like '$queue%')
-                GROUP BY status
+                FROM {$this->table} a
+                WHERE a.hook = '$queue'
+                GROUP BY a.status
             ");
 
         $data = [
@@ -61,28 +72,14 @@ class QueueManager extends AbstractManager
     {
         global $wpdb;
 
-        $table = $this->getTable();
         $wpdb->get_results("
                 DELETE
-                FROM $table a
+                FROM {$this->table} a
                 WHERE hook = '$queue'
                     AND status not in ('in-process');
             ");
 
         return $this->status($queue, true);
-    }
-
-    /**
-     * Retrieves the table name.
-     *
-     * @return string The table name.
-     */
-    public function getTable(): string
-    {
-        global $table_prefix;
-        $this->table = $table_prefix . $this->table;
-
-        return $this->table;
     }
 
     /**
@@ -100,11 +97,10 @@ class QueueManager extends AbstractManager
     {
         global $wpdb;
 
-        $table = $this->getTable();
         $offset = ($page - 1) * $perPage;
         $results = $wpdb->get_results("
             SELECT *
-            FROM $table a
+            FROM {$this->table} a
             WHERE a.hook = '$queue'
                 AND a.status in ('" . join("','", $status) . "')
             ORDER BY a.status, a.scheduled_date_gmt DESC
@@ -119,7 +115,7 @@ class QueueManager extends AbstractManager
 
         $pages = $wpdb->get_results("
             SELECT count(*) as 'count'
-            FROM $table a
+            FROM {$this->table} a
             WHERE a.hook = '$queue'
                 AND a.status in ('" . join("','", $status) . "')
         ");
@@ -138,46 +134,53 @@ class QueueManager extends AbstractManager
      * Deletes an action from the queue.
      * This method deletes an action from the queue by removing the action with the specified queue name and action ID.
      *
-     * @param string $queue The queue name.
+     * @param string $queue   The queue name.
      * @param array $actionId The action IDs.
      *
      * @return array The status of the queue.
+     * @throws \Exception
      */
     public function delete(string $queue, array $actionId): array
     {
         global $wpdb;
 
-        $table = $this->getTable();
-        $wpdb->get_results("
+        $result = $wpdb->query("
                 DELETE
-                FROM $table a
-                WHERE a.hook = '$queue'
-                    AND a.action_id in (" . join(",", $actionId) . ");
+                FROM {$this->table}
+                WHERE hook = '$queue'
+                    AND action_id in (" . join(",", $actionId) . ");
             ");
+        if (empty($result)) {
+            throw new \Exception(esc_html__('Failed to delete the action.', 'alfaomega-ebooks'), 500);
+        }
 
         return $this->status($queue, true);
     }
 
     /**
      * Retries an action in the queue.
-     * This method retries an action in the queue by updating the status of the action with the specified queue name and action ID to 'pending'.
+     * This method retries an action in the queue by updating the status of the action with the specified queue name
+     * and action ID to 'pending'.
      *
-     * @param string $queue The queue name.
+     * @param string $queue   The queue name.
      * @param array $actionId The action ID.
      *
      * @return array The status of the queue.
+     * @throws \Exception
      */
     public function retry(string $queue, array $actionId): array
     {
         global $wpdb;
 
-        $table = $this->getTable();
-        $wpdb->get_results("
-                UPDATE $table
+        $result = $wpdb->query("
+                UPDATE {$this->table}
                 SET status = 'pending'
                 WHERE hook = '$queue'
-                    AND a.action_id in (" . join(",", $actionId) . ");
+                    AND action_id in (" . join(",", $actionId) . ");
             ");
+        if (empty($result)) {
+            throw new \Exception(esc_html__('Failed adding actions to the pending queue.', 'alfaomega-ebooks'), 500);
+        }
 
         return $this->status($queue, true);
     }
