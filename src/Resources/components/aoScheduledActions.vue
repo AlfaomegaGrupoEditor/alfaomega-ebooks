@@ -34,7 +34,7 @@
                 return 'primary';
         }
     });
-    const activeTab = ref('processing'); // initialize with the first tab
+    const activeTab = ref('failed'); // initialize with the first tab
     const statusVariant = (status: ProcessStatusType) => {
         switch (status) {
             case 'processing':

@@ -126,11 +126,20 @@ class QueueManager extends AbstractManager
             WHERE (a.hook like '$queue%' OR
                    (a.extended_args IS NULL AND a.args like '$queue%') OR
                    a.extended_args like '$queue%')
-                AND a.status in (" . join(',', $status) . ")
-            LIMIT $perPage OFFSET $offset
-            ORDER BY status, a.date_created DESC
+                AND a.status in ('" . join("','", $status) . "')
+            ORDER BY a.status, a.scheduled_date_gmt DESC
+            LIMIT $perPage OFFSET $offset;
         ");
 
+        // todo transform into
+        /*interface ProcessItem {
+            id: number
+            isbn: string
+            title: string
+            status: string
+            schedule_date: string
+            last_attend_date: string
+        }*/
         return $results;
     }
 }
