@@ -105,7 +105,7 @@ class QueueManager extends AbstractManager
         $results = $wpdb->get_results("
             SELECT *
             FROM $table a
-            WHERE a.hook = '$queue%'
+            WHERE a.hook = '$queue'
                 AND a.status in ('" . join("','", $status) . "')
             ORDER BY a.status, a.scheduled_date_gmt DESC
             LIMIT $perPage OFFSET $offset;
@@ -120,9 +120,7 @@ class QueueManager extends AbstractManager
         $pages = $wpdb->get_results("
             SELECT count(*) as 'count'
             FROM $table a
-            WHERE (a.hook like '$queue%' OR
-                   (a.extended_args IS NULL AND a.args like '$queue%') OR
-                   a.extended_args like '$queue%')
+            WHERE a.hook = '$queue'
                 AND a.status in ('" . join("','", $status) . "')
         ");
 
