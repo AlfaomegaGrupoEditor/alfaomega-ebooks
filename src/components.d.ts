@@ -33,10 +33,7 @@ declare module 'vue' {
     BRow: typeof import('bootstrap-vue-next/components/BContainer')['BRow']
     BSpinner: typeof import('bootstrap-vue-next/components/BSpinner')['BSpinner']
     BTable: typeof import('bootstrap-vue-next/components/BTable')['BTable']
-    BTh: typeof import('bootstrap-vue-next/components/BTable')['BTh']
-    BThead: typeof import('bootstrap-vue-next/components/BTable')['BThead']
     BToast: typeof import('bootstrap-vue-next/components/BToast')['BToast']
-    BTr: typeof import('bootstrap-vue-next/components/BTable')['BTr']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }
