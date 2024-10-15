@@ -129,6 +129,7 @@
         event.preventDefault();
         activeTab.value = page;
         retrieveProcessData();
+        selectedItems.value = [];
     };
 
     const handleShowDialog = (actionType: String, item: ProcessDataType) => {
@@ -208,15 +209,35 @@
                 <span :class="`text-${variant}`">{{ $t(status) }}</span>
                 <span> ]</span>
             </div>
-            <ao-processing-actions
-                :action="action"
-                :status="activeTab"
-                :processing="processing"
-                direction="row"
-                @action="emit('action')"
-                @refresh="handleRefreshQueue"
-                @clear="handleClearQueue"
-            />
+            <div class="d-flex justify-content-end align-items-center">
+                <BDropdown
+                    v-if="selectedItems.length > 0"
+                    :text="$t('mass_actions')"
+                    class="mx-3"
+                    size="sm"
+                    variant="secondary"
+                >
+                    <BDropdownItemButton
+                        @click="handleShowDialog('retry', selectedItems)"
+                    >
+                        {{ $t('retry') }}
+                    </BDropdownItemButton>
+                    <BDropdownItemButton
+                        @click="handleShowDialog('delete', selectedItems)"
+                    >
+                        {{ $t('delete') }}
+                    </BDropdownItemButton>
+                </BDropdown>
+                <ao-processing-actions
+                    :action="action"
+                    :status="activeTab"
+                    :processing="processing"
+                    direction="row"
+                    @action="emit('action')"
+                    @refresh="handleRefreshQueue"
+                    @clear="handleClearQueue"
+                />
+            </div>
         </div>
 
         <div class="mb-2" v-html="$t(actionNotice)"></div>

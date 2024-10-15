@@ -85,6 +85,7 @@ const messages = {
         loading: 'Loading',
         logs: 'Logs',
         // M
+        mass_actions: 'Mass Actions',
         message: 'Hello, World!',
         migration_notice: 'If you have an account in out previous store %s, you can import all your books to access them from here. Please open your account in %s, copy the access code and paste it here in the Add <b>Sample box</b>',
         // N
@@ -242,6 +243,7 @@ const messages = {
         loading: 'Cargando',
         logs: 'Registros',
         // M
+        mass_actions: 'Acciones Masivas',
         message: 'Hola, mundo!',
         migration_notice: 'Si tienes una cuenta en nuestra tienda anterior <b>:website</b>, puedes importar todos tus libros para acceder a ellos desde aquí. Por favor, abre la sección <b>Mis Libros</b> en el sitio anterior, copia el <b>código de acceso</b> y pégalo en el cuadro <b>Agregar Muestras.</b>',
         muestra: 'Muestra',

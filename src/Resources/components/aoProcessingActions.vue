@@ -40,7 +40,7 @@
 </script>
 
 <template>
-    <div class="col-3 d-flex justify-content-end"
+    <div class="col d-flex justify-content-end"
          :class="`flex-${direction}`"
     >
         <BButton class="my-1 mx-1"
