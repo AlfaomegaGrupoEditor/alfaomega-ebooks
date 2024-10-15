@@ -107,7 +107,7 @@ class Service
     protected function loadEnv(): void
     {
         if (!file_exists(ABSPATH . "/wp-content/plugins/alfaomega-ebooks/.env")) {
-            WP_DEBUG && error_log('No .env file found in the plugin directory, please duplicate the .env.example file and rename it to .env and setup the environment variables.');
+            // WP_DEBUG && error_log('No .env file found in the plugin directory, please duplicate the .env.example file and rename it to .env and setup the environment variables.');
             return;
         }
 
