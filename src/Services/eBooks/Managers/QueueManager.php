@@ -43,12 +43,13 @@ class QueueManager extends AbstractManager
     {
         global $wpdb;
 
-        $results = $wpdb->get_results("
-                SELECT status, count(*) as 'count'
-                FROM {$this->table} a
-                WHERE a.hook = '$queue'
-                GROUP BY a.status
-            ");
+        $query = $wpdb->prepare("
+            SELECT status, count(*) as 'count'
+            FROM {$this->table} a
+            WHERE a.hook = %s
+            GROUP BY a.status
+        ", $queue);
+        $results = $wpdb->get_results($query);
 
         $data = [
             'queue'      => $queue,
@@ -74,12 +75,13 @@ class QueueManager extends AbstractManager
     {
         global $wpdb;
 
-        $wpdb->get_results("
-                DELETE
-                FROM {$this->table} a
-                WHERE hook = '$queue'
-                    AND status not in ('in-process');
-            ");
+        $query = $wpdb->prepare("
+            DELETE FROM {$this->table} a
+                WHERE hook = %s
+                    AND status not in ('in-process')
+        ", $queue);
+        $wpdb->get_results($query);
+
 
         return $this->status($queue, true);
     }
@@ -100,14 +102,15 @@ class QueueManager extends AbstractManager
         global $wpdb;
 
         $offset = ($page - 1) * $perPage;
-        $results = $wpdb->get_results("
+        $query = $wpdb->prepare("
             SELECT *
             FROM {$this->table} a
-            WHERE a.hook = '$queue'
-                AND a.status in ('" . join("','", $status) . "')
+            WHERE a.hook = %s
+                AND a.status in (" . join(",", array_fill(0, count($status), '%s')) . ")
             ORDER BY a.status, a.scheduled_date_gmt DESC
-            LIMIT $perPage OFFSET $offset;
-        ");
+            LIMIT %d OFFSET %d;
+        ", array_merge([$queue], $status, [$perPage, $offset]));
+        $results = $wpdb->get_results($query);
 
         $data = [];
         foreach ($results as $result) {
@@ -117,12 +120,13 @@ class QueueManager extends AbstractManager
                 ]);
         }
 
-        $pages = $wpdb->get_results("
+        $query = $wpdb->prepare("
             SELECT count(*) as 'count'
             FROM {$this->table} a
-            WHERE a.hook = '$queue'
-                AND a.status in ('" . join("','", $status) . "')
-        ");
+            WHERE a.hook = %s
+                AND a.status in (" . join(",", array_fill(0, count($status), '%s')) . ")
+            ", array_merge([$queue], $status));
+        $pages = $wpdb->get_results($query);
 
         return [
             'data' => $data,
@@ -145,12 +149,13 @@ class QueueManager extends AbstractManager
     public function logs(int $actionId): array
     {
         global $wpdb;
-        $results = $wpdb->get_results("
+
+        $query = $wpdb->prepare("
             SELECT *
             FROM {$this->logsTable} a
-            WHERE a.action_id = $actionId
-            ORDER BY a.log_date_gmt DESC;
-        ");
+            WHERE a.action_id = %s
+            ORDER BY a.log_date_gmt DESC;", $actionId);
+        $results = $wpdb->get_results($query);
 
         $data = [];
         foreach ($results as $result) {
@@ -175,12 +180,14 @@ class QueueManager extends AbstractManager
     {
         global $wpdb;
 
-        $result = $wpdb->query("
+        $query = $wpdb->prepare("
                 DELETE
                 FROM {$this->table}
-                WHERE hook = '$queue'
-                    AND action_id in (" . join(",", $actionId) . ");
-            ");
+                WHERE hook = %s
+                    AND action_id in (" . join(",", array_fill(0, count($actionId), '%s')) . ");
+            ", array_merge([$queue], $actionId));
+        $result = $wpdb->get_results($query);
+
         if (empty($result)) {
             throw new \Exception(esc_html__('Failed to delete the action.', 'alfaomega-ebooks'), 500);
         }
@@ -203,14 +210,16 @@ class QueueManager extends AbstractManager
     {
         global $wpdb;
 
-        $result = $wpdb->query("
+        $query = $wpdb->prepare("
                 UPDATE {$this->table}
                 SET status = 'pending',
                     scheduled_date_gmt = DATE_ADD(NOW(), INTERVAL 1 minute),
                     scheduled_date_local = DATE_ADD(NOW(), INTERVAL 1 minute)
-                WHERE hook = '$queue'
-                    AND action_id in (" . join(",", $actionId) . ");
-            ");
+                WHERE hook = %s
+                    AND action_id in (" . join(",", array_fill(0, count($actionId), '%s')) . ");
+            ", array_merge([$queue], $actionId));
+        $result = $wpdb->get_results($query);
+
         if (empty($result)) {
             throw new \Exception(esc_html__('Failed adding actions to the pending queue.', 'alfaomega-ebooks'), 500);
         }
