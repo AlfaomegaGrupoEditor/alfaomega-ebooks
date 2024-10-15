@@ -42,6 +42,7 @@ const messages = {
         dashboard: 'Dashboard',
         delete: 'Delete',
         delete_process_confirmation: 'Are you sure you want to delete this process?',
+        details: 'Details',
         digital_library: 'Digital Library',
         dont_show_again: 'Don\'t show this again',
         download: 'Download',
@@ -82,6 +83,7 @@ const messages = {
         link_products_description: 'Unlinked/Catalog',
         link_products_notice: 'Link the products that are not related yet by searching the corresponding digital book in the list of already imported eBooks.',
         loading: 'Loading',
+        logs: 'Logs',
         // M
         message: 'Hello, World!',
         migration_notice: 'If you have an account in out previous store %s, you can import all your books to access them from here. Please open your account in %s, copy the access code and paste it here in the Add <b>Sample box</b>',
@@ -198,6 +200,7 @@ const messages = {
         dashboard: 'Panel de Control',
         delete: 'Eliminar',
         delete_process_confirmation: '¿Estás seguro de que deseas eliminar este proceso?',
+        details: 'Detalles',
         digital_library: 'Biblioteca Digital',
         dont_show_again: 'No mostrar nuevamente',
         download: 'Descargar',
@@ -237,6 +240,7 @@ const messages = {
         linked_products: 'Productos Vinculados',
         linked_products_description: 'WooCommerce productos con el eBook configurado y activo.',
         loading: 'Cargando',
+        logs: 'Registros',
         // M
         message: 'Hola, mundo!',
         migration_notice: 'Si tienes una cuenta en nuestra tienda anterior <b>:website</b>, puedes importar todos tus libros para acceder a ellos desde aquí. Por favor, abre la sección <b>Mis Libros</b> en el sitio anterior, copia el <b>código de acceso</b> y pégalo en el cuadro <b>Agregar Muestras.</b>',

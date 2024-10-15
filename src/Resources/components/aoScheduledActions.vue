@@ -15,6 +15,7 @@
     import {useProcessStore, useAppStore } from '@/stores';
     import {RefreshActionsEvent} from '@/events/types';
     import {eventBus, useMittEvents} from '@/events';
+    import {formatDate} from '@/services/Helper';
 
     const props = defineProps({
         action: {type: String as () => ProcessNameType , default: 'import'},
@@ -67,18 +68,6 @@
             default:
                 return 'warning';
         }
-    }
-    const formatDate = (date: string) => {
-        return new Date(date).toLocaleString(
-            'es-ES',
-            {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: false
-            });
     }
     const sortFields: Exclude<TableFieldRaw<ProcessItem>, string>[] = [
         {key: 'id', sortable: true, label: 'ID'},
@@ -365,14 +354,30 @@
         :title="$t(dlgModalTitle) + ' [' + $t(actionTitle) + ']'"
         size="lg"
     >
-        <div class="row py-2 px-3"
-             v-if="selectedAction.item && selectedAction.item.data"
-            v-for="(value, key) in selectedAction.item.data"
-            :key="key"
-        >
-            <div class="col-2 fw-bold fs-7 text-end text-uppercase">{{ key }}:</div>
-            <div class="col border px-2 py-2 bg-info-subtle">{{ value }}</div>
-        </div>
+        <BTabs class="info-variant">
+            <BTab :title="$t('details')" active class="mt-2">
+                <div class="row py-2 px-3"
+                     v-if="selectedAction.item && selectedAction.item.data"
+                     v-for="(value, key) in selectedAction.item.data"
+                     :key="key"
+                >
+                    <div class="col-2 fw-bold fs-7 text-end text-uppercase">{{ key }}:</div>
+                    <div class="col border px-2 py-2 bg-info-subtle">{{ value }}</div>
+                </div>
+            </BTab>
+            <BTab :title="$t('logs')" class="mt-2">
+                <div class="row py-2 px-3"
+                     v-if="selectedAction.item && selectedAction.item.logs"
+                     v-for="log in selectedAction.item.logs"
+                     :key="log.id"
+                >
+                    <div class="col-3 text-end text-uppercase">
+                        <BBadge variant="info">{{ formatDate(log.date) }}</BBadge>
+                    </div>
+                    <div class="col px-2">{{ log.message }}</div>
+                </div>
+            </BTab>
+        </BTabs>
     </ao-dialog>
 </template>
 
@@ -409,5 +414,18 @@
     }
     .b-table-empty-slot {
         text-align: center;
+    }
+    .info-variant .nav-item {
+        margin-bottom: -1px;
+    }
+    .info-variant .nav-link {
+        color: #2171b1;
+    }
+    .info-variant .nav-link:hover {
+        color: #2171b1;
+        border-color: #2171b1;
+    }
+    .info-variant .tab-content {
+        min-height: 380px;
     }
 </style>

@@ -133,7 +133,8 @@ interface ProcessItem {
     status: string
     schedule_date: string
     last_attend_date: string,
-    data: ProcessDataType
+    data: ProcessDataType,
+    logs: ProcessDataType,
 }
 
 type MetaType = {

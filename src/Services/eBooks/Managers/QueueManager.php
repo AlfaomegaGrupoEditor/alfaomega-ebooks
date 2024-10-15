@@ -3,6 +3,7 @@
 namespace AlfaomegaEbooks\Services\eBooks\Managers;
 
 use AlfaomegaEbooks\Services\Alfaomega\Api;
+use AlfaomegaEbooks\Services\eBooks\Transformers\ActionLogTransformer;
 use AlfaomegaEbooks\Services\eBooks\Transformers\ActionTransformer;
 use AlfaomegaEbooks\Services\eBooks\Transformers\QueueTransformer;
 
@@ -14,6 +15,7 @@ class QueueManager extends AbstractManager
      * @var string
      */
     protected string $table = 'actionscheduler_actions';
+    protected string $logsTable = 'actionscheduler_logs';
 
     /**
      * QueueManager constructor.
@@ -25,6 +27,7 @@ class QueueManager extends AbstractManager
 
         parent::__construct($api, $settings);
         $this->table = $table_prefix . $this->table;
+        $this->logsTable = $table_prefix . $this->logsTable;
     }
 
     /**
@@ -106,10 +109,12 @@ class QueueManager extends AbstractManager
             LIMIT $perPage OFFSET $offset;
         ");
 
-        // TODO: Implement this.
         $data = [];
         foreach ($results as $result) {
-            $data[] = ActionTransformer::transform($result);
+            $data[] = array_merge(
+                ActionTransformer::transform($result), [
+                    'logs' => $this->logs($result->action_id)
+                ]);
         }
 
         $pages = $wpdb->get_results("
@@ -128,6 +133,33 @@ class QueueManager extends AbstractManager
             ],
         ];
     }
+
+    /**
+     * Retrieves the log of an action.
+     * This method retrieves the log of an action by selecting all log entries with the specified action ID.
+     *
+     * @param int $actionId The action ID.
+     *
+     * @return array The log of the action.
+     */
+    public function logs(int $actionId): array
+    {
+        global $wpdb;
+        $results = $wpdb->get_results("
+            SELECT *
+            FROM {$this->logsTable} a
+            WHERE a.action_id = $actionId
+            ORDER BY a.log_date_gmt DESC;
+        ");
+
+        $data = [];
+        foreach ($results as $result) {
+            $data[] = ActionLogTransformer::transform($result);
+        }
+
+        return $data;
+    }
+
 
     /**
      * Deletes an action from the queue.
@@ -173,7 +205,9 @@ class QueueManager extends AbstractManager
 
         $result = $wpdb->query("
                 UPDATE {$this->table}
-                SET status = 'pending'
+                SET status = 'pending',
+                    scheduled_date_gmt = DATE_ADD(NOW(), INTERVAL 1 minute),
+                    scheduled_date_local = DATE_ADD(NOW(), INTERVAL 1 minute)
                 WHERE hook = '$queue'
                     AND action_id in (" . join(",", $actionId) . ");
             ");
