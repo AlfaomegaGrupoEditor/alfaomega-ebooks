@@ -136,11 +136,6 @@
         actionType === 'view' ? showDlg() : showConfirm();
     }
 
-    const handleRowClick = (item) => {
-        selectedAction.value = { type: 'view', item: item };
-        showDlg();
-    }
-
     const handleAction = () => {
         switch (selectedAction.value.type) {
             case 'retry':
@@ -166,18 +161,32 @@
     const handleRefreshQueue = () => {
         processStore.dispatchRetrieveQueueStatus(props.queue);
         retrieveProcessData();
+        selectedItems.value = [];
     }
 
     const handleClearQueue = () => {
         processStore.dispatchClearQueue(props.queue);
+        selectedItems.value = [];
+    }
+
+    const handleRowClick = (item) => {
+        const index = selectedItems.value.findIndex((value) => value.id === item.id);
+        if (index === -1) {
+            handleRowSelected(item);
+        } else {
+            handleRowUnSelected(item);
+        }
     }
 
     const handleRowSelected = (item: TableItem) => {
-        selectedItems.value.push(item.id);
+        selectedItems.value.push(item);
     }
 
     const handleRowUnSelected = (item: TableItem) => {
-        selectedItems.value = selectedItems.value.filter(id => id !== item.id);
+        const index = selectedItems.value.findIndex((value) => value.id === item.id);
+        if (index > -1) {
+            selectedItems.value.splice(index, 1);
+        }
     }
 
     onMounted(() => {
@@ -185,7 +194,7 @@
     });
 
     watch(selectedItems.value, (newVal) => {
-        console.log('selectedItems', newVal);
+        // console.log('selectedItems', newVal);
     });
 </script>
 
@@ -278,7 +287,7 @@
                     :bordered="false"
                     :hover="true"
                     :selectable="true"
-                    selection-variant="info"
+                    selection-variant="null"
                     tbody-tr-class="ao-table-row"
                     @row-selected="handleRowSelected"
                     @row-unselected="handleRowUnSelected"
@@ -286,16 +295,29 @@
                     <template #cell(select)="row">
                         <input type="checkbox"
                                :value="row.item.id"
+                               :checked="selectedItems.findIndex((value) => value.id === row.item.id) > -1"
+                               @click="handleRowClick(row.item)"
                         />
                     </template>
                     <template #cell(isbn)="row">
-                        <BBadge variant="info">{{ row.value }}</BBadge>
+                        <BBadge variant="info"
+                                @click="handleRowClick(row.item)"
+                        >
+                            {{ row.value }}
+                        </BBadge>
                     </template>
                     <template #cell(title)="row">
-                        {{ row.value.length > 60 ? row.value.substring(0, 60) + '...' : row.value }}
+                        <span @click="handleRowClick(row.item)">
+                            {{ row.value.length > 60 ? row.value.substring(0, 60) + '...' : row.value }}
+                        </span>
                     </template>
                     <template #cell(status)="row">
-                        <BBadge :variant="statusVariant(row.value)">{{ $t(row.value) }}</BBadge>
+                        <BBadge
+                            :variant="statusVariant(row.value)"
+                            @click="handleRowClick(row.item)"
+                        >
+                            {{ $t(row.value) }}
+                        </BBadge>
                     </template>
                     <template #cell(actions)="row">
                         <BButton
