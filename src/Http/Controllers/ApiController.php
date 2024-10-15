@@ -327,7 +327,11 @@ class ApiController
             ->queue()
             ->actions(
                 $queue,
-                $data['status'] === 'processing' ? [ 'in-process', 'pending' ] :  [ $data['status'] ],
+                match($data['status']) {
+                    'processing' => [ 'in-process', 'pending' ],
+                    'completed' => [ 'complete' ],
+                    default => [ $data['status'] ],
+                },
                 $data['page'] ?? 1,
                 $data['perPage'] ?? 10
             );
