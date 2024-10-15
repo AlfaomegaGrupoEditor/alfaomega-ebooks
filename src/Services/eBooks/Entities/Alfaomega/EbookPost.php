@@ -133,6 +133,8 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
             throw new Exception($response['response']['message']);
         }
         $content = json_decode($response['body'], true);
+        Service::make()->helper()->log($response['body']);
+
         if ($content['status'] !== 'success') {
             throw new Exception($content['message']);
         }
