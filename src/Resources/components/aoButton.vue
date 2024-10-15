@@ -19,13 +19,14 @@
 </script>
 
 <template>
+    <!--  FIXME: v-b-tooltip.hover.top -->
     <BButton
         :variant="color"
         class="rounded-pill mx-1 px-2"
         :size="size"
         :disabled="disabled || loading"
         @click="handleClick"
-        v-b-tooltip.title="tooltip"
+        :title="tooltip"
         style="min-width: 110px;"
     >
         <span class="mx-2 d-inline-block">

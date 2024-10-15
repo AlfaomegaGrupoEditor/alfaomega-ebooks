@@ -728,4 +728,43 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         $catalogKey = 'ebooks-catalog-' . wp_get_current_user()->ID;
         Service::make()->helper()->cacheForget($catalogKey);
     }
+
+    /**
+     * Get the information of the access.
+     *
+     * @return array The information of the access.
+     */
+    public function getInfo(): array
+    {
+        global $wpdb;
+
+        $fields = ['alfaomega_access_type', 'alfaomega_access_status'];
+        $formattedResults = [];
+        foreach ($fields as $field) {
+            // Prepare the SQL query
+            $dataQuery = "SELECT pm.meta_value AS field_type, COUNT(p.ID) AS total_posts
+                FROM {$wpdb->prefix}posts AS p
+                INNER JOIN {$wpdb->prefix}postmeta AS pm ON p.ID = pm.post_id
+                WHERE p.post_type = 'alfaomega-access'
+                AND p.post_status = 'publish'
+                AND pm.meta_key = '{$field}'
+                GROUP BY pm.meta_value;";
+
+            // Execute the query
+            $results = $wpdb->get_results($dataQuery, 'ARRAY_A');
+            foreach ($results as $row) {
+                $formattedResults[$row['field_type']] = intval($row['total_posts']);
+            }
+        }
+
+        return [
+            'sample'    => $formattedResults['sample'] ?? 0,
+            'purchase'  => $formattedResults['purchase'] ?? 0,
+            'created'   => $formattedResults['created'] ?? 0,
+            'active'    => $formattedResults['active'] ?? 0,
+            'expired'   => $formattedResults['expired'] ?? 0,
+            'cancelled' => $formattedResults['cancelled'] ?? 0,
+            'total'     => ($formattedResults['sample'] ?? 0) + ($formattedResults['purchase'] ?? 0),
+        ];
+    }
 }

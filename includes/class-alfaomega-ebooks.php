@@ -337,8 +337,8 @@ class Alfaomega_Ebooks {
 
         add_submenu_page(
             'alfaomega_ebooks_admin',
-            esc_html__('Home', 'alfaomega-ebooks'),
-            esc_html__('Home', 'alfaomega-ebooks'),
+            esc_html__('Dashboard', 'alfaomega-ebooks'),
+            esc_html__('Dashboard', 'alfaomega-ebooks'),
             'install_plugins',
             'alfaomega_ebooks_admin',
             null,
@@ -459,7 +459,8 @@ class Alfaomega_Ebooks {
 
         settings_errors('alfaomega_ebook_options');
 
-        require(ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_home_page.php');
+        //require(ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_home_page.php');
+        require(ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_dashboard.php');
     }
 
     /**

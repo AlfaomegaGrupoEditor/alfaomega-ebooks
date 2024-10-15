@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import {computed, ref} from 'vue';
-import {BookType} from '@/types';
+    import {computed, ref} from 'vue';
 
     const props = defineProps({
         caption: {type: String, default: 'caption'},
-        type: { type: String as () => 'info' | 'warning' | 'danger', default: 'info' },
-        action: { type: String, default: null }
+        type: { type: String as () => 'info' | 'warning' | 'danger' | 'notice', default: 'info' },
+        action: { type: String, default: null },
+        dismissible: { type: Boolean, default: true }
     });
 
     const emit = defineEmits<{ action: () => void }>();
@@ -18,6 +18,8 @@ import {BookType} from '@/types';
                 return 'warning';
             case 'danger':
                 return 'danger';
+            case 'notice':
+                return 'light';
         }
     });
     const show = ref(true);
@@ -26,12 +28,12 @@ import {BookType} from '@/types';
 
 <template>
     <BAlert
-        class="fs-7 mx-md-5 mx-0"
+        class="fs-7 my-2 my-md-3"
         :variant="variant"
         :model-value="show"
-        dismissible
+        :dismissible="dismissible"
     >
-        <h6 class="alert-heading fs-7">{{ caption }}</h6>
+        <h6 class="alert-heading">{{ caption }}</h6>
         <p v-html="$slots.default ? $slots.default()[0].children : ''"></p>
         <div v-if="action" class="text-end">
             <BButton
@@ -46,7 +48,7 @@ import {BookType} from '@/types';
 </template>
 
 <style scoped>
-    .alert-heading {
+    .bootstrap-app .alert-heading {
         margin-top: 0;
         margin-bottom: 15px;
     }

@@ -2,6 +2,12 @@
     import {ColorVariantType} from '@/types';
     import {ref, watch, computed} from 'vue';
     import _ from 'lodash';
+    import {
+        BiCheckCircle,
+        BiExclamationCircle,
+        BiExclamationTriangle,
+        BiInfoCircle
+    } from "@/components/icons"
 
     const props = defineProps({
         active: Boolean,
@@ -15,13 +21,13 @@
     const icon = computed(() => {
         switch (props.variant) {
             case 'success':
-                return 'fa-check-circle';
+                return BiCheckCircle;
             case 'primary':
-                return 'fa-exclamation-circle';
+                return BiExclamationCircle;
             case 'warning':
-                return 'fa-exclamation-triangle';
+                return BiExclamationTriangle;
             default:
-                return 'fa-info-circle';
+                return BiInfoCircle;
         }
     });
     const stripedContent = computed(() => {
@@ -36,7 +42,7 @@
 </script>
 
 <template>
-    <Teleport to="body">
+    <Teleport to="#ao-container">
         <div class="top-0 end-0 toast-container position-fixed p-3 ao-toast">
             <BToast
                 v-model="showToast"
@@ -44,7 +50,7 @@
             >
                 <div class="row">
                     <div class="col-1">
-                        <i class="fas fs-5" :class="icon"></i>
+                        <span v-html="icon" />
                     </div>
                     <div class="col">
                         <div class="fs-8 fw-bold" v-if="title"> {{ title }}</div>

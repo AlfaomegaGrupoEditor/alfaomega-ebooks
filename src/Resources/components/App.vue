@@ -15,14 +15,14 @@
     import {eventBus, useMittEvents} from '@/events';
     import {ApiCheckEvent, NotificationEvent} from '@/events/types';
     import {getValue} from '@/services/Helper';
+    import { useToast } from '@/composables/useToast';
 
     const {t} = useI18n();
     const appStore = useAppStore();
     const isLoading = computed(() => appStore.isLoading);
     const header = ref<string>(t('welcome'));
     const searchQuery = ref<BooksQueryType>(null);
-    const toast = ref<ToastType>();
-    const toastActive = ref(false);
+    const { toast, toastActive, showToast } = useToast();
     const showSidebar = ref(false);
     const hideMigrationNotice = ref(localStorage.getItem('hideMigrationNotice') === 'true');
     const migrationNotice = computed(() => t('migration_notice')
@@ -106,19 +106,6 @@
     };
 
     /**
-     * Show a toast message
-     * @param newToast
-     */
-    const showToast = (newToast: ToastType) => {
-        toast.value = newToast;
-
-        toastActive.value = true;
-        setTimeout(() => {
-            toastActive.value = false;
-        }, 5000);
-    };
-
-    /**
      * Handle the filters update
      * @param filter
      */
@@ -158,7 +145,6 @@
     };
 
     const handleApply = (payload: ToastType) => {
-        // TODO: actually apply the code
         showToast(payload);
     };
 
@@ -180,6 +166,9 @@
 </script>
 
 <template>
+    <teleport to="body">
+        <div id="ao-container" class="bootstrap-app"></div>
+    </teleport>
     <b-container fluid class="ff-body ao-ebooks" style="min-height: 700px">
         <b-row>
             <!-- Left panel-->
@@ -195,6 +184,7 @@
                 :hide-backdrop="false"
                 :header="false"
                 :shadow="true"
+                teleport-to="#ao-container"
                 style="z-index: 9999999991"
             >
                 <div>
@@ -210,7 +200,7 @@
                     <b-button class="d-md-none" @click="showSidebar = true">
                         <i class="fas fa-bars"></i>
                     </b-button>
-                    <h4 class="text-primary ms-2">{{ header }}</h4>
+                    <h4 class="text-primary ms-2 fs-6">{{ header }}</h4>
                 </div>
                 <ao-alert v-if="showMigrationNotice"
                     :caption="$t('important_info')"

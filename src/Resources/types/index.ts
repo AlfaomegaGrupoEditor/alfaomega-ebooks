@@ -76,6 +76,75 @@ type RedeemStatusType = {
     data: null;
 }
 
+type EbookInfoType = {
+    catalog: number;
+    imported: number;
+}
+
+type ProductsInfoType = {
+    catalog: number;
+    unlinked: number;
+    linked: number;
+}
+
+type EbookAccessInfoType = {
+    sample: number;
+    purchase: number;
+    created: number;
+    active: number;
+    expired: number;
+    cancelled: number;
+    total: number;
+}
+
+type AccessCodeInfoType = {
+    samples: number;
+    import: number;
+    created: number;
+    sent: number;
+    redeemed: number;
+    expired: number;
+    cancelled: number;
+    total: number;
+}
+
+type ProcessType = 'import-new-ebooks' | 'update-ebooks' | 'link-products' | 'setup-prices';
+
+type ProcessNameType = 'import' | 'update' | 'link' | 'setup';
+
+type ProcessStatusType = 'idle' | 'processing' | 'failed' | 'completed' | 'pending';
+
+type AsyncProcessType = {
+    status: ProcessStatusType;
+    completed: Number,
+    processing: Number,
+    pending: Number,
+    failed: Number
+}
+
+type ProcessDataType = {
+    [key: string]: any;
+}
+
+interface ProcessItem {
+    id: number
+    isbn: string
+    title: string
+    status: string
+    schedule_date: string
+    last_attend_date: string,
+    data: ProcessDataType,
+    logs: ProcessDataType,
+}
+
+type MetaType = {
+    total: number;
+    current_page: number;
+    pages: number;
+}
+
+type QueueType = 'import-new-ebooks' | 'update-ebooks' | 'link-products' | 'setup-prices';
+
 export {
     ColorVariantType,
     SizeVariantType,
@@ -88,5 +157,16 @@ export {
     ToastType,
     CatalogType,
     CatalogItemsType,
-
+    EbookInfoType,
+    ProductsInfoType,
+    EbookAccessInfoType,
+    AccessCodeInfoType,
+    ProcessType,
+    ProcessNameType,
+    ProcessStatusType,
+    AsyncProcessType,
+    ProcessItem,
+    MetaType,
+    ProcessDataType,
+    QueueType
 };

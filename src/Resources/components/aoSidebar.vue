@@ -55,6 +55,7 @@
         :hide-backdrop="false"
         :header="false"
         :shadow="true"
+        teleport-to="#ao-container"
         @hide="handleClose"
     >
         <template #title>

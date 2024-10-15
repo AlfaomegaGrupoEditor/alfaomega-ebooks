@@ -135,10 +135,23 @@ class RouteManager
      * @var array $apiEndpoints
      */
     protected array $apiEndpoints = [
-        'check'   => [ApiController::class, 'checkApi', 'GET'],
-        'books'   => [ApiController::class, 'getBooks', 'POST'],
-        'catalog' => [ApiController::class, 'getCatalog', 'GET'],
-        'redeem'  => [ApiController::class, 'redeemCode', 'POST'],
+        'check'             => [ApiController::class, 'checkApi', 'GET'],
+        'books'             => [ApiController::class, 'getBooks', 'POST'],
+        'catalog'           => [ApiController::class, 'getCatalog', 'GET'],
+        'redeem'            => [ApiController::class, 'redeemCode', 'POST'],
+        'ebooks-info'       => [ApiController::class, 'getEbooksInfo', 'GET'],
+        'products-info'     => [ApiController::class, 'getProductsInfo', 'GET'],
+        'access-info'       => [ApiController::class, 'getAccessInfo', 'GET'],
+        'codes-info'        => [ApiController::class, 'getCodesInfo', 'GET'],
+        'process-info'      => [ApiController::class, 'getProcessInfo', 'POST'],
+        'process-actions'   => [ApiController::class, 'getProcessActions', 'POST'],
+        'clear-queue'       => [ApiController::class, 'clearQueue', 'POST'],
+        'delete-action'     => [ApiController::class, 'deleteAction', 'POST'],
+        'retry-action'      => [ApiController::class, 'retryAction', 'POST'],
+        'import-new-ebooks' => [ApiController::class, 'importNewEbooks', 'GET'],
+        'update-ebooks'     => [ApiController::class, 'updateEbooks', 'GET'],
+        'link-products'     => [ApiController::class, 'linkProducts', 'GET'],
+        'setup-prices'      => [ApiController::class, 'setupPrices', 'POST'],
     ];
 
     /**
@@ -268,7 +281,7 @@ class RouteManager
                 'status'  => 'fail',
                 'data'    => null,
                 'message' => esc_html__($e->getMessage(), 'alfaomega-ebooks'),
-            ], 500);
+            ], $e->getCode() ?: 500);
         }
     }
 

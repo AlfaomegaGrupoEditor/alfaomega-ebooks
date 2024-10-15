@@ -98,10 +98,53 @@ const setClass = (cssQuery, className: string, add = true): void =>
     }, 100);
 };
 
+/**
+ * Get the process name
+ * @param process
+ */
+const getProcess = (process: ProcessType): ProcessType =>
+{
+    switch (process) {
+        case 'import-new-ebooks':
+            return 'importNewEbooks';
+        case 'update-ebooks':
+            return 'updateEbooks';
+        case 'link-products':
+            return 'linkProducts';
+        case 'setup-prices':
+            return 'setupPrices';
+        default:
+            return 'importNewEbooks';
+    }
+}
+
+/**
+ * Format a date
+ * @param date
+ */
+const formatDate = (date: string) => {
+    if (date === '0000-00-00 00:00:00') {
+        return '-';
+    }
+
+    return new Date(date).toLocaleString(
+        'es-ES',
+        {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
+};
+
 export {
     empty,
     updateHistory,
     isNull,
     getValue,
-    setClass
+    setClass,
+    getProcess,
+    formatDate
 };

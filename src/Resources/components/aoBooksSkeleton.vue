@@ -27,19 +27,19 @@
 </template>
 
 <style scoped>
-@keyframes opacityAnimation {
-    0% {
-        opacity: 0.3;
+    @keyframes opacityAnimation {
+        0% {
+            opacity: 0.3;
+        }
+        50% {
+            opacity: 0.5;
+        }
+        100% {
+            opacity: 0.3;
+        }
     }
-    50% {
-        opacity: 0.5;
-    }
-    100% {
-        opacity: 0.3;
-    }
-}
 
-.opacity-animation {
-    animation: opacityAnimation 1.5s infinite;
-}
+    .bootstrap-app .opacity-animation {
+        animation: opacityAnimation 1.5s infinite;
+    }
 </style>

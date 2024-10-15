@@ -20,8 +20,17 @@ type ApiCheckEvent = {
 type CatalogSelectedEvent = {
     catalog_id: string    ;
 }
+
+/**
+ * Type definition for the 'refreshActionsEvent'.
+ */
+type RefreshActionsEvent = {
+    process: ProcessType | null;
+}
+
 export {
     NotificationEvent,
     ApiCheckEvent,
-    CatalogSelectedEvent
+    CatalogSelectedEvent,
+    RefreshActionsEvent
 };

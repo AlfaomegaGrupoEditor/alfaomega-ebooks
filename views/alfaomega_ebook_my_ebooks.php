@@ -1,4 +1,4 @@
-<div class="my-ebook-content">
+<div class="my-ebook-content bootstrap-app">
     <?php if (is_user_logged_in()) : ?>
         <div id="ao-my-ebooks-app">
             <div class="ao-container">

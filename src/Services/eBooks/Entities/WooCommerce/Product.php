@@ -177,4 +177,36 @@ class Product extends WooAbstractEntity implements ProductEntity
     {
         return $this->variant;
     }
+
+    /**
+     * Get the product info.
+     *
+     * @return array
+     */
+    public function getInfo(): array
+    {
+        global $wpdb;
+
+        $dataQuery = "SELECT t.name AS product_type, COUNT(p.ID) AS total_products
+            FROM {$wpdb->prefix}posts AS p
+            INNER JOIN {$wpdb->prefix}term_relationships AS tr ON p.ID = tr.object_id
+            INNER JOIN {$wpdb->prefix}term_taxonomy AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+            INNER JOIN {$wpdb->prefix}terms AS t ON tt.term_id = t.term_id
+            WHERE p.post_type = 'product'
+            AND p.post_status = 'publish'
+            AND tt.taxonomy = 'product_type'
+            GROUP BY t.name;";
+
+        $results = $wpdb->get_results($dataQuery, 'ARRAY_A');
+        $formattedResults = [];
+        foreach ($results as $row) {
+            $formattedResults[$row['product_type']] = intval($row['total_products']);
+        }
+
+        return [
+            'catalog'  => ($formattedResults['simple'] ?? 0) + ($formattedResults['variable'] ?? 0),
+            'unlinked' => $formattedResults['simple'] ?? 0,
+            'linked'   => $formattedResults['variable'] ?? 0,
+        ];
+    }
 }

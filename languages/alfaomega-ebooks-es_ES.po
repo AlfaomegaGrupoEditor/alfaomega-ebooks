@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank WordPress Pot v1.0.0\n"
 "Report-Msgid-Bugs-To: Livan Rodriguez <livan2r@gmail.com>\n"
-"POT-Creation-Date: 2024-10-05 19:26-0400\n"
-"PO-Revision-Date: 2024-10-05 19:31-0400\n"
+"POT-Creation-Date: 2024-10-14 15:24-0400\n"
+"PO-Revision-Date: 2024-10-14 15:30-0400\n"
 "Last-Translator: Alfaomega México ADMIN\n"
 "Language-Team: Español\n"
 "Language: es_ES\n"
@@ -24,33 +24,33 @@ msgstr ""
 "X-Loco-Version: 2.6.11; wp-6.6.1\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: admin/class-alfaomega-ebooks-admin.php:110
+#: admin/class-alfaomega-ebooks-admin.php:146
 msgid "Update meta"
 msgstr "Actualizar metadatos"
 
-#: admin/class-alfaomega-ebooks-admin.php:125
-#: admin/class-alfaomega-ebooks-admin.php:206
+#: admin/class-alfaomega-ebooks-admin.php:161
+#: admin/class-alfaomega-ebooks-admin.php:242
 msgid "Link eBook"
 msgstr "Vincular eBook"
 
-#: admin/class-alfaomega-ebooks-admin.php:140
+#: admin/class-alfaomega-ebooks-admin.php:176
 msgid "Update eBooks meta failed!"
 msgstr "La actualización de los metadatos del eBook ha fallado"
 
-#: admin/class-alfaomega-ebooks-admin.php:144
+#: admin/class-alfaomega-ebooks-admin.php:180
 #, php-format
 msgid "%u eBooks meta updated successfully"
 msgstr "Los metadatos de %u eBooks fueron actualizados con éxito"
 
-#: admin/class-alfaomega-ebooks-admin.php:151
+#: admin/class-alfaomega-ebooks-admin.php:187
 msgid "Product not found"
 msgstr "Producto no encontrado"
 
-#: admin/class-alfaomega-ebooks-admin.php:154
+#: admin/class-alfaomega-ebooks-admin.php:190
 msgid "Showing the related eBook product"
 msgstr "Mostrando el eBook relacionado al producto"
 
-#: admin/class-alfaomega-ebooks-admin.php:161
+#: admin/class-alfaomega-ebooks-admin.php:197
 msgid ""
 "Link eBook failed! Please check the product ebook ISBN and simple product "
 "price."
@@ -58,39 +58,39 @@ msgstr ""
 "¡Enlace eBook fallido! Por favor, compruebe el producto ebook ISBN y el "
 "precio del producto simple."
 
-#: admin/class-alfaomega-ebooks-admin.php:165
+#: admin/class-alfaomega-ebooks-admin.php:201
 #, php-format
 msgid "%u ebooks linked successfully"
 msgstr "%u libros electrónicos enlazados correctamente"
 
-#: admin/class-alfaomega-ebooks-admin.php:172
+#: admin/class-alfaomega-ebooks-admin.php:208
 msgid "Unlink eBook failed!"
 msgstr "Error al desvincular el libro electrónico"
 
-#: admin/class-alfaomega-ebooks-admin.php:176
+#: admin/class-alfaomega-ebooks-admin.php:212
 msgid "Ebook unlinked successfully"
 msgstr "Ebook desvinculado correctamente"
 
-#: admin/class-alfaomega-ebooks-admin.php:212
+#: admin/class-alfaomega-ebooks-admin.php:248
 msgid "Unlink eBook"
 msgstr "Desvincular eBook"
 
-#: admin/class-alfaomega-ebooks-admin.php:226
+#: admin/class-alfaomega-ebooks-admin.php:262
 msgid "Update"
 msgstr "Actualizar eBook"
 
-#: admin/class-alfaomega-ebooks-admin.php:230
+#: admin/class-alfaomega-ebooks-admin.php:266
 msgid "Product"
 msgstr "Editar producto"
 
-#: admin/class-alfaomega-ebooks-admin.php:252
+#: admin/class-alfaomega-ebooks-admin.php:288
 msgid "eBook ISBN"
 msgstr "eBook ISBN"
 
-#: admin/class-alfaomega-ebooks-admin.php:285
-#: admin/class-alfaomega-ebooks-admin.php:317
-#: admin/class-alfaomega-ebooks-admin.php:329
-#: admin/class-alfaomega-ebooks-admin.php:330
+#: admin/class-alfaomega-ebooks-admin.php:321
+#: admin/class-alfaomega-ebooks-admin.php:353
+#: admin/class-alfaomega-ebooks-admin.php:365
+#: admin/class-alfaomega-ebooks-admin.php:366
 #: post_types/class-alfaomega-ebooks-access-post-type.php:213
 #: post_types/class-alfaomega-ebooks-post-type.php:197
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:251
@@ -98,36 +98,36 @@ msgstr "eBook ISBN"
 msgid "eBook"
 msgstr "eBook"
 
-#: admin/class-alfaomega-ebooks-admin.php:376
+#: admin/class-alfaomega-ebooks-admin.php:412
 msgid "Filtrar por eBook"
 msgstr "Filtrar por eBook"
 
-#: admin/class-alfaomega-ebooks-admin.php:377
+#: admin/class-alfaomega-ebooks-admin.php:413
 #, fuzzy
 msgid "Producto simple"
 msgstr "Producto simple"
 
-#: admin/class-alfaomega-ebooks-admin.php:378
+#: admin/class-alfaomega-ebooks-admin.php:414
 #, fuzzy
 msgid "Todos los eBooks"
 msgstr "Todos los eBooks"
 
-#: admin/class-alfaomega-ebooks-admin.php:379
+#: admin/class-alfaomega-ebooks-admin.php:415
 #, fuzzy
 msgid "Vinculado correctamente"
 msgstr "Vinculado correctamente"
 
-#: admin/class-alfaomega-ebooks-admin.php:380
+#: admin/class-alfaomega-ebooks-admin.php:416
 #, fuzzy
 msgid "Desvinculado"
 msgstr "Desvinculado"
 
-#: admin/class-alfaomega-ebooks-admin.php:381
+#: admin/class-alfaomega-ebooks-admin.php:417
 #, fuzzy
 msgid "Desactivado"
 msgstr "Desactivado"
 
-#: admin/class-alfaomega-ebooks-admin.php:592
+#: admin/class-alfaomega-ebooks-admin.php:628
 #, fuzzy
 #| msgid "AO eBooks"
 msgid "My eBooks"
@@ -362,7 +362,7 @@ msgstr "Cola limpiada con éxito"
 #: includes/class-alfaomega-ebooks-service.php:555
 #: src/Services/eBooks/Entities/Alfaomega/AccessPost.php:168
 #: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:190
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:214
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:218
 msgid "Unable to create post."
 msgstr "No se ha podido crear el post."
 
@@ -504,8 +504,8 @@ msgstr "AO eBooks"
 
 #: includes/class-alfaomega-ebooks.php:340
 #: includes/class-alfaomega-ebooks.php:341
-msgid "Home"
-msgstr "Inicio"
+msgid "Dashboard"
+msgstr "Panel de Control"
 
 #: includes/class-alfaomega-ebooks.php:350
 msgid "All Alfaomega eBooks"
@@ -1008,6 +1008,7 @@ msgstr "Escriba para buscar"
 
 #: packages/carbon-field-choices/src/main.js:83
 #: vendor/livan2r/carbon-field-choices/src/main.js:83
+#: views/alfaomega_ebook_dashboard.php:3
 msgid "Loading..."
 msgstr "Cargando…"
 
@@ -1079,7 +1080,7 @@ msgstr "Estado"
 #: post_types/class-alfaomega-ebooks-access-post-type.php:85
 #: views/alfaomega_ebook_access_metabox.php:108
 #: views/alfaomega_ebook_sample_metabox.php:108
-#: website/class-alfaomega-ebooks-public.php:193
+#: website/class-alfaomega-ebooks-public.php:195
 msgid "Read"
 msgstr "Leer"
 
@@ -1131,7 +1132,7 @@ msgstr "No"
 #: post_types/class-alfaomega-ebooks-access-post-type.php:134
 #: post_types/class-alfaomega-ebooks-access-post-type.php:247
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:275
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:111
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:114
 msgid "Unlimited"
 msgstr "Ilimitada"
 
@@ -1462,40 +1463,40 @@ msgid "Select the access duration"
 msgstr "Seleccione la duración del acceso"
 
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:268
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:104
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:112
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:107
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:115
 #, php-format
 msgid "%s days"
 msgstr "%s dias"
 
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:269
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:105
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:108
 #, php-format
 msgid "%s week"
 msgstr "%s semana"
 
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:270
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:106
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:109
 #, php-format
 msgid "%s weeks"
 msgstr "%s semanas"
 
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:271
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:107
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:110
 #, php-format
 msgid "%s month"
 msgstr "%s mes"
 
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:272
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:273
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:108
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:109
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:111
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:112
 #, php-format
 msgid "%s months"
 msgstr "%s meses"
 
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:274
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:110
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:113
 #, php-format
 msgid "%s year"
 msgstr "%s año"
@@ -1572,7 +1573,7 @@ msgstr ""
 
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:522
 #: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:76
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:247
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:251
 msgid "Sample code"
 msgstr "Código de muestra"
 
@@ -1581,19 +1582,62 @@ msgid "Auto Draft"
 msgstr "Borrador automático"
 
 #: src/Http/Controllers/ApiController.php:23
-#: src/Http/Controllers/ApiController.php:72
-#: src/Http/Controllers/ApiController.php:108
+#: src/Http/Controllers/ApiController.php:71
+#: src/Http/Controllers/ApiController.php:98
+#: src/Http/Controllers/ApiController.php:146
+#: src/Http/Controllers/ApiController.php:165
+#: src/Http/Controllers/ApiController.php:185
+#: src/Http/Controllers/ApiController.php:205
+#: src/Http/Controllers/ApiController.php:245
+#: src/Http/Controllers/ApiController.php:285
+#: src/Http/Controllers/ApiController.php:337
+#: src/Http/Controllers/ApiController.php:381
+#: src/Http/Controllers/ApiController.php:425
 #: src/Http/Controllers/WebhooksController.php:27
 msgid "God Job!"
 msgstr "¡Buen trabajo!"
 
-#: src/Http/Controllers/ApiController.php:138
+#: src/Http/Controllers/ApiController.php:126
 msgid ""
 "Code redeemed successfully, the associated books were added to your personal "
 "library. Enjoy the reading!"
 msgstr ""
 "Código aplicado correctamente, los libros asociados fueron agregados a tu "
 "biblioteca personal. Disfrute la lectura!"
+
+#: src/Http/Controllers/ApiController.php:220
+#: src/Http/Controllers/ApiController.php:260
+#: src/Http/Controllers/ApiController.php:300
+#: src/Http/Controllers/ApiController.php:352
+#: src/Http/Controllers/ApiController.php:396
+msgid "The process is required."
+msgstr "Este campo `process` es requerido."
+
+#: src/Http/Controllers/ApiController.php:224
+#: src/Http/Controllers/ApiController.php:235
+#: src/Http/Controllers/ApiController.php:264
+#: src/Http/Controllers/ApiController.php:275
+#: src/Http/Controllers/ApiController.php:304
+#: src/Http/Controllers/ApiController.php:315
+#: src/Http/Controllers/ApiController.php:356
+#: src/Http/Controllers/ApiController.php:367
+#: src/Http/Controllers/ApiController.php:400
+#: src/Http/Controllers/ApiController.php:411
+msgid "The process is invalid."
+msgstr "El valor del campo `process` no es válido."
+
+#: src/Http/Controllers/ApiController.php:319
+msgid "The status is required."
+msgstr "El campo ‘status’ es requerido."
+
+#: src/Http/Controllers/ApiController.php:323
+msgid "The status is invalid."
+msgstr "El valor del campo `status` no es válido."
+
+#: src/Http/Controllers/ApiController.php:371
+#: src/Http/Controllers/ApiController.php:415
+msgid "The ids are required."
+msgstr "Este campo ids es requerido."
 
 #: src/Http/Controllers/EbooksController.php:28
 #, php-format
@@ -1613,15 +1657,15 @@ msgstr ""
 msgid "Queue ID is required"
 msgstr "Se requiere ID de cola"
 
-#: src/Http/RouteManager.php:249
+#: src/Http/RouteManager.php:258
 msgid "Please log in to access ebooks."
 msgstr "Por favor, inicie sesión para descargar libros electrónicos."
 
-#: src/Http/RouteManager.php:257 src/Http/RouteManager.php:296
+#: src/Http/RouteManager.php:266 src/Http/RouteManager.php:305
 msgid "Not found"
 msgstr "No encontrado"
 
-#: src/Http/RouteManager.php:288
+#: src/Http/RouteManager.php:297
 msgid "Unauthorized"
 msgstr "Acceso no Autorizado."
 
@@ -1657,7 +1701,7 @@ msgstr ""
 "Esperamos que disfrute la experiencia de lectura. Gracias por su confianza."
 
 #: src/Services/eBooks/Entities/Alfaomega/AccessPost.php:124
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:185
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:189
 msgid "Post not found."
 msgstr "Post no encontrado"
 
@@ -1669,61 +1713,61 @@ msgstr "eBook no encontrado"
 msgid "Printed ISBN is required."
 msgstr "Se requiere ISBN impreso"
 
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:345
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:349
 msgid "Code not found."
 msgstr "Código no encontrado"
 
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:354
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:358
 msgid "This code is not working anymore."
 msgstr "Este código ya no está disponible."
 
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:355
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:359
 msgid "Code already redeemed."
 msgstr "Código ya aplicado"
 
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:356
 #: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:360
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:364
 msgid "Code expired."
 msgstr "Código expirado."
 
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:396
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:433
 msgid "Code redeem failed."
 msgstr "Aplicación del código ha fallado."
 
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:563
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:570
 msgid "Invalid JSON file."
 msgstr "Fichero de configuración JSON no válido"
 
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:568
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:575
 msgid "Invalid folder."
 msgstr "Carpeta do válida."
 
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:572
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:579
 msgid "Customer is required."
 msgstr "El campo ‘customer’ es requerido."
 
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:576
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:583
 msgid "Email is required."
 msgstr "El campo ‘email’ es requerido."
 
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:580
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:587
 msgid "Store is required."
 msgstr "El campo ‘store’ es requerido."
 
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:584
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:591
 msgid "No books found."
 msgstr "No se encontraron libros."
 
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:634
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:641
 #, php-format
 msgid "Imported from %s account at %s store"
 msgstr "Importado desde la cuenta %s en la tienda %s"
 
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:648
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:655
 msgid "Isbn is required."
 msgstr "El campo ‘isbn’ es requerido."
 
-#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:672
+#: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:680
 msgid "Unable to save the JSON file."
 msgstr "No fue posible salvar el archivo JSON."
 
@@ -2294,13 +2338,16 @@ msgstr "El libro solicitado no está disponible."
 msgid "Unknown action requested."
 msgstr "Solicitada una acción desconocida."
 
-#: website/class-alfaomega-ebooks-public.php:177
+#: website/class-alfaomega-ebooks-public.php:179
 msgid "Read&nbsp;Online"
 msgstr "Leer&nbsp;en línea"
 
-#: website/class-alfaomega-ebooks-public.php:195
+#: website/class-alfaomega-ebooks-public.php:197
 msgid "Not available"
 msgstr "No disponible"
+
+#~ msgid "Home"
+#~ msgstr "Inicio"
 
 #~ msgid "slot"
 #~ msgstr "slot"

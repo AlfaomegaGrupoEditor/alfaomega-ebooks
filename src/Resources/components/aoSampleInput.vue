@@ -32,7 +32,7 @@
                         ? response.message
                         : t('something_went_wrong'),
                     variant: 'primary',
-                    title: t('failed')
+                    title: t('process_failed')
                 } as ToastType);
                 code.value = '';
                 processing.value = false;
