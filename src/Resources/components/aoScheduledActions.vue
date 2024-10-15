@@ -194,11 +194,12 @@
     }
 
     onMounted(() => {
-        retrieveProcessData();
+        handleRefreshQueue();
     });
 
-    watch(selectedItems.value, (newVal) => {
-        // console.log('selectedItems', newVal);
+    watch(processData.value, (newVal) => {
+        /*console.log('processData', newVal);
+        tableItems.value = newVal.actions;*/
     });
 </script>
 
@@ -306,8 +307,6 @@
                     :empty-text="$t('no_data')"
                     :items="processData.actions"
                     :fields="sortFields"
-                    :per-page="pageSize"
-                    :current-page="currentPage"
                     :small="false"
                     :borderless="false"
                     :bordered="false"
@@ -390,7 +389,7 @@
                     :per-page="pageSize"
                     hide-goto-end-buttons
                     align="end"
-                    @pageClick="retrieveProcessData"
+                    @update:model-value="retrieveProcessData"
                 />
             </div>
             <div class="col-1">
