@@ -6,12 +6,12 @@
         ProcessDataType,
         QueueType
     } from '@/types';
-    import {computed, onMounted, ref} from 'vue';
+    import {computed, onMounted, ref, watch} from 'vue';
     import {aoProcessingActions} from '@/components';
     import {useI18n} from 'vue-i18n';
     import {BiTrash3Fill, BiArrowRepeat, BiEye} from '@/components/icons';
     import AoDialog from '@/components/aoDialog.vue';
-    import { useModal } from 'bootstrap-vue-next';
+    import {TableItem, useModal} from 'bootstrap-vue-next';
     import {useProcessStore, useAppStore } from '@/stores';
     import {RefreshActionsEvent} from '@/events/types';
     import {eventBus, useMittEvents} from '@/events';
@@ -43,6 +43,7 @@
     const {show: showDlg} = useModal(dlgModalName);
 
     const selectedAction = ref({ type: '', item: null });
+    const selectedItems = ref<TableItem[]>([]);
     const variant = computed(() => {
         switch (props.status) {
             case 'idle':
@@ -70,6 +71,7 @@
         }
     }
     const sortFields: Exclude<TableFieldRaw<ProcessItem>, string>[] = [
+        {key: 'select', sortable: false, label: ''},
         {key: 'id', sortable: true, label: 'ID'},
         {key: 'isbn', sortable: true, label: 'ISBN'},
         {key: 'title', sortable: true, label: t('title').toUpperCase()},
@@ -170,8 +172,20 @@
         processStore.dispatchClearQueue(props.queue);
     }
 
+    const handleRowSelected = (item: TableItem) => {
+        selectedItems.value.push(item.id);
+    }
+
+    const handleRowUnSelected = (item: TableItem) => {
+        selectedItems.value = selectedItems.value.filter(id => id !== item.id);
+    }
+
     onMounted(() => {
         retrieveProcessData();
+    });
+
+    watch(selectedItems.value, (newVal) => {
+        console.log('selectedItems', newVal);
     });
 </script>
 
@@ -263,10 +277,17 @@
                     :borderless="false"
                     :bordered="false"
                     :hover="true"
-                    :selectable="false"
+                    :selectable="true"
+                    selection-variant="info"
                     tbody-tr-class="ao-table-row"
-                    @row-clicked="handleRowClick"
+                    @row-selected="handleRowSelected"
+                    @row-unselected="handleRowUnSelected"
                 >
+                    <template #cell(select)="row">
+                        <input type="checkbox"
+                               :value="row.item.id"
+                        />
+                    </template>
                     <template #cell(isbn)="row">
                         <BBadge variant="info">{{ row.value }}</BBadge>
                     </template>
