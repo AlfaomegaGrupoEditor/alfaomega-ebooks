@@ -216,8 +216,10 @@
                     class="mx-3"
                     size="sm"
                     variant="secondary"
+                    menuClass="mass-actions-menu"
                 >
                     <BDropdownItemButton
+                        buttonClass="btn-sm"
                         @click="handleShowDialog('retry', selectedItems)"
                     >
                         {{ $t('retry') }}
@@ -409,7 +411,11 @@
             {{ $t('import_ebooks_confirmation') }}
         </span>
         <span v-else>
-            {{ $t(`${selectedAction.type}_process_confirmation`) }}
+            {{
+                selectedItems.length > 1
+                    ? $t(`${selectedAction.type}_group_process_confirmation`)
+                    : $t(`${selectedAction.type}_process_confirmation`)
+            }}
         </span>
     </ao-dialog>
     <ao-dialog
@@ -491,5 +497,13 @@
     }
     .info-variant .tab-content {
         min-height: 380px;
+    }
+    .mass-actions-menu .dropdown-item{
+        font-size: 14px;
+
+    }
+    .dropdown-item:hover,
+    .dropdown-item:focus {
+        background-color: #2171b1 !important;
     }
 </style>

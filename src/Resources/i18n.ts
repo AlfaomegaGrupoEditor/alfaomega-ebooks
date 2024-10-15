@@ -42,6 +42,7 @@ const messages = {
         dashboard: 'Dashboard',
         delete: 'Delete',
         delete_process_confirmation: 'Are you sure you want to delete this process?',
+        delete_group_process_confirmation: 'Are you sure you want to delete all selected actions?',
         details: 'Details',
         digital_library: 'Digital Library',
         dont_show_again: 'Don\'t show this again',
@@ -126,6 +127,7 @@ const messages = {
         retry: 'Retry',
         retry_action_success: 'Actions added to pending queue successfully!',
         retry_process_confirmation: 'Are you sure you want to retry the process?',
+        retry_group_process_confirmation: 'Are you sure you want to retry all selected acctions?',
         // S
         sample: 'Sample',
         sample_codes: 'Sample Codes',
@@ -201,6 +203,7 @@ const messages = {
         dashboard: 'Panel de Control',
         delete: 'Eliminar',
         delete_process_confirmation: '¿Estás seguro de que deseas eliminar este proceso?',
+        delete_group_process_confirmation: '¿Estás seguro de que deseas eliminar todas las acciones seleccionadas?',
         details: 'Detalles',
         digital_library: 'Biblioteca Digital',
         dont_show_again: 'No mostrar nuevamente',
@@ -286,6 +289,7 @@ const messages = {
         retry: 'Reintentar',
         retry_action_success: 'Acciones agregadas a la cola de pendientes correctamente!',
         retry_process_confirmation: '¿Estás seguro de que deseas reintentar el proceso?',
+        retry_group_process_confirmation: '¿Estás seguro de que deseas reintentar todas las acciones seleccionadas?',
         // S
         sample: 'Muestra',
         sample_codes: 'Cógigos de Muestra',
