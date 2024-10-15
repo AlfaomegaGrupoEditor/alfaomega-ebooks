@@ -147,7 +147,7 @@ class Api
                 'Cache-Control' => 'no-cache',
             ];
         } else {
-            throw new \Exception(esc_html__('Authentication error', 'alfaomega-ebooks') . "- " . $auth->error);
+            throw new \Exception(esc_html__('Authentication error', 'alfaomega-ebooks') . "- " . $auth);
         }
     }
 
