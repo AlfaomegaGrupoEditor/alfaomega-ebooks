@@ -138,12 +138,15 @@
     }
 
     const handleAction = () => {
+        const ids = selectedItems.value.length === 0
+            ? [selectedAction.value.item.id]
+            : selectedItems.value.map((item) => item.id);
         switch (selectedAction.value.type) {
             case 'retry':
-                processStore.dispatchRetryAction(props.queue, [selectedAction.value.item.id]);
+                processStore.dispatchRetryAction(props.queue, ids);
                 break;
             case 'delete':
-                processStore.dispatchDeleteAction(props.queue, [selectedAction.value.item.id]);
+                processStore.dispatchDeleteAction(props.queue, ids);
                 break;
             default: // primary
                 emit('action', props.action);
