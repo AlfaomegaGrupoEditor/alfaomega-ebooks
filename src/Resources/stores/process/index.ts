@@ -68,6 +68,12 @@ export const useProcessStore = defineStore('processStore', {
          */
         async dispatchRetrieveQueueStatus(process: ProcessType)
         {
+            if (process === 'import-new-ebooks') {
+                this.queueStatus.processing = 0;
+                this.queueStatus.pending = 0;
+                this.queueStatus.completed = 0;
+                this.queueStatus.failed = 0;
+            }
             const response = await API.process.getProcessStatus(process);
             if (response?.status === 'success' && response.data) {
                 this[getProcess(process)] = response.data;
