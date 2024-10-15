@@ -104,4 +104,17 @@ class Helper
         // Step 5: Optionally filter harmful content
         return filter_var($string, FILTER_SANITIZE_STRING);
     }
+
+    /**
+     * Log a message to the error log.
+     *
+     * @param string $message The message to log.
+     * @return void
+     */
+    function log(string $message): void
+    {
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log($message);
+        }
+    }
 }

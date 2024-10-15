@@ -142,6 +142,8 @@ class ImportEbook extends AbstractProcess implements ProcessContract
             }
 
             $ebook['product_id'] = $productId;
+            Service::make()->helper()->log(json_encode($ebook, JSON_PRETTY_PRINT));
+
             $result = as_enqueue_async_action(
                 'alfaomega_ebooks_queue_import',
                 [$ebook, true]
