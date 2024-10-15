@@ -10,7 +10,7 @@ import {computed, onMounted, onUnmounted, ref} from 'vue';
     const {t} = useI18n();
     const processStore = useProcessStore();
     const importStatus = computed(() => processStore.getImportNewEbooks);
-    const processing = computed(() => importStatus.value.status === 'processing');
+    //const processing = computed(() => importStatus.value.status === 'processing');
     const modalName = 'import-ebooks-modal';
     const {show} = useModal(modalName);
     const intervalId = ref(null);
@@ -18,14 +18,14 @@ import {computed, onMounted, onUnmounted, ref} from 'vue';
     const enablePolling = ref(false);
 
     const handleImport = (action) => {
-        console.log('Importing ebooks...', action);
+        processStore.dispatchImportNewEbooks();
         eventBus.emit('notification', {
             message: 'tasks_added',
             type: 'success'
         });
     };
 
-    onMounted(() => {
+    /*onMounted(() => {
         if (enablePolling.value) {
             intervalId.value = setInterval(() => {
                 processStore.dispatchRetrieveQueueStatus('import-new-ebooks');
@@ -37,7 +37,7 @@ import {computed, onMounted, onUnmounted, ref} from 'vue';
 
     onUnmounted(() => {
         clearInterval(intervalId.value);
-    });
+    });*/
 
 </script>
 

@@ -494,6 +494,9 @@ class ApiController
 
     /**
      * Setup prices
+     *
+     * @param array $data
+     *
      * @return array
      */
     public function setupPrices(array $data): array

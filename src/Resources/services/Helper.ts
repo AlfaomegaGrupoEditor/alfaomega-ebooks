@@ -123,6 +123,10 @@ const getProcess = (process: ProcessType): ProcessType =>
  * @param date
  */
 const formatDate = (date: string) => {
+    if (date === '0000-00-00 00:00:00') {
+        return '-';
+    }
+
     return new Date(date).toLocaleString(
         'es-ES',
         {

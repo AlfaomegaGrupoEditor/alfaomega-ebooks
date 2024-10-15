@@ -131,6 +131,69 @@ export const useProcessStore = defineStore('processStore', {
             if (response.status === 'success') {
                 this[getProcess(process)] = response.data;
             }
-        }
+        },
+
+        /**
+         * Import new ebooks.
+         */
+        async dispatchImportNewEbooks() {
+            const response = await API.process.importNewEbooks();
+            if (response.status === 'success') {
+                const response = await API.process.getProcessActions(
+                    'import-new-ebooks',
+                    'processing',
+                    1,
+                    state.processData.meta.per_page
+                );
+                if (response.status === 'success' && response.data) {
+                    this.processData = {
+                        actions: response.data,
+                        meta: response.meta
+                    };
+                }
+            }
+        },
+
+        /**
+         * Update ebooks.
+         */
+        async dispatchUpdateEbooks() {
+            const response = await API.process.importNewEbooks();
+            if (response.status === 'success') {
+                const response = await API.process.getProcessActions(
+                    'update-ebooks',
+                    'processing',
+                    1,
+                    state.processData.meta.per_page
+                );
+                if (response.status === 'success' && response.data) {
+                    this.processData = {
+                        actions: response.data,
+                        meta: response.meta
+                    };
+                }
+            }
+        },
+
+        /**
+         * Link products.
+         */
+        async dispatchLinkProducts() {
+            const response = await API.process.importNewEbooks();
+            if (response.status === 'success') {
+                const response = await API.process.getProcessActions(
+                    'link-products',
+                    'processing',
+                    1,
+                    state.processData.meta.per_page
+                );
+                if (response.status === 'success' && response.data) {
+                    this.processData = {
+                        actions: response.data,
+                        meta: response.meta
+                    };
+                }
+            }
+        },
     },
 });

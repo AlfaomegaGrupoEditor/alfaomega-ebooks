@@ -152,10 +152,88 @@ async function retryAction(process: ProcessType, ids: Number[]): Promise<APIResp
     }
 }
 
+/**
+ * Import new ebooks.
+ */
+async function importNewEbooks(): Promise<APIResponse<AsyncProcessType | null>>
+{
+    const appStore = useAppStore();
+    appStore.setError(null);
+    appStore.setLoading(true);
+
+    const response = await request<APIResponse<AsyncProcessType>>('GET', `/alfaomega-ebooks/api/import-new-ebooks/`);
+    appStore.setLoading(false);
+
+    if (response.status == 'success') {
+        eventBus.emit('notification', {
+            message: response.message,
+            type: 'success'
+        });
+        eventBus.emit('refreshActions', {process: process});
+        return {} as APIResponse<AsyncProcessType>;
+    } else {
+        appStore.setError(response.message);
+        return null;
+    }
+}
+
+/**
+ * Update ebooks.
+ */
+async function updateEbooks(): Promise<APIResponse<AsyncProcessType | null>>
+{
+    const appStore = useAppStore();
+    appStore.setError(null);
+    appStore.setLoading(true);
+
+    const response = await request<APIResponse<AsyncProcessType>>('GET', `/alfaomega-ebooks/api/update-ebooks/`);
+    appStore.setLoading(false);
+
+    if (response.status == 'success') {
+        eventBus.emit('notification', {
+            message: response.message,
+            type: 'success'
+        });
+        eventBus.emit('refreshActions', {process: process});
+        return {} as APIResponse<AsyncProcessType>;
+    } else {
+        appStore.setError(response.message);
+        return null;
+    }
+}
+
+/**
+ * Link products.
+ */
+async function linkProducts(): Promise<APIResponse<AsyncProcessType | null>>
+{
+    const appStore = useAppStore();
+    appStore.setError(null);
+    appStore.setLoading(true);
+
+    const response = await request<APIResponse<AsyncProcessType>>('GET', `/alfaomega-ebooks/api/link-products/`);
+    appStore.setLoading(false);
+
+    if (response.status == 'success') {
+        eventBus.emit('notification', {
+            message: response.message,
+            type: 'success'
+        });
+        eventBus.emit('refreshActions', {process: process});
+        return {} as APIResponse<AsyncProcessType>;
+    } else {
+        appStore.setError(response.message);
+        return null;
+    }
+}
+
 export default {
     getProcessStatus,
     getProcessActions,
     clearQueue,
     deleteAction,
-    retryAction
+    retryAction,
+    importNewEbooks,
+    updateEbooks,
+    linkProducts
 };
