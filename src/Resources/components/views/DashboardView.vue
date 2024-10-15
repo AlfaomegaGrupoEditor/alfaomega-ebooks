@@ -1,8 +1,8 @@
 <script setup lang="ts">
     import {useI18n} from 'vue-i18n';
-    import {ref, computed, watch} from 'vue';
+    import {ref, computed, watch, onMounted} from 'vue';
     import {aoWidget, aoListActionItem} from '@/components';
-    import {useEbookStore} from '@/stores';
+    import {useEbookStore, useProcessStore} from '@/stores';
 
     const {t} = useI18n();
     const ebookStore = useEbookStore();
@@ -10,6 +10,8 @@
     const productsInfo = computed(() => ebookStore.getProductsInfo);
     const accessInfo = computed(() => ebookStore.getAccessInfo);
     const codesInfo = computed(() => ebookStore.getCodesInfo);
+    const processStore = useProcessStore();
+    const queueStatus = computed(() => processStore.getQueueStatus);
 
     const widgets = ref([
         {
@@ -91,6 +93,12 @@
             action: '#/about'
         }
     ]);
+    const process = [
+        'import-new-ebooks',
+        'update-ebooks',
+        'link-products',
+        'setup-prices'
+    ];
 
     watch(ebooksInfo, () => {
         widgets.value[0].value = `${ebooksInfo.value.imported}/${ebooksInfo.value.catalog}`;
@@ -107,6 +115,10 @@
     });
     watch(codesInfo, () => {
         actions.value[3].count = codesInfo.value.total;
+    });
+
+    onMounted(() => {
+        process.forEach((process) => processStore.dispatchRetrieveQueueStatus(process));
     });
 </script>
 
@@ -137,18 +149,30 @@
                     {{ $t('ebooks_stats') }}
                 </div>
 
-                <div class="px-2 mt-2">
-                    <div class="row">
-                        <div class="fw-bold">{{ $t('ebooks')}}:</div>
+                <div class="row px-2 mt-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="fw-bold">{{ $t('ebooks')}}:</div>
+                        </div>
+                        <div class="row mt-1 px-2">
+                            <div class="pl-2 pb-1">{{ $t('products')}}: <BBadge class="fs-7">{{ productsInfo.catalog }}</BBadge></div>
+                            <div class="pl-2 pb-1">{{ $t('ebooks')}}: <BBadge class="fs-7">{{ ebooksInfo.imported }}</BBadge></div>
+                            <div class="pl-2 pb-1">{{ $t('linked')}}: <BBadge class="fs-7" variant="success">{{ productsInfo.linked }}</BBadge></div>
+                        </div>
                     </div>
-                    <div class="row mt-1 px-2">
-                        <div class="pl-2 pb-1">{{ $t('products')}}: <BBadge class="fs-7">{{ productsInfo.catalog }}</BBadge></div>
-                        <div class="pl-2 pb-1">{{ $t('ebooks')}}: <BBadge class="fs-7">{{ ebooksInfo.imported }}</BBadge></div>
-                        <div class="pl-2 pb-1">{{ $t('linked')}}: <BBadge class="fs-7" variant="success">{{ productsInfo.linked }}</BBadge></div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="fw-bold">{{ $t('queue')}}:</div>
+                        </div>
+                        <div class="row mt-1 px-2">
+                            <div class="pl-2 pb-1">{{ $t('pending')}}: <BBadge class="fs-7" variant="info">{{ queueStatus.pending + queueStatus.processing }}</BBadge></div>
+                            <div class="pl-2 pb-1">{{ $t('completed')}}: <BBadge class="fs-7" variant="success">{{ queueStatus.completed }}</BBadge></div>
+                            <div class="pl-2 pb-1">{{ $t('failed')}}: <BBadge class="fs-7" variant="primary">{{ queueStatus.failed }}</BBadge></div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="px-2 mt-2">
+                <div class="px-2 mt-4">
                     <div class="row">
                         <div class="fw-bold">{{ $t('samples')}}:</div>
                     </div>

@@ -9,6 +9,7 @@ type State = {
     actions: ProcessItem[];
     meta: MetaType
   }
+  queueStatus: AsyncProcessType;
 }
 
 export {

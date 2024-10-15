@@ -3,7 +3,6 @@ import type {State} from '@/services/processes/types';
 import {API} from '@/services';
 import {ProcessStatusType, ProcessType} from '@/types';
 import {getProcess} from '@/services/Helper';
-import {eventBus} from '@/events';
 
 export const useProcessStore = defineStore('processStore', {
     state: (): State => (
@@ -36,6 +35,13 @@ export const useProcessStore = defineStore('processStore', {
                 pending: 0,
                 failed: 0
             },
+            queueStatus: {
+                status: 'idle',
+                completed: 0,
+                processing: 0,
+                pending: 0,
+                failed: 0
+            },
             processData: {
                 actions: [],
                 meta: {
@@ -52,7 +58,8 @@ export const useProcessStore = defineStore('processStore', {
         getUpdateEbooks: (state) => state.updateEbooks,
         getLinkProducts: (state) => state.linkProducts,
         getSetupPrices: (state) => state.setupPrices,
-        getProcessData: (state) => state.processData
+        getProcessData: (state) => state.processData,
+        getQueueStatus: (state) => state.queueStatus
     },
 
     actions: {
@@ -64,8 +71,10 @@ export const useProcessStore = defineStore('processStore', {
             const response = await API.process.getProcessStatus(process);
             if (response?.status === 'success' && response.data) {
                 this[getProcess(process)] = response.data;
-            } else {
-
+                this.queueStatus.processing += response.data.processing;
+                this.queueStatus.pending += response.data.pending;
+                this.queueStatus.completed += response.data.completed;
+                this.queueStatus.failed += response.data.failed;
             }
         },
 
