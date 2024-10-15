@@ -425,4 +425,87 @@ class ApiController
             'message' => esc_html__('God Job!', 'alfaomega-ebooks'),
         ];
     }
+
+    /**
+     * Import new ebooks
+     *
+     * @param array $data
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function importNewEbooks(): array
+    {
+        $response = Service::make()
+            ->ebooks()
+            ->importEbook()
+            ->batch();
+
+        return [
+            'status'  => 'success',
+            'data'    => $response,
+            'message' => count($response) > 0
+                ? str_replace('%s', count($response), esc_html__("Scheduled to import %s new ebooks successfully!", 'alfaomega-ebooks'))
+                : esc_html__('No new eBooks to import', 'alfaomega-ebooks')
+        ];
+    }
+
+    /**
+     * Update ebooks
+     * @return array
+     * @throws \Exception
+     */
+    public function updateEbooks(): array
+    {
+        $response = Service::make()
+            ->ebooks()
+            ->refreshEbook()
+            ->batch();
+
+        return [
+            'status'  => 'success',
+            'data'    => $response,
+            'message' => count($response) > 0
+                ? str_replace('%s', count($response), esc_html__("Scheduled to refresh %s ebooks successfully!", 'alfaomega-ebooks'))
+                : esc_html__('No eBooks found to refresh', 'alfaomega-ebooks')
+        ];
+    }
+
+    /**
+     * Link products
+     * @return array
+     * @throws \Exception
+     */
+    public function linkProducts(): array
+    {
+        $response = Service::make()
+            ->wooCommerce()
+            ->linkEbook()
+            ->batch();
+
+        return [
+            'status'  => 'success',
+            'data'    => $response,
+            'message' => count($response) > 0
+                ? str_replace('%s', count($response), esc_html__("Scheduled to link %s products successfully!", 'alfaomega-ebooks'))
+                : esc_html__('No products found to link', 'alfaomega-ebooks')
+        ];
+    }
+
+    /**
+     * Setup prices
+     * @return array
+     */
+    public function setupPrices(array $data): array
+    {
+        $response = []; // Implement the logic
+
+        return [
+            'status'  => 'success',
+            'data'    => $response,
+            'message' => count($response) > 0
+                ? str_replace('%s', count($response), esc_html__("Scheduled to import %s new ebooks successfully!", 'alfaomega-ebooks'))
+                : esc_html__('No new eBooks to import', 'alfaomega-ebooks')
+        ];
+    }
 }
