@@ -139,7 +139,7 @@ class Api
     public function getHeaders(): ?array
     {
         $auth = $this->getAuth();
-        if ($auth) {
+        if (!empty($auth->access_token)) {
             return [
                 'Authorization' => 'Bearer ' . $auth->access_token,
                 'Accept'        => 'application/json',
@@ -147,7 +147,7 @@ class Api
                 'Cache-Control' => 'no-cache',
             ];
         } else {
-            return null;
+            throw new \Exception(esc_html__('Authentication error', 'alfaomega-ebooks') . "- " . $auth->error);
         }
     }
 

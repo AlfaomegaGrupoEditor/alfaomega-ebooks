@@ -34,7 +34,7 @@ if( !class_exists('Alfaomega_Ebooks_Sample_Post_Type') ){
          */
         function custom_admin_css(): void
         {
-            if ($_GET['post_type'] === 'alfaomega-sample') {
+            if (isset($_GET['post_type']) && $_GET['post_type'] === 'alfaomega-sample') {
                 echo '<style>
                     .column-cb { width: 5% !important; }
                     .column-title { width: 10% !important; }

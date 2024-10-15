@@ -170,7 +170,7 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
          */
         function custom_admin_css(): void
         {
-            if ($_GET['post_type'] === 'alfaomega-access') {
+            if (isset($_GET['post_type']) && $_GET['post_type'] === 'alfaomega-access') {
                 echo '<style>
                     .column-cb { width: 5% !important; }
                     .column-alfaomega_access_cover { width: 10% !important; }
