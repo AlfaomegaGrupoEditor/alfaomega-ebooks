@@ -532,10 +532,6 @@ class EbookManager extends AbstractManager
     {
         global $wpdb;
 
-        if (! defined('AO_STORE_UUID')){
-            throw new Exception(esc_html__('AO_STORE_UUID is not defined!', 'alfaomega-ebooks'));
-        }
-        $storeUuid = AO_STORE_UUID;
         $chunkSize = 100;
         $page = 0;
 
