@@ -195,6 +195,7 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
         $ebook = $this->save($postId, $data);
         $this->updateAccess($postId, $ebook);
 
+        $this->updateImported([$data['isbn']], 'completed');
         return $ebook;
     }
 
@@ -402,5 +403,111 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
             'catalog' => empty($stats) ? 0 : $stats['size'],
             'imported' => $formattedResults['total_posts'] ?? 0,
         ];
+    }
+
+    /**
+     * Update the imported registry in the portal for the current store
+     *
+     * @param array|null $isbns
+     * @param string $status
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function updateImported(array $isbns=null, string $status = 'on-queue'): array
+    {
+        if (! defined('AO_STORE_UUID')){
+            throw new Exception(esc_html__('AO_STORE_UUID is not defined!', 'alfaomega-ebooks'));
+        }
+
+        $storeUuid = AO_STORE_UUID;
+        $response = $this->api->post("/book/imported/$storeUuid", [
+            'isbns'  => $isbns,
+            'status' => $status,
+        ]);
+        $content = json_decode($response['body'], true);
+        if ($content['status'] !== 'success') {
+            throw new Exception($content['message']);
+        }
+
+        return $content['data'];
+    }
+
+    /**
+     * Retrieve information of the new ebooks
+     *
+     * @param int $count
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function getNewEbooks(int $count = 100): array
+    {
+        if (! defined('AO_STORE_UUID')){
+            throw new Exception(esc_html__('AO_STORE_UUID is not defined!', 'alfaomega-ebooks'));
+        }
+        $storeUuid = AO_STORE_UUID;
+
+        $response = $this->api->get("/book/import-new/$storeUuid?items={$count}");
+        if ($response['response']['code'] !== 200) {
+            throw new Exception($response['response']['message']);
+        }
+        $content = json_decode($response['body'], true);
+
+        if ($content['status'] !== 'success') {
+            throw new Exception($content['message']);
+        }
+
+        return $content['data'];
+    }
+
+    /**
+     * Updates the catalog import by processing chunks of 'alfaomega-ebook' posts.
+     * This method handles the update of imported eBooks in store identified by AO_STORE_UUID.
+     * Processes the posts in chunks and sends them to the API for updating the catalog status as completed.
+     *
+     * @return void
+     * @throws \Exception If AO_STORE_UUID is not defined or API response indicates a failure.
+     */
+    protected function updateCatalogImport(): void
+    {
+        global $wpdb;
+
+        if (! defined('AO_STORE_UUID')){
+            throw new Exception(esc_html__('AO_STORE_UUID is not defined!', 'alfaomega-ebooks'));
+        }
+        $storeUuid = AO_STORE_UUID;
+        $chunkSize = 100;
+        $page = 0;
+
+        do {
+            // Calculate the offset
+            $offset = $chunkSize * $page;
+
+            // Query to get a chunk of posts
+            $posts = $wpdb->get_results($wpdb->prepare("
+                SELECT p.ID, pm.meta_value AS isbn
+                FROM {$wpdb->prefix}posts p
+                INNER JOIN {$wpdb->prefix}postmeta pm ON p.ID = pm.post_id
+                WHERE p.post_type = 'alfaomega-ebook'
+                AND p.post_status = 'publish'
+                AND pm.meta_key = 'alfaomega_ebook_isbn'
+                LIMIT %d OFFSET %d
+            ", $chunkSize, $offset), OBJECT);
+
+            if (!empty($posts)) {
+                $isbns = [];
+                $response = $this->api->post("/book/imported/$storeUuid", [
+                    'isbns'  => $isbns,
+                    'status' => 'completed',
+                ]);
+                $content = json_decode($response['body'], true);
+                if ($content['status'] !== 'success') {
+                    throw new Exception($content['message']);
+                }
+
+                $page++;
+            }
+        } while (! empty($posts));
     }
 }

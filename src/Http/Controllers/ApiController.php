@@ -440,10 +440,14 @@ class ApiController
      */
     public function importNewEbooks(): array
     {
-        $response = Service::make()
-            ->ebooks()
-            ->importEbook()
-            ->batch();
+        // to make sure all imported ebooks are registered in the Panel
+        $service = Service::make()->ebooks();
+        if (defined('AO_STORE_UPDATE') && AO_STORE_UPDATE) {
+            $service->updateCatalogImport();
+        }
+
+        // start the import process
+        $response = $service->importEbook()->batch();
 
         return [
             'status'  => 'success',

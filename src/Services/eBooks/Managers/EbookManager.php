@@ -519,4 +519,46 @@ class EbookManager extends AbstractManager
             'current' => $page,
         ];
     }
+
+    /**
+     * Updates the catalog import by processing chunks of 'alfaomega-ebook' posts.
+     * This method handles the update of imported eBooks in store identified by AO_STORE_UUID.
+     * Processes the posts in chunks and sends them to the API for updating the catalog status as completed.
+     *
+     * @return void
+     * @throws \Exception If AO_STORE_UUID is not defined or API response indicates a failure.
+     */
+    public function updateCatalogImport(): void
+    {
+        global $wpdb;
+
+        if (! defined('AO_STORE_UUID')){
+            throw new Exception(esc_html__('AO_STORE_UUID is not defined!', 'alfaomega-ebooks'));
+        }
+        $storeUuid = AO_STORE_UUID;
+        $chunkSize = 100;
+        $page = 0;
+
+        do {
+            // Calculate the offset
+            $offset = $chunkSize * $page;
+
+            // Query to get a chunk of posts
+            $posts = $wpdb->get_results($wpdb->prepare("
+                SELECT p.ID, pm.meta_value AS isbn
+                FROM {$wpdb->prefix}posts p
+                INNER JOIN {$wpdb->prefix}postmeta pm ON p.ID = pm.post_id
+                WHERE p.post_type = 'alfaomega-ebook'
+                AND p.post_status = 'publish'
+                AND pm.meta_key = 'alfaomega_ebook_isbn'
+                LIMIT %d OFFSET %d
+            ", $chunkSize, $offset), OBJECT);
+
+            if (!empty($posts)) {
+                $isbns = array_map(function ($post) { return $post->isbn; }, $posts);
+                $this->ebookPost->updateImported($isbns, 'completed');
+                $page++;
+            }
+        } while (! empty($posts));
+    }
 }

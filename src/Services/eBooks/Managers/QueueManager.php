@@ -3,6 +3,7 @@
 namespace AlfaomegaEbooks\Services\eBooks\Managers;
 
 use AlfaomegaEbooks\Services\Alfaomega\Api;
+use AlfaomegaEbooks\Services\eBooks\Service;
 use AlfaomegaEbooks\Services\eBooks\Transformers\ActionLogTransformer;
 use AlfaomegaEbooks\Services\eBooks\Transformers\ActionTransformer;
 use AlfaomegaEbooks\Services\eBooks\Transformers\QueueTransformer;
@@ -180,6 +181,14 @@ class QueueManager extends AbstractManager
     {
         global $wpdb;
 
+        // If the queue is for ebook imports, update the status of the imported ebooks to 'failed'
+        if ($queue === 'alfaomega_ebooks_queue_import') {
+            $actions = $this->getActionsById($queue, $actionId);
+            $isbns = array_column($actions, 'isbn');
+            Service::make()->ebooks()->ebookPost()
+                ->updateImported($isbns, 'failed');
+        }
+        
         $query = $wpdb->prepare("
                 DELETE
                 FROM {$this->table}
@@ -226,4 +235,36 @@ class QueueManager extends AbstractManager
 
         return $this->status($queue, true);
     }
+
+    /**
+     * Retrieves actions based on their IDs.
+     * This method retrieves actions by selecting all actions with the specified queue name and action IDs.
+     *
+     * @param string $queue   The queue name.
+     * @param array $actionId The IDs of the actions.
+     *
+     * @return array The actions associated with the given IDs.
+     */
+    public function getActionsById(string $queue, array $actionId): array
+    {
+        global $wpdb;
+        $query = $wpdb->prepare("
+            SELECT *
+            FROM {$this->table} a
+            WHERE a.hook = %s
+                AND a.action_id in (" . join(",", array_fill(0, count($actionId), '%s')) . ")
+            ORDER BY a.status, a.scheduled_date_gmt DESC;
+        ", array_merge([$queue], $actionId));
+        $results = $wpdb->get_results($query);
+        
+        $data = [];
+        foreach ($results as $result) {
+            $data[] = array_merge(
+                ActionTransformer::transform($result), [
+                    'logs' => $this->logs($result->action_id)
+                ]);
+        }
+        
+        return $data;
+    }    
 }

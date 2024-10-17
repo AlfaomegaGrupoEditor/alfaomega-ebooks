@@ -58,4 +58,24 @@ interface EbookPostEntity extends AlfaomegaPostInterface
      * @throws \Exception
      */
     public function index(array $isbns): ?array;
+
+    /**
+     * Update the imported registry in the portal for the current store
+     *
+     * @param array|null $isbns
+     * @param string $status
+     *
+     * @return array
+     */
+    public function updateImported(array $isbns=null, string $status = 'on-queue'): array;
+
+    /**
+     * Retrieve information of the new ebooks
+     *
+     * @param int $count
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function getNewEbooks(int $count = 100): array;
 }
