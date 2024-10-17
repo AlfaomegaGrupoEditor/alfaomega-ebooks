@@ -166,7 +166,6 @@ class QueueManager extends AbstractManager
         return $data;
     }
 
-
     /**
      * Deletes an action from the queue.
      * This method deletes an action from the queue by removing the action with the specified queue name and action ID.
