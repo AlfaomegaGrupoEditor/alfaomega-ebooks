@@ -51,6 +51,7 @@ abstract class AbstractProcess implements ProcessContract
             $post = $this->getEbookEntity()
                 ->updateOrCreate($postId, $eBook);
             if (empty($post)) {
+                $this->getEbookEntity()->updateImported($eBook['isbn'], 'failed');
                 throw new \Exception('Error updating or creating the eBook post.');
             }
 
