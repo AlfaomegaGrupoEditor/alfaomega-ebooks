@@ -534,7 +534,7 @@ class EbookManager extends AbstractManager
 
         $chunkSize = 100;
         $page = 0;
-
+        $clear = true;
         do {
             // Calculate the offset
             $offset = $chunkSize * $page;
@@ -552,8 +552,9 @@ class EbookManager extends AbstractManager
 
             if (!empty($posts)) {
                 $isbns = array_map(function ($post) { return $post->isbn; }, $posts);
-                $this->ebookPost->updateImported($isbns, 'completed');
+                $this->ebookPost->updateImported($isbns, 'completed', $clear);
                 $page++;
+                $clear = false;
             }
         } while (! empty($posts));
     }

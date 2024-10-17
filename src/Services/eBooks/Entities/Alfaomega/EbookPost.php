@@ -410,11 +410,12 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
      *
      * @param array|null $isbns
      * @param string $status
+     * @param bool $clear
      *
      * @return array
      * @throws \Exception
      */
-    public function updateImported(array $isbns=null, string $status = 'on-queue'): array
+    public function updateImported(array $isbns=null, string $status = 'on-queue', bool $clear = false): array
     {
         if (! defined('AO_STORE_UUID')){
             throw new Exception(esc_html__('AO_STORE_UUID is not defined!', 'alfaomega-ebooks'));
@@ -424,6 +425,7 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
         $response = $this->api->post("/book/imported/$storeUuid", [
             'isbns'  => $isbns,
             'status' => $status,
+            'clear'  => $clear,
         ]);
         $content = json_decode($response['body'], true);
         if ($content['status'] !== 'success') {
