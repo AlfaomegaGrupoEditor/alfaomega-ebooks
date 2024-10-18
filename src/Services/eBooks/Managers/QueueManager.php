@@ -185,7 +185,7 @@ class QueueManager extends AbstractManager
             $actions = $this->getActionsById($queue, $actionId);
             $isbns = array_column($actions, 'isbn');
             Service::make()->ebooks()->ebookPost()
-                ->updateImported($isbns, 'failed');
+                ->updateImported($isbns, 'failed', errorCode: 'failed_action_deleted');
         }
         
         $query = $wpdb->prepare("

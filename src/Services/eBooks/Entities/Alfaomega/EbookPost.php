@@ -406,26 +406,33 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
     }
 
     /**
-     * Update the imported registry in the portal for the current store
+     * Updates the status of imported books in the store.
+     * This method sends a POST request to the API to update the status of imported books
+     * based on their ISBNs and other provided parameters.
      *
-     * @param array|null $isbns
-     * @param string $status
-     * @param bool $clear
+     * @param array|null $isbns      List of ISBNs to update.
+     * @param string $status         The new status for the books.
+     * @param bool $clear            Whether to clear the existing data before updating.
+     * @param string|null $errorCode Error code to report if the update fails.
      *
-     * @return array
-     * @throws \Exception
+     * @return array Returns an associative array containing the updated data from the API response.
+     * @throws \Exception Throws an exception if AO_STORE_UUID is not defined or if the API response indicates failure.
      */
-    public function updateImported(array $isbns=null, string $status = 'on-queue', bool $clear = false): array
-    {
+    public function updateImported(array $isbns=null,
+                                   string $status = 'on-queue',
+                                   bool $clear = false,
+                                   string $errorCode = null
+    ): array {
         if (! defined('AO_STORE_UUID')){
             throw new Exception(esc_html__('AO_STORE_UUID is not defined!', 'alfaomega-ebooks'));
         }
 
         $storeUuid = AO_STORE_UUID;
         $response = $this->api->post("/book/imported/$storeUuid", [
-            'isbns'  => $isbns,
-            'status' => $status,
-            'clear'  => $clear,
+            'isbns'      => $isbns,
+            'status'     => $status,
+            'clear'      => $clear,
+            'error_code' => $errorCode,
         ]);
         $content = json_decode($response['body'], true);
         if ($content['status'] !== 'success') {

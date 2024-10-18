@@ -97,13 +97,13 @@ class ImportEbook extends AbstractProcess implements ProcessContract
         $processed = [];
         foreach ($entities as $ebook) {
             if (empty($ebook['printed_isbn'])) {
-                $this->getEbookEntity()->updateImported([$ebook['isbn']], 'failed');
+                $this->getEbookEntity()->updateImported([$ebook['isbn']], 'failed', errorCode: 'printed_isbn_not_found');
                 continue;
             }
 
             $productId = wc_get_product_id_by_sku($ebook['printed_isbn']);
             if (empty($productId)) {
-                $this->getEbookEntity()->updateImported([$ebook['isbn']], 'failed');
+                $this->getEbookEntity()->updateImported([$ebook['isbn']], 'failed', errorCode: 'product_not_found');
                 continue;
             }
 
@@ -130,13 +130,13 @@ class ImportEbook extends AbstractProcess implements ProcessContract
         $onQueue = [];
         foreach ($entities as $ebook) {
             if (empty($ebook['printed_isbn'])) {
-                $this->getEbookEntity()->updateImported([$ebook['isbn']], 'failed');
+                $this->getEbookEntity()->updateImported([$ebook['isbn']], 'failed', errorCode: 'printed_isbn_not_found');
                 continue;
             }
 
             $productId = wc_get_product_id_by_sku($ebook['printed_isbn']);
             if (empty($productId)) {
-                $this->getEbookEntity()->updateImported([$ebook['isbn']], 'failed');
+                $this->getEbookEntity()->updateImported([$ebook['isbn']], 'failed', errorCode: 'product_not_found');
                 continue;
             }
 
