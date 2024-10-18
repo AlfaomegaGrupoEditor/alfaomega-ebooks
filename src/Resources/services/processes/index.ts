@@ -102,7 +102,7 @@ async function clearQueue(process: ProcessType): Promise<APIResponse<AsyncProces
  * @return {Promise<APIResponse<AsyncProcessType | null>>} A promise that resolves to an API response with the result of the delete operation.
  */
 async function deleteAction(process: ProcessType,
-                            ids: Number[],
+                            ids: (Number | String)[],
                             type: ActionType = 'action'
 ): Promise<APIResponse<AsyncProcessType | null>> {
     const appStore = useAppStore();
@@ -138,7 +138,7 @@ async function deleteAction(process: ProcessType,
  * @return {Promise<APIResponse<AsyncProcessType | null>>} A promise that resolves to the result of the retry action or null if it fails.
  */
 async function retryAction(process: ProcessType,
-                           ids: Number[],
+                           ids: (Number | String)[],
                            type: ActionType = 'action'
 ): Promise<APIResponse<AsyncProcessType | null>> {
     const appStore = useAppStore();

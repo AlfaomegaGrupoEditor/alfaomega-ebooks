@@ -220,7 +220,8 @@ class QueueManager extends AbstractManager
                 ", array_merge([$queue], $actionId));
             $result = $wpdb->get_results($query);
         } else {
-            // delete failed imports
+            Service::make()->ebooks()->ebookPost()
+                ->updateImported($actionId, 'delete');
         }
 
         if (empty($result)) {
@@ -259,7 +260,12 @@ class QueueManager extends AbstractManager
                 throw new \Exception(esc_html__('Failed adding actions to the pending queue.', 'alfaomega-ebooks'), 500);
             }
         } else {
-            // try to import again
+            Service::make()->ebooks()->ebookPost()
+                ->updateImported($actionId, 'delete');
+
+            // NOTE: In the frontend, importNewEbooks will be called, but no only the items in the
+            //      list will be retried, there is no guaranty either that all items will be retried
+            //      in the first attempt.
         }
 
         return $this->status($queue, true);

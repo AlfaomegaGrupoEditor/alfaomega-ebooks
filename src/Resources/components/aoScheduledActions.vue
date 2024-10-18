@@ -355,7 +355,7 @@
                             <span v-html="BiEye" />
                         </BButton>
                         <BButton
-                            v-if="activeTab === 'failed'"
+                            v-if="activeTab === 'failed' && row.item.type === 'action'"
                             size="sm"
                             class="mx-1"
                             variant="secondary"

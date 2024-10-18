@@ -1,7 +1,7 @@
 import {defineStore} from 'pinia';
 import type {State} from '@/services/processes/types';
 import {API} from '@/services';
-import {ActionType, ProcessStatusType, ProcessType} from '@/types';
+import {ActionType, ProcessItem, ProcessStatusType, ProcessType} from '@/types';
 import {getProcess} from '@/services/Helper';
 
 export const useProcessStore = defineStore('processStore', {
@@ -161,6 +161,7 @@ export const useProcessStore = defineStore('processStore', {
                     const responseImport = await API.process.retryAction(process, importIds, 'import');
                     if (response.status === 'success') {
                         this.importNewEbooks = responseImport.data;
+                        await this.dispatchImportNewEbooks();
                     }
                 }
             } else {
@@ -243,8 +244,8 @@ export const useProcessStore = defineStore('processStore', {
          */
         filterActions(ids: Number[], type: ActionType = 'action') {
             return this.state.processData.actions
-                .filter((action) => action.type === type && ids.includes(action.id))
-                .map((action) => action.id);
+                .filter((action: ProcessItem) => action.type === type && ids.includes(action.id))
+                .map((action: ProcessItem) => type === 'action' ? action.id : action.isbn);
         }
     },
 });
