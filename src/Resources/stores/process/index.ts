@@ -243,7 +243,7 @@ export const useProcessStore = defineStore('processStore', {
          * @return {Number[]} - An array of action IDs that match the specified type and are included in the provided IDs.
          */
         filterActions(ids: Number[], type: ActionType = 'action') {
-            return this.state.processData.actions
+            return this.processData.actions
                 .filter((action: ProcessItem) => action.type === type && ids.includes(action.id))
                 .map((action: ProcessItem) => type === 'action' ? action.id : action.isbn);
         }

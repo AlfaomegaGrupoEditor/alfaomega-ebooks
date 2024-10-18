@@ -223,13 +223,13 @@ class QueueManager extends AbstractManager
                         AND action_id in (" . join(",", array_fill(0, count($actionId), '%s')) . ");
                 ", array_merge([$queue], $actionId));
             $result = $wpdb->get_results($query);
+
+            if (empty($result)) {
+                throw new \Exception(esc_html__('Failed to delete the action.', 'alfaomega-ebooks'), 500);
+            }
         } else {
             Service::make()->ebooks()->ebookPost()
                 ->updateImported($actionId, 'delete');
-        }
-
-        if (empty($result)) {
-            throw new \Exception(esc_html__('Failed to delete the action.', 'alfaomega-ebooks'), 500);
         }
 
         return $this->status($queue, true);
