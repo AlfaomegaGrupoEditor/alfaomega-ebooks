@@ -377,7 +377,7 @@ class ApiController
 
         $result = Service::make()
             ->queue()
-            ->delete($queue, $data['ids']);
+            ->delete($queue, $data['ids'], $data['type'] ?? 'action');
 
         return [
             'status'  => 'success',
@@ -421,7 +421,7 @@ class ApiController
 
         $result = Service::make()
             ->queue()
-            ->retry($queue, $data['ids']);
+            ->retry($queue, $data['ids'], $data['type'] ?? 'action');
 
         return [
             'status'  => 'success',

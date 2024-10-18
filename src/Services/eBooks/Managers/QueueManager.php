@@ -65,10 +65,12 @@ class QueueManager extends AbstractManager
             $data[$result->status] = intval($result->count);
         }
 
-        $failedImport = Service::make()->ebooks()
-            ->ebookPost()
-            ->getFailedImports();
-        $data['failed'] = $failedImport['meta']['total'];
+        if ($queue === 'alfaomega_ebooks_queue_import') {
+            $failedImport = Service::make()->ebooks()
+                ->ebookPost()
+                ->getFailedImports();
+            $data['failed'] = $failedImport['meta']['total'];
+        }
 
         return $transform ? QueueTransformer::transform($data) : $data;
     }
@@ -135,6 +137,7 @@ class QueueManager extends AbstractManager
                 ->ebookPost()->getFailedImports($page, $perPage);
 
             foreach ($failedImport['data'] as $import) {
+                $import['type'] = 'import';
                 $import['logs'] = $import['logs']['data'];
                 $data[] = $import;
             }
@@ -188,34 +191,37 @@ class QueueManager extends AbstractManager
     }
 
     /**
-     * Deletes an action from the queue.
-     * This method deletes an action from the queue by removing the action with the specified queue name and action ID.
+     * Deletes actions from the specified queue and updates the status of imported ebooks if applicable.
      *
-     * @param string $queue   The queue name.
-     * @param array $actionId The action IDs.
+     * @param string $queue   The specific queue from which actions are to be deleted.
+     * @param array $actionId An array of action IDs to be deleted.
+     * @param string $type    The type of action to delete, default is 'action'.
      *
-     * @return array The status of the queue.
-     * @throws \Exception
+     * @return array Returns an array with the status of the deletion process.
+     * @throws \Exception If the deletion of actions fails.
      */
-    public function delete(string $queue, array $actionId): array
+    public function delete(string $queue, array $actionId, string $type = 'action'): array
     {
         global $wpdb;
 
-        // If the queue is for ebook imports, update the status of the imported ebooks to 'failed'
-        if ($queue === 'alfaomega_ebooks_queue_import') {
-            $actions = $this->getActionsById($queue, $actionId);
-            $isbns = array_column($actions, 'isbn');
-            Service::make()->ebooks()->ebookPost()
-                ->updateImported($isbns, 'failed', errorCode: 'failed_action_deleted');
+        if ($type === 'action') {
+            if ($queue === 'alfaomega_ebooks_queue_import') {
+                $actions = $this->getActionsById($queue, $actionId);
+                $isbns = array_column($actions, 'isbn');
+                Service::make()->ebooks()->ebookPost()
+                    ->updateImported($isbns, 'failed', errorCode: 'failed_action_deleted');
+            }
+
+            $query = $wpdb->prepare("
+                    DELETE
+                    FROM {$this->table}
+                    WHERE hook = %s
+                        AND action_id in (" . join(",", array_fill(0, count($actionId), '%s')) . ");
+                ", array_merge([$queue], $actionId));
+            $result = $wpdb->get_results($query);
+        } else {
+            // delete failed imports
         }
-        
-        $query = $wpdb->prepare("
-                DELETE
-                FROM {$this->table}
-                WHERE hook = %s
-                    AND action_id in (" . join(",", array_fill(0, count($actionId), '%s')) . ");
-            ", array_merge([$queue], $actionId));
-        $result = $wpdb->get_results($query);
 
         if (empty($result)) {
             throw new \Exception(esc_html__('Failed to delete the action.', 'alfaomega-ebooks'), 500);
@@ -225,32 +231,35 @@ class QueueManager extends AbstractManager
     }
 
     /**
-     * Retries an action in the queue.
-     * This method retries an action in the queue by updating the status of the action with the specified queue name
-     * and action ID to 'pending'.
+     * Retries the specified actions by setting their status to 'pending' and rescheduling them.
      *
-     * @param string $queue   The queue name.
-     * @param array $actionId The action ID.
+     * @param string $queue   The specific queue to filter actions by.
+     * @param array $actionId An array of action IDs to retry.
+     * @param string $type    The type of action, default is 'action'.
      *
-     * @return array The status of the queue.
-     * @throws \Exception
+     * @return array Returns an array with the status of the actions after retrying.
+     * @throws \Exception If the actions could not be added to the pending queue.
      */
-    public function retry(string $queue, array $actionId): array
+    public function retry(string $queue, array $actionId, string $type = 'action'): array
     {
         global $wpdb;
 
-        $query = $wpdb->prepare("
-                UPDATE {$this->table}
-                SET status = 'pending',
-                    scheduled_date_gmt = DATE_ADD(NOW(), INTERVAL 1 minute),
-                    scheduled_date_local = DATE_ADD(NOW(), INTERVAL 1 minute)
-                WHERE hook = %s
-                    AND action_id in (" . join(",", array_fill(0, count($actionId), '%s')) . ");
-            ", array_merge([$queue], $actionId));
-        $result = $wpdb->get_results($query);
+        if ($type === 'action') {
+            $query = $wpdb->prepare("
+                    UPDATE {$this->table}
+                    SET status = 'pending',
+                        scheduled_date_gmt = DATE_ADD(NOW(), INTERVAL 1 minute),
+                        scheduled_date_local = DATE_ADD(NOW(), INTERVAL 1 minute)
+                    WHERE hook = %s
+                        AND action_id in (" . join(",", array_fill(0, count($actionId), '%s')) . ");
+                ", array_merge([$queue], $actionId));
+            $result = $wpdb->get_results($query);
 
-        if (empty($result)) {
-            throw new \Exception(esc_html__('Failed adding actions to the pending queue.', 'alfaomega-ebooks'), 500);
+            if (empty($result)) {
+                throw new \Exception(esc_html__('Failed adding actions to the pending queue.', 'alfaomega-ebooks'), 500);
+            }
+        } else {
+            // try to import again
         }
 
         return $this->status($queue, true);

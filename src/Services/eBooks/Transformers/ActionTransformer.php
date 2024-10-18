@@ -19,6 +19,7 @@ class ActionTransformer
             'isbn'             => !empty($details['isbn']) ? $details['isbn'] : null,
             'title'            => !empty($details['title']) ? $details['title'] : null,
             'status'           => $data->status,
+            'type'             => 'action',
             'schedule_date'    => $data->scheduled_date_gmt,
             'last_attend_date' => $data->last_attempt_gmt,
             'data'             => $details,
