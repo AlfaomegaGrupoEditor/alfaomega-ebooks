@@ -498,7 +498,15 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
             throw new Exception($content['message']);
         }
 
-        return $content['data'];
+        return [
+            'status' => $content['status'],
+            'data' => $content['data'] ?? [],
+            'meta' => [
+                'total'        => $content['meta']['pagination']['total'] ?? 0,
+                'current_page' => $content['meta']['pagination']['current_page'] ?? 0,
+                'pages'        => $content['meta']['pagination']['total_pages'] ?? 0,
+            ],
+        ];
     }
 
     /**

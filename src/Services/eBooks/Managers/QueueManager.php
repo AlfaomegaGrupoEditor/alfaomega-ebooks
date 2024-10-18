@@ -33,12 +33,14 @@ class QueueManager extends AbstractManager
 
     /**
      * Retrieves the status of a queue.
-     * This method retrieves the status of a queue by counting the number of actions with the specified queue name and status.
+     * This method retrieves the status of a queue by counting the number of actions with the specified queue name and
+     * status.
      *
-     * @param string $queue The queue name.
+     * @param string $queue   The queue name.
      * @param bool $transform Whether to transform the result.
      *
      * @return array The status of the queue.
+     * @throws \Exception
      */
     public function status(string $queue, bool $transform = false): array
     {
@@ -62,6 +64,11 @@ class QueueManager extends AbstractManager
         foreach ($results as $result) {
             $data[$result->status] = intval($result->count);
         }
+
+        $failedImport = Service::make()->ebooks()
+            ->ebookPost()
+            ->getFailedImports();
+        $data['failed'] = $failedImport['meta']['total'];
 
         return $transform ? QueueTransformer::transform($data) : $data;
     }
@@ -121,15 +128,17 @@ class QueueManager extends AbstractManager
                 ]);
         }
 
+        $importFailedTotal = 0;
         if ($queue === 'alfaomega_ebooks_queue_import'
             && $status === ['failed']) {
             $failedImport = Service::make()->ebooks()
                 ->ebookPost()->getFailedImports($page, $perPage);
 
-            foreach ($failedImport as $import) {
+            foreach ($failedImport['data'] as $import) {
                 $import['logs'] = $import['logs']['data'];
                 $data[] = $import;
             }
+            $importFailedTotal = $failedImport['meta']['total'];
         }
 
         $query = $wpdb->prepare("
@@ -139,13 +148,14 @@ class QueueManager extends AbstractManager
                 AND a.status in (" . join(",", array_fill(0, count($status), '%s')) . ")
             ", array_merge([$queue], $status));
         $pages = $wpdb->get_results($query);
+        $pagesCount = intval($pages[0]->count) + $importFailedTotal;
 
         return [
             'data' => $data,
             'meta' => [
-                'total'        => intval($pages[0]->count),
+                'total'        => $pagesCount,
                 'current_page' => $page,
-                'pages'        => ceil(intval($pages[0]->count) / $perPage),
+                'pages'        => ceil($pagesCount / $perPage),
             ],
         ];
     }
