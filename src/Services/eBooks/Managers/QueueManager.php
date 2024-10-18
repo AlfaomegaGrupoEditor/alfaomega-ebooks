@@ -88,15 +88,15 @@ class QueueManager extends AbstractManager
     }
 
     /**
-     * Retrieves the actions of a queue.
-     * This method retrieves the actions of a queue by selecting all actions with the specified queue name and status.
+     * Retrieves a list of actions with pagination and status filtering.
      *
-     * @param string $queue The queue name.
-     * @param array $status The status of the actions.
-     * @param int $page The page number.
-     * @param int $perPage The number of actions per page.
+     * @param string $queue The specific queue to filter actions by.
+     * @param array $status An array of statuses to filter actions by.
+     * @param int $page     The current page number for pagination.
+     * @param int $perPage  The number of items per page.
      *
-     * @return array The actions of the queue.
+     * @return array Returns an array containing the data of the actions and meta information for pagination.
+     * @throws \Exception
      */
     public function actions(string $queue, array $status, int $page = 1, int $perPage = 10): array
     {
@@ -119,6 +119,17 @@ class QueueManager extends AbstractManager
                 ActionTransformer::transform($result), [
                     'logs' => $this->logs($result->action_id)
                 ]);
+        }
+
+        if ($queue === 'alfaomega_ebooks_queue_import'
+            && $status === ['failed']) {
+            $failedImport = Service::make()->ebooks()
+                ->ebookPost()->getFailedImports($page, $perPage);
+
+            foreach ($failedImport as $import) {
+                $import['logs'] = $import['logs']['data'];
+                $data[] = $import;
+            }
         }
 
         $query = $wpdb->prepare("

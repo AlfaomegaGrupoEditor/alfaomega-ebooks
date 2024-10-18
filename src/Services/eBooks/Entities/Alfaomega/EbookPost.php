@@ -471,6 +471,37 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
     }
 
     /**
+     * Retrieves a list of failed imports.
+     * This method fetches the failed book imports from the API endpoint for the specified store.
+     * It throws an exception if the store UUID is not defined or if the API request fails.
+     *
+     * @param int $page    The page number to retrieve.
+     * @param int $perPage The number of entries per page.
+     *
+     * @return array Returns an array of failed imports.
+     * @throws \Exception If AO_STORE_UUID is not defined, or if the API request fails.
+     */
+    public function getFailedImports(int $page = 1, int $perPage = 10): array
+    {
+        if (! defined('AO_STORE_UUID')){
+            throw new Exception(esc_html__('AO_STORE_UUID is not defined!', 'alfaomega-ebooks'));
+        }
+        $storeUuid = AO_STORE_UUID;
+
+        $response = $this->api->get("/book/imported/$storeUuid/failed?per_page={$perPage}&page={$page}");
+        if ($response['response']['code'] !== 200) {
+            throw new Exception($response['response']['message']);
+        }
+        $content = json_decode($response['body'], true);
+
+        if ($content['status'] !== 'success') {
+            throw new Exception($content['message']);
+        }
+
+        return $content['data'];
+    }
+
+    /**
      * Updates the catalog import by processing chunks of 'alfaomega-ebook' posts.
      * This method handles the update of imported eBooks in store identified by AO_STORE_UUID.
      * Processes the posts in chunks and sends them to the API for updating the catalog status as completed.
