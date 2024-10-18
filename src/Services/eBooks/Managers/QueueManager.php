@@ -76,10 +76,12 @@ class QueueManager extends AbstractManager
     }
 
     /**
-     * Clear the queue data
-     * @param string $queue
+     * Clears actions from the specified queue that are not in 'in-process' status.
      *
-     * @return array
+     * @param string $queue The specific queue from which to clear actions.
+     *
+     * @return array Returns an array containing the updated status of the queue.
+     * @throws \Exception
      */
     public function clear(string $queue): array
     {
@@ -92,6 +94,8 @@ class QueueManager extends AbstractManager
         ", $queue);
         $wpdb->get_results($query);
 
+        Service::make()->ebooks()->ebookPost()
+            ->updateImported([], 'delete');
 
         return $this->status($queue, true);
     }
