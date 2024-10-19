@@ -144,7 +144,9 @@
                 </BListGroup>
             </BCard>
 
-            <BCard class="px-0 mx-3 border-light">
+            <BCard class="px-0 mx-3 border-light"
+                   style="min-width: 400px"
+            >
                 <div class="card-title fw-bold fs-6 px-0 pt-0 pb-2 text-muted text-uppercase border-bottom">
                     {{ $t('ebooks_stats') }}
                 </div>
@@ -152,32 +154,37 @@
                 <div class="row px-2 mt-2">
                     <div class="col">
                         <div class="row">
-                            <div class="fw-bold">{{ $t('ebooks')}}:</div>
+                            <div class="fw-bold text-center">- {{ $t('ebooks')}} -</div>
                         </div>
                         <div class="row mt-1 px-2">
-                            <div class="pl-2 pb-1">{{ $t('products')}}: <BBadge class="fs-7">{{ productsInfo.catalog }}</BBadge></div>
-                            <div class="pl-2 pb-1">{{ $t('ebooks')}}: <BBadge class="fs-7">{{ ebooksInfo.imported }}</BBadge></div>
-                            <div class="pl-2 pb-1">{{ $t('linked')}}: <BBadge class="fs-7" variant="success">{{ productsInfo.linked }}</BBadge></div>
+                            <div class="col offset-1">
+                                <div class="pl-2 pb-1">{{ $t('products')}}: <BBadge class="fs-7">{{ productsInfo.catalog }}</BBadge></div>
+                                <div class="pl-2 pb-1">{{ $t('ebooks')}}: <BBadge class="fs-7">{{ ebooksInfo.imported }}</BBadge></div>
+                                <div class="pl-2 pb-1">{{ $t('linked')}}: <BBadge class="fs-7" variant="success">{{ productsInfo.linked }}</BBadge></div>
+                            </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="row">
-                            <div class="fw-bold">{{ $t('queue')}}:</div>
+                            <div class="fw-bold text-center">- {{ $t('queue')}} -</div>
                         </div>
                         <div class="row mt-1 px-2">
-                            <div class="pl-2 pb-1">{{ $t('pending')}}: <BBadge class="fs-7" variant="info">{{ queueStatus.pending + queueStatus.processing }}</BBadge></div>
-                            <div class="pl-2 pb-1">{{ $t('completed')}}: <BBadge class="fs-7" variant="success">{{ queueStatus.completed }}</BBadge></div>
-                            <div class="pl-2 pb-1">{{ $t('failed')}}: <BBadge class="fs-7" variant="primary">{{ queueStatus.failed }}</BBadge></div>
+                            <div class="col offset-1">
+                                <div class="pl-2 pb-1">{{ $t('pending')}}: <BBadge class="fs-7" variant="info">{{ queueStatus.pending + queueStatus.processing }}</BBadge></div>
+                                <div class="pl-2 pb-1">{{ $t('completed')}}: <BBadge class="fs-7" variant="success">{{ queueStatus.completed }}</BBadge></div>
+                                <div class="pl-2 pb-1">{{ $t('failed')}}: <BBadge class="fs-7" variant="primary">{{ queueStatus.failed }}</BBadge></div>
+                                <div class="pl-2 pb-1">{{ $t('excluded')}}: <BBadge class="fs-7" variant="warning">{{ queueStatus.excluded }}</BBadge></div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="px-2 mt-4">
                     <div class="row">
-                        <div class="fw-bold">{{ $t('samples')}}:</div>
+                        <div class="fw-bold text-center">- {{ $t('samples')}} -</div>
                     </div>
                     <div class="row mt-1 px-2">
-                        <div class="col">
+                        <div class="col offset-2">
                             <div class="pl-2 pb-1">{{ $t('import')}}: <BBadge class="fs-7">{{ codesInfo.import }}</BBadge></div>
                             <div class="pl-2 pb-1">{{ $t('sample')}}: <BBadge class="fs-7" variant="primary">{{ codesInfo.samples }}</BBadge></div>
                             <div class="pl-2 pb-1">{{ $t('total')}}: <BBadge class="fs-7">{{ codesInfo.total }}</BBadge></div>
@@ -194,13 +201,19 @@
 
                 <div class="px-2 mt-2">
                     <div class="row">
-                        <div class="fw-bold">{{ $t('ebook_access')}}:</div>
+                        <div class="fw-bold text-center">- {{ $t('ebook_access')}} -</div>
                     </div>
                     <div class="row mt-1 px-2">
-                        <div class="col">
-                            <div class="pl-2 pb-1">{{ $t('sample')}}: <BBadge>{{ accessInfo.sample }}</BBadge></div>
-                            <div class="pl-2 pb-1">{{ $t('purchase')}}: <BBadge variant="info">{{ accessInfo.purchase }}</BBadge></div>
-                            <div class="pl-2 pb-1">{{ $t('total')}}: <BBadge>{{ accessInfo.total }}</BBadge></div>
+                        <div class="col offset-2">
+                            <div class="pl-2 pb-1">{{ $t('sample') }}:
+                                <BBadge>{{ accessInfo.sample }}</BBadge>
+                            </div>
+                            <div class="pl-2 pb-1">{{ $t('purchase') }}:
+                                <BBadge variant="info">{{ accessInfo.purchase }}</BBadge>
+                            </div>
+                            <div class="pl-2 pb-1">{{ $t('total') }}:
+                                <BBadge>{{ accessInfo.total }}</BBadge>
+                            </div>
                         </div>
                         <div class="col">
                             <div class="pl-2 pb-1">{{ $t('created')}}: <BBadge>{{ accessInfo.created }}</BBadge></div>

@@ -78,6 +78,7 @@ export const useProcessStore = defineStore('processStore', {
                 this.queueStatus.pending = 0;
                 this.queueStatus.completed = 0;
                 this.queueStatus.failed = 0;
+                this.queueStatus.excluded = 0;
             }
             const response = await API.process.getProcessStatus(process);
             if (response?.status === 'success' && response.data) {
@@ -86,6 +87,9 @@ export const useProcessStore = defineStore('processStore', {
                 this.queueStatus.pending += response.data.pending;
                 this.queueStatus.completed += response.data.completed;
                 this.queueStatus.failed += response.data.failed;
+                if (process === 'import-new-ebooks') {
+                    this.queueStatus.excluded += response.data.excluded;
+                }
             }
         },
 

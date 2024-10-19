@@ -488,7 +488,7 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
         }
         $storeUuid = AO_STORE_UUID;
 
-        $response = $this->api->get("/book/imported/$storeUuid/failed?per_page={$perPage}&page={$page}");
+        $response = $this->api->get("/book/imported/$storeUuid/$status?per_page={$perPage}&page={$page}");
         if ($response['response']['code'] !== 200) {
             throw new Exception($response['response']['message']);
         }

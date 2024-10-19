@@ -66,10 +66,17 @@ class QueueManager extends AbstractManager
         }
 
         if ($queue === 'alfaomega_ebooks_queue_import') {
-            $failedImport = Service::make()->ebooks()
+            $failedImport = Service::make()
+                ->ebooks()
                 ->ebookPost()
-                ->getImportList();
+                ->getImportList('failed');
             $data['failed'] = $failedImport['meta']['total'];
+
+            $excludedImport = Service::make()
+                ->ebooks()
+                ->ebookPost()
+                ->getImportList('excluded');
+            $data['excluded'] = $excludedImport['meta']['total'];
         }
 
         return $transform ? QueueTransformer::transform($data) : $data;
