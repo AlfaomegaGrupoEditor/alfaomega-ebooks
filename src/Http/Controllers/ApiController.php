@@ -543,7 +543,7 @@ class ApiController
      */
     public function setupPrices(array $data): array
     {
-        $response = []; // Implement the logic
+        $response = []; // TODO: Implement the logic
 
         return [
             'status'  => 'success',

@@ -295,9 +295,9 @@ class RouteManager
      * Calls a Webhook endpoint.
      * @param string $webhook
      *
-     * @return array
+     * @return void
      */
-    public function callWebhooks(string $webhook): array
+    public function callWebhooks(string $webhook): void
     {
         $headers = getallheaders();
         $aoToken = $headers['Ao-Token'] ?? null;
