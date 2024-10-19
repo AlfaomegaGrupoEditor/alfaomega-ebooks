@@ -25,6 +25,7 @@ import {
         processing: { type: Number, default: 0 },
         pending: { type: Number, default: 0 },
         failed: { type: Number, default: 0 },
+        excluded: { type: Number, default: 0 }
     });
 
     const emit = defineEmits(['action']);
@@ -302,6 +303,20 @@ import {
                                 variant="primary"
                         >
                             {{ failed }}
+                        </BBadge>
+                    </BNavItem>
+                    <BNavItem
+                        v-if="action === 'import'"
+                        :class="activeTab === 'excluded' ? 'fw-bold' : ''"
+                        :variant="activeTab === 'excluded' ? 'info' : 'dark'"
+                        :active="activeTab === 'excluded'"
+                        @click="navigateHandle('excluded', $event)"
+                    >
+                        {{ $t('excluded')}}
+                        <BBadge class="fs-7"
+                                variant="warning"
+                        >
+                            {{ excluded }}
                         </BBadge>
                     </BNavItem>
                 </BNav>

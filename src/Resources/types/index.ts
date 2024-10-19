@@ -112,7 +112,7 @@ type ProcessType = 'import-new-ebooks' | 'update-ebooks' | 'link-products' | 'se
 
 type ProcessNameType = 'import' | 'update' | 'link' | 'setup';
 
-type ProcessStatusType = 'idle' | 'processing' | 'failed' | 'completed' | 'pending';
+type ProcessStatusType = 'idle' | 'processing' | 'failed' | 'completed' | 'pending' | 'excluded';
 
 type AsyncProcessType = {
     status: ProcessStatusType;
