@@ -120,7 +120,7 @@ export const useProcessStore = defineStore('processStore', {
                 const actionIds = this.filterActions(ids, 'action');
                 if (actionIds.length) {
                     const responseAction = await API.process.deleteAction(process, actionIds, 'action');
-                    if (response.status === 'success') {
+                    if (responseAction.status === 'success') {
                         this.importNewEbooks = responseAction.data;
                     }
                 }
@@ -129,7 +129,7 @@ export const useProcessStore = defineStore('processStore', {
                 const importIds = this.filterActions(ids, 'import');
                 if (importIds.length) {
                     const responseImport = await API.process.deleteAction(process, importIds, 'import');
-                    if (response.status === 'success') {
+                    if (responseImport.status === 'success') {
                         this.importNewEbooks = responseImport.data;
                     }
                 }
@@ -150,7 +150,7 @@ export const useProcessStore = defineStore('processStore', {
                 const actionIds = this.filterActions(ids, 'action');
                 if (actionIds.length) {
                     const responseAction = await API.process.retryAction(process, actionIds, 'action');
-                    if (response.status === 'success') {
+                    if (responseAction.status === 'success') {
                         this.importNewEbooks = responseAction.data;
                     }
                 }
@@ -159,7 +159,7 @@ export const useProcessStore = defineStore('processStore', {
                 const importIds = this.filterActions(ids, 'import');
                 if (importIds.length) {
                     const responseImport = await API.process.retryAction(process, importIds, 'import');
-                    if (response.status === 'success') {
+                    if (responseImport.status === 'success') {
                         this.importNewEbooks = responseImport.data;
                         await this.dispatchImportNewEbooks();
                     }
