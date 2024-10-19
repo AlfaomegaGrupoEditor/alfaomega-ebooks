@@ -22,6 +22,7 @@ class QueueTransformer
             'processing'=> $data['in-process'],
             'pending'   => $data['pending'],
             'failed'    => $data['failed'],
+            'excluded'  => $data['excluded'] ?? 0,
         ];
     }
 }

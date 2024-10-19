@@ -6,7 +6,8 @@ import {
     AsyncProcessType,
     ProcessItem,
     ProcessStatusType,
-    ProcessType
+    ProcessType,
+    SetupPriceFactorType
 } from '@/types';
 import {eventBus} from '@/events';
 
@@ -130,6 +131,39 @@ async function deleteAction(process: ProcessType,
 }
 
 /**
+ * Sends a POST request to exclude actions based on provided process and IDs.
+ *
+ * @param {ProcessType} process - The process type for which the action is to be excluded.
+ * @param {(Number|String)[]} ids - An array of IDs (either Number or String) representing the actions to be excluded.
+ * @return {Promise<APIResponse<AsyncProcessType|null>>} - A promise resolving to the API response containing either the async process type or null.
+ */
+async function excludeAction(process: ProcessType,
+                            ids: (Number | String)[]
+): Promise<APIResponse<AsyncProcessType | null>> {
+    const appStore = useAppStore();
+    appStore.setError(null);
+    appStore.setLoading(true);
+
+    const response = await request<APIResponse<AsyncProcessType>>('POST', `/alfaomega-ebooks/api/exclude-action/`, {
+        process: process,
+        ids: ids
+    });
+    appStore.setLoading(false);
+
+    if (response.status == 'success' && response.data.status === 'success') {
+        eventBus.emit('notification', {
+            message: 'action_exclude_success',
+            type: 'success'
+        });
+        eventBus.emit('refreshActions', {process: process});
+        return response.data as APIResponse<AsyncProcessType>;
+    } else {
+        appStore.setError(response.message);
+        return null;
+    }
+}
+
+/**
  * Retries a specified action for a given process and list of ids.
  *
  * @param {ProcessType} process - The process type to perform the action on.
@@ -166,7 +200,14 @@ async function retryAction(process: ProcessType,
 }
 
 /**
- * Import new ebooks.
+ * Initiates the import of new eBooks by making an API request to the specified endpoint.
+ *
+ * This function sets the application state to loading, performs the API request, handles
+ * the response, and accordingly updates the application state and emits events.
+ *
+ * @return {Promise<APIResponse<AsyncProcessType | null>>} A promise that resolves to
+ * the API response containing the asynchronous process type if the request is successful,
+ * or null if an error occurs.
  */
 async function importNewEbooks(): Promise<APIResponse<AsyncProcessType | null>>
 {
@@ -191,7 +232,11 @@ async function importNewEbooks(): Promise<APIResponse<AsyncProcessType | null>>
 }
 
 /**
- * Update ebooks.
+ * Updates the ebooks by sending a request to the '/alfaomega-ebooks/api/update-ebooks/' endpoint.
+ * Handles loading state and error state within the application's store.
+ * Emits notifications and refreshes actions based on the response.
+ *
+ * @return {Promise<APIResponse<AsyncProcessType | null>>} A promise that resolves to the API response containing the async process type or null in case of an error.
  */
 async function updateEbooks(): Promise<APIResponse<AsyncProcessType | null>>
 {
@@ -216,7 +261,12 @@ async function updateEbooks(): Promise<APIResponse<AsyncProcessType | null>>
 }
 
 /**
- * Link products.
+ * Initiates a request to link products and updates the application store
+ * with loading and error states. Notifies components about the status of
+ * the process through an event bus.
+ *
+ * @return {Promise<APIResponse<AsyncProcessType | null>>} A promise that resolves with the response of the linking process,
+ * either an API response object on success or null if an error occurred.
  */
 async function linkProducts(): Promise<APIResponse<AsyncProcessType | null>>
 {
@@ -240,13 +290,50 @@ async function linkProducts(): Promise<APIResponse<AsyncProcessType | null>>
     }
 }
 
+/**
+ * Sets up the prices for eBooks according to a specified factor and value.
+ *
+ * @param {SetupPriceFactorType} factor - The factor to determine the price setup.
+ * @param {Number} value - The value associated with the pricing factor.
+ * @return {Promise<APIResponse<AsyncProcessType | null>>} A promise that resolves with the API response containing
+ * the async process type data or null if an error occurs.
+ */
+async function setupEbooksPrice(factor: SetupPriceFactorType,
+                                value: Number
+): Promise<APIResponse<AsyncProcessType | null>> {
+    const appStore = useAppStore();
+    appStore.setError(null);
+    appStore.setLoading(true);
+
+    const response = await request<APIResponse<AsyncProcessType>>('POST', `/alfaomega-ebooks/api/setup-prices/`, {
+        factor: factor,
+        value: value
+    });
+
+    appStore.setLoading(false);
+
+    if (response.status == 'success') {
+        eventBus.emit('notification', {
+            message: response.message,
+            type: 'success'
+        });
+        eventBus.emit('refreshActions', {process: process});
+        return {} as APIResponse<AsyncProcessType>;
+    } else {
+        appStore.setError(response.message);
+        return null;
+    }
+}
+
 export default {
     getProcessStatus,
     getProcessActions,
     clearQueue,
     deleteAction,
     retryAction,
+    excludeAction,
     importNewEbooks,
     updateEbooks,
-    linkProducts
+    linkProducts,
+    setupEbooksPrice
 };

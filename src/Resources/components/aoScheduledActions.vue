@@ -1,15 +1,15 @@
 <script setup lang="ts">
-    import {
-        ProcessStatusType,
-        ProcessNameType,
-        ProcessItem,
-        ProcessDataType,
-        QueueType
-    } from '@/types';
+import {
+    ProcessStatusType,
+    ProcessNameType,
+    ProcessItem,
+    ProcessDataType,
+    QueueType, ActionType
+} from '@/types';
     import {computed, onMounted, ref, watch} from 'vue';
     import {aoProcessingActions} from '@/components';
     import {useI18n} from 'vue-i18n';
-    import {BiTrash3Fill, BiArrowRepeat, BiEye} from '@/components/icons';
+    import {BiTrash3Fill, BiArrowRepeat, BiEye, BiXOctagon} from '@/components/icons';
     import AoDialog from '@/components/aoDialog.vue';
     import {TableItem, useModal} from 'bootstrap-vue-next';
     import {useProcessStore, useAppStore } from '@/stores';
@@ -25,6 +25,7 @@
         processing: { type: Number, default: 0 },
         pending: { type: Number, default: 0 },
         failed: { type: Number, default: 0 },
+        excluded: { type: Number, default: 0 }
     });
 
     const emit = defineEmits(['action']);
@@ -132,7 +133,7 @@
         selectedItems.value = [];
     };
 
-    const handleShowDialog = (actionType: String, item: ProcessDataType) => {
+    const handleShowDialog = (actionType: ActionType, item: ProcessDataType) => {
         selectedAction.value = { type: actionType, item: item };
         actionType === 'view' ? showDlg() : showConfirm();
     }
@@ -147,6 +148,9 @@
                 break;
             case 'delete':
                 processStore.dispatchDeleteAction(props.queue, ids);
+                break;
+            case 'exclude':
+                processStore.dispatchExcludeAction(props.queue, ids);
                 break;
             default: // primary
                 emit('action', props.action);
@@ -233,6 +237,11 @@
                     >
                         {{ $t('delete') }}
                     </BDropdownItemButton>
+                    <BDropdownItemButton
+                        @click="handleShowDialog('exclude', selectedItems)"
+                    >
+                        {{ $t('exclude') }}
+                    </BDropdownItemButton>
                 </BDropdown>
                 <ao-processing-actions
                     :action="action"
@@ -296,6 +305,20 @@
                             {{ failed }}
                         </BBadge>
                     </BNavItem>
+                    <BNavItem
+                        v-if="action === 'import'"
+                        :class="activeTab === 'excluded' ? 'fw-bold' : ''"
+                        :variant="activeTab === 'excluded' ? 'info' : 'dark'"
+                        :active="activeTab === 'excluded'"
+                        @click="navigateHandle('excluded', $event)"
+                    >
+                        {{ $t('excluded')}}
+                        <BBadge class="fs-7"
+                                variant="warning"
+                        >
+                            {{ excluded }}
+                        </BBadge>
+                    </BNavItem>
                 </BNav>
             </template>
             <div style="min-height: 300px">
@@ -353,6 +376,16 @@
                             @click="handleShowDialog('view', row.item)"
                         >
                             <span v-html="BiEye" />
+                        </BButton>
+                        <BButton
+                            v-if="activeTab === 'failed' && row.item.type === 'import'"
+                            size="sm"
+                            class="mx-1"
+                            variant="secondary"
+                            :title="t('exclude')"
+                            @click="handleShowDialog('exclude', row.item)"
+                        >
+                            <span v-html="BiXOctagon" />
                         </BButton>
                         <BButton
                             v-if="activeTab === 'failed' && row.item.type === 'action'"

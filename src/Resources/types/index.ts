@@ -1,5 +1,4 @@
-type ColorVariantType =
-    | 'primary'
+type ColorVariantType = 'primary'
     | 'secondary'
     | 'success'
     | 'danger'
@@ -11,15 +10,26 @@ type ColorVariantType =
     | 'white'
     | 'black';
 
-type SizeVariantType = 'sm' | 'md' | 'lg';
+type SizeVariantType = 'sm'
+    | 'md'
+    | 'lg';
 
-type AccessType = 'purchase' | 'sample';
+type AccessType = 'purchase'
+    | 'sample';
 
-type StatusType = 'created' | 'active' | 'expired' | 'cancelled' ;
+type StatusType = 'created'
+    | 'active'
+    | 'expired'
+    | 'cancelled' ;
 
 type OrderType = {
-    field: 'title' | 'created_at' | 'status'| 'valid_until' | 'access_at';
-    direction: 'asc' | 'desc';
+    field: 'title'
+        | 'created_at'
+        | 'status'
+        | 'valid_until'
+        | 'access_at';
+    direction: 'asc'
+        | 'desc';
 };
 
 type BooksFilterType = {
@@ -108,25 +118,39 @@ type AccessCodeInfoType = {
     total: number;
 }
 
-type ProcessType = 'import-new-ebooks' | 'update-ebooks' | 'link-products' | 'setup-prices';
+type ProcessType = 'import-new-ebooks'
+    | 'update-ebooks'
+    | 'link-products'
+    | 'setup-prices';
 
-type ProcessNameType = 'import' | 'update' | 'link' | 'setup';
+type ProcessNameType = 'import'
+    | 'update'
+    | 'link'
+    | 'setup';
 
-type ProcessStatusType = 'idle' | 'processing' | 'failed' | 'completed' | 'pending';
+type ProcessStatusType = 'idle'
+    | 'processing'
+    | 'failed'
+    | 'completed'
+    | 'pending'
+    | 'excluded';
 
 type AsyncProcessType = {
     status: ProcessStatusType;
     completed: Number,
     processing: Number,
     pending: Number,
-    failed: Number
+    failed: Number,
+    excluded?: Number
 }
 
 type ProcessDataType = {
     [key: string]: any;
 }
 
-type ActionType = 'action' | 'import'; 
+type ActionType = 'action'
+    | 'import'
+    | 'exclude';
 
 interface ProcessItem {
     id: number
@@ -146,7 +170,14 @@ type MetaType = {
     pages: number;
 }
 
-type QueueType = 'import-new-ebooks' | 'update-ebooks' | 'link-products' | 'setup-prices';
+type QueueType = 'import-new-ebooks'
+    | 'update-ebooks'
+    | 'link-products'
+    | 'setup-prices';
+
+type SetupPriceFactorType = 'page_count'
+    | 'fixed_number'
+    | 'percent'
 
 export {
     AccessCodeInfoType,
@@ -172,5 +203,6 @@ export {
     QueueType,
     SizeVariantType,
     StatusType,
-    ToastType
+    ToastType,
+    SetupPriceFactorType
 };

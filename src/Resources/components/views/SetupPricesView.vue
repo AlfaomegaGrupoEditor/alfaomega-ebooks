@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import {computed, onMounted, onUnmounted, ref} from 'vue';
+import {computed, ref} from 'vue';
     import {useI18n} from 'vue-i18n';
     import { useModal } from 'bootstrap-vue-next';
     import {eventBus} from '@/events';
     import {useProcessStore} from '@/stores';
-import AoScheduledActions from '@/components/aoScheduledActions.vue';
+    import AoScheduledActions from '@/components/aoScheduledActions.vue';
 
     const {t} = useI18n();
     const processStore = useProcessStore();
@@ -13,8 +13,8 @@ import AoScheduledActions from '@/components/aoScheduledActions.vue';
     const modalName = 'setup-prices-modal';
     const {show, hide, modal} = useModal(modalName)
     const dialog = ref(false);
-    const value = ref(0);
-    const factor = ref('');
+    const value = ref<Number>(0);
+    const factor = ref<SetupPriceFactorType|''>('');
     const factorDescription = computed(() => {
         switch (factor.value) {
             case 'page_count':
@@ -28,31 +28,14 @@ import AoScheduledActions from '@/components/aoScheduledActions.vue';
         }
     });
     const validateSetup = computed(() => factor.value !== '' && value.value != 0);
-    const intervalId = ref(null);
-    const poolTimeout = 60 * 1000;
-    const enablePolling = ref(false);
 
     const handleSetup = () => {
-        console.log('Setting ebooks prices...', factor.value, value.value);
+        processStore.dispatchSetupEbooksPrice(factor.value, value.value);
         eventBus.emit('notification', {
             message: 'tasks_added',
             type: 'success'
         })
     };
-
-    onMounted(() => {
-        if (enablePolling.value) {
-            intervalId.value = setInterval(() => {
-                processStore.dispatchRetrieveQueueStatus('setup-prices');
-            }, poolTimeout);
-        }
-
-        processStore.dispatchRetrieveQueueStatus('setup-prices');
-    });
-
-    onUnmounted(() => {
-        clearInterval(intervalId.value);
-    });
 </script>
 
 <template>

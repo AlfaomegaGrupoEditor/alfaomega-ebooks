@@ -148,6 +148,7 @@ class RouteManager
         'clear-queue'       => [ApiController::class, 'clearQueue', 'POST'],
         'delete-action'     => [ApiController::class, 'deleteAction', 'POST'],
         'retry-action'      => [ApiController::class, 'retryAction', 'POST'],
+        'exclude-action'    => [ApiController::class, 'excludeAction', 'POST'],
         'import-new-ebooks' => [ApiController::class, 'importNewEbooks', 'GET'],
         'update-ebooks'     => [ApiController::class, 'updateEbooks', 'GET'],
         'link-products'     => [ApiController::class, 'linkProducts', 'GET'],
@@ -294,9 +295,9 @@ class RouteManager
      * Calls a Webhook endpoint.
      * @param string $webhook
      *
-     * @return array
+     * @return void
      */
-    public function callWebhooks(string $webhook): array
+    public function callWebhooks(string $webhook): void
     {
         $headers = getallheaders();
         $aoToken = $headers['Ao-Token'] ?? null;

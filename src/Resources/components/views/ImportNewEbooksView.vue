@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, onMounted, onUnmounted, ref} from 'vue';
+import {computed} from 'vue';
     import {useI18n} from 'vue-i18n';
     import AoDialog from '@/components/aoDialog.vue';
     import { useModal } from 'bootstrap-vue-next';
@@ -12,7 +12,6 @@ import {computed, onMounted, onUnmounted, ref} from 'vue';
     const importStatus = computed(() => processStore.getImportNewEbooks);
     const modalName = 'import-ebooks-modal';
     const {show} = useModal(modalName);
-    const intervalId = ref(null);
 
     const handleImport = (action) => {
         processStore.dispatchImportNewEbooks();

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-    import {computed, onMounted, onUnmounted, ref} from 'vue';
-    import {aoAlert, aoProcessingQueue, aoProcessingActions} from '@/components';
+    import {computed} from 'vue';
     import {useI18n} from 'vue-i18n';
     import AoDialog from '@/components/aoDialog.vue';
     import { useModal } from 'bootstrap-vue-next';
@@ -14,33 +13,14 @@
     const processing = computed(() => updateStatus.value.status === 'processing');
     const modalName = 'update-ebooks-modal';
     const {show} = useModal(modalName);
-    const intervalId = ref(null);
-    const poolTimeout = 60 * 1000;
-    const enablePolling = ref(false);
 
     const handleUpdate = () => {
-        console.log('updating ebooks...');
+        processStore.dispatchUpdateEbooks();
         eventBus.emit('notification', {
             message: 'tasks_added',
             type: 'success'
         })
     };
-
-    onMounted(() => {
-        if (enablePolling.value) {
-            intervalId.value = setInterval(() => {
-                processStore.dispatchRetrieveQueueStatus('update-ebooks');
-            }, poolTimeout);
-
-            processStore.dispatchRetrieveQueueStatus('update-ebooks');
-        }
-
-        processStore.dispatchRetrieveQueueStatus('update-ebooks');
-    });
-
-    onUnmounted(() => {
-        clearInterval(intervalId.value);
-    });
 </script>
 
 <template>
@@ -49,8 +29,8 @@
             <ao-scheduled-actions
                 v-bind="updateStatus"
                 action="update"
-                @action="show"
                 queue="update-ebooks"
+                @action="show"
             />
         </div>
     </div>
