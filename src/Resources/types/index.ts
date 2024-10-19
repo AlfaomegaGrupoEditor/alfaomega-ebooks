@@ -119,14 +119,15 @@ type AsyncProcessType = {
     completed: Number,
     processing: Number,
     pending: Number,
-    failed: Number
+    failed: Number,
+    excluded?: Number
 }
 
 type ProcessDataType = {
     [key: string]: any;
 }
 
-type ActionType = 'action' | 'import'; 
+type ActionType = 'action' | 'import' | 'exclude';
 
 interface ProcessItem {
     id: number

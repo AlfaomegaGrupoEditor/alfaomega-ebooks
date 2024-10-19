@@ -130,6 +130,40 @@ async function deleteAction(process: ProcessType,
 }
 
 /**
+ * Sends a POST request to exclude actions based on provided process and IDs.
+ *
+ * @param {ProcessType} process - The process type for which the action is to be excluded.
+ * @param {(Number|String)[]} ids - An array of IDs (either Number or String) representing the actions to be excluded.
+ * @return {Promise<APIResponse<AsyncProcessType|null>>} - A promise resolving to the API response containing either the async process type or null.
+ */
+async function excludeAction(process: ProcessType,
+                            ids: (Number | String)[]
+): Promise<APIResponse<AsyncProcessType | null>> {
+    const appStore = useAppStore();
+    appStore.setError(null);
+    appStore.setLoading(true);
+
+    const response = await request<APIResponse<AsyncProcessType>>('POST', `/alfaomega-ebooks/api/exclude-action/`, {
+        process: process,
+        ids: ids,
+        type: type,
+    });
+    appStore.setLoading(false);
+
+    if (response.status == 'success' && response.data.status === 'success') {
+        eventBus.emit('notification', {
+            message: 'action_exclude_success',
+            type: 'success'
+        });
+        eventBus.emit('refreshActions', {process: process});
+        return response.data as APIResponse<AsyncProcessType>;
+    } else {
+        appStore.setError(response.message);
+        return null;
+    }
+}
+
+/**
  * Retries a specified action for a given process and list of ids.
  *
  * @param {ProcessType} process - The process type to perform the action on.
@@ -246,6 +280,7 @@ export default {
     clearQueue,
     deleteAction,
     retryAction,
+    excludeAction,
     importNewEbooks,
     updateEbooks,
     linkProducts

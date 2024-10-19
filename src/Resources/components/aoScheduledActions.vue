@@ -1,15 +1,15 @@
 <script setup lang="ts">
-    import {
-        ProcessStatusType,
-        ProcessNameType,
-        ProcessItem,
-        ProcessDataType,
-        QueueType
-    } from '@/types';
+import {
+    ProcessStatusType,
+    ProcessNameType,
+    ProcessItem,
+    ProcessDataType,
+    QueueType, ActionType
+} from '@/types';
     import {computed, onMounted, ref, watch} from 'vue';
     import {aoProcessingActions} from '@/components';
     import {useI18n} from 'vue-i18n';
-    import {BiTrash3Fill, BiArrowRepeat, BiEye} from '@/components/icons';
+    import {BiTrash3Fill, BiArrowRepeat, BiEye, BiXOctagon} from '@/components/icons';
     import AoDialog from '@/components/aoDialog.vue';
     import {TableItem, useModal} from 'bootstrap-vue-next';
     import {useProcessStore, useAppStore } from '@/stores';
@@ -132,7 +132,7 @@
         selectedItems.value = [];
     };
 
-    const handleShowDialog = (actionType: String, item: ProcessDataType) => {
+    const handleShowDialog = (actionType: ActionType, item: ProcessDataType) => {
         selectedAction.value = { type: actionType, item: item };
         actionType === 'view' ? showDlg() : showConfirm();
     }
@@ -147,6 +147,9 @@
                 break;
             case 'delete':
                 processStore.dispatchDeleteAction(props.queue, ids);
+                break;
+            case 'exclude':
+                processStore.dispatchExcludeAction(props.queue, ids);
                 break;
             default: // primary
                 emit('action', props.action);
@@ -232,6 +235,11 @@
                         @click="handleShowDialog('delete', selectedItems)"
                     >
                         {{ $t('delete') }}
+                    </BDropdownItemButton>
+                    <BDropdownItemButton
+                        @click="handleShowDialog('exclude', selectedItems)"
+                    >
+                        {{ $t('exclude') }}
                     </BDropdownItemButton>
                 </BDropdown>
                 <ao-processing-actions
@@ -353,6 +361,16 @@
                             @click="handleShowDialog('view', row.item)"
                         >
                             <span v-html="BiEye" />
+                        </BButton>
+                        <BButton
+                            v-if="activeTab === 'failed' && row.item.type === 'import'"
+                            size="sm"
+                            class="mx-1"
+                            variant="secondary"
+                            :title="t('exclude')"
+                            @click="handleShowDialog('exclude', row.item)"
+                        >
+                            <span v-html="BiXOctagon" />
                         </BButton>
                         <BButton
                             v-if="activeTab === 'failed' && row.item.type === 'action'"

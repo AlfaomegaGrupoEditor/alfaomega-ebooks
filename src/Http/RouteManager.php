@@ -148,6 +148,7 @@ class RouteManager
         'clear-queue'       => [ApiController::class, 'clearQueue', 'POST'],
         'delete-action'     => [ApiController::class, 'deleteAction', 'POST'],
         'retry-action'      => [ApiController::class, 'retryAction', 'POST'],
+        'exclude-action'    => [ApiController::class, 'excludeAction', 'POST'],
         'import-new-ebooks' => [ApiController::class, 'importNewEbooks', 'GET'],
         'update-ebooks'     => [ApiController::class, 'updateEbooks', 'GET'],
         'link-products'     => [ApiController::class, 'linkProducts', 'GET'],

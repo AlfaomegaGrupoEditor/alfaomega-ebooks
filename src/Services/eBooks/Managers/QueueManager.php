@@ -276,6 +276,23 @@ class QueueManager extends AbstractManager
     }
 
     /**
+     * Excludes specific actions from a given queue by updating their status to 'excluded'.
+     *
+     * @param string $queue   The specific queue to filter actions by.
+     * @param array $actionId An array of action IDs to be excluded.
+     *
+     * @return array Returns an array containing the status of actions in the queue after exclusion.
+     * @throws \Exception
+     */
+    public function exclude(string $queue, array $actionId): array
+    {
+        Service::make()->ebooks()->ebookPost()
+                ->updateImported($actionId, 'excluded', errorCode: 'manually_excluded');
+
+        return $this->status($queue, true);
+    }
+
+    /**
      * Retrieves actions based on their IDs.
      * This method retrieves actions by selecting all actions with the specified queue name and action IDs.
      *

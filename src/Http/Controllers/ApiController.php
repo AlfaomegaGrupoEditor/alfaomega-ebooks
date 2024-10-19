@@ -431,6 +431,41 @@ class ApiController
     }
 
     /**
+     * Retry action
+     *
+     * @param array $data
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function excludeAction(array $data): array
+    {
+        if (empty($data['process'])) {
+            throw new \Exception(esc_html__('The process is required.', 'alfaomega-ebooks'), 400);
+        }
+
+        if ($data['process'] !== 'import-new-ebooks') {
+            throw new \Exception(esc_html__('The process is invalid.', 'alfaomega-ebooks'), 400);
+        }
+
+        $queue = 'alfaomega_ebooks_queue_import';
+
+        if (empty($data['ids'])) {
+            throw new \Exception(esc_html__('The ids are required.', 'alfaomega-ebooks'), 400);
+        }
+
+        $result = Service::make()
+            ->queue()
+            ->exclude($queue, $data['ids']);
+
+        return [
+            'status'  => 'success',
+            'data'    => $result,
+            'message' => esc_html__('God Job!', 'alfaomega-ebooks'),
+        ];
+    }
+
+    /**
      * Import new ebooks
      *
      * @param array $data
