@@ -471,17 +471,17 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
     }
 
     /**
-     * Retrieves a list of failed imports.
-     * This method fetches the failed book imports from the API endpoint for the specified store.
-     * It throws an exception if the store UUID is not defined or if the API request fails.
+     * Retrieves a list of imported books based on their status.
+     * This method fetches the imported book list from an external API based on the provided status, page, and per page parameters.
      *
-     * @param int $page    The page number to retrieve.
-     * @param int $perPage The number of entries per page.
+     * @param string $status The import status to filter by (default is 'failed').
+     * @param int $page      The page number to retrieve (default is 1).
+     * @param int $perPage   The number of items per page (default is 10).
      *
-     * @return array Returns an array of failed imports.
-     * @throws \Exception If AO_STORE_UUID is not defined, or if the API request fails.
+     * @return array Returns an associative array containing the status, data, and meta information of the imported books.
+     * @throws \Exception If AO_STORE_UUID is not defined, the API response code is not 200, or the content status is not 'success'.
      */
-    public function getFailedImports(int $page = 1, int $perPage = 10): array
+    public function getImportList(string $status = 'failed', int $page = 1, int $perPage = 10): array
     {
         if (! defined('AO_STORE_UUID')){
             throw new Exception(esc_html__('AO_STORE_UUID is not defined!', 'alfaomega-ebooks'));

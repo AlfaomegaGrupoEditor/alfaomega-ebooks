@@ -68,7 +68,7 @@ class QueueManager extends AbstractManager
         if ($queue === 'alfaomega_ebooks_queue_import') {
             $failedImport = Service::make()->ebooks()
                 ->ebookPost()
-                ->getFailedImports();
+                ->getImportList();
             $data['failed'] = $failedImport['meta']['total'];
         }
 
@@ -137,8 +137,10 @@ class QueueManager extends AbstractManager
         $importFailedTotal = 0;
         if ($queue === 'alfaomega_ebooks_queue_import'
             && $status === ['failed']) {
-            $failedImport = Service::make()->ebooks()
-                ->ebookPost()->getFailedImports($page, $perPage);
+            $failedImport = Service::make()
+                ->ebooks()
+                ->ebookPost()
+                ->getImportList('failed', $page, $perPage);
 
             foreach ($failedImport['data'] as $import) {
                 $import['type'] = 'import';
