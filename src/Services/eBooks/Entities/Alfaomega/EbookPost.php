@@ -195,6 +195,7 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
         $ebook = $this->save($postId, $data);
         $this->updateAccess($postId, $ebook);
 
+        $this->updateImported([$data['isbn']], 'completed');
         return $ebook;
     }
 
@@ -402,5 +403,159 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
             'catalog' => empty($stats) ? 0 : $stats['size'],
             'imported' => $formattedResults['total_posts'] ?? 0,
         ];
+    }
+
+    /**
+     * Updates the status of imported books in the store.
+     * This method sends a POST request to the API to update the status of imported books
+     * based on their ISBNs and other provided parameters.
+     *
+     * @param array|null $isbns      List of ISBNs to update.
+     * @param string $status         The new status for the books.
+     * @param bool $clear            Whether to clear the existing data before updating.
+     * @param string|null $errorCode Error code to report if the update fails.
+     *
+     * @return array Returns an associative array containing the updated data from the API response.
+     * @throws \Exception Throws an exception if AO_STORE_UUID is not defined or if the API response indicates failure.
+     */
+    public function updateImported(array $isbns=null,
+                                   string $status = 'on-queue',
+                                   bool $clear = false,
+                                   string $errorCode = null
+    ): array {
+        if (! defined('AO_STORE_UUID')){
+            throw new Exception(esc_html__('AO_STORE_UUID is not defined!', 'alfaomega-ebooks'));
+        }
+
+        $storeUuid = AO_STORE_UUID;
+        $response = $this->api->post("/book/imported/$storeUuid", [
+            'isbns'      => $isbns,
+            'status'     => $status,
+            'clear'      => $clear,
+            'error_code' => $errorCode,
+        ]);
+        $content = json_decode($response['body'], true);
+        if ($content['status'] !== 'success') {
+            throw new Exception($content['message']);
+        }
+
+        return $content['data'];
+    }
+
+    /**
+     * Retrieve information of the new ebooks
+     *
+     * @param int $count
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function getNewEbooks(int $count = 100): array
+    {
+        if (! defined('AO_STORE_UUID')){
+            throw new Exception(esc_html__('AO_STORE_UUID is not defined!', 'alfaomega-ebooks'));
+        }
+        $storeUuid = AO_STORE_UUID;
+
+        $response = $this->api->get("/book/import-new/$storeUuid?items={$count}");
+        if ($response['response']['code'] !== 200) {
+            throw new Exception($response['response']['message']);
+        }
+        $content = json_decode($response['body'], true);
+
+        if ($content['status'] !== 'success') {
+            throw new Exception($content['message']);
+        }
+
+        return $content['data'];
+    }
+
+    /**
+     * Retrieves a list of failed imports.
+     * This method fetches the failed book imports from the API endpoint for the specified store.
+     * It throws an exception if the store UUID is not defined or if the API request fails.
+     *
+     * @param int $page    The page number to retrieve.
+     * @param int $perPage The number of entries per page.
+     *
+     * @return array Returns an array of failed imports.
+     * @throws \Exception If AO_STORE_UUID is not defined, or if the API request fails.
+     */
+    public function getFailedImports(int $page = 1, int $perPage = 10): array
+    {
+        if (! defined('AO_STORE_UUID')){
+            throw new Exception(esc_html__('AO_STORE_UUID is not defined!', 'alfaomega-ebooks'));
+        }
+        $storeUuid = AO_STORE_UUID;
+
+        $response = $this->api->get("/book/imported/$storeUuid/failed?per_page={$perPage}&page={$page}");
+        if ($response['response']['code'] !== 200) {
+            throw new Exception($response['response']['message']);
+        }
+        $content = json_decode($response['body'], true);
+
+        if ($content['status'] !== 'success') {
+            throw new Exception($content['message']);
+        }
+
+        return [
+            'status' => $content['status'],
+            'data' => $content['data'] ?? [],
+            'meta' => [
+                'total'        => $content['meta']['pagination']['total'] ?? 0,
+                'current_page' => $content['meta']['pagination']['current_page'] ?? 0,
+                'pages'        => $content['meta']['pagination']['total_pages'] ?? 0,
+            ],
+        ];
+    }
+
+    /**
+     * Updates the catalog import by processing chunks of 'alfaomega-ebook' posts.
+     * This method handles the update of imported eBooks in store identified by AO_STORE_UUID.
+     * Processes the posts in chunks and sends them to the API for updating the catalog status as completed.
+     *
+     * @return void
+     * @throws \Exception If AO_STORE_UUID is not defined or API response indicates a failure.
+     */
+    protected function updateCatalogImport(): void
+    {
+        global $wpdb;
+
+        if (! defined('AO_STORE_UUID')){
+            throw new Exception(esc_html__('AO_STORE_UUID is not defined!', 'alfaomega-ebooks'));
+        }
+        $storeUuid = AO_STORE_UUID;
+        $chunkSize = 100;
+        $page = 0;
+
+        do {
+            // Calculate the offset
+            $offset = $chunkSize * $page;
+
+            // Query to get a chunk of posts
+            $posts = $wpdb->get_results($wpdb->prepare("
+                SELECT p.ID, pm.meta_value AS isbn
+                FROM {$wpdb->prefix}posts p
+                INNER JOIN {$wpdb->prefix}postmeta pm ON p.ID = pm.post_id
+                WHERE p.post_type = 'alfaomega-ebook'
+                AND p.post_status = 'publish'
+                AND pm.meta_key = 'alfaomega_ebook_isbn'
+                LIMIT %d OFFSET %d
+            ", $chunkSize, $offset), OBJECT);
+
+            if (!empty($posts)) {
+                $isbns = [];
+                $response = $this->api->post("/book/imported/$storeUuid", [
+                    'isbns'  => $isbns,
+                    'status' => 'completed',
+                ]);
+                $content = json_decode($response['body'], true);
+                if ($content['status'] !== 'success') {
+                    throw new Exception($content['message']);
+                }
+
+                $page++;
+            }
+        } while (! empty($posts));
     }
 }

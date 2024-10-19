@@ -70,21 +70,15 @@ class ImportEbook extends AbstractProcess implements ProcessContract
      */
     protected function chunk(): ?array
     {
-        $isbn = '';
         $onQueue = [];
-        if ($this->settings['alfaomega_ebooks_import_from_latest']) {
-            $latest = $this->getEbookEntity()->latest();
-            $isbn = $latest['isbn'] ?? '';
-        }
         $limit = intval($this->settings['alfaomega_ebooks_import_limit']) ?? 1000;
         $countPerPage = $this->chunkSize;
         do {
             $countPerPage = min($limit, $countPerPage);
             $ebooks = $this->getEbookEntity()
-                ->retrieve($isbn, $countPerPage);
+                ->getNewEbooks($countPerPage);
 
             $onQueue = array_merge($onQueue, $this->batch($ebooks, true));
-            $isbn = end($ebooks)['isbn'] ?? null;
         } while (count($ebooks) > 0 && count($onQueue) < $limit);
 
         return $onQueue;
@@ -103,11 +97,13 @@ class ImportEbook extends AbstractProcess implements ProcessContract
         $processed = [];
         foreach ($entities as $ebook) {
             if (empty($ebook['printed_isbn'])) {
+                $this->getEbookEntity()->updateImported([$ebook['isbn']], 'failed', errorCode: 'printed_isbn_not_found');
                 continue;
             }
 
             $productId = wc_get_product_id_by_sku($ebook['printed_isbn']);
             if (empty($productId)) {
+                $this->getEbookEntity()->updateImported([$ebook['isbn']], 'failed', errorCode: 'product_not_found');
                 continue;
             }
 
@@ -127,17 +123,20 @@ class ImportEbook extends AbstractProcess implements ProcessContract
      * @param array $entities
      *
      * @return array|null
+     * @throws \Exception
      */
     protected function queueProcess(array $entities): ?array
     {
         $onQueue = [];
         foreach ($entities as $ebook) {
             if (empty($ebook['printed_isbn'])) {
+                $this->getEbookEntity()->updateImported([$ebook['isbn']], 'failed', errorCode: 'printed_isbn_not_found');
                 continue;
             }
 
             $productId = wc_get_product_id_by_sku($ebook['printed_isbn']);
             if (empty($productId)) {
+                $this->getEbookEntity()->updateImported([$ebook['isbn']], 'failed', errorCode: 'product_not_found');
                 continue;
             }
 

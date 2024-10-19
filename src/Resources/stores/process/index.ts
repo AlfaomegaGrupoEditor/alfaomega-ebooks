@@ -1,7 +1,7 @@
 import {defineStore} from 'pinia';
 import type {State} from '@/services/processes/types';
 import {API} from '@/services';
-import {ProcessStatusType, ProcessType} from '@/types';
+import {ActionType, ProcessItem, ProcessStatusType, ProcessType} from '@/types';
 import {getProcess} from '@/services/Helper';
 
 export const useProcessStore = defineStore('processStore', {
@@ -115,9 +115,29 @@ export const useProcessStore = defineStore('processStore', {
          * Delete action.
          */
         async dispatchDeleteAction(process: ProcessType, ids: number[]) {
-            const response = await API.process.deleteAction(process, ids);
-            if (response.status === 'success') {
-                this[getProcess(process)] = response.data;
+            if (process === 'import-new-ebooks') {
+                // delete the actions
+                const actionIds = this.filterActions(ids, 'action');
+                if (actionIds.length) {
+                    const responseAction = await API.process.deleteAction(process, actionIds, 'action');
+                    if (responseAction.status === 'success') {
+                        this.importNewEbooks = responseAction.data;
+                    }
+                }
+
+                // delete the imports
+                const importIds = this.filterActions(ids, 'import');
+                if (importIds.length) {
+                    const responseImport = await API.process.deleteAction(process, importIds, 'import');
+                    if (responseImport.status === 'success') {
+                        this.importNewEbooks = responseImport.data;
+                    }
+                }
+            } else {
+                const response = await API.process.deleteAction(process, ids);
+                if (response.status === 'success') {
+                    this[getProcess(process)] = response.data;
+                }
             }
         },
 
@@ -125,9 +145,30 @@ export const useProcessStore = defineStore('processStore', {
          * Retry action.
          */
         async dispatchRetryAction(process: ProcessType, ids: number[]) {
-            const response = await API.process.retryAction(process, ids);
-            if (response.status === 'success') {
-                this[getProcess(process)] = response.data;
+            if (process === 'import-new-ebooks') {
+                // retry the actions
+                const actionIds = this.filterActions(ids, 'action');
+                if (actionIds.length) {
+                    const responseAction = await API.process.retryAction(process, actionIds, 'action');
+                    if (responseAction.status === 'success') {
+                        this.importNewEbooks = responseAction.data;
+                    }
+                }
+
+                // retry the imports
+                const importIds = this.filterActions(ids, 'import');
+                if (importIds.length) {
+                    const responseImport = await API.process.retryAction(process, importIds, 'import');
+                    if (responseImport.status === 'success') {
+                        this.importNewEbooks = responseImport.data;
+                        await this.dispatchImportNewEbooks();
+                    }
+                }
+            } else {
+                const response = await API.process.retryAction(process, ids);
+                if (response.status === 'success') {
+                    this[getProcess(process)] = response.data;
+                }
             }
         },
 
@@ -193,5 +234,18 @@ export const useProcessStore = defineStore('processStore', {
                 }
             }
         },
+
+        /**
+         * Filters actions based on the provided IDs and action type.
+         *
+         * @param {Number[]} ids - An array of action IDs to filter.
+         * @param {ActionType} [type='action'] - The type of actions to filter. Default is 'action'.
+         * @return {Number[]} - An array of action IDs that match the specified type and are included in the provided IDs.
+         */
+        filterActions(ids: Number[], type: ActionType = 'action') {
+            return this.processData.actions
+                .filter((action: ProcessItem) => action.type === type && ids.includes(action.id))
+                .map((action: ProcessItem) => type === 'action' ? action.id : action.isbn);
+        }
     },
 });

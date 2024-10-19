@@ -126,11 +126,14 @@ type ProcessDataType = {
     [key: string]: any;
 }
 
+type ActionType = 'action' | 'import'; 
+
 interface ProcessItem {
     id: number
     isbn: string
     title: string
     status: string
+    type?: AccessType,
     schedule_date: string
     last_attend_date: string,
     data: ProcessDataType,
@@ -146,27 +149,28 @@ type MetaType = {
 type QueueType = 'import-new-ebooks' | 'update-ebooks' | 'link-products' | 'setup-prices';
 
 export {
-    ColorVariantType,
-    SizeVariantType,
+    AccessCodeInfoType,
     AccessType,
-    StatusType,
+    ActionType,
+    AsyncProcessType,
+    BookType,
     BooksFilterType,
     BooksQueryType,
-    OrderType,
-    BookType,
-    ToastType,
-    CatalogType,
     CatalogItemsType,
-    EbookInfoType,
-    ProductsInfoType,
+    CatalogType,
+    ColorVariantType,
     EbookAccessInfoType,
-    AccessCodeInfoType,
-    ProcessType,
+    EbookInfoType,
+    MetaType,
+    OrderType,
+    ProcessDataType,
+    ProcessItem,
     ProcessNameType,
     ProcessStatusType,
-    AsyncProcessType,
-    ProcessItem,
-    MetaType,
-    ProcessDataType,
-    QueueType
+    ProcessType,
+    ProductsInfoType,
+    QueueType,
+    SizeVariantType,
+    StatusType,
+    ToastType
 };

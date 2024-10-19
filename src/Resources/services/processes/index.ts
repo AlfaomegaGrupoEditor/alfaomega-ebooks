@@ -2,6 +2,7 @@ import {request} from '../api';
 import type {APIResponse} from '../types';
 import {useAppStore} from '@/stores';
 import {
+    ActionType,
     AsyncProcessType,
     ProcessItem,
     ProcessStatusType,
@@ -93,19 +94,25 @@ async function clearQueue(process: ProcessType): Promise<APIResponse<AsyncProces
 }
 
 /**
- * Delete action.
- * @param process
- * @param ids
+ * Deletes the specified actions.
+ *
+ * @param {ProcessType} process - The process context in which the actions are to be deleted.
+ * @param {Number[]} ids - An array of action IDs to be deleted.
+ * @param {ActionType} [type='action'] - The type of action being deleted, defaults to 'action'.
+ * @return {Promise<APIResponse<AsyncProcessType | null>>} A promise that resolves to an API response with the result of the delete operation.
  */
-async function deleteAction(process: ProcessType, ids: Number[]): Promise<APIResponse<AsyncProcessType | null>>
-{
+async function deleteAction(process: ProcessType,
+                            ids: (Number | String)[],
+                            type: ActionType = 'action'
+): Promise<APIResponse<AsyncProcessType | null>> {
     const appStore = useAppStore();
     appStore.setError(null);
     appStore.setLoading(true);
 
     const response = await request<APIResponse<AsyncProcessType>>('POST', `/alfaomega-ebooks/api/delete-action/`, {
         process: process,
-        ids: ids
+        ids: ids,
+        type: type,
     });
     appStore.setLoading(false);
 
@@ -123,19 +130,25 @@ async function deleteAction(process: ProcessType, ids: Number[]): Promise<APIRes
 }
 
 /**
- * Retry action.
- * @param process
- * @param ids
+ * Retries a specified action for a given process and list of ids.
+ *
+ * @param {ProcessType} process - The process type to perform the action on.
+ * @param {Number[]} ids - An array of ids for which the action should be retried.
+ * @param {ActionType} [type='action'] - The type of action to retry.
+ * @return {Promise<APIResponse<AsyncProcessType | null>>} A promise that resolves to the result of the retry action or null if it fails.
  */
-async function retryAction(process: ProcessType, ids: Number[]): Promise<APIResponse<AsyncProcessType | null>>
-{
+async function retryAction(process: ProcessType,
+                           ids: (Number | String)[],
+                           type: ActionType = 'action'
+): Promise<APIResponse<AsyncProcessType | null>> {
     const appStore = useAppStore();
     appStore.setError(null);
     appStore.setLoading(true);
 
     const response = await request<APIResponse<AsyncProcessType>>('POST', `/alfaomega-ebooks/api/retry-action/`, {
         process: process,
-        ids: ids
+        ids: ids,
+        type: type
     });
     appStore.setLoading(false);
 
