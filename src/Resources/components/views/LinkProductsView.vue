@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import {computed, onMounted, onUnmounted, ref} from 'vue';
-    import {aoAlert, aoProcessingQueue, aoProcessingActions} from '@/components';
+    import {computed} from 'vue';
     import {useI18n} from 'vue-i18n';
     import AoDialog from '@/components/aoDialog.vue';
     import { useModal } from 'bootstrap-vue-next';
     import {eventBus} from '@/events';
     import {useProcessStore} from '@/stores';
-import AoScheduledActions from '@/components/aoScheduledActions.vue';
+    import AoScheduledActions from '@/components/aoScheduledActions.vue';
 
     const {t} = useI18n();
     const processStore = useProcessStore();
@@ -14,32 +13,14 @@ import AoScheduledActions from '@/components/aoScheduledActions.vue';
     const processing = computed(() => linkStatus.value.status === 'processing');
     const modalName = 'link-products-modal';
     const {show} = useModal(modalName);
-    const intervalId = ref(null);
-    const poolTimeout = 60 * 1000;
-    const enablePolling = ref(false);
 
     const handleLink = () => {
-        console.log('Linking products...');
+        processStore.dispatchLinkProducts();
         eventBus.emit('notification', {
             message: 'tasks_added',
             type: 'success'
         });
     };
-
-    onMounted(() => {
-        if (enablePolling.value) {
-            intervalId.value = setInterval(() => {
-                processStore.dispatchRetrieveQueueStatus('link-products');
-            }, poolTimeout);
-        }
-
-        processStore.dispatchRetrieveQueueStatus('link-products');
-    });
-
-    onUnmounted(() => {
-        clearInterval(intervalId.value);
-    });
-
 </script>
 
 <template>

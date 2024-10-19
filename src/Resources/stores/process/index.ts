@@ -1,7 +1,13 @@
 import {defineStore} from 'pinia';
 import type {State} from '@/services/processes/types';
 import {API} from '@/services';
-import {ActionType, ProcessItem, ProcessStatusType, ProcessType} from '@/types';
+import {
+    ActionType,
+    ProcessItem,
+    ProcessStatusType,
+    ProcessType,
+    SetupPriceFactorType
+} from '@/types';
 import {getProcess} from '@/services/Helper';
 import {eventBus} from '@/events';
 
@@ -287,6 +293,31 @@ export const useProcessStore = defineStore('processStore', {
          */
         async dispatchLinkProducts() {
             const response = await API.process.importNewEbooks();
+            if (response.status === 'success') {
+                const response = await API.process.getProcessActions(
+                    'link-products',
+                    'processing',
+                    1,
+                    state.processData.meta.per_page
+                );
+                if (response.status === 'success' && response.data) {
+                    this.processData = {
+                        actions: response.data,
+                        meta: response.meta
+                    };
+                }
+            }
+        },
+
+        /**
+         * Asynchronously dispatches the setup of ebook prices and updates the process data if the setup is successful.
+         *
+         * @param {SetupPriceFactorType} factor - The factor based on which the ebook price should be set up.
+         * @param {number} value - The value used for setting up the ebook price.
+         * @return {Promise<void>} A promise that resolves once the price setup and process data update (if applicable) are completed.
+         */
+        async dispatchSetupEbooksPrice(factor: SetupPriceFactorType, value: number) {
+            const response = await API.process.setupEbooksPrice(factor, value);
             if (response.status === 'success') {
                 const response = await API.process.getProcessActions(
                     'link-products',
