@@ -145,8 +145,7 @@ async function excludeAction(process: ProcessType,
 
     const response = await request<APIResponse<AsyncProcessType>>('POST', `/alfaomega-ebooks/api/exclude-action/`, {
         process: process,
-        ids: ids,
-        type: type,
+        ids: ids
     });
     appStore.setLoading(false);
 
