@@ -122,49 +122,64 @@ class QueueManager extends AbstractManager
     {
         global $wpdb;
 
-        $offset = ($page - 1) * $perPage;
-        $query = $wpdb->prepare("
-            SELECT *
-            FROM {$this->table} a
-            WHERE a.hook = %s
-                AND a.status in (" . join(",", array_fill(0, count($status), '%s')) . ")
-            ORDER BY a.status, a.scheduled_date_gmt DESC
-            LIMIT %d OFFSET %d;
-        ", array_merge([$queue], $status, [$perPage, $offset]));
-        $results = $wpdb->get_results($query);
+        if (!in_array('excluded', $status)) {
+            $offset = ($page - 1) * $perPage;
+            $query = $wpdb->prepare("
+                SELECT *
+                FROM {$this->table} a
+                WHERE a.hook = %s
+                    AND a.status in (" . join(",", array_fill(0, count($status), '%s')) . ")
+                ORDER BY a.status, a.scheduled_date_gmt DESC
+                LIMIT %d OFFSET %d;
+            ", array_merge([$queue], $status, [$perPage, $offset]));
+            $results = $wpdb->get_results($query);
 
-        $data = [];
-        foreach ($results as $result) {
-            $data[] = array_merge(
-                ActionTransformer::transform($result), [
-                    'logs' => $this->logs($result->action_id)
-                ]);
-        }
+            $data = [];
+            foreach ($results as $result) {
+                $data[] = array_merge(
+                    ActionTransformer::transform($result), [
+                        'logs' => $this->logs($result->action_id)
+                    ]);
+            }
 
-        $importFailedTotal = 0;
-        if ($queue === 'alfaomega_ebooks_queue_import'
-            && $status === ['failed']) {
-            $failedImport = Service::make()
+            $importFailedTotal = 0;
+            if ($queue === 'alfaomega_ebooks_queue_import'
+                && $status === ['failed']) {
+                $failedImport = Service::make()
+                    ->ebooks()
+                    ->ebookPost()
+                    ->getImportList('failed', $page, $perPage);
+
+                foreach ($failedImport['data'] as $import) {
+                    $import['type'] = 'import';
+                    $import['logs'] = $import['logs']['data'];
+                    $data[] = $import;
+                }
+                $importFailedTotal = $failedImport['meta']['total'];
+            }
+
+            $query = $wpdb->prepare("
+                SELECT count(*) as 'count'
+                FROM {$this->table} a
+                WHERE a.hook = %s
+                    AND a.status in (" . join(",", array_fill(0, count($status), '%s')) . ")
+                ", array_merge([$queue], $status));
+            $pages = $wpdb->get_results($query);
+            $pagesCount = intval($pages[0]->count) + $importFailedTotal;
+        } else {
+            $data = [];
+            $excludedImport = Service::make()
                 ->ebooks()
                 ->ebookPost()
-                ->getImportList('failed', $page, $perPage);
+                ->getImportList('excluded', $page, $perPage);
 
-            foreach ($failedImport['data'] as $import) {
+            foreach ($excludedImport['data'] as $import) {
                 $import['type'] = 'import';
                 $import['logs'] = $import['logs']['data'];
                 $data[] = $import;
             }
-            $importFailedTotal = $failedImport['meta']['total'];
+            $pagesCount = $excludedImport['meta']['total'];
         }
-
-        $query = $wpdb->prepare("
-            SELECT count(*) as 'count'
-            FROM {$this->table} a
-            WHERE a.hook = %s
-                AND a.status in (" . join(",", array_fill(0, count($status), '%s')) . ")
-            ", array_merge([$queue], $status));
-        $pages = $wpdb->get_results($query);
-        $pagesCount = intval($pages[0]->count) + $importFailedTotal;
 
         return [
             'data' => $data,

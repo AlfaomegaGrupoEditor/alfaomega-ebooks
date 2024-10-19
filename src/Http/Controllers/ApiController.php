@@ -319,14 +319,13 @@ class ApiController
             throw new \Exception(esc_html__('The status is required.', 'alfaomega-ebooks'), 400);
         }
 
-        if (!in_array($data['status'], ['processing', 'completed', 'failed'])) {
+        if (!in_array($data['status'], ['processing', 'completed', 'failed', 'excluded'])) {
             throw new \Exception(esc_html__('The status is invalid.', 'alfaomega-ebooks'), 400);
         }
 
         $result = Service::make()
             ->queue()
-            ->actions(
-                $queue,
+            ->actions($queue,
                 match($data['status']) {
                     'processing' => [ 'in-process', 'pending' ],
                     'completed' => [ 'complete' ],
