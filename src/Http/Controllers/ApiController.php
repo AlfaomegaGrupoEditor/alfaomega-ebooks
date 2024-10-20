@@ -535,15 +535,32 @@ class ApiController
     }
 
     /**
-     * Setup prices
+     * Setup prices based on a given factor and value.
      *
-     * @param array $data
+     * This method sets up the prices for products based on the provided factor and value.
+     * It validates the input data and then processes the price update.
      *
-     * @return array
+     * @param array $data The data containing the factor and value for price setup.
+     *
+     * @return array The result of the price setup process.
+     * @throws \Exception If the factor or value is invalid.
      */
     public function setupPrices(array $data): array
     {
-        $response = []; // TODO: Implement the logic
+        if (empty($data['factor'])
+            || !in_array($data['factor'], ['page_count', 'fixed_number', 'percent', 'price_update'])) {
+            throw new \Exception(esc_html__('The factor is not valid.', 'alfaomega-ebooks'), 400);
+        }
+
+        if (empty($data['value'])) {
+            throw new \Exception(esc_html__('The factor value is invalid.', 'alfaomega-ebooks'), 400);
+        }
+
+        $response = Service::make()
+            ->wooCommerce()
+            ->updatePrice()
+            ->setFactor($data['factor'], $data['value'])
+            ->batch();
 
         return [
             'status'  => 'success',

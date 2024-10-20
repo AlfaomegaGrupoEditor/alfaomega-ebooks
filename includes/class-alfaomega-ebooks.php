@@ -208,6 +208,9 @@ class Alfaomega_Ebooks {
         $linkProduct = Service::make()->wooCommerce()->linkEbook()->setUpdateProduct();;
         $this->loader->add_action('alfaomega_ebooks_queue_link', $linkProduct, 'single',20, 3);
 
+        $updatePrice = Service::make()->wooCommerce()->updatePrice()->setUpdateProduct();;
+        $this->loader->add_action('alfaomega_ebooks_queue_update', $updatePrice, 'single',20, 3);
+
         // product custom fields
         $this->loader->add_action( 'woocommerce_product_options_general_product_data', $plugin_admin, 'woocommerce_product_custom_fields' );
         $this->loader->add_action( 'woocommerce_process_product_meta', $plugin_admin, 'woocommerce_product_custom_fields_save' );
