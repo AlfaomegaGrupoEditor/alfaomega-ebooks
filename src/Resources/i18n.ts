@@ -115,6 +115,7 @@ const messages = {
         per_page: 'Per Page',
         please_select_factor: 'Please select a factor to update the book prices',
         previous: 'Previous',
+        price_update: 'Price update',
         process_failed: 'The process has failed!',
         processing: 'Processing',
         processing_queue_status: 'Processing queue status',
@@ -159,6 +160,7 @@ const messages = {
         type: 'Type',
         // U
         update: 'Update',
+        update_description: 'If you made a change in the price configuration, use this option to set the new price to the already imported and linked digital books.',
         update_ebooks: 'Update eBooks',
         update_ebooks_confirmation: 'This process will take some time but you will be able to see the status of the update process in the queue. Are you sure you want to update the imported eBooks?',
         update_ebooks_description: 'Imported eBooks',
@@ -237,7 +239,7 @@ const messages = {
         failed: 'Fallido',
         filter_by: 'Filtrar por',
         fixed_number: 'Número fijo',
-        fixed_number_description: 'Adiciona el valor especificado al precio actual de cada libro',
+        fixed_number_description: 'Aplica el valor especificado al precio actual de cada libro. Utilice un valor negativo para disminuir el precio y positivo para incrementar el valor actual.',
         // H
         // I
         idle: 'Inactivo',
@@ -276,12 +278,13 @@ const messages = {
         order_by: 'Ordenar por',
         // P
         page_count: 'Cantidad de Páginas',
-        page_count_description: 'Multiplica el número de páginas del libro por el valor especificado.',
+        page_count_description: 'Multiplica el número de páginas del libro por el valor especificado y asigna el resultado como precio del libro impreso. El valor del digital se calcula basado en la configuración.',
         paste_code_here: 'Copia el código aquí',
         pending: 'Pendiente',
         percent: 'Porcentaje',
-        percent_description: 'Adiciona el porcentaje especificado al precio actual de cada libro',
+        percent_description: 'Basado en el precio actual calcula el porcentaje especificado y se lo agrega al precio actual de cada libro, si el valor es negativo entonces decrementa el precio en el porcentaje especificado.',
         per_page: 'Por Página',
+        price_update: 'Actualizar precios',
         please_select_factor: 'Por favor, seleccione un factor para actualizar los precios de los libros',
         previous: 'Anterior',
         process_failed: 'El proceso ha fallado!',
@@ -328,6 +331,7 @@ const messages = {
         type: 'Tipo',
         // U
         update: 'Actualizar',
+        update_description: 'Si realizó un cambio en la configuración de precios utilize esta opción para asignar el nuevo precio a los libros digitales ya importados y vinculados.',
         update_ebooks: 'Actualizar eBooks',
         update_ebooks_confirmation: 'Esta tarea tomará algo de tiempo pero podrás ver el estado del proceso de actualización en las estadísticas de la cola de processamiento. ¿Estás seguro de que deseas actualizar los eBooks ya importados?',
         update_ebooks_description: 'eBooks importados',

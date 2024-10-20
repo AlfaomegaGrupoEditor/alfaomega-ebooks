@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, ref} from 'vue';
+    import {computed, ref, watch} from 'vue';
     import {useI18n} from 'vue-i18n';
     import { useModal } from 'bootstrap-vue-next';
     import {eventBus} from '@/events';
@@ -17,6 +17,8 @@ import {computed, ref} from 'vue';
     const factor = ref<SetupPriceFactorType|''>('');
     const factorDescription = computed(() => {
         switch (factor.value) {
+            case 'price_update':
+                return t('update_description');
             case 'page_count':
                 return t('page_count_description');
             case 'fixed_number':
@@ -28,6 +30,7 @@ import {computed, ref} from 'vue';
         }
     });
     const validateSetup = computed(() => factor.value !== '' && value.value != 0);
+    const addOn = ref('*');
 
     const handleSetup = () => {
         processStore.dispatchSetupEbooksPrice(factor.value, value.value);
@@ -36,6 +39,30 @@ import {computed, ref} from 'vue';
             type: 'success'
         })
     };
+
+    watch(factor, (newValue) => {
+        switch (newValue) {
+            case 'price_update':
+                value.value = 1;
+                addOn.value = '>'
+                break;
+            case 'page_count':
+                value.value = 10;
+                addOn.value = '#'
+                break;
+            case 'percent':
+                value.value = 3;
+                addOn.value = '%'
+                break;
+            case 'fixed_number':
+                value.value = 50.00;
+                addOn.value = '$'
+                break;
+            default:
+                value.value = 0;
+                addOn.value = '*'
+        }
+    });
 </script>
 
 <template>
@@ -81,6 +108,7 @@ import {computed, ref} from 'vue';
                         class="form-select fs-8"
                 >
                     <option selected value="">{{ $t('select_factor')}}</option>
+                    <option value="price_update">{{ $t('price_update') }}</option>
                     <option value="page_count">{{ $t('page_count') }}</option>
                     <option value="fixed_number">{{ $t('fixed_number') }}</option>
                     <option value="percent">{{ $t('percent') }}</option>
@@ -92,11 +120,15 @@ import {computed, ref} from 'vue';
                 >
                     {{ $t('value') }}:
                 </label>
-                <input type="number"
-                       v-model="value"
-                       class="form-control fs-8"
-                       id="update-value"
-                >
+                <div class="input-group">
+                    <span class="input-group-text fs-8 text-info">{{ addOn }}</span>
+                    <input type="number"
+                           v-model="value"
+                           class="form-control fs-8"
+                           :disabled="factor === 'price_update' || factor === ''"
+                           id="update-value"
+                    >
+                </div>
             </div>
         </div>
         <div class="mx-3 mt-3">
