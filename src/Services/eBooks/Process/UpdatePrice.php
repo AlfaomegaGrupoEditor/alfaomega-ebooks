@@ -24,6 +24,57 @@ class UpdatePrice extends LinkProduct implements ProcessContract
     protected float $value;
 
     /**
+     * To calculate the digital price based on the printed price.
+     * @var int
+     */
+    protected int $digitalPrice = 80;
+
+    /**
+     * To calculate the digital+printed price based on the printed price.
+     * @var int
+     */
+    protected int $comboPrice = 120;
+
+    /**
+     * Set the new product price.
+     *
+     * @param array $eBook: eBook attributes
+     * @param bool $throwError: Whether to throw an error or not.
+     * @param int|null $postId: eBook post ID.
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function single(array $eBook, bool $throwError=false, int $postId=null): int
+    {
+        try {
+            $post = wc_get_product($postId);
+            if (empty($post)) {
+                throw new \Exception('Error getting the product.');
+            }
+
+            $eBook['id'] = $post['id'];
+            if ($this->updateProduct) {
+                $productId = Service::make()
+                    ->wooCommerce()
+                    ->product()
+                    ->updatePrice($eBook);
+
+                if (empty($productId)) {
+                    throw new \Exception('Error linking the eBook with the product.');
+                }
+            }
+
+            return $post['id'];
+        } catch (\Exception $e) {
+            if ($throwError) {
+                throw $e;
+            }
+            return 0;
+        }
+    }
+
+    /**
      * Sets the price calculator factor and its value.
      *
      * This method sets the calculation factor and its corresponding value for the update price process.
@@ -32,33 +83,21 @@ class UpdatePrice extends LinkProduct implements ProcessContract
      * @param mixed $value The value associated with the factor.
      * @return self Returns the instance of the UpdatePrice class.
      */
-    public function setFactor(string $factor, $value): self
+    public function setFactor(string $factor, float $value): self
     {
         $this->factor = $factor;
         $this->value = $value;
-
+        $this->digitalPrice = intval($this->settings['alfaomega_ebooks_price'] ?? 80);
+        $this->comboPrice = intval($this->settings['alfaomega_ebooks_printed_digital_price'] ?? 120);
         return $this;
     }
 
     /**
-     * Processes a batch of eBooks.
-     *
-     * This method takes an optional array of post IDs as input. If no array is provided, it retrieves a list of eBooks
-     * from the database and enqueues an asynchronous action to refresh each eBook.
-     *
-     * The method uses the 'alfaomega_ebooks_queue_refresh' action to refresh each eBook. This action takes
-     * an array of ISBNs and their associated post IDs as arguments.
-     *
-     * If the enqueuing of the action fails, the method throws an Exception with the message 'Refresh list queue failed'.
-     *
-     * If an array of post IDs is provided, the method retrieves the eBook data associated with these post IDs
-     * and calls the 'single' method for each eBook.
-     *
-     * The method returns an array with the total number of eBooks refreshed.
+     * Processes a batch of products synchronously or asynchronously.
      *
      * @param array $data An optional array of post IDs. If provided, the method will process only these eBooks.
      * @throws \Exception If the enqueuing of the refresh action fails.
-     * @return array An array with the total number of eBooks refreshed.
+     * @return array An array with the total number of products prices configured.
      */
     public function batch(array $data = [], bool $async = false): array
     {
@@ -66,98 +105,9 @@ class UpdatePrice extends LinkProduct implements ProcessContract
             return $this->chunk();
         }
 
-        $isbns = [];
-        $toDelete = [];
-        foreach ($data as $postId) {
-            $post = get_post($postId);
-            $meta = get_post_meta($postId, single: true);
-            if (!empty($post) && !empty($meta)) {
-                $sku = $meta['alfaomega_ebook_product_sku'][0] ?? '';
-                $ebook = [
-                    'id'           => $postId,
-                    'isbn'         => $meta['alfaomega_ebook_isbn'][0] ?? '',
-                    'title'        => $post->post_title,
-                    'description'  => $post->post_content,
-                    'adobe'        => $meta['alfaomega_ebook_id'][0] ?? '',
-                    'html_ebook'   => $meta['alfaomega_ebook_url'][0] ?? '',
-                    'printed_isbn' => $sku,
-                    'product_sku'  => $sku,
-                    'product_id'   => !empty($sku) ? wc_get_product_id_by_sku($sku) : 0,
-                    'cover'        => $meta['alfaomega_ebook_cover'][0] ?? '',
-                ];
-                $isbn = empty($ebook['isbn']) ? $ebook['printed_isbn'] : $ebook['isbn'];
-                if (empty($isbn)) {
-                    $toDelete[] = $postId;
-                } else {
-                    $isbns[$isbn] = $ebook;
-                }
-            }
-        }
-
-        // delete ebooks not valid
-        if (!empty($toDelete)) {
-            foreach ($toDelete as $postId) {
-                $this->getEbookEntity()->delete($postId);
-            }
-        }
-
-        $modified = [];
-        if (!empty($isbns)) {
-            $notFound = array_keys($isbns);
-            $ebooks = $this->getEbookEntity()->index(array_keys($isbns));
-            if (!empty($ebooks)) {
-                foreach ($ebooks as $ebook) {
-                    $key = array_search($ebook['isbn'], $notFound);
-                    if ($key !== false) {
-                        unset($notFound[$key]);
-                    }
-
-                    // check eBook post exists
-                    $ebookPost = $isbns[$ebook['isbn']] ?? null;
-                    if (empty($ebookPost)) {
-                        continue; // eBook post not found update not needed
-                    }
-
-                    // check product linked
-                    $productId = $isbns[$ebook['isbn']]['product_id'];
-                    if (!empty($productId)) {
-                        $product = wc_get_product($productId);
-                        if ($product->get_type() === 'simple' &&
-                            $product->get_attribute('pa_ebook') !== 'Desactivado') {
-                            $modified[] = array_merge($ebookPost, $ebook);
-                            continue; // product not linked, update needed
-                        }
-                    }
-
-                    // check if eBook changed
-                    if ($ebook['title'] === $ebookPost['title'] &&
-                        $ebook['description'] === $ebookPost['description'] &&
-                        $ebook['adobe'] === $ebookPost['adobe'] &&
-                        $ebook['html_ebook'] === $ebookPost['html_ebook'] &&
-                        $ebook['cover'] === $ebookPost['cover'] &&
-                        $ebook['printed_isbn'] === $ebookPost['printed_isbn'] ) {
-                        continue; // didn't change anything, no update needed
-                    }
-
-                    $modified[] = array_merge($ebookPost, $ebook);
-                }
-            }
-        }
-
-        // delete ebooks not valid
-        if (!empty($notFound)) {
-            foreach ($notFound as $ebook) {
-                $this->getEbookEntity()->delete($ebook['id']);
-            }
-        }
-
-        if (empty($modified)) {
-            return array_keys($isbns);
-        }
-
         return $async
-            ? $this->queueProcess($modified)
-            : $this->doProcess($modified);
+            ? $this->queueProcess($data)
+            : $this->doProcess($data);
     }
 
     /**
@@ -171,8 +121,8 @@ class UpdatePrice extends LinkProduct implements ProcessContract
     protected function doProcess(array $entities): ?array
     {
         $processed = [];
-        foreach ($entities as $eBook) {
-            $result = $this->single($eBook, postId: $eBook['id']);
+        foreach ($entities as $priceSetup) {
+            $result = $this->single($priceSetup, postId: $priceSetup['id']);
             $processed[] = $result;
         }
 
@@ -189,10 +139,32 @@ class UpdatePrice extends LinkProduct implements ProcessContract
     protected function queueProcess(array $entities): ?array
     {
         $onQueue = [];
-        foreach ($entities as $ebook) {
+        foreach ($entities as $productId) {
+            $product = wc_get_product($productId);
+            // TODO: Get this information form Alfaomega Panel when the eBook is created.
+            $pageCount = $product->get_meta('alfaomega_ebook_page_count') ?? 100;
+            $newRegularPrice = $this->calculatePrice($product->get_regular_price(), $pageCount);
+            $newSalePrice = $this->calculatePrice($product->get_sale_price(), $pageCount);
+
+            $priceSetup = [
+                'id'                        => $productId,
+                'printed_isbn'              => $product->get_sku(),
+                'ebook_isbn'                => $product->get_meta('alfaomega_ebook_isbn'),
+                'title'                     => $product->get_name(),
+                'page_count'                => $pageCount,
+                'factor'                    => $this->factor,
+                'value'                     => $this->value,
+                'current_price'             => $product->get_price(),
+                'new_regular_price'         => $newRegularPrice,
+                'new_regular_digital_price' => round($newRegularPrice * $this->digitalPrice / 100, 2),
+                'new_regular_combo_price'   => round($newRegularPrice * $this->comboPrice / 100, 2),
+                'new_sales_price'           => $newSalePrice,
+                'new_sales_digital_price'   => round($newSalePrice * $this->digitalPrice / 100, 2),
+                'new_sales_combo_price'     => round($newSalePrice * $this->comboPrice / 100, 2),
+            ];
             $result = as_enqueue_async_action(
-                'alfaomega_ebooks_queue_refresh',
-                [$ebook, true, $ebook['id']]
+                'alfaomega_ebooks_queue_setup_price',
+                [$priceSetup, true, $productId]
             );
             if ($result !== 0) {
                 $onQueue[] = $result;
@@ -202,27 +174,17 @@ class UpdatePrice extends LinkProduct implements ProcessContract
     }
 
     /**
-     * Get the eBook entity.
-     *
-     * @return EbookPostEntity
-     * @throws \Exception
-     */
-    protected function getEbookEntity(): EbookPostEntity
-    {
-        return $this->entity;
-    }
-
-    /**
-     * Check if the eBook information matches the configuration in Alfaomega
-     * Retrieve a chunk of data to process.
-     * This method should be implemented by child classes to retrieve a chunk of data to process.
-     * The method should return an array of data to process, or null if there is no more data to process.
+     * Get by chunks the products id linked successfully to ebooks
+     * and pass them to the batch method to process asynchronously
+     * the update of the prices.
      *
      * @return array|null An array of data to process, or null if there is no more data to process.
      * @throws \Exception
      */
     protected function chunk(): ?array
     {
+        global $wpdb;
+
         $onQueue = [];
         $limit = 10000;
         $countPerPage = $this->chunkSize;
@@ -230,18 +192,58 @@ class UpdatePrice extends LinkProduct implements ProcessContract
         $page = 0;
         do {
             $countPerPage = min($limit, $countPerPage);
-            // get all variant products with the ebook property active
-            $products = [];
-            if (empty($posts)) {
+
+            // retrieves a list of published products of type variable
+            $dataQuery = $wpdb->prepare("SELECT p.ID
+                FROM {$wpdb->prefix}posts AS p
+                INNER JOIN {$wpdb->prefix}term_relationships AS tr ON p.ID = tr.object_id
+                INNER JOIN {$wpdb->prefix}term_taxonomy AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+                INNER JOIN {$wpdb->prefix}terms AS t ON tt.term_id = t.term_id
+                WHERE p.post_type = 'product'
+                AND p.post_status = 'publish'
+                AND tt.taxonomy = 'product_type'
+                AND t.name = 'variable'
+                LIMIT %d, %d;", $page * $countPerPage, $countPerPage);
+
+            $results = $wpdb->get_results($dataQuery, 'ARRAY_A');
+            if (empty($results)) {
                 break;
             }
 
-            $ebooks = array_column($posts, 'ID');
-            $onQueue = array_merge($onQueue, $this->batch($ebooks, true));
+            $products = array_column($results, 'ID');
+            $onQueue = array_merge($onQueue, $this->batch($products, true));
             $page++;
-        } while (count($posts) === $this->chunkSize && count($onQueue) < $limit);
+        } while (count($results) === $this->chunkSize && count($onQueue) < $limit);
 
 
         return $onQueue;
+    }
+
+    /**
+     * Calculate the new price based on the factor and value.
+     *
+     * @param float $price The current price of the product.
+     * @param float $pageCount Book's number of pages.
+     * @return float The new price of the product.
+     */
+    protected function calculatePrice(float $price, int $pageCount = 1): float
+    {
+        switch ($this->factor) {
+            case 'page_count':
+                return $pageCount + $this->value;
+
+            case 'percent':
+                $percentage = $price * abs($this->value) / 100;
+                return round($this->value > 0
+                    ? $price + $percentage
+                    : $price - $percentage, 2);
+
+            case 'fixed':
+                return $price + $this->value;
+
+            case 'price_update':
+            default:
+                return $price;
+        }
     }
 }
