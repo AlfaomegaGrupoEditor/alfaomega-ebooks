@@ -223,7 +223,7 @@ class Product extends WooAbstractEntity implements ProductEntity
         wc_delete_product_transients($data['id']);
         $product = wc_get_product($data['id']);
         if (empty($product) || !$product->is_type('variable')) {
-            throw new Exception('No valid Variable Product not found.');
+            throw new Exception('No valid Variable Product found.');
         }
 
         update_post_meta($data['id'], '_price', $data['new_regular_price']);
