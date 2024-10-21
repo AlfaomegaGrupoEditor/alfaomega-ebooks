@@ -135,6 +135,7 @@ class UpdatePrice extends LinkProduct implements ProcessContract
      * @param array $entities
      *
      * @return array|null
+     * @throws \Exception
      */
     protected function queueProcess(array $entities): ?array
     {
@@ -142,9 +143,14 @@ class UpdatePrice extends LinkProduct implements ProcessContract
         foreach ($entities as $productId) {
             $product = wc_get_product($productId);
             // TODO: Get this information form Alfaomega Panel when the eBook is created.
-            $pageCount = $product->get_meta('alfaomega_ebook_page_count') ?? 100;
-            $newRegularPrice = $this->calculatePrice($product->get_regular_price(), $pageCount);
-            $newSalePrice = $this->calculatePrice($product->get_sale_price(), $pageCount);
+            $pageCount = $product->get_meta('alfaomega_ebook_page_count') ?? 0;
+            if (empty($pageCount) && $this->factor === 'page_count') {
+                throw new \Exception(throw new \Exception(
+                    esc_html__('The page count is not available in book with ISBN: ', 'alfaomega-ebooks') . $product->get_sku()
+                ));
+            }
+            $newRegularPrice = $this->calculatePrice(floatval($product->get_regular_price()), intval($pageCount));
+            $newSalePrice = $this->calculatePrice(floatval($product->get_sale_price()), intval($pageCount));
 
             $priceSetup = [
                 'id'                        => $productId,
@@ -222,23 +228,34 @@ class UpdatePrice extends LinkProduct implements ProcessContract
     /**
      * Calculate the new price based on the factor and value.
      *
-     * @param float $price The current price of the product.
-     * @param float $pageCount Book's number of pages.
+     * @param float $price   The current price of the product.
+     * @param int $pageCount Book's number of pages.
+     *
      * @return float The new price of the product.
+     * @throws \Exception
      */
     protected function calculatePrice(float $price, int $pageCount = 1): float
     {
         switch ($this->factor) {
             case 'page_count':
+                if ($pageCount === 0) {
+                    throw new \Exception('page_count can\'t 0');
+                }
                 return $pageCount + $this->value;
 
             case 'percent':
                 $percentage = $price * abs($this->value) / 100;
+                if ($this->value < 0 && $price < $percentage) {
+                    throw new \Exception('The new price can\'t be negative');
+                }
                 return round($this->value > 0
                     ? $price + $percentage
                     : $price - $percentage, 2);
 
             case 'fixed':
+                if ($this->value < 0 && $price < $this->value) {
+                    throw new \Exception('The new price can\'t be negative');
+                }
                 return $price + $this->value;
 
             case 'price_update':

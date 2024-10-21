@@ -228,7 +228,7 @@ class ApiController
             'import-new-ebooks' => 'alfaomega_ebooks_queue_import',
             'update-ebooks' => 'alfaomega_ebooks_queue_refresh',
             'link-products' => 'alfaomega_ebooks_queue_link',
-            'setup-prices' => 'alfaomega_ebooks_queue_prices',
+            'setup-prices' => 'alfaomega_ebooks_queue_setup_price',
             default => null,
         };
         if (empty($queue)) {
@@ -268,7 +268,7 @@ class ApiController
             'import-new-ebooks' => 'alfaomega_ebooks_queue_import',
             'update-ebooks' => 'alfaomega_ebooks_queue_refresh',
             'link-products' => 'alfaomega_ebooks_queue_link',
-            'setup-prices' => 'alfaomega_ebooks_queue_prices',
+            'setup-prices' => 'alfaomega_ebooks_queue_setup_price',
             default => null,
         };
         if (empty($queue)) {
@@ -308,7 +308,7 @@ class ApiController
             'import' => 'alfaomega_ebooks_queue_import',
             'update' => 'alfaomega_ebooks_queue_refresh',
             'link' => 'alfaomega_ebooks_queue_link',
-            'setup' => 'alfaomega_ebooks_queue_prices',
+            'setup' => 'alfaomega_ebooks_queue_setup_price',
             default => null,
         };
         if (empty($queue)) {
@@ -363,7 +363,7 @@ class ApiController
             'import-new-ebooks' => 'alfaomega_ebooks_queue_import',
             'update-ebooks' => 'alfaomega_ebooks_queue_refresh',
             'link-products' => 'alfaomega_ebooks_queue_link',
-            'setup-prices' => 'alfaomega_ebooks_queue_prices',
+            'setup-prices' => 'alfaomega_ebooks_queue_setup_price',
             default => null,
         };
         if (empty($queue)) {
@@ -407,7 +407,7 @@ class ApiController
             'import-new-ebooks' => 'alfaomega_ebooks_queue_import',
             'update-ebooks' => 'alfaomega_ebooks_queue_refresh',
             'link-products' => 'alfaomega_ebooks_queue_link',
-            'setup-prices' => 'alfaomega_ebooks_queue_prices',
+            'setup-prices' => 'alfaomega_ebooks_queue_setup_price',
             default => null,
         };
         if (empty($queue)) {
@@ -561,7 +561,7 @@ class ApiController
         $response = Service::make()
             ->wooCommerce()
             ->updatePrice()
-            ->setFactor($data['factor'], $data['value'])
+            ->setFactor($data['factor'], floatval($data['value']))
             ->batch();
 
         return [

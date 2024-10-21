@@ -466,7 +466,7 @@ import {
                      v-for="(value, key) in selectedAction.item.data"
                      :key="key"
                 >
-                    <div class="col-2 fw-bold fs-7 py-2 text-end text-uppercase">{{ key }}:</div>
+                    <div class="col-2 fw-bold fs-7 py-2 text-end text-uppercase">{{ key.replace(/_/g, ' ') }}:</div>
                     <div class="col border px-2 py-2 bg-info-subtle">{{ value }}</div>
                 </div>
             </BTab>
