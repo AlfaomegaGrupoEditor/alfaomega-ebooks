@@ -246,9 +246,9 @@ class QueueManager extends AbstractManager
                     WHERE hook = %s
                         AND action_id in (" . join(",", array_fill(0, count($actionId), '%s')) . ");
                 ", array_merge([$queue], $actionId));
-            $result = $wpdb->get_results($query);
+            $wpdb->get_results($query);
 
-            if (empty($result)) {
+            if ($wpdb->rows_affected > 0) {
                 throw new \Exception(esc_html__('Failed to delete the action.', 'alfaomega-ebooks'), 500);
             }
         } else {
@@ -282,9 +282,9 @@ class QueueManager extends AbstractManager
                     WHERE hook = %s
                         AND action_id in (" . join(",", array_fill(0, count($actionId), '%s')) . ");
                 ", array_merge([$queue], $actionId));
-            $result = $wpdb->get_results($query);
+            $wpdb->get_results($query);
 
-            if (empty($result)) {
+            if ($wpdb->rows_affected >0) {
                 throw new \Exception(esc_html__('Failed adding actions to the pending queue.', 'alfaomega-ebooks'), 500);
             }
         } else {
