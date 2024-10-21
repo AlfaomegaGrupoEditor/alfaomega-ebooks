@@ -4,6 +4,7 @@ namespace AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce;
 use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\ProductEntity;
 use AlfaomegaEbooks\Services\eBooks\Service;
 use Automattic\WooCommerce\Client;
+use PHPUnit\Logging\Exception;
 use WC_Product;
 
 class Product extends WooAbstractEntity implements ProductEntity
@@ -219,9 +220,10 @@ class Product extends WooAbstractEntity implements ProductEntity
      */
     public function updatePrice(array $data): int
     {
+        wc_delete_product_transients($data['id']);
         $product = wc_get_product($data['id']);
         if (empty($product)) {
-            return 0;
+            throw new Exception('Product not found');
         }
 
         if ($product->is_type('variable')) {
@@ -233,8 +235,15 @@ class Product extends WooAbstractEntity implements ProductEntity
 
             // Update variations
             $variations = $product->get_children();
+            if (empty($variations)) {
+                throw new Exception('Product has no variations');
+            }
+
             foreach ($variations as $variation_id) {
                 $newPrice = $this->getVariationPrice($variation_id, $data);
+                if (empty($newPrice)) {
+                    throw new Exception('Product variation not valid');
+                }
 
                 update_post_meta($variation_id, '_price', $newPrice['regular']);
                 update_post_meta($variation_id, '_regular_price', $newPrice['regular']);
@@ -244,6 +253,8 @@ class Product extends WooAbstractEntity implements ProductEntity
             }
 
             wc_delete_product_transients($data['id']);
+        } else {
+            throw new Exception('Product is not a variable product');
         }
 
         return $data['id'];
@@ -257,31 +268,23 @@ class Product extends WooAbstractEntity implements ProductEntity
      *
      * @return array
      */
-    protected function getVariationPrice(int $variationId, array $data): array
+    protected function getVariationPrice(int $variationId, array $data): ?array
     {
         $variation = wc_get_product($variationId);
-        switch ($variation->get_attribute('pa_book-format')) {
-            case 'digital':
-                $newPrice = [
-                    'regular' => $data['new_regular_digital_price'],
-                    'sales'    => $data['new_sales_digital_price'],
-                ];
-                break;
-            case 'impreso-digital':
-                $newPrice = [
-                    'regular' => $data['new_regular_combo_price'],
-                    'sales'    => $data['new_sales_combo_price'],
-                ];
-                break;
-            case 'impreso':
-            default:
-                $newPrice = [
-                    'regular' => $data['new_regular_price'],
-                    'sales'    => $data['new_sales_price'],
-                ];
-                break;
-        }
-
-        return $newPrice;
+        return match ($variation->get_attribute('pa_book-format')) {
+            'Impreso' => [
+                'regular' => $data['new_regular_price'],
+                'sales'   => $data['new_sales_price'],
+            ],
+            'Digital' => [
+                'regular' => $data['new_regular_digital_price'],
+                'sales'   => $data['new_sales_digital_price'],
+            ],
+            'Impreso + Digital' => [
+                'regular' => $data['new_regular_combo_price'],
+                'sales'   => $data['new_sales_combo_price'],
+            ],
+            default => null,
+        };
     }
 }
