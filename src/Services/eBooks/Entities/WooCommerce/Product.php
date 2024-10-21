@@ -222,41 +222,35 @@ class Product extends WooAbstractEntity implements ProductEntity
     {
         wc_delete_product_transients($data['id']);
         $product = wc_get_product($data['id']);
-        if (empty($product)) {
-            throw new Exception('Product not found');
+        if (empty($product) || !$product->is_type('variable')) {
+            throw new Exception('No valid Variable Product not found.');
         }
 
-        if ($product->is_type('variable')) {
-            update_post_meta($data['id'], '_price', $data['new_regular_price']);
-            update_post_meta($data['id'], '_regular_price', $data['new_regular_price']);
-            if ($data['new_sales_price']) {
-                update_post_meta($data['id'], '_sale_price', $data['new_sales_price']);
-            }
-
-            // Update variations
-            $variations = $product->get_children();
-            if (empty($variations)) {
-                throw new Exception('Product has no variations');
-            }
-
-            foreach ($variations as $variation_id) {
-                $newPrice = $this->getVariationPrice($variation_id, $data);
-                if (empty($newPrice)) {
-                    throw new Exception('Product variation not valid');
-                }
-
-                update_post_meta($variation_id, '_price', $newPrice['regular']);
-                update_post_meta($variation_id, '_regular_price', $newPrice['regular']);
-                if ($newPrice['sales']) {
-                    update_post_meta($variation_id, '_sale_price', $newPrice['sales']);
-                }
-            }
-
-            wc_delete_product_transients($data['id']);
-        } else {
-            throw new Exception('Product is not a variable product');
+        update_post_meta($data['id'], '_price', $data['new_regular_price']);
+        update_post_meta($data['id'], '_regular_price', $data['new_regular_price']);
+        if ($data['new_sales_price']) {
+            update_post_meta($data['id'], '_sale_price', $data['new_sales_price']);
         }
 
+        $variations = $product->get_children();
+        if (empty($variations)) {
+            throw new Exception('Product has no variations');
+        }
+
+        foreach ($variations as $variation_id) {
+            $newPrice = $this->getVariationPrice($variation_id, $data);
+            if (empty($newPrice)) {
+                throw new Exception('Product variation not valid');
+            }
+
+            update_post_meta($variation_id, '_price', $newPrice['regular']);
+            update_post_meta($variation_id, '_regular_price', $newPrice['regular']);
+            if ($newPrice['sales']) {
+                update_post_meta($variation_id, '_sale_price', $newPrice['sales']);
+            }
+        }
+
+        wc_delete_product_transients($data['id']);
         return $data['id'];
     }
 
