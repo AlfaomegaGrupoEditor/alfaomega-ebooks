@@ -482,6 +482,7 @@ class ApiController
 
         // start the import process
         $response = $service->importEbook()->batch();
+        Service::make()->queue()->run();
 
         return [
             'status'  => 'success',
@@ -504,6 +505,7 @@ class ApiController
             ->ebooks()
             ->refreshEbook()
             ->batch();
+        Service::make()->queue()->run();
 
         return [
             'status'  => 'success',
@@ -526,6 +528,7 @@ class ApiController
             ->wooCommerce()
             ->linkEbook()
             ->batch();
+        Service::make()->queue()->run();
 
         return [
             'status'  => 'success',
@@ -563,6 +566,7 @@ class ApiController
             ->updatePrice()
             ->setFactor($data['factor'], floatval($data['value']))
             ->batch();
+        Service::make()->queue()->run();
 
         return [
             'status'  => 'success',

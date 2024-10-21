@@ -2,6 +2,7 @@
 
 namespace AlfaomegaEbooks\Services\eBooks\Managers;
 
+use ActionScheduler_QueueRunner;
 use AlfaomegaEbooks\Services\Alfaomega\Api;
 use AlfaomegaEbooks\Services\eBooks\Service;
 use AlfaomegaEbooks\Services\eBooks\Transformers\ActionLogTransformer;
@@ -29,6 +30,17 @@ class QueueManager extends AbstractManager
         parent::__construct($api, $settings);
         $this->table = $table_prefix . $this->table;
         $this->logsTable = $table_prefix . $this->logsTable;
+    }
+
+    /**
+     * Executes the job queue runner to process the scheduled actions.
+     *
+     * @return void
+     */
+    public function run(): void
+    {
+        $queue_runner = new ActionScheduler_QueueRunner();
+        $queue_runner->run();
     }
 
     /**
@@ -248,7 +260,7 @@ class QueueManager extends AbstractManager
                 ", array_merge([$queue], $actionId));
             $wpdb->get_results($query);
 
-            if ($wpdb->rows_affected > 0) {
+            if ($wpdb->rows_affected === 0) {
                 throw new \Exception(esc_html__('Failed to delete the action.', 'alfaomega-ebooks'), 500);
             }
         } else {
@@ -284,9 +296,11 @@ class QueueManager extends AbstractManager
                 ", array_merge([$queue], $actionId));
             $wpdb->get_results($query);
 
-            if ($wpdb->rows_affected >0) {
+            if ($wpdb->rows_affected === 0) {
                 throw new \Exception(esc_html__('Failed adding actions to the pending queue.', 'alfaomega-ebooks'), 500);
             }
+
+            $this->run();
         } else {
             Service::make()->ebooks()->ebookPost()
                 ->updateImported($actionId, 'delete');
