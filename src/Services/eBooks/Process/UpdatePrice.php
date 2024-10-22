@@ -153,7 +153,7 @@ class UpdatePrice extends LinkProduct implements ProcessContract
     {
         $onQueue = [];
         foreach ($entities as $productId) {
-            $priceSetup = $this->getPriceSetup($productId);
+            $priceSetup = $this->getPayload($productId);
 
             $result = as_enqueue_async_action(
                 'alfaomega_ebooks_queue_setup_price',
@@ -252,21 +252,25 @@ class UpdatePrice extends LinkProduct implements ProcessContract
     }
 
     /**
-     * Get the price setup for a product.
+     * Get the payload for the given entity ID.
      *
-     * @param int $productId The ID of the product to get the price setup for.
-     * @return array The price setup for the product.
+     * This method takes an entity ID as input and returns the payload for that entity. The specific implementation of
+     * this method depends on the class that implements this interface.
+     *
+     * @param int $entityId The entity ID.
+     *
+     * @return array|null The payload for the entity.
      */
-    public function getPriceSetup(int $productId): array
+    public function getPayload(int $entityId): ?array
     {
         try {
             $priceSetup = [
-                'id'     => $productId,
+                'id'     => $entityId,
                 'factor' => $this->factor,
                 'value'  => $this->value,
             ];
 
-            $product = wc_get_product($productId);
+            $product = wc_get_product($entityId);
             if (empty($product)) {
                 throw new \Exception(esc_html__('The product is not available in the system.'));
             }
