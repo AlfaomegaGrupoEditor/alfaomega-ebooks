@@ -410,7 +410,7 @@ class QueueManager extends AbstractManager
         }
 
         $query = $wpdb->prepare("
-            SELECT id, extended_args
+            SELECT action_id, extended_args
             FROM {$this->table}
             WHERE hook = %s
                AND action_id in (" . join(",", array_fill(0, count($actionId), '%s')) . ");
@@ -420,9 +420,13 @@ class QueueManager extends AbstractManager
         $payload = [];
         foreach ($results as $result) {
             $args = json_decode($result->extended_args, true);
-            $entityId = $args[$service->getEntityId()] ?? null;
-            $payload[$result->id] = !empty($entityId)
-                ? json_encode($service->getPayload($service->getEntityId()))
+            $entityId = $args[0][$service->getEntityId()] ?? null;
+            $service->setFactor(
+                $args[0]['factor'] ?? 'price_update',
+                floatval($args[0]['value']) ?? 1
+            );
+            $payload[$result->action_id] = !empty($entityId)
+                ? json_encode([$service->getPayload(intval($entityId))])
                 : $result->extended_args;
         }
 

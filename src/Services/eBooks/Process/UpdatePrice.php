@@ -72,7 +72,7 @@ class UpdatePrice extends LinkProduct implements ProcessContract
                     ->updatePrice($eBook);
 
                 if (empty($productId)) {
-                    throw new \Exception('Error linking the eBook with the product.');
+                    throw new \Exception('Error updating the eBook prices.');
                 }
             }
 
