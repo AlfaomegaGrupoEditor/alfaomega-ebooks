@@ -321,7 +321,7 @@ class UpdatePrice extends LinkProduct implements ProcessContract
             if (empty($newRegularDigitalPrice) || $newRegularDigitalPrice < 0) {
                 throw new \Exception(esc_html__('The new regular digital price can\'t be 0 or negative.', 'alfaomega-ebooks'));
             }
-            $priceSetup['new_regular_digital_price'] = $newRegularPrice;
+            $priceSetup['new_regular_digital_price'] = $newRegularDigitalPrice;
 
             $newRegularComboPrice = round($newRegularPrice * $this->comboPrice / 100, $this->decimals);
             if (empty($newRegularComboPrice) || $newRegularComboPrice < 0) {
