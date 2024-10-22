@@ -419,14 +419,15 @@ class QueueManager extends AbstractManager
 
         $payload = [];
         foreach ($results as $result) {
-            $args = json_decode($result->extended_args, true);
-            $entityId = $args[0][$service->getEntityId()] ?? null;
+            $extendedArgs = json_decode($result->extended_args, true);
+            [$eBook, $throwError, $postId] = $extendedArgs;
+
             $service->setFactor(
-                $args[0]['factor'] ?? 'price_update',
-                floatval($args[0]['value']) ?? 1
+                $eBook['factor'] ?? 'price_update',
+                floatval($eBook['value']) ?? 1
             );
-            $payload[$result->action_id] = !empty($entityId)
-                ? json_encode([$service->getPayload(intval($entityId))])
+            $payload[$result->action_id] = !empty($postId)
+                ? json_encode([[ $service->getPayload(intval($postId)), $throwError, $postId ]])
                 : $result->extended_args;
         }
 
