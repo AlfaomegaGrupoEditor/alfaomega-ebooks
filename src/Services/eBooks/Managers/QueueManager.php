@@ -427,7 +427,7 @@ class QueueManager extends AbstractManager
                 floatval($eBook['value']) ?? 1
             );
             $payload[$result->action_id] = !empty($postId)
-                ? json_encode([[ $service->getPayload(intval($postId)), $throwError, $postId ]])
+                ? json_encode([ $service->getPayload(intval($postId)), $throwError, $postId ])
                 : $result->extended_args;
         }
 
