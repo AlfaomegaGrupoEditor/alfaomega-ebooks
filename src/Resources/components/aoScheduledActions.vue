@@ -531,7 +531,8 @@ import {
         border-color: #2171b1;
     }
     .info-variant .tab-content {
-        min-height: 380px;
+        height: 380px;
+        overflow-y: auto;
     }
     .mass-actions-menu .dropdown-item{
         font-size: 14px;
