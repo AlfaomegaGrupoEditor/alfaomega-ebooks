@@ -238,6 +238,7 @@ import {
                         {{ $t('delete') }}
                     </BDropdownItemButton>
                     <BDropdownItemButton
+                        v-if="action==='import'"
                         @click="handleShowDialog('exclude', selectedItems)"
                     >
                         {{ $t('exclude') }}

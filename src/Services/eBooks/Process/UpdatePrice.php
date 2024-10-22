@@ -53,7 +53,7 @@ class UpdatePrice extends LinkProduct implements ProcessContract
                 throw new \Exception('Error getting the product.');
             }
 
-            $eBook['id'] = $post['id'];
+            $eBook['id'] = $postId;
             if ($this->updateProduct) {
                 $productId = Service::make()
                     ->wooCommerce()
@@ -65,7 +65,7 @@ class UpdatePrice extends LinkProduct implements ProcessContract
                 }
             }
 
-            return $post['id'];
+            return $postId;
         } catch (\Exception $e) {
             if ($throwError) {
                 throw $e;
