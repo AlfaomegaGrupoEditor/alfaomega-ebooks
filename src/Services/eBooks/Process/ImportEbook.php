@@ -79,7 +79,7 @@ class ImportEbook extends AbstractProcess implements ProcessContract
                 ->getNewEbooks($countPerPage);
 
             $onQueue = array_merge($onQueue, $this->batch($ebooks, true));
-        } while (count($ebooks) > 0 && count($onQueue) < $limit);
+        } while (count($ebooks) > 0 && count($onQueue) <= $limit);
 
         return $onQueue;
     }
