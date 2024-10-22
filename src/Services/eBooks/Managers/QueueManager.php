@@ -107,7 +107,7 @@ class QueueManager extends AbstractManager
         global $wpdb;
 
         $query = $wpdb->prepare("
-            DELETE FROM {$this->table} a
+            DELETE FROM {$this->table}
                 WHERE hook = %s
                     AND status not in ('in-process')
         ", $queue);
