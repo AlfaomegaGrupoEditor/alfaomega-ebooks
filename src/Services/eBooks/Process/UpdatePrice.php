@@ -55,6 +55,10 @@ class UpdatePrice extends LinkProduct implements ProcessContract
     public function single(array $eBook, bool $throwError=false, int $postId=null): int
     {
         try {
+            if (!empty($eBook['error'])) {
+                throw new \Exception($eBook['error']);
+            }
+
             $post = wc_get_product($postId);
             if (empty($post)) {
                 throw new \Exception('Error getting the product.');
@@ -149,72 +153,14 @@ class UpdatePrice extends LinkProduct implements ProcessContract
     {
         $onQueue = [];
         foreach ($entities as $productId) {
-            try {
+            $priceSetup = $this->getPriceSetup($productId);
 
-                $product = wc_get_product($productId);
-                $ebookIsbn = $product->get_meta('alfaomega_ebooks_ebook_isbn');
-                if (empty($ebookIsbn)) {
-                    throw new \Exception(
-                        esc_html__('The eBook ISBN is not available in book with SKU: ', 'alfaomega-ebooks') . $product->get_sku()
-                    );
-                }
-
-                $ebookPost = Service::make()->ebooks()->ebookPost()->search($ebookIsbn);
-                if (empty($ebookPost)) {
-                    throw new \Exception(esc_html__('The eBook with ISBN: ', 'alfaomega-ebooks') . $ebookIsbn . esc_html__(' is not available in the system.'));
-                }
-
-                $pageCount = $ebookPost['page_count'] ?? 0;
-                if (empty($pageCount) && $this->factor === 'page_count') {
-                    throw new \Exception(throw new \Exception(
-                        esc_html__('The page count is not available in book with ISBN: ', 'alfaomega-ebooks') . $product->get_sku()
-                    ));
-                }
-                $regularPrice = $product->get_regular_price();
-                $salesPrice = $product->get_sale_price();
-                if (empty($regularPrice)) {
-                    $backupPrices = $product->get_meta('_ao_price_backup');
-                    if (empty($backupPrices)) {
-                        throw new \Exception(esc_html__('The regular price is not available in book with SKU: ', 'alfaomega-ebooks') . $product->get_sku());
-                    } else {
-                        $backupPrices = json_decode($backupPrices, true);
-                        $regularPrice = floatval($backupPrices['regular_price']);
-                        $salesPrice = floatval($backupPrices['sale_price']);
-                    }
-                }
-
-                $newRegularPrice = $this->calculatePrice($regularPrice, intval($pageCount));
-                $newSalePrice = $this->calculatePrice($salesPrice, intval($pageCount));
-
-                $priceSetup = [
-                    'id'                        => $productId,
-                    'printed_isbn'              => $product->get_sku(),
-                    'ebook_isbn'                => $ebookIsbn,
-                    'title'                     => $product->get_name(),
-                    'page_count'                => $pageCount,
-                    'factor'                    => $this->factor,
-                    'value'                     => $this->value,
-
-                    'current_regular_price'     => $regularPrice,
-                    'current_sales_price'       => $salesPrice,
-
-                    'new_regular_price'         => $newRegularPrice,
-                    'new_regular_digital_price' => round($newRegularPrice * $this->digitalPrice / 100, $this->decimals),
-                    'new_regular_combo_price'   => round($newRegularPrice * $this->comboPrice / 100, $this->decimals),
-
-                    'new_sales_price'           => $newSalePrice,
-                    'new_sales_digital_price'   => round($newSalePrice * $this->digitalPrice / 100, $this->decimals),
-                    'new_sales_combo_price'     => round($newSalePrice * $this->comboPrice / 100, $this->decimals),
-                ];
-                $result = as_enqueue_async_action(
-                    'alfaomega_ebooks_queue_setup_price',
-                    [$priceSetup, true, $productId]
-                );
-                if ($result !== 0) {
-                    $onQueue[] = $result;
-                }
-            } catch (\Exception $e) {
-                Service::make()->helper()->log($e->getMessage());
+            $result = as_enqueue_async_action(
+                'alfaomega_ebooks_queue_setup_price',
+                [$priceSetup, true, $productId]
+            );
+            if ($result !== 0) {
+                $onQueue[] = $result;
             }
         }
         return $onQueue;
@@ -303,5 +249,106 @@ class UpdatePrice extends LinkProduct implements ProcessContract
             default:
                 return $price;
         }
+    }
+
+    /**
+     * Get the price setup for a product.
+     *
+     * @param int $productId The ID of the product to get the price setup for.
+     * @return array The price setup for the product.
+     */
+    public function getPriceSetup(int $productId): array
+    {
+        try {
+            $priceSetup = [
+                'id'     => $productId,
+                'factor' => $this->factor,
+                'value'  => $this->value,
+            ];
+
+            $product = wc_get_product($productId);
+            if (empty($product)) {
+                throw new \Exception(esc_html__('The product is not available in the system.'));
+            }
+            $priceSetup['printed_isbn'] = $product->get_sku();
+            $priceSetup['title'] = $product->get_name();
+
+            $ebookIsbn = $product->get_meta('alfaomega_ebooks_ebook_isbn');
+            if (empty($ebookIsbn)) {
+                throw new \Exception(
+                    esc_html__('The eBook ISBN is not available in book with SKU: ', 'alfaomega-ebooks') . $product->get_sku()
+                );
+            }
+            $priceSetup['ebook_isbn'] = $ebookIsbn;
+
+            $ebookPost = Service::make()->ebooks()->ebookPost()->search($ebookIsbn);
+            if (empty($ebookPost)) {
+                throw new \Exception(esc_html__('The eBook with ISBN: ', 'alfaomega-ebooks') . $ebookIsbn . esc_html__(' is not available in the system.'));
+            }
+            $priceSetup['page_count'] = $ebookPost['page_count'] ?? 0;
+
+            if (empty($priceSetup['page_count']) && $this->factor === 'page_count') {
+                throw new \Exception(throw new \Exception(
+                    esc_html__('The page count is not available in book with ISBN: ', 'alfaomega-ebooks') . $product->get_sku()
+                ));
+            }
+            $regularPrice = $product->get_regular_price();
+            $salesPrice = $product->get_sale_price();
+            if (empty($regularPrice)) {
+                $backupPrices = $product->get_meta('_ao_price_backup');
+                if (empty($backupPrices)) {
+                    throw new \Exception(esc_html__('The regular price is not available in book with SKU: ', 'alfaomega-ebooks') . $product->get_sku());
+                } else {
+                    $backupPrices = json_decode($backupPrices, true);
+                    $regularPrice = floatval($backupPrices['regular_price']);
+                    $salesPrice = floatval($backupPrices['sale_price']);
+                }
+            }
+            $priceSetup['current_regular_price'] = $regularPrice;
+            $priceSetup['current_sales_price'] = $salesPrice;
+
+            $newRegularPrice = $this->calculatePrice($regularPrice, intval($priceSetup['page_count']));
+            if (empty($newRegularPrice) || $newRegularPrice < 0) {
+                throw new \Exception(esc_html__('The new regular price can\'t be 0 or negative.', 'alfaomega-ebooks'));
+            }
+            $priceSetup['new_regular_price'] = $newRegularPrice;
+
+            $newRegularDigitalPrice = round($newRegularPrice * $this->digitalPrice / 100, $this->decimals);
+            if (empty($newRegularDigitalPrice) || $newRegularDigitalPrice < 0) {
+                throw new \Exception(esc_html__('The new regular digital price can\'t be 0 or negative.', 'alfaomega-ebooks'));
+            }
+            $priceSetup['new_regular_digital_price'] = $newRegularPrice;
+
+            $newRegularComboPrice = round($newRegularPrice * $this->comboPrice / 100, $this->decimals);
+            if (empty($newRegularComboPrice) || $newRegularComboPrice < 0) {
+                throw new \Exception(esc_html__('The new regular combo price can\'t be 0 or negative.', 'alfaomega-ebooks'));
+            }
+            $priceSetup['new_regular_combo_price'] = $newRegularComboPrice;
+
+            if (!empty($salesPrice)) {
+                $newSalePrice = $this->calculatePrice($salesPrice, intval($priceSetup['page_count']));
+                if (empty($newSalePrice) || $newSalePrice < 0) {
+                    throw new \Exception(esc_html__('The new sale price can\'t be 0 or negative.', 'alfaomega-ebooks'));
+                }
+                $priceSetup['new_sales_price'] = $newSalePrice;
+
+                $newSaleDigitalPrice = round($newSalePrice * $this->digitalPrice / 100, $this->decimals);
+                if (empty($newSaleDigitalPrice) || $newSaleDigitalPrice < 0) {
+                    throw new \Exception(esc_html__('The new sale digital price can\'t be 0 or negative.', 'alfaomega-ebooks'));
+                }
+                $priceSetup['new_sales_digital_price'] = $newSaleDigitalPrice;
+
+                $newSaleComboPrice = round($newSalePrice * $this->comboPrice / 100, $this->decimals);
+                if (empty($newSaleComboPrice) || $newSaleComboPrice < 0) {
+                    throw new \Exception(esc_html__('The new sale combo price can\'t be 0 or negative.', 'alfaomega-ebooks'));
+                }
+                $priceSetup['new_sales_combo_price'] = $newSaleComboPrice;
+            }
+        } catch (\Exception $e) {
+            $priceSetup['error'] = $e->getMessage();
+            Service::make()->helper()->log($e->getMessage());
+        }
+
+        return $priceSetup;
     }
 }
