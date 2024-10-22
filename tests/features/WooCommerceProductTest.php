@@ -66,4 +66,98 @@ class WooCommerceProductTest extends WordpressTest
             ],
         ];
     }
+
+    /**
+     * Test updating prices
+     *
+     * @param string $factor
+     * @param string $value
+     *
+     * @return void
+     * @throws \Exception
+     */
+    #[DataProvider('setupPriceProvider')]
+    public function testSetupPrices(string $factor, string $value): void
+    {
+        $result = Service::make()
+            ->wooCommerce()
+            ->updatePrice()
+            ->setFactor($factor, $value)
+            ->batch();
+
+        $this->assertNotNull($result);
+    }
+
+    /**
+     * Data provider for testSetupPrices
+     * @return array[]
+     */
+    public static function setupPriceProvider(): array
+    {
+        return [
+            'price_update' => [
+                'factor' => 'price_update',
+                'value' => '1',
+            ],
+            'fixed_number' => [
+                'factor' => 'fixed',
+                'value' => '50',
+            ],
+            'percent' => [
+                'factor' => 'percent',
+                'value' => '3',
+            ],
+            'page_count' => [
+                'factor' => 'page_count',
+                'value' => '10',
+            ],
+        ];
+    }
+
+    /**
+     * Test updating product price
+     *
+     * @param array $data
+     *
+     * @return void
+     * @throws \Exception
+     */
+    #[DataProvider('productPriceProvider')]
+    public function testUpdateProductPrice(array $data): void
+    {
+        $productId = Service::make()
+            ->wooCommerce()
+            ->product()
+            ->updatePrice($data);
+
+        $this->assertNotNull($productId);
+    }
+
+    /**
+     * Data provider for testUpdateProductPrice
+     * @return array[]
+     */
+    public static function productPriceProvider(): array
+    {
+        return [
+            'price_update' => [
+                'data' => [
+                    'id'                        => 27976,
+                    'printed_isbn'              => '9786076221129',
+                    'ebook_isbn'                => '9786076225738',
+                    'title'                     => 'CUANDO LAS PERSONAS SON EL CENTRO - Cómo abordar la gestión de RR.HH. sin medios',
+                    'page_count'                => 276,
+                    'factor'                    => 'price_update',
+                    'value'                     => 1,
+                    'current_price'             => 79,
+                    'new_regular_price'         => 100,
+                    'new_regular_digital_price' => 80,
+                    'new_regular_combo_price'   => 120,
+                    'new_sales_price'           => '',
+                    'new_sales_digital_price'   => '',
+                    'new_sales_combo_price'     => '',
+                ],
+            ],
+        ];
+    }
 }

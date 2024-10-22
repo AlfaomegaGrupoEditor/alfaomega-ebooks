@@ -178,6 +178,7 @@ type QueueType = 'import-new-ebooks'
 type SetupPriceFactorType = 'page_count'
     | 'fixed_number'
     | 'percent'
+    | 'price_update'
 
 export {
     AccessCodeInfoType,

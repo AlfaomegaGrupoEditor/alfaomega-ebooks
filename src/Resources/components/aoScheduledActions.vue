@@ -238,6 +238,7 @@ import {
                         {{ $t('delete') }}
                     </BDropdownItemButton>
                     <BDropdownItemButton
+                        v-if="action==='import'"
                         @click="handleShowDialog('exclude', selectedItems)"
                     >
                         {{ $t('exclude') }}
@@ -466,7 +467,7 @@ import {
                      v-for="(value, key) in selectedAction.item.data"
                      :key="key"
                 >
-                    <div class="col-2 fw-bold fs-7 py-2 text-end text-uppercase">{{ key }}:</div>
+                    <div class="col-2 fw-bold fs-7 py-2 text-end text-uppercase">{{ key.replace(/_/g, ' ') }}:</div>
                     <div class="col border px-2 py-2 bg-info-subtle">{{ value }}</div>
                 </div>
             </BTab>
@@ -531,7 +532,8 @@ import {
         border-color: #2171b1;
     }
     .info-variant .tab-content {
-        min-height: 380px;
+        height: 380px;
+        overflow-y: auto;
     }
     .mass-actions-menu .dropdown-item{
         font-size: 14px;

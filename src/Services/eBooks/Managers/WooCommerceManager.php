@@ -10,6 +10,7 @@ use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\Tag;
 use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\Variant;
 use AlfaomegaEbooks\Services\eBooks\Process\LinkEbook;
 use AlfaomegaEbooks\Services\eBooks\Process\LinkProduct;
+use AlfaomegaEbooks\Services\eBooks\Process\UpdatePrice;
 use Automattic\WooCommerce\Client;
 use \Exception;
 
@@ -73,6 +74,13 @@ class WooCommerceManager extends AbstractManager
     protected LinkEbook $linkEbook;
 
     /**
+     * @var UpdatePrice $updatePrice
+     *  This protected property holds an instance of the UpdatePrice class.
+     *  It is used to update printed and ebook price.
+     */
+    protected UpdatePrice $updatePrice;
+
+    /**
      * @var Product $product
      * This protected property holds an instance of the Product class.
      * It is used to interact with the WooCommerce product.
@@ -107,6 +115,7 @@ class WooCommerceManager extends AbstractManager
         );
         $this->linkProduct = new LinkProduct($settings, $this->product);
         $this->linkEbook = new LinkEbook($settings, $this->product);
+        $this->updatePrice = new UpdatePrice($settings, $this->product);
     }
 
     /**
@@ -192,6 +201,18 @@ class WooCommerceManager extends AbstractManager
     public function linkProduct(): LinkProduct
     {
         return $this->linkProduct;
+    }
+
+    /**
+     * Get the update price process.
+     * This method is used to get the instance of the UpdatePrice class.
+     * The UpdatePrice class is used to update products price.
+     *
+     * @return LinkProduct The instance of the LinkProduct class.
+     */
+    public function updatePrice(): UpdatePrice
+    {
+        return $this->updatePrice;
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace AlfaomegaEbooks\Services\eBooks\Managers;
 
+use ActionScheduler_QueueRunner;
 use AlfaomegaEbooks\Services\Alfaomega\Api;
 use AlfaomegaEbooks\Services\eBooks\Service;
 use AlfaomegaEbooks\Services\eBooks\Transformers\ActionLogTransformer;
@@ -29,6 +30,17 @@ class QueueManager extends AbstractManager
         parent::__construct($api, $settings);
         $this->table = $table_prefix . $this->table;
         $this->logsTable = $table_prefix . $this->logsTable;
+    }
+
+    /**
+     * Executes the job queue runner to process the scheduled actions.
+     *
+     * @return void
+     */
+    public function run(): void
+    {
+        $queue_runner = new ActionScheduler_QueueRunner();
+        $queue_runner->run();
     }
 
     /**
@@ -95,7 +107,7 @@ class QueueManager extends AbstractManager
         global $wpdb;
 
         $query = $wpdb->prepare("
-            DELETE FROM {$this->table} a
+            DELETE FROM {$this->table}
                 WHERE hook = %s
                     AND status not in ('in-process')
         ", $queue);
@@ -246,9 +258,9 @@ class QueueManager extends AbstractManager
                     WHERE hook = %s
                         AND action_id in (" . join(",", array_fill(0, count($actionId), '%s')) . ");
                 ", array_merge([$queue], $actionId));
-            $result = $wpdb->get_results($query);
+            $wpdb->get_results($query);
 
-            if (empty($result)) {
+            if ($wpdb->rows_affected === 0) {
                 throw new \Exception(esc_html__('Failed to delete the action.', 'alfaomega-ebooks'), 500);
             }
         } else {
@@ -274,19 +286,46 @@ class QueueManager extends AbstractManager
         global $wpdb;
 
         if ($type === 'action') {
-            $query = $wpdb->prepare("
-                    UPDATE {$this->table}
-                    SET status = 'pending',
-                        scheduled_date_gmt = DATE_ADD(NOW(), INTERVAL 1 minute),
-                        scheduled_date_local = DATE_ADD(NOW(), INTERVAL 1 minute)
-                    WHERE hook = %s
-                        AND action_id in (" . join(",", array_fill(0, count($actionId), '%s')) . ");
-                ", array_merge([$queue], $actionId));
-            $result = $wpdb->get_results($query);
+            $payload = $this->refreshActionsPayload($queue, $actionId);
+            if (empty($payload)) {
+                $query = $wpdb->prepare("
+                        UPDATE {$this->table}
+                        SET status = 'pending',
+                            scheduled_date_gmt = DATE_ADD(NOW(), INTERVAL 1 minute),
+                            scheduled_date_local = DATE_ADD(NOW(), INTERVAL 1 minute)
+                        WHERE hook = %s
+                            AND action_id in (" . join(",", array_fill(0, count($actionId), '%s')) . ");
+                    ", array_merge([$queue], $actionId));
+                $wpdb->get_results($query);
 
-            if (empty($result)) {
-                throw new \Exception(esc_html__('Failed adding actions to the pending queue.', 'alfaomega-ebooks'), 500);
+                if ($wpdb->rows_affected === 0) {
+                    throw new \Exception(esc_html__('Failed adding actions to the pending queue.', 'alfaomega-ebooks'), 500);
+                }
+            } else {
+                $errors = 0;
+                foreach ($payload as $actionId => $args) {
+                    $query = $wpdb->prepare("
+                        UPDATE {$this->table}
+                        SET status = 'pending',
+                            extended_args = %s,
+                            scheduled_date_gmt = DATE_ADD(NOW(), INTERVAL 1 minute),
+                            scheduled_date_local = DATE_ADD(NOW(), INTERVAL 1 minute)
+                        WHERE hook = %s
+                            AND action_id = %d;
+                    ", [$args, $queue, $actionId]);
+                    $wpdb->get_results($query);
+
+                    if ($wpdb->rows_affected === 0) {
+                        $errors++;
+                    }
+                }
+
+                if ($errors > 0) {
+                    throw new \Exception(esc_html__('Failed adding actions to the pending queue.', 'alfaomega-ebooks'), 500);
+                }
             }
+
+            $this->run();
         } else {
             Service::make()->ebooks()->ebookPost()
                 ->updateImported($actionId, 'delete');
@@ -346,5 +385,52 @@ class QueueManager extends AbstractManager
         }
         
         return $data;
-    }    
+    }
+
+    /**
+     * Refreshes the payload of the actions.
+     * This method refreshes the payload of the actions by selecting all actions with the specified queue name and action IDs.
+     *
+     * @param string $queue   The queue name.
+     * @param array $actionId The IDs of the actions.
+     *
+     * @return array|null The refreshed payload of the actions.
+     */
+    protected function refreshActionsPayload(string $queue, array $actionId): ?array
+    {
+        global $wpdb;
+
+        // check if enabled for the current queue
+        $service = match ($queue) {
+            'alfaomega_ebooks_queue_setup_price' => Service::make()->wooCommerce()->updatePrice(),
+            default => null,
+        };
+        if (empty($service)) {
+            return null;
+        }
+
+        $query = $wpdb->prepare("
+            SELECT action_id, extended_args
+            FROM {$this->table}
+            WHERE hook = %s
+               AND action_id in (" . join(",", array_fill(0, count($actionId), '%s')) . ");
+        ", array_merge([$queue], $actionId));
+        $results = $wpdb->get_results($query);
+
+        $payload = [];
+        foreach ($results as $result) {
+            $extendedArgs = json_decode($result->extended_args, true);
+            [$eBook, $throwError, $postId] = $extendedArgs;
+
+            $service->setFactor(
+                $eBook['factor'] ?? 'price_update',
+                floatval($eBook['value']) ?? 1
+            );
+            $payload[$result->action_id] = !empty($postId)
+                ? json_encode([ $service->getPayload(intval($postId)), $throwError, $postId ])
+                : $result->extended_args;
+        }
+
+        return $payload;
+    }
 }
