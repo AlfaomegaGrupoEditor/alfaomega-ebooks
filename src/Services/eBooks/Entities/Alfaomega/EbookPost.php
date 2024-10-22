@@ -107,6 +107,7 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
             'cover'       => get_post_meta($postId, 'alfaomega_ebook_cover', true), //$thumbnail_url,
             'details'     => $details,
             'categories'  => $categories ?? [],
+            'page_count'  => get_post_meta($postId, 'alfaomega_ebook_page_count', true),
         ];
 
         return $this->meta;
@@ -267,6 +268,11 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
                 'old'     => get_post_meta($postId, 'alfaomega_ebook_cover', true),
                 'new'     => ! empty($data['cover']) ?  $data['cover'] : '',
                 'default' => '',
+            ],
+            'alfaomega_ebook_page_count' => [
+                'old'     => get_post_meta($postId, 'alfaomega_ebook_page_count', true),
+                'new'     => ! empty($data['page_count']) ?  $data['page_count'] : 0,
+                'default' => 0,
             ],
         ];
 
