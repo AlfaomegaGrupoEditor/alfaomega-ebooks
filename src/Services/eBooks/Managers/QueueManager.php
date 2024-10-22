@@ -82,7 +82,7 @@ class QueueManager extends AbstractManager
                 ->ebooks()
                 ->ebookPost()
                 ->getImportList('failed');
-            $data['failed'] = $failedImport['meta']['total'];
+            $data['failed'] += $failedImport['meta']['total'];
 
             $excludedImport = Service::make()
                 ->ebooks()

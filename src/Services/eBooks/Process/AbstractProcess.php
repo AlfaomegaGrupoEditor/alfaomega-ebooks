@@ -49,6 +49,10 @@ abstract class AbstractProcess implements ProcessContract
     public function single(array $eBook, bool $throwError=false, int $postId=null): int
     {
         try {
+            if (!empty($eBook['error'])) {
+                throw new \Exception($eBook['error']);
+            }
+
             $post = $this->getEbookEntity()
                 ->updateOrCreate($postId, $eBook);
             if (empty($post)) {
@@ -177,11 +181,12 @@ abstract class AbstractProcess implements ProcessContract
      * This method takes an entity ID as input and returns the payload for that entity. The specific implementation of
      * this method depends on the class that implements this interface.
      *
-     * @param int $entityId The entity ID.
+     * @param int|string $entityId The entity ID.
+     * @param array|null $data The initial payload data
      *
      * @return array|null The payload for the entity.
      */
-    public function getPayload(int $entityId): ?array
+    public function getPayload(int|string $entityId, array $data = null): ?array
     {
         return null;
     }
