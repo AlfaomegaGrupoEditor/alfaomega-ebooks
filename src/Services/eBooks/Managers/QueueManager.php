@@ -78,11 +78,15 @@ class QueueManager extends AbstractManager
         }
 
         if ($queue === 'alfaomega_ebooks_queue_import') {
-            $failedImport = Service::make()
-                ->ebooks()
-                ->ebookPost()
-                ->getImportList('failed');
-            $data['failed'] += $failedImport['meta']['total'];
+            // ONLY show the import failed items if the queue
+            // 'alfaomega_ebooks_queue_import' is empty
+            if ($data['failed'] === 0) {
+                $failedImport = Service::make()
+                    ->ebooks()
+                    ->ebookPost()
+                    ->getImportList('failed');
+                $data['failed'] += $failedImport['meta']['total'];
+            }
 
             $excludedImport = Service::make()
                 ->ebooks()
@@ -154,9 +158,12 @@ class QueueManager extends AbstractManager
                     ]);
             }
 
+            // ONLY show the import failed items if the queue
+            // 'alfaomega_ebooks_queue_import' is empty
             $importFailedTotal = 0;
             if ($queue === 'alfaomega_ebooks_queue_import'
-                && $status === ['failed']) {
+                && $status === ['failed']
+                && count($results) === 0) {
                 $failedImport = Service::make()
                     ->ebooks()
                     ->ebookPost()

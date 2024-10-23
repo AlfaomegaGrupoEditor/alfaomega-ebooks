@@ -79,7 +79,7 @@ class ImportEbook extends AbstractProcess implements ProcessContract
                 ->getNewEbooks($countPerPage);
 
             $onQueue = array_merge($onQueue, $this->batch($ebooks, true));
-        } while (count($ebooks) > 0 && count($onQueue) <= $limit);
+        } while (count($ebooks) > 0 && count($onQueue) < $limit);
 
         return $onQueue;
     }
@@ -135,7 +135,7 @@ class ImportEbook extends AbstractProcess implements ProcessContract
                 'alfaomega_ebooks_queue_import',
                 [$ebook, true]
             );
-            if ($result !== 0 && empty($ebook['error'])) {
+            if ($result !== 0) {
                 $onQueue[] = $ebook['product_id'];
             }
         }
