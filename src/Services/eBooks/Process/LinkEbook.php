@@ -255,16 +255,12 @@ class LinkEbook extends AbstractProcess implements ProcessContract
         $countPerPage = $this->chunkSize;
 
         $page = 1;
+        $ebookSkus = $this->getEbookSkus();
         do {
             $countPerPage = min($limit, $countPerPage);
-            $args = [
-                'limit' => $countPerPage,
-                'page'  => $page,
-                'type'  => 'simple',
-            ];
-            $posts = wc_get_products($args);
+            $posts = $this->getSimpleProductsBySkus($ebookSkus, $page, $countPerPage);
             if (empty($posts)) {
-                break;
+                throw new \Exception(esc_html__('No products found', 'alfaomega-ebooks'));
             }
 
             $products = array_column($posts, 'id');
@@ -307,5 +303,58 @@ class LinkEbook extends AbstractProcess implements ProcessContract
             Service::make()->helper()->log($e->getMessage());
         }
         return $data;
+    }
+
+    /**
+     * Get the list of SKUs from the alfaomega-ebook post type.
+     *
+     * This method retrieves all SKUs associated with the 'alfaomega-ebook' post type
+     * from the WordPress database.
+     *
+     * @return array An array of SKUs.
+     */
+    protected function getEbookSkus(): array
+    {
+        global $wpdb;
+
+        $query = $wpdb->prepare("SELECT pm.meta_value
+            FROM {$wpdb->postmeta} pm
+            INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id
+            WHERE p.post_type = %s
+            AND pm.meta_key = %s
+            AND pm.meta_value != ''", 'alfaomega-ebook', 'alfaomega_ebook_product_sku');
+
+        return $wpdb->get_col($query);
+    }
+
+    /**
+     * Get the list of simple products by the given SKUs.
+     *
+     * @param array $ebookSkus Array of eBook SKUs.
+     * @param int $page The page number for pagination.
+     * @param int $countPerPage The number of products per page.
+     *
+     * @return array List of product IDs.
+     */
+    protected function getSimpleProductsBySkus(array $ebookSkus, int $page, int $countPerPage): array
+    {
+        global $wpdb;
+
+        $offset = ($page - 1) * $countPerPage;
+        $placeholders = implode(',', array_fill(0, count($ebookSkus), '%s'));
+
+        $query = $wpdb->prepare("SELECT p.ID
+         FROM {$wpdb->posts} p
+         INNER JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id
+         INNER JOIN {$wpdb->postmeta} pm2 ON p.ID = pm2.post_id
+         WHERE p.post_type = 'product'
+         AND p.post_status = 'publish'
+         AND pm.meta_key = '_sku'
+         AND pm.meta_value IN ($placeholders)
+         AND pm2.meta_key = '_product_type'
+         AND pm2.meta_value = 'simple'
+         LIMIT %d OFFSET %d", array_merge($ebookSkus, [$countPerPage, $offset]));
+
+        return $wpdb->get_col($query);
     }
 }

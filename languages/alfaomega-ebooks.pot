@@ -11,7 +11,7 @@ msgstr ""
 "Livan Rodriguez "
 "<livan2r@gmail.com>\n"
 "POT-Creation-Date: "
-"2024-10-23 07:54-0400\n"
+"2024-10-23 08:36-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Livan "
 "Rodriguez <livan2r@gmail."
@@ -1999,17 +1999,21 @@ msgid ""
 msgstr ""
 
 #: src/Services/eBooks/Process/ImportEbook.php:166
-#: src/Services/eBooks/Process/LinkEbook.php:293
+#: src/Services/eBooks/Process/LinkEbook.php:289
 msgid ""
 "Printed ISBN not found"
 msgstr ""
 
-#: src/Services/eBooks/Process/LinkEbook.php:297
+#: src/Services/eBooks/Process/LinkEbook.php:263
+msgid "No products found"
+msgstr ""
+
+#: src/Services/eBooks/Process/LinkEbook.php:293
 msgid ""
 "Ebook ISBN not found"
 msgstr ""
 
-#: src/Services/eBooks/Process/LinkEbook.php:301
+#: src/Services/eBooks/Process/LinkEbook.php:297
 msgid "Title is empty"
 msgstr ""
 
