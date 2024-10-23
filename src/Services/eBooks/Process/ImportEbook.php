@@ -136,7 +136,7 @@ class ImportEbook extends AbstractProcess implements ProcessContract
                 [$ebook, true]
             );
             if ($result !== 0) {
-                $onQueue[] = $ebook['product_id'];
+                $onQueue[] = $ebook['product_id'] ?? null;
             }
         }
         return $onQueue;
