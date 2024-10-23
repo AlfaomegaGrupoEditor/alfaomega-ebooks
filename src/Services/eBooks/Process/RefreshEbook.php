@@ -160,6 +160,8 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
     {
         $processed = [];
         foreach ($entities as $eBook) {
+            $eBook = $this->getPayload($eBook['isbn'], $eBook);
+
             $result = $this->single($eBook, postId: $eBook['id']);
             $processed[] = $result;
         }
@@ -178,6 +180,8 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
     {
         $onQueue = [];
         foreach ($entities as $ebook) {
+            $ebook = $this->getPayload($ebook['isbn'], $ebook);
+
             /*$result = as_enqueue_async_action(
                 'alfaomega_ebooks_queue_refresh',
                 [$ebook, true, $ebook['id']]
@@ -243,5 +247,29 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
 
 
         return $onQueue;
+    }
+
+    /**
+     * Get the payload for the given entity ID.
+     *
+     * This method takes an entity ID as input and returns the payload for that entity. The specific implementation of
+     * this method depends on the class that implements this interface.
+     *
+     * @param int|string $entityId The entity ID.
+     * @param array|null $data The initial payload data
+     *
+     * @return array|null The payload for the entity.
+     */
+    public function getPayload(int|string $entityId, array $data = null): ?array
+    {
+        try {
+            if (empty($data['page_count'])) {
+                throw new \Exception(esc_html__('Page count is empty', 'alfaomega-ebooks'));
+            }
+        } catch (Exception $e) {
+            $data['error'] = $e->getMessage();
+            Service::make()->helper()->log($e->getMessage());
+        }
+        return $data;
     }
 }

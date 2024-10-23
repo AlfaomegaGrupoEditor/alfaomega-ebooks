@@ -4,6 +4,7 @@ namespace AlfaomegaEbooks\Services\eBooks\Process;
 
 use AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce\ProductEntity;
 use AlfaomegaEbooks\Services\eBooks\Service;
+use Exception;
 
 /**
  * Link ebooks process.
@@ -200,12 +201,7 @@ class LinkEbook extends AbstractProcess implements ProcessContract
     {
         $processed = [];
         foreach ($entities as $productId => $ebook) {
-            if (empty($ebook['printed_isbn']) ||
-                empty($ebook['isbn']) ||
-                empty($ebook['title'])) {
-                continue;
-            }
-            $ebook['product_id'] = $productId;
+            $ebook = $this->getPayload($productId, $ebook);
             $result = $this->single($ebook, postId: $ebook['id'] ?? null);
             if ($result > 0) {
                 $processed[] = $result;
@@ -225,13 +221,14 @@ class LinkEbook extends AbstractProcess implements ProcessContract
     {
         $onQueue = [];
         foreach ($entities as $productId => $ebook) {
-            if (empty($ebook['printed_isbn']) ||
-                empty($ebook['isbn']) ||
-                empty($ebook['title'])) {
-                continue;
-            }
-            $ebook['product_id'] = $productId;
-            $result = as_enqueue_async_action(
+            $ebook = $this->getPayload($productId, $ebook);
+
+            /*$result = as_enqueue_async_action(
+                'alfaomega_ebooks_queue_link',
+                [$ebook, true, $ebook['id']]
+            );*/
+            $result = as_schedule_single_action(
+                strtotime('+10 second'),
                 'alfaomega_ebooks_queue_link',
                 [$ebook, true, $ebook['id']]
             );
@@ -276,5 +273,39 @@ class LinkEbook extends AbstractProcess implements ProcessContract
         } while (count($posts) === $this->chunkSize && count($onQueue) < $limit);
 
         return $onQueue;
+    }
+
+    /**
+     * Get the payload for the given entity ID.
+     *
+     * This method takes an entity ID as input and returns the payload for that entity. The specific implementation of
+     * this method depends on the class that implements this interface.
+     *
+     * @param int|string $entityId The entity ID.
+     * @param array|null $data The initial payload data
+     *
+     * @return array|null The payload for the entity.
+     */
+    public function getPayload(int|string $entityId, array $data = null): ?array
+    {
+        try {
+            if (empty($ebook['printed_isbn'])) {
+                throw new \Exception(esc_html__('Printed ISBN not found', 'alfaomega-ebooks'));
+            }
+
+            if (empty($ebook['isbn'])) {
+                throw new \Exception(esc_html__('Ebook ISBN not found', 'alfaomega-ebooks'));
+            }
+
+            if (empty($ebook['title'])) {
+                throw new \Exception(esc_html__('Title is empty', 'alfaomega-ebooks'));
+            }
+
+            $data['product_id'] = $entityId;
+        } catch (Exception $e) {
+            $data['error'] = $e->getMessage();
+            Service::make()->helper()->log($e->getMessage());
+        }
+        return $data;
     }
 }

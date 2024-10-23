@@ -522,7 +522,6 @@ class ApiController
      */
     public function linkProducts(): array
     {
-        // TODO: check implementation and test it
         $response = Service::make()
             ->wooCommerce()
             ->linkEbook()
