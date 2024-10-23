@@ -217,7 +217,8 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
     protected function chunk(): ?array
     {
         $onQueue = [];
-        $limit = intval($this->settings['alfaomega_ebooks_import_limit']) ?? 1000;
+        //$limit = intval($this->settings['alfaomega_ebooks_import_limit']) ?? 1000;
+        $limit = 10000;
         $countPerPage = $this->chunkSize;
 
         $page = 0;
