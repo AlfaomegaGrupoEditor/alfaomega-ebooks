@@ -131,7 +131,12 @@ class ImportEbook extends AbstractProcess implements ProcessContract
         foreach ($entities as $ebook) {
             $ebook = $this->getPayload($ebook['isbn'], $ebook);
 
-            $result = as_enqueue_async_action(
+            /*$result = as_enqueue_async_action(
+                'alfaomega_ebooks_queue_import',
+                [$ebook, true]
+            );*/
+            $result = as_schedule_single_action(
+                strtotime('+10 second'),
                 'alfaomega_ebooks_queue_import',
                 [$ebook, true]
             );

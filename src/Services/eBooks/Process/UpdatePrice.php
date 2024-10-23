@@ -155,7 +155,12 @@ class UpdatePrice extends LinkProduct implements ProcessContract
         foreach ($entities as $productId) {
             $priceSetup = $this->getPayload($productId);
 
-            $result = as_enqueue_async_action(
+            /*$result = as_enqueue_async_action(
+                'alfaomega_ebooks_queue_setup_price',
+                [$priceSetup, true, $productId]
+            );*/
+            $result = as_schedule_single_action(
+                strtotime('+10 second'),
                 'alfaomega_ebooks_queue_setup_price',
                 [$priceSetup, true, $productId]
             );

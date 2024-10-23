@@ -178,7 +178,12 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
     {
         $onQueue = [];
         foreach ($entities as $ebook) {
-            $result = as_enqueue_async_action(
+            /*$result = as_enqueue_async_action(
+                'alfaomega_ebooks_queue_refresh',
+                [$ebook, true, $ebook['id']]
+            );*/
+            $result = as_schedule_single_action(
+                strtotime('+10 second'),
                 'alfaomega_ebooks_queue_refresh',
                 [$ebook, true, $ebook['id']]
             );
