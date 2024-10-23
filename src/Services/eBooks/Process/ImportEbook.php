@@ -129,28 +129,54 @@ class ImportEbook extends AbstractProcess implements ProcessContract
     {
         $onQueue = [];
         foreach ($entities as $ebook) {
-            if (empty($ebook['printed_isbn'])) {
-                $this->getEbookEntity()->updateImported([$ebook['isbn']], 'failed', errorCode: 'printed_isbn_not_found');
-                continue;
-            }
+            $ebook = $this->getPayload($ebook['isbn'], $ebook);
 
-            $productId = wc_get_product_id_by_sku($ebook['printed_isbn']);
-            if (empty($productId)) {
-                $this->getEbookEntity()->updateImported([$ebook['isbn']], 'failed', errorCode: 'product_not_found');
-                continue;
-            }
-
-            $ebook['product_id'] = $productId;
-            Service::make()->helper()->log(json_encode($ebook, JSON_PRETTY_PRINT));
-
-            $result = as_enqueue_async_action(
+            /*$result = as_enqueue_async_action(
+                'alfaomega_ebooks_queue_import',
+                [$ebook, true]
+            );*/
+            $result = as_schedule_single_action(
+                strtotime('+10 second'),
                 'alfaomega_ebooks_queue_import',
                 [$ebook, true]
             );
             if ($result !== 0) {
-                $onQueue[] = $productId;
+                $onQueue[] = $ebook['product_id'] ?? null;
             }
         }
         return $onQueue;
+    }
+
+    /**
+     * Get the payload for the given entity ID.
+     *
+     * This method takes an entity ID as input and returns the payload for that entity. The specific implementation of
+     * this method depends on the class that implements this interface.
+     *
+     * @param int|string $entityId The entity ID.
+     * @param array|null $data The initial payload data
+     *
+     * @return array|null The payload for the entity.
+     */
+    public function getPayload(int|string $entityId, array $data = null): ?array
+    {
+        try {
+            if (empty($data['printed_isbn'])) {
+                $this->getEbookEntity()->updateImported([$data['isbn']], 'failed', errorCode: 'printed_isbn_not_found');
+                throw new \Exception(esc_html__('Printed ISBN not found', 'alfaomega-ebooks'));
+            }
+
+            $productId = wc_get_product_id_by_sku($data['printed_isbn']);
+            if (empty($productId)) {
+                $this->getEbookEntity()->updateImported([$data['isbn']], 'failed', errorCode: 'product_not_found');
+                throw new \Exception(esc_html__('Product not found', 'alfaomega-ebooks'));
+            }
+
+            $data['product_id'] = $productId;
+        } catch (Exception $e) {
+            $data['error'] = $e->getMessage();
+            Service::make()->helper()->log($e->getMessage());
+        }
+        return $data;
     }
 }
