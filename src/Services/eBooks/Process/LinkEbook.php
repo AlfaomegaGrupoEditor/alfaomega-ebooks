@@ -344,16 +344,18 @@ class LinkEbook extends AbstractProcess implements ProcessContract
         $placeholders = implode(',', array_fill(0, count($ebookSkus), '%s'));
 
         $query = $wpdb->prepare("SELECT p.ID
-         FROM {$wpdb->posts} p
-         INNER JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id
-         INNER JOIN {$wpdb->postmeta} pm2 ON p.ID = pm2.post_id
-         WHERE p.post_type = 'product'
-         AND p.post_status = 'publish'
-         AND pm.meta_key = '_sku'
-         AND pm.meta_value IN ($placeholders)
-         AND pm2.meta_key = '_product_type'
-         AND pm2.meta_value = 'simple'
-         LIMIT %d OFFSET %d", array_merge($ebookSkus, [$countPerPage, $offset]));
+             FROM {$wpdb->posts} p
+             INNER JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id
+             INNER JOIN {$wpdb->term_relationships} tr ON p.ID = tr.object_id
+             INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+             INNER JOIN {$wpdb->terms} t ON tt.term_id = t.term_id
+             WHERE p.post_type = 'product'
+             AND p.post_status = 'publish'
+             AND pm.meta_key = '_sku'
+             AND pm.meta_value IN ($placeholders)
+             AND tt.taxonomy = 'product_type'
+             AND t.slug = 'simple'
+             LIMIT %d OFFSET %d", array_merge($ebookSkus, [$countPerPage, $offset]));
 
         return $wpdb->get_col($query);
     }
