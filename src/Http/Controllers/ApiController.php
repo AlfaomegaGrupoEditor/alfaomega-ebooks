@@ -500,7 +500,6 @@ class ApiController
      */
     public function updateEbooks(): array
     {
-        // TODO: check implementation and test it
         $response = Service::make()
             ->ebooks()
             ->refreshEbook()

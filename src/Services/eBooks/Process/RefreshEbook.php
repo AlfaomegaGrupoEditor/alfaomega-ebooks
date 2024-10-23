@@ -70,6 +70,7 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
                     'product_sku'  => $sku,
                     'product_id'   => !empty($sku) ? wc_get_product_id_by_sku($sku) : 0,
                     'cover'        => $meta['alfaomega_ebook_cover'][0] ?? '',
+                    'page_count'   => $meta['alfaomega_ebook_page_count'][0] ?? 0,
                 ];
                 $isbn = empty($ebook['isbn']) ? $ebook['printed_isbn'] : $ebook['isbn'];
                 if (empty($isbn)) {
@@ -111,7 +112,7 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
                         if ($product->get_type() === 'simple' &&
                             $product->get_attribute('pa_ebook') !== 'Desactivado') {
                             $modified[] = array_merge($ebookPost, $ebook);
-                            continue; // product not linked, update needed
+                            continue; // product not linked, update not needed
                         }
                     }
 
@@ -121,7 +122,8 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
                         $ebook['adobe'] === $ebookPost['adobe'] &&
                         $ebook['html_ebook'] === $ebookPost['html_ebook'] &&
                         $ebook['cover'] === $ebookPost['cover'] &&
-                        $ebook['printed_isbn'] === $ebookPost['printed_isbn'] ) {
+                        $ebook['printed_isbn'] === $ebookPost['printed_isbn'] &&
+                        $ebook['page_count'] === $ebookPost['page_count'] ) {
                         continue; // didn't change anything, no update needed
                     }
 
@@ -210,7 +212,7 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
     protected function chunk(): ?array
     {
         $onQueue = [];
-        $limit = 10000; // TODO: setup a limit if required
+        $limit = intval($this->settings['alfaomega_ebooks_import_limit']) ?? 1000;
         $countPerPage = $this->chunkSize;
 
         $page = 0;

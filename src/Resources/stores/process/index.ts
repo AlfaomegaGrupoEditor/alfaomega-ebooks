@@ -267,7 +267,7 @@ export const useProcessStore = defineStore('processStore', {
          * @return {Promise<void>} A promise that resolves when the process is completed.
          */
         async dispatchUpdateEbooks() {
-            const response = await API.process.importNewEbooks();
+            const response = await API.process.updateEbooks();
             if (response.status === 'success') {
                 const response = await API.process.getProcessActions(
                     'update-ebooks',
@@ -292,7 +292,7 @@ export const useProcessStore = defineStore('processStore', {
          * @return {Promise<void>} A promise that resolves when the operations are complete.
          */
         async dispatchLinkProducts() {
-            const response = await API.process.importNewEbooks();
+            const response = await API.process.linkProducts();
             if (response.status === 'success') {
                 const response = await API.process.getProcessActions(
                     'link-products',
