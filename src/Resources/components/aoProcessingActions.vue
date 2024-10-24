@@ -1,7 +1,6 @@
 <script setup lang="ts">
     import AoDialog from '@/components/aoDialog.vue';
     import { useModal } from 'bootstrap-vue-next';
-    import {eventBus} from '@/events';
     import {computed} from 'vue';
     import {ProcessType, ProcessNameType} from '@/types';
 

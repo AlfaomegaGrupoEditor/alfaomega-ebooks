@@ -14,6 +14,6 @@
         },
         "types": ["unplugin-icons/types/vue"]
     },
-    "include": ["Resources/**/*.ts", "Resources/**/*.vue", "Resources/**/*.d.ts", "components.d.ts"],
+    "include": ["Resources/**/*.ts", "Resources/**/*.vue", "Resources/**/*.d.ts", "components.d.ts", "modules.d.ts"],
     "exclude": ["node_modules"]
 }

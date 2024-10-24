@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import {
-    ProcessStatusType,
-    ProcessNameType,
-    ProcessItem,
-    ProcessDataType,
-    QueueType, ActionType
-} from '@/types';
+    import {
+        ProcessStatusType,
+        ProcessNameType,
+        ProcessItem,
+        ProcessDataType,
+        QueueType, ActionType
+    } from '@/types';
     import {computed, onMounted, ref, watch} from 'vue';
     import {aoProcessingActions} from '@/components';
     import {useI18n} from 'vue-i18n';
@@ -58,12 +58,11 @@ import {
         }
     });
     const activeTab = ref('processing'); // initialize with the first tab
-
     const statusVariant = (status: ProcessStatusType) => {
         switch (status) {
             case 'processing':
                 return 'info';
-            case 'complete':
+            case 'completed':
                 return 'success';
             case 'failed':
                 return 'primary';
@@ -121,6 +120,13 @@ import {
             case 'setup':
                 return 'setup_prices_notice';
         }
+    });
+    const selectedAll = computed(() => {
+        if (processData.value.actions.length === 0) {
+            return false;
+        }
+
+        return selectedItems.value.length === processData.value.actions.length
     });
 
     const currentPage = ref(1)
@@ -194,6 +200,14 @@ import {
         const index = selectedItems.value.findIndex((value) => value.id === item.id);
         if (index > -1) {
             selectedItems.value.splice(index, 1);
+        }
+    }
+
+    const handleCheckAll = () => {
+        if (selectedItems.value.length === processData.value.actions.length) {
+            selectedItems.value = [];
+        } else {
+            selectedItems.value = processData.value.actions;
         }
     }
 
@@ -284,7 +298,6 @@ import {
                         :variant="activeTab === 'completed' ? 'info' : 'dark'"
                         :active="activeTab === 'completed'"
                         @click="navigateHandle('completed', $event)"
-                        variant="info"
                     >
                         {{ $t('completed')}}
                         <BBadge class="fs-7"
@@ -341,6 +354,14 @@ import {
                     @row-selected="handleRowSelected"
                     @row-unselected="handleRowUnSelected"
                 >
+                    <template #head(select)="data">
+                        <input type="checkbox"
+                               class="mb-1"
+                               :checked="selectedAll"
+                               @click="handleCheckAll()"
+                        />
+                    </template>
+
                     <template #cell(select)="row">
                         <input type="checkbox"
                                :value="row.item.id"
