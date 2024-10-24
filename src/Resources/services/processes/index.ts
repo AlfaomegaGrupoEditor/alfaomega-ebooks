@@ -4,7 +4,7 @@ import {useAppStore} from '@/stores';
 import {
     ActionType,
     AsyncProcessType,
-    ProcessItem,
+    ProcessItem, ProcessNameType,
     ProcessStatusType,
     ProcessType,
     SetupPriceFactorType
@@ -41,7 +41,7 @@ async function getProcessStatus(process: ProcessType): Promise<APIResponse<Async
  * @param page
  * @param perPage
  */
-async function getProcessActions(process: ProcessType,
+async function getProcessActions(process: ProcessNameType,
                                  status: ProcessStatusType,
                                  page: number = 1,
                                  perPage: number = 10): Promise<APIResponse<ProcessItem[]>>

@@ -4,14 +4,16 @@
         ProcessNameType,
         ProcessItem,
         ProcessDataType,
-        QueueType, ActionType
+        ActionType,
+        ProcessType
     } from '@/types';
     import {computed, onMounted, ref, watch} from 'vue';
     import {aoProcessingActions} from '@/components';
     import {useI18n} from 'vue-i18n';
     import {BiTrash3Fill, BiArrowRepeat, BiEye, BiXOctagon} from '@/components/icons';
     import AoDialog from '@/components/aoDialog.vue';
-    import {TableItem, useModal} from 'bootstrap-vue-next';
+    import {useModal} from 'bootstrap-vue-next';
+    import type {TableFieldRaw} from 'bootstrap-vue-next';
     import {useProcessStore, useAppStore } from '@/stores';
     import {RefreshActionsEvent} from '@/events/types';
     import {eventBus, useMittEvents} from '@/events';
@@ -19,7 +21,7 @@
 
     const props = defineProps({
         action: {type: String as () => ProcessNameType , default: 'import'},
-        queue: {type: String as () => QueueType},
+        queue: {type: String as () => ProcessType, required: true},
         status: {type: String as () => ProcessStatusType , default: 'idle'},
         completed: { type: Number, default: 0 },
         processing: { type: Number, default: 0 },
@@ -43,8 +45,8 @@
     const {show: showConfirm} = useModal(confirmModalName);
     const {show: showDlg} = useModal(dlgModalName);
 
-    const selectedAction = ref({ type: '', item: null });
-    const selectedItems = ref<TableItem[]>([]);
+    const selectedAction = ref<{ type: ActionType | '', item: ProcessDataType | null }>({ type: '', item: null });
+    const selectedItems = ref<ProcessItem[]>([]);
     const variant = computed(() => {
         switch (props.status) {
             case 'idle':
@@ -57,7 +59,7 @@
                 return 'primary';
         }
     });
-    const activeTab = ref('processing'); // initialize with the first tab
+    const activeTab = ref<ProcessStatusType>('processing'); // initialize with the first tab
     const statusVariant = (status: ProcessStatusType) => {
         switch (status) {
             case 'processing':
@@ -80,13 +82,13 @@
             key: 'schedule_date',
             sortable: true,
             label: t('scheduled').toUpperCase(),
-            formatter: (value) => (value ? formatDate(value) : ''),
+            formatter: (value: unknown) => (value ? formatDate(value as string) : ''),
         },
         {
             key: 'last_attend_date',
             sortable: true,
             label: t('last_attend').toUpperCase(),
-            formatter: (value) => (value ? formatDate(value) : ''),
+            formatter: (value: unknown) => (value ? formatDate(value as string) : ''),
         },
         {key: 'actions', label: '', sortable: false},
     ]
@@ -132,7 +134,7 @@
     const currentPage = ref(1)
     const pageSize = ref(10)
 
-    const navigateHandle = (page, event: Event) => {
+    const navigateHandle = (page: ProcessStatusType, event: Event) => {
         event.preventDefault();
         activeTab.value = page;
         retrieveProcessData();
@@ -146,7 +148,7 @@
 
     const handleAction = () => {
         const ids = selectedItems.value.length === 0
-            ? [selectedAction.value.item.id]
+            ? (selectedAction.value.item ? [selectedAction.value.item.id] : [])
             : selectedItems.value.map((item) => item.id);
         switch (selectedAction.value.type) {
             case 'retry':
@@ -183,7 +185,7 @@
         selectedItems.value = [];
     }
 
-    const handleRowClick = (item) => {
+    const handleRowClick = (item: ProcessItem) => {
         const index = selectedItems.value.findIndex((value) => value.id === item.id);
         if (index === -1) {
             handleRowSelected(item);
@@ -192,11 +194,11 @@
         }
     }
 
-    const handleRowSelected = (item: TableItem) => {
+    const handleRowSelected = (item: ProcessItem) => {
         selectedItems.value.push(item);
     }
 
-    const handleRowUnSelected = (item: TableItem) => {
+    const handleRowUnSelected = (item: ProcessItem) => {
         const index = selectedItems.value.findIndex((value) => value.id === item.id);
         if (index > -1) {
             selectedItems.value.splice(index, 1);
@@ -261,7 +263,6 @@
                 <ao-processing-actions
                     :action="action"
                     :status="activeTab"
-                    :processing="processing"
                     direction="row"
                     @action="emit('action')"
                     @refresh="handleRefreshQueue"
@@ -349,7 +350,7 @@
                     :bordered="false"
                     :hover="true"
                     :selectable="true"
-                    selection-variant="null"
+                    :selection-variant="null"
                     tbody-tr-class="ao-table-row"
                     @row-selected="handleRowSelected"
                     @row-unselected="handleRowUnSelected"
@@ -378,15 +379,15 @@
                     </template>
                     <template #cell(title)="row">
                         <span @click="handleRowClick(row.item)">
-                            {{ row.value.length > 60 ? row.value.substring(0, 60) + '...' : row.value }}
+                            {{ typeof row.value === 'string' && row.value.length > 60 ? row.value.substring(0, 60) + '...' : row.value }}
                         </span>
                     </template>
                     <template #cell(status)="row">
                         <BBadge
-                            :variant="statusVariant(row.value)"
+                            :variant="statusVariant(row.value as ProcessStatusType)"
                             @click="handleRowClick(row.item)"
                         >
-                            {{ $t(row.value) }}
+                            {{ $t(row.value as string) }}
                         </BBadge>
                     </template>
                     <template #cell(actions)="row">
@@ -464,7 +465,7 @@
         :title="$t('confirmation')"
         @action="handleAction"
     >
-        <span v-if="selectedAction.type==='primary'">
+        <span v-if="selectedAction.type === 'primary'">
             {{ $t('import_ebooks_confirmation') }}
         </span>
         <span v-else>
@@ -488,7 +489,7 @@
                      v-for="(value, key) in selectedAction.item.data"
                      :key="key"
                 >
-                    <div class="col-2 fw-bold fs-7 py-2 text-end text-uppercase">{{ key.replace(/_/g, ' ') }}:</div>
+                    <div class="col-2 fw-bold fs-7 py-2 text-end text-uppercase">{{ (key as unknown as string).replace(/_/g, ' ') }}:</div>
                     <div class="col border px-2 py-2 bg-info-subtle">{{ value }}</div>
                 </div>
             </BTab>

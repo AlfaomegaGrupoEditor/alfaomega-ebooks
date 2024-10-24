@@ -3,7 +3,7 @@ import type {State} from '@/services/processes/types';
 import {API} from '@/services';
 import {
     ActionType,
-    ProcessItem,
+    ProcessItem, ProcessNameType,
     ProcessStatusType,
     ProcessType,
     SetupPriceFactorType
@@ -108,7 +108,7 @@ export const useProcessStore = defineStore('processStore', {
          * @param {number} perPage - The number of items per page for the paginated results.
          * @return {Promise<void>} - A promise that resolves when the process data has been successfully retrieved and updated.
          */
-        async dispatchRetrieveProcessData(process: ProcessType,
+        async dispatchRetrieveProcessData(process: ProcessNameType,
                                           status: ProcessStatusType,
                                           page: number,
                                           perPage: number

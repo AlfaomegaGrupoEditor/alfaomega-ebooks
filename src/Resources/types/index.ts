@@ -150,14 +150,18 @@ type ProcessDataType = {
 
 type ActionType = 'action'
     | 'import'
-    | 'exclude';
+    | 'exclude'
+    | 'retry'
+    | 'delete'
+    | 'view'
+    | 'primary';
 
 interface ProcessItem {
     id: number
     isbn: string
     title: string
     status: string
-    type?: AccessType,
+    type?: ActionType,
     schedule_date: string
     last_attend_date: string,
     data: ProcessDataType,

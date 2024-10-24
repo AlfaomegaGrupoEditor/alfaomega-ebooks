@@ -2,7 +2,7 @@
     "compilerOptions": {
         "target": "ESNext",
         "module": "ESNext",
-        "moduleResolution": "Node",
+        "moduleResolution": "nodenext",
         "esModuleInterop": true,
         "strict": true,
         "jsx": "preserve",
@@ -12,8 +12,8 @@
         "paths": {
             "@/*": ["Resources/*"]
         },
-        "types": ["unplugin-icons/types/vue"]
+        "types": ["unplugin-icons/types/vue","bootstrap-vue-next"]
     },
-    "include": ["Resources/**/*.ts", "Resources/**/*.vue", "Resources/**/*.d.ts", "components.d.ts", "modules.d.ts"],
+    "include": ["Resources/**/*.ts", "Resources/**/*.vue", "Resources/**/*.d.ts", "components.d.ts"],
     "exclude": ["node_modules"]
 }
