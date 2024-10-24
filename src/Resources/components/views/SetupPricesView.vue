@@ -112,7 +112,7 @@
                         v-model="factor"
                         class="form-select fs-8"
                 >
-                    <option selected value="">{{ $t('select_factor')}}</option>
+                    <option selected value="undefined">{{ $t('select_factor')}}</option>
                     <option value="price_update">{{ $t('price_update') }}</option>
                     <option value="page_count">{{ $t('page_count') }}</option>
                     <option value="fixed_number">{{ $t('fixed_number') }}</option>
