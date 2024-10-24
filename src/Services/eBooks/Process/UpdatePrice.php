@@ -5,6 +5,7 @@ namespace AlfaomegaEbooks\Services\eBooks\Process;
 use AlfaomegaEbooks\Services\eBooks\Entities\Alfaomega\EbookPostEntity;
 use AlfaomegaEbooks\Services\eBooks\Service;
 use Exception;
+use WC_Product;
 
 /**
  * The update product price process.
@@ -302,8 +303,13 @@ class UpdatePrice extends LinkProduct implements ProcessContract
                     esc_html__('The page count is not available in book with ISBN: ', 'alfaomega-ebooks') . $product->get_sku()
                 ));
             }
-            $regularPrice = $product->get_regular_price();
-            $salesPrice = $product->get_sale_price();
+
+            [$regularPrice, $salesPrice] = $this->getPrintedPrice($product) ?? [0, 0];
+            if (empty($regularPrice)) {
+                $regularPrice = $product->get_regular_price();
+                $salesPrice = $product->get_sale_price();
+            }
+
             if (empty($regularPrice)) {
                 $backupPrices = $product->get_meta('_ao_price_backup');
                 if (empty($backupPrices)) {
@@ -360,5 +366,28 @@ class UpdatePrice extends LinkProduct implements ProcessContract
         }
 
         return $priceSetup;
+    }
+
+    /**
+     * Get the printed price of the product.
+     *
+     * @param \WC_Product $product The product to get the printed price.
+     *
+     * @return array|null The printed price of the product.
+     */
+    protected function getPrintedPrice(WC_Product $product): ?array
+    {
+        $variant = $product->get_children();
+        foreach ($variant as $childId) {
+            $childProduct = wc_get_product($childId);
+            if ($childProduct->get_attribute('pa_book-format') === 'Impreso') {
+                return [
+                    $childProduct->get_regular_price() ?? 0,
+                    $childProduct->get_sale_price() ?? '',
+                ];
+            }
+        }
+
+        return null;
     }
 }
