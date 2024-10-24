@@ -182,10 +182,6 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
         foreach ($entities as $ebook) {
             $ebook = $this->getPayload($ebook['isbn'], $ebook);
 
-            /*$result = as_enqueue_async_action(
-                'alfaomega_ebooks_queue_refresh',
-                [$ebook, true, $ebook['id']]
-            );*/
             $result = as_schedule_single_action(
                 strtotime('+10 second'),
                 'alfaomega_ebooks_queue_refresh',
@@ -243,6 +239,10 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
             $ebooks = array_column($posts, 'ID');
             $onQueue = array_merge($onQueue, $this->batch($ebooks, true));
             $page++;
+
+            if (empty($onQueue)) {
+                throw new \Exception(esc_html__('Error adding tasks to the queue', 'alfaomega-ebooks'));
+            }
         } while (count($posts) === $this->chunkSize && count($onQueue) < $limit);
 
 

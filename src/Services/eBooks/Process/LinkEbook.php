@@ -221,12 +221,8 @@ class LinkEbook extends AbstractProcess implements ProcessContract
     {
         $onQueue = [];
         foreach ($entities as $productId => $ebook) {
-            $ebook = $this->getPayload($productId, $ebook);
+            $ebook = $this->getPayload(intval($productId), $ebook);
 
-            /*$result = as_enqueue_async_action(
-                'alfaomega_ebooks_queue_link',
-                [$ebook, true, $ebook['id']]
-            );*/
             $result = as_schedule_single_action(
                 strtotime('+10 second'),
                 'alfaomega_ebooks_queue_link',
@@ -258,15 +254,16 @@ class LinkEbook extends AbstractProcess implements ProcessContract
         $ebookSkus = $this->getEbookSkus();
         do {
             $countPerPage = min($limit, $countPerPage);
-            $posts = $this->getSimpleProductsBySkus($ebookSkus, $page, $countPerPage);
-            if (empty($posts)) {
-                throw new \Exception(esc_html__('No products found', 'alfaomega-ebooks'));
+            $products = $this->getSimpleProductsBySkus($ebookSkus, $page, $countPerPage);
+            if (!empty($products)) {
+                $onQueue = array_merge($onQueue, $this->batch($products, true));
+                $page++;
             }
 
-            $products = array_column($posts, 'id');
-            $onQueue = array_merge($onQueue, $this->batch($products, true));
-            $page++;
-        } while (count($posts) === $this->chunkSize && count($onQueue) < $limit);
+            if (empty($onQueue)) {
+                throw new \Exception(esc_html__('Error adding tasks to the queue', 'alfaomega-ebooks'));
+            }
+        } while (count($products) === $this->chunkSize && count($onQueue) < $limit);
 
         return $onQueue;
     }
@@ -285,16 +282,28 @@ class LinkEbook extends AbstractProcess implements ProcessContract
     public function getPayload(int|string $entityId, array $data = null): ?array
     {
         try {
-            if (empty($ebook['printed_isbn'])) {
+            if (empty($data['printed_isbn'])) {
                 throw new \Exception(esc_html__('Printed ISBN not found', 'alfaomega-ebooks'));
             }
 
-            if (empty($ebook['isbn'])) {
+            if (empty($data['isbn'])) {
                 throw new \Exception(esc_html__('Ebook ISBN not found', 'alfaomega-ebooks'));
             }
 
-            if (empty($ebook['title'])) {
+            if (empty($data['title'])) {
                 throw new \Exception(esc_html__('Title is empty', 'alfaomega-ebooks'));
+            }
+
+            if (!empty($data['details'])) {
+                unset($data['details']);
+            }
+
+            if (!empty($data['categories'])) {
+                unset($data['categories']);
+            }
+
+            if (!empty($data['description'])) {
+                $data['description'] = wp_trim_words(wp_strip_all_tags($data['description']), 20) . '...';
             }
 
             $data['product_id'] = $entityId;

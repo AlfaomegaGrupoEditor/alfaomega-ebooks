@@ -79,6 +79,10 @@ class ImportEbook extends AbstractProcess implements ProcessContract
                 ->getNewEbooks($countPerPage);
 
             $onQueue = array_merge($onQueue, $this->batch($ebooks, true));
+
+            if (empty($onQueue)) {
+                throw new \Exception(esc_html__('Error adding tasks to the queue', 'alfaomega-ebooks'));
+            }
         } while (count($ebooks) > 0 && count($onQueue) < $limit);
 
         return $onQueue;
@@ -131,10 +135,6 @@ class ImportEbook extends AbstractProcess implements ProcessContract
         foreach ($entities as $ebook) {
             $ebook = $this->getPayload($ebook['isbn'], $ebook);
 
-            /*$result = as_enqueue_async_action(
-                'alfaomega_ebooks_queue_import',
-                [$ebook, true]
-            );*/
             $result = as_schedule_single_action(
                 strtotime('+10 second'),
                 'alfaomega_ebooks_queue_import',
