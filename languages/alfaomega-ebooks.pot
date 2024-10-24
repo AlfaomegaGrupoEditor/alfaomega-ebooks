@@ -11,7 +11,7 @@ msgstr ""
 "Livan Rodriguez "
 "<livan2r@gmail.com>\n"
 "POT-Creation-Date: "
-"2024-10-19 11:30-0400\n"
+"2024-10-23 08:36-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Livan "
 "Rodriguez <livan2r@gmail."
@@ -76,6 +76,7 @@ msgid ""
 msgstr ""
 
 #: admin/class-alfaomega-ebooks-admin.php:187
+#: src/Services/eBooks/Process/ImportEbook.php:172
 msgid "Product not found"
 msgstr ""
 
@@ -172,8 +173,8 @@ msgid "Alfaomega Ebooks"
 msgstr ""
 
 #: admin/class-alfaomega-ebooks-wc-settings.php:42
-#: includes/class-alfaomega-ebooks.php:410
-#: includes/class-alfaomega-ebooks.php:411
+#: includes/class-alfaomega-ebooks.php:413
+#: includes/class-alfaomega-ebooks.php:414
 msgid "Settings"
 msgstr ""
 
@@ -370,15 +371,15 @@ msgid ""
 msgstr ""
 
 #: includes/class-alfaomega-ebooks-controller.php:167
-#: src/Http/Controllers/ApiController.php:491
-#: src/Http/Controllers/ApiController.php:553
+#: src/Http/Controllers/ApiController.php:492
+#: src/Http/Controllers/ApiController.php:574
 #: src/Http/Controllers/EbooksController.php:29
 msgid ""
 "No new eBooks to import"
 msgstr ""
 
 #: includes/class-alfaomega-ebooks-controller.php:192
-#: src/Http/Controllers/ApiController.php:511
+#: src/Http/Controllers/ApiController.php:513
 #: src/Http/Controllers/EbooksController.php:67
 #, php-format
 msgid ""
@@ -387,7 +388,7 @@ msgid ""
 msgstr ""
 
 #: includes/class-alfaomega-ebooks-controller.php:193
-#: src/Http/Controllers/ApiController.php:512
+#: src/Http/Controllers/ApiController.php:514
 #: src/Http/Controllers/EbooksController.php:68
 msgid ""
 "No eBooks found to "
@@ -402,7 +403,7 @@ msgid ""
 msgstr ""
 
 #: includes/class-alfaomega-ebooks-controller.php:221
-#: src/Http/Controllers/ApiController.php:533
+#: src/Http/Controllers/ApiController.php:536
 #: src/Http/Controllers/EbooksController.php:107
 msgid ""
 "No products found to link"
@@ -430,7 +431,7 @@ msgstr ""
 
 #: includes/class-alfaomega-ebooks-service.php:555
 #: src/Services/eBooks/Entities/Alfaomega/AccessPost.php:168
-#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:192
+#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:193
 #: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:218
 msgid ""
 "Unable to create post."
@@ -585,52 +586,52 @@ msgid ""
 "left empty"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:330
+#: includes/class-alfaomega-ebooks.php:333
 #: post_types/class-alfaomega-ebooks-post-type.php:40
 msgid "AO eBooks"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:340
-#: includes/class-alfaomega-ebooks.php:341
+#: includes/class-alfaomega-ebooks.php:343
+#: includes/class-alfaomega-ebooks.php:344
 msgid "Dashboard"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:350
+#: includes/class-alfaomega-ebooks.php:353
 msgid ""
 "All Alfaomega eBooks"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:351
+#: includes/class-alfaomega-ebooks.php:354
 msgid "List"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:360
+#: includes/class-alfaomega-ebooks.php:363
 msgid "eBook Access"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:361
+#: includes/class-alfaomega-ebooks.php:364
 msgid "Access List"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:370
+#: includes/class-alfaomega-ebooks.php:373
 msgid "eBook Sample"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:371
+#: includes/class-alfaomega-ebooks.php:374
 msgid "Sample List"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:380
+#: includes/class-alfaomega-ebooks.php:383
 #: views/alfaomega_ebook_home_page.php:18
 #: views/alfaomega_ebook_import_page.php:67
 msgid "Import eBooks"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:381
+#: includes/class-alfaomega-ebooks.php:384
 msgid "Import"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:390
+#: includes/class-alfaomega-ebooks.php:393
 #: views/alfaomega_ebook_home_page.php:24
 #: views/alfaomega_ebook_home_page.php:30
 #: views/alfaomega_ebook_refresh_page.php:5
@@ -638,11 +639,11 @@ msgstr ""
 msgid "Refresh eBooks"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:391
+#: includes/class-alfaomega-ebooks.php:394
 msgid "Refresh"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:400
+#: includes/class-alfaomega-ebooks.php:403
 #: views/alfaomega_ebook_home_page.php:36
 #: views/alfaomega_ebook_home_page.php:42
 #: views/alfaomega_ebook_link_page.php:5
@@ -650,11 +651,11 @@ msgstr ""
 msgid "Link Products"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:401
+#: includes/class-alfaomega-ebooks.php:404
 msgid "Link"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:435
+#: includes/class-alfaomega-ebooks.php:438
 msgid "Settings Saved"
 msgstr ""
 
@@ -1807,8 +1808,8 @@ msgid ""
 "The ids are required."
 msgstr ""
 
-#: src/Http/Controllers/ApiController.php:490
-#: src/Http/Controllers/ApiController.php:552
+#: src/Http/Controllers/ApiController.php:491
+#: src/Http/Controllers/ApiController.php:573
 #: src/Http/Controllers/EbooksController.php:28
 #, php-format
 msgid ""
@@ -1816,12 +1817,23 @@ msgid ""
 "new ebooks successfully!"
 msgstr ""
 
-#: src/Http/Controllers/ApiController.php:532
+#: src/Http/Controllers/ApiController.php:535
 #: src/Http/Controllers/EbooksController.php:106
 #, php-format
 msgid ""
 "Scheduled to link %s "
 "products successfully!"
+msgstr ""
+
+#: src/Http/Controllers/ApiController.php:555
+msgid ""
+"The factor is not valid."
+msgstr ""
+
+#: src/Http/Controllers/ApiController.php:559
+msgid ""
+"The factor value is "
+"invalid."
 msgstr ""
 
 #: src/Http/Controllers/QueueController.php:24
@@ -1893,15 +1905,15 @@ msgstr ""
 msgid "Ebook not found."
 msgstr ""
 
-#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:174
+#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:175
 msgid ""
 "Printed ISBN is required."
 msgstr ""
 
-#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:427
-#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:456
-#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:487
-#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:525
+#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:433
+#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:462
+#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:493
+#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:531
 msgid ""
 "AO_STORE_UUID is not "
 "defined!"
@@ -1973,16 +1985,117 @@ msgid ""
 "file."
 msgstr ""
 
-#: src/Services/eBooks/Managers/QueueManager.php:252
+#: src/Services/eBooks/Managers/QueueManager.php:271
 msgid ""
 "Failed to delete the "
 "action."
 msgstr ""
 
-#: src/Services/eBooks/Managers/QueueManager.php:288
+#: src/Services/eBooks/Managers/QueueManager.php:309
+#: src/Services/eBooks/Managers/QueueManager.php:331
 msgid ""
 "Failed adding actions to "
 "the pending queue."
+msgstr ""
+
+#: src/Services/eBooks/Process/ImportEbook.php:166
+#: src/Services/eBooks/Process/LinkEbook.php:289
+msgid ""
+"Printed ISBN not found"
+msgstr ""
+
+#: src/Services/eBooks/Process/LinkEbook.php:263
+msgid "No products found"
+msgstr ""
+
+#: src/Services/eBooks/Process/LinkEbook.php:293
+msgid ""
+"Ebook ISBN not found"
+msgstr ""
+
+#: src/Services/eBooks/Process/LinkEbook.php:297
+msgid "Title is empty"
+msgstr ""
+
+#: src/Services/eBooks/Process/RefreshEbook.php:267
+msgid "Page count is empty"
+msgstr ""
+
+#: src/Services/eBooks/Process/UpdatePrice.php:281
+msgid ""
+"The product is not "
+"available in the system."
+msgstr ""
+
+#: src/Services/eBooks/Process/UpdatePrice.php:289
+msgid ""
+"The eBook ISBN is not "
+"available in book with "
+"SKU: "
+msgstr ""
+
+#: src/Services/eBooks/Process/UpdatePrice.php:296
+msgid ""
+"The eBook with ISBN: "
+msgstr ""
+
+#: src/Services/eBooks/Process/UpdatePrice.php:296
+msgid ""
+" is not available in the "
+"system."
+msgstr ""
+
+#: src/Services/eBooks/Process/UpdatePrice.php:302
+msgid ""
+"The page count is not "
+"available in book with "
+"ISBN: "
+msgstr ""
+
+#: src/Services/eBooks/Process/UpdatePrice.php:310
+msgid ""
+"The regular price is not "
+"available in book with "
+"SKU: "
+msgstr ""
+
+#: src/Services/eBooks/Process/UpdatePrice.php:322
+msgid ""
+"The new regular price "
+"can't be 0 or negative."
+msgstr ""
+
+#: src/Services/eBooks/Process/UpdatePrice.php:328
+msgid ""
+"The new regular digital "
+"price can't be 0 or "
+"negative."
+msgstr ""
+
+#: src/Services/eBooks/Process/UpdatePrice.php:334
+msgid ""
+"The new regular combo "
+"price can't be 0 or "
+"negative."
+msgstr ""
+
+#: src/Services/eBooks/Process/UpdatePrice.php:341
+msgid ""
+"The new sale price can't "
+"be 0 or negative."
+msgstr ""
+
+#: src/Services/eBooks/Process/UpdatePrice.php:347
+msgid ""
+"The new sale digital "
+"price can't be 0 or "
+"negative."
+msgstr ""
+
+#: src/Services/eBooks/Process/UpdatePrice.php:353
+msgid ""
+"The new sale combo price "
+"can't be 0 or negative."
 msgstr ""
 
 #: src/node_modules/colorjs.io/dist/color.global.min.js:1

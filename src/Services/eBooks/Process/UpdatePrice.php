@@ -155,10 +155,6 @@ class UpdatePrice extends LinkProduct implements ProcessContract
         foreach ($entities as $productId) {
             $priceSetup = $this->getPayload($productId);
 
-            /*$result = as_enqueue_async_action(
-                'alfaomega_ebooks_queue_setup_price',
-                [$priceSetup, true, $productId]
-            );*/
             $result = as_schedule_single_action(
                 strtotime('+10 second'),
                 'alfaomega_ebooks_queue_setup_price',
@@ -211,6 +207,10 @@ class UpdatePrice extends LinkProduct implements ProcessContract
             $products = array_column($results, 'ID');
             $onQueue = array_merge($onQueue, $this->batch($products, true));
             $page++;
+
+            if (empty($onQueue)) {
+                throw new \Exception(esc_html__('Error adding tasks to the queue', 'alfaomega-ebooks'));
+            }
         } while (count($results) === $this->chunkSize && count($onQueue) < $limit);
 
 
