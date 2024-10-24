@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank WordPress Pot v1.0.0\n"
 "Report-Msgid-Bugs-To: Livan Rodriguez <livan2r@gmail.com>\n"
-"POT-Creation-Date: 2024-10-23 08:36-0400\n"
-"PO-Revision-Date: 2024-10-23 08:37-0400\n"
+"POT-Creation-Date: 2024-10-23 21:10-0400\n"
+"PO-Revision-Date: 2024-10-23 21:11-0400\n"
 "Last-Translator: Alfaomega México ADMIN\n"
 "Language-Team: Español\n"
 "Language: es_ES\n"
@@ -1808,21 +1808,23 @@ msgstr "Error al eliminar la accion."
 msgid "Failed adding actions to the pending queue."
 msgstr "Error agregando acciones a la cola de tareas pendientes."
 
+#: src/Services/eBooks/Process/ImportEbook.php:84
+#: src/Services/eBooks/Process/LinkEbook.php:264
+#: src/Services/eBooks/Process/RefreshEbook.php:244
+#: src/Services/eBooks/Process/UpdatePrice.php:213
+msgid "Error adding tasks to the queue"
+msgstr "Error agregando acciones a la cola de tareas pendientes."
+
 #: src/Services/eBooks/Process/ImportEbook.php:166
-#: src/Services/eBooks/Process/LinkEbook.php:289
+#: src/Services/eBooks/Process/LinkEbook.php:286
 msgid "Printed ISBN not found"
 msgstr "ISBN del libro impreso no disponible"
 
-#: src/Services/eBooks/Process/LinkEbook.php:263
-msgid "No products found"
-msgstr ""
-"No se han encontrado productos simples para vincular a ebooks existentes!"
-
-#: src/Services/eBooks/Process/LinkEbook.php:293
+#: src/Services/eBooks/Process/LinkEbook.php:290
 msgid "Ebook ISBN not found"
 msgstr "ISBN del libro digital no encontrado"
 
-#: src/Services/eBooks/Process/LinkEbook.php:297
+#: src/Services/eBooks/Process/LinkEbook.php:294
 msgid "Title is empty"
 msgstr "Título vacio"
 
@@ -1830,56 +1832,56 @@ msgstr "Título vacio"
 msgid "Page count is empty"
 msgstr "Número de páginas vacio"
 
-#: src/Services/eBooks/Process/UpdatePrice.php:281
+#: src/Services/eBooks/Process/UpdatePrice.php:282
 msgid "The product is not available in the system."
 msgstr "El producto no esta disponible en el sistema"
 
-#: src/Services/eBooks/Process/UpdatePrice.php:289
+#: src/Services/eBooks/Process/UpdatePrice.php:290
 msgid "The eBook ISBN is not available in book with SKU: "
 msgstr "El ISBN digital no esta disponible en el libro con SKU:"
 
-#: src/Services/eBooks/Process/UpdatePrice.php:296
+#: src/Services/eBooks/Process/UpdatePrice.php:297
 msgid "The eBook with ISBN: "
 msgstr "Libro digital con ISBN:"
 
-#: src/Services/eBooks/Process/UpdatePrice.php:296
+#: src/Services/eBooks/Process/UpdatePrice.php:297
 msgid " is not available in the system."
 msgstr "no esta disponible en el sistema."
 
-#: src/Services/eBooks/Process/UpdatePrice.php:302
+#: src/Services/eBooks/Process/UpdatePrice.php:303
 msgid "The page count is not available in book with ISBN: "
 msgstr "El número de páginas no esta disponible en el libro con SKU:"
 
-#: src/Services/eBooks/Process/UpdatePrice.php:310
+#: src/Services/eBooks/Process/UpdatePrice.php:316
 msgid "The regular price is not available in book with SKU: "
 msgstr "El precio regular no esta disponible en el libro con SKU:"
 
-#: src/Services/eBooks/Process/UpdatePrice.php:322
+#: src/Services/eBooks/Process/UpdatePrice.php:328
 msgid "The new regular price can't be 0 or negative."
 msgstr "El nuevo precio regular no puede ser 0 o un valor negativo."
 
-#: src/Services/eBooks/Process/UpdatePrice.php:328
+#: src/Services/eBooks/Process/UpdatePrice.php:334
 msgid "The new regular digital price can't be 0 or negative."
 msgstr ""
 "El nuevo precio regular del libro digital no puede ser 0 o un valor negativo."
 
-#: src/Services/eBooks/Process/UpdatePrice.php:334
+#: src/Services/eBooks/Process/UpdatePrice.php:340
 msgid "The new regular combo price can't be 0 or negative."
 msgstr ""
 "El nuevo precio regular del libro digital + impreso no puede ser 0 o un "
 "valor negativo."
 
-#: src/Services/eBooks/Process/UpdatePrice.php:341
+#: src/Services/eBooks/Process/UpdatePrice.php:347
 msgid "The new sale price can't be 0 or negative."
 msgstr "El nuevo precio de oferta no puede ser 0 o un valor negativo."
 
-#: src/Services/eBooks/Process/UpdatePrice.php:347
+#: src/Services/eBooks/Process/UpdatePrice.php:353
 msgid "The new sale digital price can't be 0 or negative."
 msgstr ""
 "El nuevo precio de oferta del libro digital no puede ser 0 o un valor "
 "negativo."
 
-#: src/Services/eBooks/Process/UpdatePrice.php:353
+#: src/Services/eBooks/Process/UpdatePrice.php:359
 msgid "The new sale combo price can't be 0 or negative."
 msgstr ""
 "El nuevo precio de oferta del libro digital + impreso no puede ser 0 o un "
@@ -2459,6 +2461,10 @@ msgstr "Leer&nbsp;en línea"
 #: website/class-alfaomega-ebooks-public.php:197
 msgid "Not available"
 msgstr "No disponible"
+
+#~ msgid "No products found"
+#~ msgstr ""
+#~ "No se han encontrado productos simples para vincular a ebooks existentes!"
 
 #~ msgid "Home"
 #~ msgstr "Inicio"
