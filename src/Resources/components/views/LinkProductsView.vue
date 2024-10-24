@@ -27,7 +27,11 @@
     <div class="container">
         <div class="row mt-2">
             <ao-scheduled-actions
-                v-bind="linkStatus"
+                :status="linkStatus.status"
+                :completed="Number(linkStatus.completed)"
+                :processing="Number(linkStatus.processing)"
+                :pending="Number(linkStatus.pending)"
+                :failed="Number(linkStatus.failed)"
                 action="link"
                 queue="link-products"
                 @action="show"

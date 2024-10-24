@@ -183,6 +183,7 @@ type SetupPriceFactorType = 'page_count'
     | 'fixed_number'
     | 'percent'
     | 'price_update'
+    | 'undefined';
 
 export {
     AccessCodeInfoType,
