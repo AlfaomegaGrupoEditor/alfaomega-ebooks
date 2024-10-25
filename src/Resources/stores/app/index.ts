@@ -34,7 +34,8 @@ export const useAppStore = defineStore('appStore', {
 
     getters: {
         getError: (state) => state.error,
-        getLoading: (state) => state.loading
+        getLoading: (state) => state.loading,
+        getConfig: (state) => state.config
     },
 
     actions: {
