@@ -10,7 +10,14 @@
         aoLibrary,
         aoBooksSkeleton
     } from '@/components';
-    import {BooksQueryType, BooksFilterType, OrderType, ToastType} from '@/types';
+    import {
+        BooksQueryType,
+        BooksFilterType,
+        OrderType,
+        ToastType,
+        TreeNodeType,
+        CategorySelectedType
+    } from '@/types';
     import AoToast from '@/components/aoToast.vue';
     import {eventBus, useMittEvents} from '@/events';
     import {ApiCheckEvent, NotificationEvent} from '@/events/types';
@@ -19,9 +26,9 @@
 
     const {t} = useI18n();
     const appStore = useAppStore();
-    const isLoading = computed(() => appStore.isLoading);
+    const isLoading = computed(() => appStore.getLoading);
     const header = ref<string>(t('welcome'));
-    const searchQuery = ref<BooksQueryType>(null);
+    const searchQuery = ref<BooksQueryType|null>(null);
     const { toast, toastActive, showToast } = useToast();
     const showSidebar = ref(false);
     const hideMigrationNotice = ref(localStorage.getItem('hideMigrationNotice') === 'true');
@@ -109,20 +116,20 @@
      * Handle the filters update
      * @param filter
      */
-    const handleFiltered = (filter) => {
+    const handleFiltered = (filter: BooksFilterType) => {
         searchQuery.value = {
             ...searchQuery.value,
             ...{
                 filter: {
                     ...filter,
-                    ...{category: searchQuery.value.filter.category}
+                    ...{category: searchQuery.value?.filter?.category}
                 }
             }
         };
     };
 
-    const handleSelected = (node) => {
-        header.value = node.text;
+    const handleSelected = (node: CategorySelectedType) => {
+        header.value = node.text || '';
         if (!searchQuery.value) {
             return;
         }

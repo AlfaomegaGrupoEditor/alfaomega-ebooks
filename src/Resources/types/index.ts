@@ -1,3 +1,5 @@
+import {ButtonVariant, ColorVariant} from 'bootstrap-vue-next';
+
 type ColorVariantType = 'primary'
     | 'secondary'
     | 'success'
@@ -77,7 +79,7 @@ type CatalogType = {
 type ToastType = {
     title?: string | null;
     content: string;
-    variant: ColorVariantType;
+    variant: ColorVariant;
 }
 
 type RedeemStatusType = {
@@ -202,6 +204,12 @@ type TreeType = {
     [key: string]: TreeNodeType;
 }
 
+type CategorySelectedType = {
+    categories: string;
+    text: string;
+    id: string;
+}
+
 export {
     AccessCodeInfoType,
     AccessType,
@@ -230,5 +238,6 @@ export {
     SetupPriceFactorType,
     TreeNodeStateType,
     TreeNodeType,
-    TreeType
+    TreeType,
+    CategorySelectedType
 };

@@ -7,9 +7,15 @@
     import {updateHistory} from '@/services/Helper';
     import {eventBus} from '@/events';
     import {getValue} from '@/services/Helper';
-    import {TreeType, TreeNodeType, CatalogType} from '@/types';
+    import {
+        TreeType,
+        TreeNodeType,
+        CatalogType,
+        BookType,
+        CategorySelectedType
+    } from '@/types';
 
-    const emit = defineEmits(['selected']);
+    const emit = defineEmits<{ (e: 'selected', payload: CategorySelectedType): void }>();
 
     const {t} = useI18n();
     const libraryStore = useLibraryStore();
