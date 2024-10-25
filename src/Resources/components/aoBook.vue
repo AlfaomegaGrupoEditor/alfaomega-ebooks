@@ -1,6 +1,6 @@
 <script setup lang="ts">
-    import {BookType} from '@/types';
-    import {onMounted, ref} from 'vue';
+import {BookType} from '@/types';
+    import {defineEmits, onMounted, ref} from 'vue';
     import {aoCornerRibbon} from '@/components';
     import {useI18n} from 'vue-i18n';
 
@@ -8,15 +8,15 @@
         data: {type: Object as () => BookType | null, default: null},
         disabled: {type: Boolean, default: false}
     });
+    const emit = defineEmits<{ (e: 'open', payload: BookType): void }>();
 
     const {t} = useI18n();
-    const emit = defineEmits<{ open: (payload: BookType) => void }>();
     const hover = ref(false);
     const built = ref(false);
     const covers = ref(window.wpApiSettings.covers);
 
     const handleClick = () => {
-        if (!props.disabled) {
+        if (!props.disabled && props.data !== null) {
             emit('open', props.data);
         }
     };
@@ -47,6 +47,7 @@
                 @mouseleave="hover = false"
             />
             <ao-corner-ribbon
+                v-if="data !== null"
                 :title="$t(data.status)"
                 :show="data.status === 'expired' || data.status === 'cancelled'"
             />
