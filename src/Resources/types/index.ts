@@ -239,5 +239,6 @@ export {
     TreeNodeStateType,
     TreeNodeType,
     TreeType,
-    CategorySelectedType
+    CategorySelectedType,
+    RedeemStatusType
 };

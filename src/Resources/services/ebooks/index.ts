@@ -5,8 +5,7 @@ import {
     AccessCodeInfoType,
     EbookAccessInfoType,
     EbookInfoType,
-    ProductsInfoType,
-    RedeemStatusType
+    ProductsInfoType
 } from '@/types';
 
 async function getEbooksInfo(): Promise<APIResponse<EbookInfoType | null>>
@@ -15,14 +14,14 @@ async function getEbooksInfo(): Promise<APIResponse<EbookInfoType | null>>
     appStore.setError(null);
     appStore.setLoading(true);
 
-    const response = await request<APIResponse<EbookInfoType[]>>('GET', `/alfaomega-ebooks/api/ebooks-info/`);
+    const response = await request<APIResponse<EbookInfoType>>('GET', `/alfaomega-ebooks/api/ebooks-info/`);
     appStore.setLoading(false);
 
     if (response.status == 'success') {
-        return response.data as APIResponse<EbookInfoType[]>;
+        return response.data as APIResponse<EbookInfoType>;
     } else {
         appStore.setError(response.message);
-        return null;
+        return { status: 'fail', data: null, message: response.message } as APIResponse<null>;
     }
 }
 
@@ -32,14 +31,14 @@ async function getProductsInfo(): Promise<APIResponse<ProductsInfoType | null>>
     appStore.setError(null);
     appStore.setLoading(true);
 
-    const response = await request<APIResponse<ProductsInfoType[]>>('GET', `/alfaomega-ebooks/api/products-info/`);
+    const response = await request<APIResponse<ProductsInfoType>>('GET', `/alfaomega-ebooks/api/products-info/`);
     appStore.setLoading(false);
 
     if (response.status == 'success') {
-        return response.data as APIResponse<ProductsInfoType[]>;
+        return response.data as APIResponse<ProductsInfoType>;
     } else {
         appStore.setError(response.message);
-        return null;
+        return { status: 'fail', data: null, message: response.message } as APIResponse<null>;
     }
 }
 
@@ -49,14 +48,14 @@ async function getAccessInfo(): Promise<APIResponse<EbookAccessInfoType | null>>
     appStore.setError(null);
     appStore.setLoading(true);
 
-    const response = await request<APIResponse<EbookAccessInfoType[]>>('GET', `/alfaomega-ebooks/api/access-info/`);
+    const response = await request<APIResponse<EbookAccessInfoType>>('GET', `/alfaomega-ebooks/api/access-info/`);
     appStore.setLoading(false);
 
     if (response.status == 'success') {
-        return response.data as APIResponse<EbookAccessInfoType[]>;
+        return response.data as APIResponse<EbookAccessInfoType>;
     } else {
         appStore.setError(response.message);
-        return null;
+        return { status: 'fail', data: null, message: response.message } as APIResponse<null>;
     }
 }
 
@@ -66,17 +65,16 @@ async function getCodesInfo(): Promise<APIResponse<AccessCodeInfoType | null>>
     appStore.setError(null);
     appStore.setLoading(true);
 
-    const response = await request<APIResponse<AccessCodeInfoType[]>>('GET', `/alfaomega-ebooks/api/codes-info/`);
+    const response = await request<APIResponse<AccessCodeInfoType>>('GET', `/alfaomega-ebooks/api/codes-info/`);
     appStore.setLoading(false);
 
     if (response.status == 'success') {
-        return response.data as APIResponse<AccessCodeInfoType[]>;
+        return response.data as APIResponse<AccessCodeInfoType>;
     } else {
         appStore.setError(response.message);
-        return null;
+        return { status: 'fail', data: null, message: response.message } as APIResponse<null>;
     }
 }
-
 
 export default {
     getEbooksInfo,
