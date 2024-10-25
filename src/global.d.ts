@@ -7,3 +7,5 @@ interface Window {
         nonce: string;
     };
 }
+
+/// <reference types="vite/client" />

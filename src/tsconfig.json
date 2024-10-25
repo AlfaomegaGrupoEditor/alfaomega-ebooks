@@ -12,8 +12,18 @@
         "paths": {
             "@/*": ["Resources/*"]
         },
-        "types": ["unplugin-icons/types/vue","bootstrap-vue-next"]
+        "types": [
+            "unplugin-icons/types/vue",
+            "bootstrap-vue-next"
+        ]
     },
-    "include": ["Resources/**/*.ts", "Resources/**/*.vue", "Resources/**/*.d.ts", "components.d.ts", "global.d.ts"],
+    "include": [
+        "Resources/**/*.ts",
+        "Resources/**/*.vue",
+        "Resources/**/*.d.ts",
+        "components.d.ts",
+        "global.d.ts",
+        "vite-env.d.ts"
+    ],
     "exclude": ["node_modules"]
 }
