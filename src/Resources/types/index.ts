@@ -205,9 +205,9 @@ type TreeType = {
 }
 
 type CategorySelectedType = {
-    categories: string;
-    text: string;
-    id: string;
+    categories: string | null | undefined;
+    text: string | null | undefined;
+    id: string | null | undefined;
 }
 
 export {

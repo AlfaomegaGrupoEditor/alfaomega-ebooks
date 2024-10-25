@@ -4,7 +4,7 @@ import { onUnmounted } from "vue";
 import type {
   ApiCheckEvent,
   CatalogSelectedEvent,
-  NotificationEvent
+  NotificationEvent, RefreshActionsEvent
 } from './types';
 
 /**
