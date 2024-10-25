@@ -71,13 +71,8 @@ export const request = async <T extends { data?: any }>(method: RequestMethod , 
       };
     } else {
       const error = empty(response.data)
-          ? error_no_data
-          /**
-           * The axios instance.
-           */
-          : (
-              response.data?.message || 'error_fetching_data'
-          )
+          ? 'error_no_data'
+          :  'error_fetching_data';
 
       eventBus.emit('notification', {
         message: error,
@@ -95,15 +90,15 @@ export const request = async <T extends { data?: any }>(method: RequestMethod , 
     const response = _error.response?.data;
     if (response) {
       eventBus.emit('notification', {
-        message: response.message,
+        message: response,
         type: 'error'
       });
 
       return {
         status: 'fail',
-        code: response.status,
+        code: _error.status,
         data: null,
-        message: response.message
+        message: _error.message
       };
     }
 
