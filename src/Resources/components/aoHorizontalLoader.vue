@@ -1,15 +1,16 @@
 <script setup lang="ts">
     import {ColorVariantType} from '@/types';
     import {ref, watch} from 'vue';
+    import {ColorVariant} from 'bootstrap-vue-next';
 
     const props = defineProps({
         show: {type: Boolean, default: false},
-        variant: {type: String as () => ColorVariantType, default: 'success'},
+        variant: {type: String as () => ColorVariant, default: 'success'},
         height: {type: Number, default: 5},
         speed: {type: Number, default: 100}
     });
 
-    const interval = ref(null);
+    const interval = ref(0);
     const progress = ref(0);
 
     watch(() => props.show, (newVal) => {

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-    import {ColorVariantType, SizeVariantType} from '@/types';
+    import {ButtonVariant, Size} from 'bootstrap-vue-next';
 
     const props = defineProps({
         caption: {type: String, default: 'caption'},
         icon: {type: String, default: 'fa-user'},
         disabled: {type: Boolean, default: false},
-        color: {type: String as () => ColorVariantType, default: 'primary'},
-        size: {type: String as () => SizeVariantType, default: 'sm'},
+        color: {type: String as () => ButtonVariant, default: 'primary'},
+        size: {type: String as () => Size, default: 'sm'},
         tooltip: {type: String, default: ''},
         loading: {type: Boolean, default: false}
     });

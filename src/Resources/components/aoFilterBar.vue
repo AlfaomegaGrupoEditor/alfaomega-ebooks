@@ -1,14 +1,15 @@
 <script setup lang="ts">
     import {useI18n} from 'vue-i18n';
     import {ref, defineEmits, onMounted, computed, watch} from 'vue';
-    import {BooksFilterType, OrderType} from '@/types';
+    import {BooksFilterType, BookType, OrderType} from '@/types';
     import {useLibraryStore} from '@/stores';
     import debounce from 'lodash/debounce';
     import {updateHistory, getValue} from '@/services/Helper';
     import {eventBus, useMittEvents} from '@/events';
     import {CatalogSelectedEvent} from '@/events/types';
 
-    const emit = defineEmits<{ filter: (payload: BooksFilterType) => void }>();
+    const emit = defineEmits<{ (e: 'filter', payload: BookType): void }>();
+
     const {t} = useI18n();
     useMittEvents(eventBus, {
         catalogSelected: (event: CatalogSelectedEvent) => catalogSelectedHandler(event)

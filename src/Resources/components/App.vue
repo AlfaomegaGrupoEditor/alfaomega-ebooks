@@ -225,4 +225,7 @@
 </template>
 
 <style scoped>
+    :root {
+        --ribbon-size: 100px;
+    }
 </style>

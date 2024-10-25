@@ -23,7 +23,8 @@
         "Resources/**/*.d.ts",
         "components.d.ts",
         "global.d.ts",
-        "vite-env.d.ts"
+        "vite-env.d.ts",
+        "lodash-debounce.d.ts"
     ],
     "exclude": ["node_modules"]
 }
