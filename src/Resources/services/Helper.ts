@@ -76,7 +76,7 @@ const isNull = (variable: any): boolean =>
  * @param variable
  * @param defaultValue
  */
-const getValue = (variable: any, defaultValue = null): any =>
+const getValue = (variable: any, defaultValue:any = null): any =>
 {
     return isNull(variable) ? defaultValue : variable;
 };

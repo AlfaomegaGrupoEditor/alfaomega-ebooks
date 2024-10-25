@@ -1,5 +1,4 @@
 <script setup lang="ts">
-    import {ColorVariantType} from '@/types';
     import {ref, watch} from 'vue';
     import {ColorVariant} from 'bootstrap-vue-next';
 

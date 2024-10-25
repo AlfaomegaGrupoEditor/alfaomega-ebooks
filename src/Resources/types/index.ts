@@ -59,7 +59,7 @@ type BookType = {
     accessType: AccessType;
     status: StatusType;
     addedAt: string;
-    validUntil?: string | null;
+    validUntil?: string;
     url: string;
 }
 

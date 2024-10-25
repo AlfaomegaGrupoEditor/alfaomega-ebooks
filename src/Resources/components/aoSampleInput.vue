@@ -1,12 +1,12 @@
 <script setup lang="ts">
-    import {ref, computed} from 'vue';
+import {ref, computed, defineEmits} from 'vue';
     import {aoButton} from '@/components';
-    import {ToastType} from '@/types';
+import {BookType, ToastType} from '@/types';
     import {useI18n} from 'vue-i18n';
     import {API} from '@/services';
     import {useLibraryStore} from '@/stores';
 
-    const emit = defineEmits<{ apply: (payload: ToastType) => void }>();
+    const emit = defineEmits<{ (e: 'apply', payload: ToastType): void }>();
     const {t} = useI18n();
     const libraryStore = useLibraryStore();
     const code = ref('');

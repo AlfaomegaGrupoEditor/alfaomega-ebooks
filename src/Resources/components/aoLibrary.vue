@@ -10,6 +10,7 @@
     import {useLibraryStore} from '@/stores';
     import {getValue, updateHistory} from '@/services/Helper';
     import AoHorizontalLoader from '@/components/aoHorizontalLoader.vue';
+    import {BvEvent} from 'bootstrap-vue-next/utils';
 
     const props = defineProps({
         query: {type: Object as () => BooksQueryType | null, default: null}
@@ -29,7 +30,7 @@
         book.value = selectedBook;
     };
 
-    const onPageChange = async (event, pageNumber) => {
+    const onPageChange = async (event: BvEvent, pageNumber: number) => {
         processing.value = true;
         const newQuery = {
             ...query.value,
@@ -44,6 +45,9 @@
     };
 
     watch(() => props.query, async (newVal) => {
+        if (!newVal) {
+            return;
+        }
         processing.value = true;
         await libraryStore.dispatchSearchBooks(newVal);
         processing.value = false;
