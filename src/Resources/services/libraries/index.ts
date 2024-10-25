@@ -19,7 +19,7 @@ async function getBooks(query: BooksQueryType): Promise<APIResponse<BookType[] |
         return response.data as APIResponse<BookType[]>;
     } else {
         appStore.setError(response.message);
-        return null;
+        return { status: 'fail', data: null, message: response.message } as APIResponse<null>;
     }
 }
 
@@ -39,7 +39,7 @@ async function loadCatalog(): Promise<APIResponse<CatalogType | null>>
         return response.data as APIResponse<CatalogType>;
     } else {
         appStore.setError(response.message);
-        return null;
+        return { status: 'fail', data: null, message: response.message } as APIResponse<null>;
     }
 }
 
@@ -49,7 +49,7 @@ async function loadCatalog(): Promise<APIResponse<CatalogType | null>>
  * @param {string} code - The code to be applied.
  * @returns {Promise<APIResponse>} - The API response.
  */
-async function applyCode(code: string): Promise<APIResponse<RedeemStatusType>>
+async function applyCode(code: string): Promise<APIResponse<RedeemStatusType|null>>
 {
     const appStore = useAppStore();
     appStore.setError(null);
@@ -62,7 +62,7 @@ async function applyCode(code: string): Promise<APIResponse<RedeemStatusType>>
         return response.data as APIResponse<RedeemStatusType>;
     } else {
         appStore.setError(response.message);
-        return null;
+        return { status: 'fail', data: null, message: response.message } as APIResponse<null>;
     }
 }
 
