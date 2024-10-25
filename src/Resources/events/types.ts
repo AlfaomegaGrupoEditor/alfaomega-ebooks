@@ -18,7 +18,7 @@ type ApiCheckEvent = {
  * Type definition for the 'catalogSelectedEvent'.
  */
 type CatalogSelectedEvent = {
-    catalog_id: string    ;
+    catalog_id: string|number|undefined    ;
 }
 
 /**

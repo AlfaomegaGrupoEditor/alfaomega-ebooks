@@ -70,8 +70,8 @@ type CatalogItemsType = {
 };
 
 type CatalogType = {
-    root: number[];
-    items: CatalogItemsType[];
+    root: string[];
+    tree: TreeType;
 };
 
 type ToastType = {
@@ -185,6 +185,23 @@ type SetupPriceFactorType = 'page_count'
     | 'price_update'
     | 'undefined';
 
+type TreeNodeStateType = {
+    opened: boolean;
+    checked: boolean;
+}
+
+type TreeNodeType = {
+    id?: string;
+    text?: string;
+    title?: string;
+    state?: TreeNodeStateType
+    children?: string[];
+}
+
+type TreeType = {
+    [key: string]: TreeNodeType;
+}
+
 export {
     AccessCodeInfoType,
     AccessType,
@@ -210,5 +227,8 @@ export {
     SizeVariantType,
     StatusType,
     ToastType,
-    SetupPriceFactorType
+    SetupPriceFactorType,
+    TreeNodeStateType,
+    TreeNodeType,
+    TreeType
 };

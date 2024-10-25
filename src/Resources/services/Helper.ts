@@ -17,7 +17,7 @@ const empty = (variable: any): boolean =>
  * @param pCategory
  * @returns BooksFilterType
  */
-const updateHistory = (pFilter: BooksFilterType | null = null, pCategory: string | null = null): BooksFilterType =>
+const updateHistory = (pFilter: BooksFilterType | null = null, pCategory: string | null | undefined = null): BooksFilterType =>
 {
     const urlParams = new URLSearchParams(window.location.search);
     let activeFilters: BooksFilterType;
