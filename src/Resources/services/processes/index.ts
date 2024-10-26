@@ -41,7 +41,7 @@ async function getProcessStatus(process: ProcessType): Promise<APIResponse<Async
  * @param page
  * @param perPage
  */
-async function getProcessActions(process: ProcessNameType,
+async function getProcessActions(process: ProcessNameType | ProcessType,
                                  status: ProcessStatusType,
                                  page: number = 1,
                                  perPage: number = 10): Promise<APIResponse<ProcessItem[]|null>>
@@ -220,7 +220,7 @@ async function importNewEbooks(): Promise<APIResponse<AsyncProcessType | null>>
 
     if (response.status == 'success') {
         eventBus.emit('notification', {
-            message: response.message,
+            message: response.message as string,
             type: 'success'
         });
         eventBus.emit('refreshActions', {process: 'import-new-ebooks'});
@@ -249,7 +249,7 @@ async function updateEbooks(): Promise<APIResponse<AsyncProcessType | null>>
 
     if (response.status == 'success') {
         eventBus.emit('notification', {
-            message: response.message,
+            message: response.message as string,
             type: 'success'
         });
         eventBus.emit('refreshActions', {process: 'update-ebooks'});
@@ -279,7 +279,7 @@ async function linkProducts(): Promise<APIResponse<AsyncProcessType | null>>
 
     if (response.status == 'success') {
         eventBus.emit('notification', {
-            message: response.message,
+            message: response.message as string,
             type: 'success'
         });
         eventBus.emit('refreshActions', {process: 'link-products'});
@@ -314,7 +314,7 @@ async function setupEbooksPrice(factor: SetupPriceFactorType,
 
     if (response.status == 'success') {
         eventBus.emit('notification', {
-            message: response.message,
+            message: response.message as string,
             type: 'success'
         });
         eventBus.emit('refreshActions', {process: 'setup-prices'});

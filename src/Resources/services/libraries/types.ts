@@ -2,7 +2,7 @@ import {BooksQueryType, BookType, CatalogType} from '@/types';
 import {SearchResultType} from '@/services/types';
 
 type State = {
-  books: BookType[];
+  books: BookType[] | null;
   query: BooksQueryType;
   meta: SearchResultType;
   catalog: CatalogType;

@@ -45,6 +45,7 @@ type BooksFilterType = {
 };
 
 type BooksQueryType = {
+    category?: string | null;
     filter: BooksFilterType;
     userId?: string | null;
 }
@@ -139,11 +140,11 @@ type ProcessStatusType = 'idle'
 
 type AsyncProcessType = {
     status: ProcessStatusType;
-    completed: Number,
-    processing: Number,
-    pending: Number,
-    failed: Number,
-    excluded?: Number
+    completed: number,
+    processing: number,
+    pending: number,
+    failed: number,
+    excluded?: number
 }
 
 type ProcessDataType = {
@@ -174,6 +175,7 @@ type MetaType = {
     total: number;
     current_page: number;
     pages: number;
+    per_page?: number;
 }
 
 type QueueType = 'import-new-ebooks'

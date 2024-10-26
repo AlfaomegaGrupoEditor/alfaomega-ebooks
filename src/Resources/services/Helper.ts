@@ -1,4 +1,5 @@
 import {AccessType, BooksFilterType, OrderType, ProcessType, StatusType} from '@/types';
+import {State} from '@/services/processes/types';
 
 /**
  * Check if a variable is empty
