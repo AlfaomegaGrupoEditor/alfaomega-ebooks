@@ -64,6 +64,7 @@
         switch (status) {
             case 'processing':
                 return 'info';
+            case 'complete':
             case 'completed':
                 return 'success';
             case 'failed':
@@ -438,10 +439,10 @@
         <div class="row mt-3">
             <div class="col">
                 <BPagination
-                    v-if="processData.meta.total > pageSize"
+                    v-if="processData?.meta?.total || 0 > pageSize"
                     class="my-0 info-variant"
                     v-model="currentPage"
-                    :total-rows="processData.meta.total"
+                    :total-rows="processData?.meta?.total || 0"
                     :per-page="pageSize"
                     hide-goto-end-buttons
                     align="end"

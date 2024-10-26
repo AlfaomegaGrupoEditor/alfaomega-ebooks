@@ -135,6 +135,7 @@ type ProcessStatusType = 'idle'
     | 'processing'
     | 'failed'
     | 'completed'
+    | 'complete'
     | 'pending'
     | 'excluded';
 
