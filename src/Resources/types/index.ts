@@ -1,4 +1,4 @@
-import {ButtonVariant, ColorVariant} from 'bootstrap-vue-next';
+import {ColorVariant} from 'bootstrap-vue-next';
 
 type ColorVariantType = 'primary'
     | 'secondary'
