@@ -1,11 +1,12 @@
 <script setup lang="ts">
     import {ref} from 'vue';import {useI18n} from 'vue-i18n';
+    import {Size} from 'bootstrap-vue-next';
 
     const props = defineProps({
         name: {type: String, default: 'ao-modal'},
         title: {type: String, default: 'The title'},
-        type: {type: String as ('confirm' | 'dlg'), default: 'confirm'},
-        size: {type: String as ('sm' | 'md' | 'lg' | 'xl'), default: 'md'},
+        type: {type: String as () => 'confirm' | 'dlg', default: 'confirm'},
+        size: {type: String as () => Size, default: 'md'},
     });
     const emit = defineEmits(['action']);
 

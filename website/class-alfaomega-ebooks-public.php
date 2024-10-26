@@ -91,7 +91,8 @@ class Alfaomega_Ebooks_Public {
             }
 
             wp_localize_script($plugin_name, 'wpApiSettings', [
-                'root'   => esc_url_raw(rest_url()), // Root URL for the API
+                'root'   => esc_url_raw(site_url()), // Root URL for the API
+                //'root'   => esc_url_raw(rest_url()), // Root URL for the API
                 'nonce'  => wp_create_nonce('wp_rest'), // Create a nonce for secure API calls
                 'covers' => ALFAOMEGA_COVER_PATH,
                 'migration' => defined('AO_SHOW_MIGRATION_ALERT') && AO_SHOW_MIGRATION_ALERT && AO_OLD_STORE,

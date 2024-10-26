@@ -3,6 +3,7 @@
     import {ref, computed, watch, onMounted} from 'vue';
     import {aoWidget, aoListActionItem} from '@/components';
     import {useEbookStore, useProcessStore} from '@/stores';
+    import {ProcessType} from '@/types';
 
     const {t} = useI18n();
     const ebookStore = useEbookStore();
@@ -93,7 +94,7 @@
             action: '#/about'
         }
     ]);
-    const process = [
+    const process: ProcessType[] = [
         'import-new-ebooks',
         'update-ebooks',
         'link-products',
@@ -118,7 +119,7 @@
     });
 
     onMounted(() => {
-        process.forEach((process) => processStore.dispatchRetrieveQueueStatus(process));
+        process.forEach((process: ProcessType) => processStore.dispatchRetrieveQueueStatus(process));
     });
 </script>
 
@@ -170,7 +171,7 @@
                         </div>
                         <div class="row mt-1 px-2">
                             <div class="col offset-1">
-                                <div class="pl-2 pb-1">{{ $t('pending')}}: <BBadge class="fs-7" variant="info">{{ queueStatus.pending + queueStatus.processing }}</BBadge></div>
+                                <div class="pl-2 pb-1">{{ $t('pending')}}: <BBadge class="fs-7" variant="info">{{ Number(queueStatus.pending) + Number(queueStatus.processing) }}</BBadge></div>
                                 <div class="pl-2 pb-1">{{ $t('completed')}}: <BBadge class="fs-7" variant="success">{{ queueStatus.completed }}</BBadge></div>
                                 <div class="pl-2 pb-1">{{ $t('failed')}}: <BBadge class="fs-7" variant="primary">{{ queueStatus.failed }}</BBadge></div>
                                 <div class="pl-2 pb-1">{{ $t('excluded')}}: <BBadge class="fs-7" variant="warning">{{ queueStatus.excluded }}</BBadge></div>

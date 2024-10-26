@@ -14,6 +14,8 @@ type AppConfig = {
   headers: HttpHeader;
   withCredentials: boolean,
   credentials: 'same-origin'
+  error?: string,
+  loading: boolean
 };
 
 type AppInitPayload = {
@@ -21,7 +23,7 @@ type AppInitPayload = {
 
 type State = {
   error: AppError | undefined;
-  loading: AppFlag;
+  loading: boolean;
   config: AppConfig | undefined;
 }
 

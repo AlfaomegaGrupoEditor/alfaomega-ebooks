@@ -30,7 +30,7 @@ async function getProcessStatus(process: ProcessType): Promise<APIResponse<Async
         return response.data as APIResponse<AsyncProcessType>;
     } else {
         appStore.setError(response.message);
-        return null;
+        return { status: 'fail', data: null, message: response.message } as APIResponse<null>;
     }
 }
 
@@ -41,10 +41,10 @@ async function getProcessStatus(process: ProcessType): Promise<APIResponse<Async
  * @param page
  * @param perPage
  */
-async function getProcessActions(process: ProcessNameType,
+async function getProcessActions(process: ProcessNameType | ProcessType,
                                  status: ProcessStatusType,
                                  page: number = 1,
-                                 perPage: number = 10): Promise<APIResponse<ProcessItem[]>>
+                                 perPage: number = 10): Promise<APIResponse<ProcessItem[]|null>>
 {
     const appStore = useAppStore();
     appStore.setError(null);
@@ -62,7 +62,7 @@ async function getProcessActions(process: ProcessNameType,
         return response.data as APIResponse<ProcessItem[]>;
     } else {
         appStore.setError(response.message);
-        return null;
+        return { status: 'fail', data: null, message: response.message } as APIResponse<null>;
     }
 }
 
@@ -90,7 +90,7 @@ async function clearQueue(process: ProcessType): Promise<APIResponse<AsyncProces
         return response.data as APIResponse<AsyncProcessType>;
     } else {
         appStore.setError(response.message);
-        return null;
+        return { status: 'fail', data: null, message: response.message } as APIResponse<null>;
     }
 }
 
@@ -117,7 +117,7 @@ async function deleteAction(process: ProcessType,
     });
     appStore.setLoading(false);
 
-    if (response.status == 'success' && response.data.status === 'success') {
+    if (response.status == 'success' && response?.data?.status === 'success') {
         eventBus.emit('notification', {
             message: 'action_deleted_success',
             type: 'success'
@@ -126,7 +126,7 @@ async function deleteAction(process: ProcessType,
         return response.data as APIResponse<AsyncProcessType>;
     } else {
         appStore.setError(response.message);
-        return null;
+        return { status: 'fail', data: null, message: response.message } as APIResponse<null>;
     }
 }
 
@@ -150,7 +150,7 @@ async function excludeAction(process: ProcessType,
     });
     appStore.setLoading(false);
 
-    if (response.status == 'success' && response.data.status === 'success') {
+    if (response.status == 'success' && response?.data?.status === 'success') {
         eventBus.emit('notification', {
             message: 'action_exclude_success',
             type: 'success'
@@ -159,7 +159,7 @@ async function excludeAction(process: ProcessType,
         return response.data as APIResponse<AsyncProcessType>;
     } else {
         appStore.setError(response.message);
-        return null;
+        return { status: 'fail', data: null, message: response.message } as APIResponse<null>;
     }
 }
 
@@ -195,7 +195,7 @@ async function retryAction(process: ProcessType,
         return response.data as APIResponse<AsyncProcessType>;
     } else {
         appStore.setError(response.message);
-        return null;
+        return { status: 'fail', data: null, message: response.message } as APIResponse<null>;
     }
 }
 
@@ -220,14 +220,14 @@ async function importNewEbooks(): Promise<APIResponse<AsyncProcessType | null>>
 
     if (response.status == 'success') {
         eventBus.emit('notification', {
-            message: response.message,
+            message: response.message as string,
             type: 'success'
         });
-        eventBus.emit('refreshActions', {process: process});
+        eventBus.emit('refreshActions', {process: 'import-new-ebooks'});
         return {} as APIResponse<AsyncProcessType>;
     } else {
         appStore.setError(response.message);
-        return null;
+        return { status: 'fail', data: null, message: response.message } as APIResponse<null>;
     }
 }
 
@@ -249,14 +249,14 @@ async function updateEbooks(): Promise<APIResponse<AsyncProcessType | null>>
 
     if (response.status == 'success') {
         eventBus.emit('notification', {
-            message: response.message,
+            message: response.message as string,
             type: 'success'
         });
-        eventBus.emit('refreshActions', {process: process});
+        eventBus.emit('refreshActions', {process: 'update-ebooks'});
         return {} as APIResponse<AsyncProcessType>;
     } else {
         appStore.setError(response.message);
-        return null;
+        return { status: 'fail', data: null, message: response.message } as APIResponse<null>;
     }
 }
 
@@ -279,14 +279,14 @@ async function linkProducts(): Promise<APIResponse<AsyncProcessType | null>>
 
     if (response.status == 'success') {
         eventBus.emit('notification', {
-            message: response.message,
+            message: response.message as string,
             type: 'success'
         });
-        eventBus.emit('refreshActions', {process: process});
+        eventBus.emit('refreshActions', {process: 'link-products'});
         return {} as APIResponse<AsyncProcessType>;
     } else {
         appStore.setError(response.message);
-        return null;
+        return { status: 'fail', data: null, message: response.message } as APIResponse<null>;
     }
 }
 
@@ -314,14 +314,14 @@ async function setupEbooksPrice(factor: SetupPriceFactorType,
 
     if (response.status == 'success') {
         eventBus.emit('notification', {
-            message: response.message,
+            message: response.message as string,
             type: 'success'
         });
-        eventBus.emit('refreshActions', {process: process});
+        eventBus.emit('refreshActions', {process: 'setup-prices'});
         return {} as APIResponse<AsyncProcessType>;
     } else {
         appStore.setError(response.message);
-        return null;
+        return { status: 'fail', data: null, message: response.message } as APIResponse<null>;
     }
 }
 

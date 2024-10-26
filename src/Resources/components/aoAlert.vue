@@ -8,7 +8,7 @@
         dismissible: { type: Boolean, default: true }
     });
 
-    const emit = defineEmits<{ action: () => void }>();
+    const emit = defineEmits(['action']);
 
     const variant = computed(() => {
         switch (props.type) {

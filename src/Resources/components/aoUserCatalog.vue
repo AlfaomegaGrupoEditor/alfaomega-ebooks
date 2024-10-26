@@ -7,14 +7,22 @@
     import {updateHistory} from '@/services/Helper';
     import {eventBus} from '@/events';
     import {getValue} from '@/services/Helper';
+    import {
+        TreeType,
+        TreeNodeType,
+        CatalogType,
+        BookType,
+        CategorySelectedType
+    } from '@/types';
 
-    const emit = defineEmits(['selected']);
+    const emit = defineEmits<{ (e: 'selected', payload: CategorySelectedType): void }>();
 
     const {t} = useI18n();
     const libraryStore = useLibraryStore();
     const catalog = computed(() => libraryStore.getCatalog);
+    let category:string = '';
 
-    const nodes = reactive({
+    const nodes = reactive<TreeType>({
         all_ebooks: {
             text: t('all_ebooks'),
             state: {
@@ -49,24 +57,31 @@
      * Opens the node and its parent nodes recursively.
      * @param {string} id
      */
-    const openNode = (id) => {
+    const openNode = (id: string) => {
         const parent = Object.keys(nodes).findIndex((key) => {
-            return nodes[key].children && nodes[key].children.includes(Number(id));
+            return nodes[key].children && nodes[key].children.includes(id);
         });
         if (parent != -1) {
             const parentId = Object.keys(nodes)[parent];
             openNode(parentId);
         }
-        nodes[id].state.opened = true;
+
+        nodes[id] = {
+            ...nodes[id],
+            state: {
+                opened: true,
+                checked: true
+            }
+        };
     };
 
     /**
      * Get the descendants of a node
      * @param id
      */
-    const nodeDescendants = (id): string => {
+    const nodeDescendants = (id: string): string => {
         let descendants = '';
-        const traverse = (node) => {
+        const traverse = (node: TreeNodeType) => {
             descendants += descendants === '' ? String(node.id) : `,${node.id}`;
             if (node.children && node.children.length > 0) {
                 node.children.forEach((child) => {
@@ -79,31 +94,32 @@
         return descendants;
     };
 
-    const handleClick = (node) => {
+    const handleClick = (node: TreeNodeType) => {
         // TODO: filter by accessType on purchased and samples
         let categories = null;
-        if (node.id !== 'all_ebooks'
+        if (node.id
+            && node.id !== 'all_ebooks'
             && node.id !== 'purchased'
             && node.id !== 'samples') {
-            categories = nodeDescendants(node.id);
-            eventBus.emit('catalogSelected', 'all_ebooks');
+            categories = nodeDescendants(node.id.toString());
+            eventBus.emit('catalogSelected', { catalog_id: 'all_ebooks' });
         } else {
-            eventBus.emit('catalogSelected', node.id);
+            eventBus.emit('catalogSelected', { catalog_id: node.id });
         }
 
-        updateHistory(null, node.id);
+        updateHistory(null, node.id?.toString());
         emit('selected', {categories: categories, text: node.text, id: node.id});
     };
 
-    const handleBlur = (node) => {
+    const handleBlur = (node: TreeNodeType) => {
         //setClass('.tree .focused', 'focused', false);
     };
 
-    const traverse = (node) => {
+    const traverse = (node: TreeNodeType) => {
         category += category === '' ? node.id : `, ${node.id}`;
         if (node.children) {
             node.children.forEach((child) => {
-                traverse(child);
+                traverse(nodes[child]);
             });
         }
     };
@@ -112,11 +128,17 @@
         libraryStore.dispatchLoadCatalog();
     });
 
-    watch(catalog, (newVal) => {
+    watch(catalog, (newVal: CatalogType) => {
         const urlParams = new URLSearchParams(window.location.search);
         const category = getValue(urlParams.get('category'), 'all_ebooks');
-        nodes['all_ebooks']['children'] = newVal.root;
-        nodes['all_ebooks']['state']['opened'] = true;
+        nodes['all_ebooks'] = {
+            ...nodes['all_ebooks'],
+            children: newVal.root,
+            state: {
+                opened: true,
+                checked: true
+            }
+        };
 
         Object.keys(newVal.tree).forEach((key) => {
             nodes[key] = {

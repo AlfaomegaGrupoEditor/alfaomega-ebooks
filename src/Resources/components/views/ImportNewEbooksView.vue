@@ -13,7 +13,7 @@ import {computed} from 'vue';
     const modalName = 'import-ebooks-modal';
     const {show} = useModal(modalName);
 
-    const handleImport = (action) => {
+    const handleImport = () => {
         processStore.dispatchImportNewEbooks();
         eventBus.emit('notification', {
             message: 'tasks_added',
@@ -26,7 +26,12 @@ import {computed} from 'vue';
     <div class="container">
         <div class="row mt-2">
             <ao-scheduled-actions
-                v-bind="importStatus"
+                :status="importStatus.status"
+                :completed="Number(importStatus.completed)"
+                :processing="Number(importStatus.processing)"
+                :pending="Number(importStatus.pending)"
+                :failed="Number(importStatus.failed)"
+                :excluded="Number(importStatus.excluded)"
                 action="import"
                 queue="import-new-ebooks"
                 @action="show"

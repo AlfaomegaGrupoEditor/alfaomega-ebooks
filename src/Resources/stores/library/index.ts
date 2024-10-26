@@ -29,7 +29,7 @@ export const useLibraryStore = defineStore('libraryStore', {
             },
             catalog: {
                 root: [],
-                items: [],
+                tree: {},
             }
         }
     ),

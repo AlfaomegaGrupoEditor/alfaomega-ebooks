@@ -1,14 +1,15 @@
 <script setup lang="ts">
     import {useI18n} from 'vue-i18n';
     import {ref, defineEmits, onMounted, computed, watch} from 'vue';
-    import {BooksFilterType, OrderType} from '@/types';
+    import {AccessType, BooksFilterType, BookType, OrderType} from '@/types';
     import {useLibraryStore} from '@/stores';
     import debounce from 'lodash/debounce';
     import {updateHistory, getValue} from '@/services/Helper';
     import {eventBus, useMittEvents} from '@/events';
     import {CatalogSelectedEvent} from '@/events/types';
 
-    const emit = defineEmits<{ filter: (payload: BooksFilterType) => void }>();
+    const emit = defineEmits<{ (e: 'filter', payload: BooksFilterType): void }>();
+
     const {t} = useI18n();
     useMittEvents(eventBus, {
         catalogSelected: (event: CatalogSelectedEvent) => catalogSelectedHandler(event)
@@ -17,7 +18,7 @@
     const libraryStore = useLibraryStore();
     const meta = computed(() => libraryStore.getMeta);
 
-    const accessType = ref(null);
+    const accessType = ref<AccessType|null>(null);
     const disableAccessType = ref(false);
     const accessTypeOptions = [
         {value: null, text: t('access_type')},
@@ -97,11 +98,11 @@
         handleFilter();
     };
 
-    const catalogSelectedHandler = (data: string) => {
-        checkAccessType(data);
+    const catalogSelectedHandler = (data: CatalogSelectedEvent) => {
+        checkAccessType(data.catalog_id as string);
     };
 
-    const checkAccessType = (category) => {
+    const checkAccessType = (category: string) => {
         if (category === 'all_ebooks') {
             accessType.value = null;
             disableAccessType.value = false;

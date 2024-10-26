@@ -1,5 +1,4 @@
 <script setup lang="ts">
-    import {ColorVariantType} from '@/types';
     import {ref, watch, computed} from 'vue';
     import _ from 'lodash';
     import {
@@ -8,11 +7,12 @@
         BiExclamationTriangle,
         BiInfoCircle
     } from "@/components/icons"
+    import {ColorVariant} from 'bootstrap-vue-next';
 
     const props = defineProps({
         active: Boolean,
         title: {type: String, default: ''},
-        variant: {type: String as () => ColorVariantType, default: 'success'},
+        variant: {type: String as () => ColorVariant, default: 'success'},
         content: {type: String, default: 'A message here'}
     });
 

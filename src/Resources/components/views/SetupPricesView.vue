@@ -5,6 +5,7 @@
     import {eventBus} from '@/events';
     import {useProcessStore} from '@/stores';
     import AoScheduledActions from '@/components/aoScheduledActions.vue';
+    import {SetupPriceFactorType} from '@/types';
 
     const {t} = useI18n();
     const processStore = useProcessStore();
@@ -13,8 +14,8 @@
     const modalName = 'setup-prices-modal';
     const {show, hide, modal} = useModal(modalName)
     const dialog = ref(false);
-    const value = ref<Number>(0);
-    const factor = ref<SetupPriceFactorType|''>('');
+    const value = ref<number>(0);
+    const factor = ref<SetupPriceFactorType>('undefined');
     const factorDescription = computed(() => {
         switch (factor.value) {
             case 'price_update':
@@ -29,7 +30,7 @@
                 return t('please_select_factor');
         }
     });
-    const validateSetup = computed(() => factor.value !== '' && value.value != 0);
+    const validateSetup = computed(() => factor.value !== 'undefined' && value.value != 0);
     const addOn = ref('*');
 
     const handleSetup = () => {
@@ -69,7 +70,11 @@
     <div class="container">
         <div class="row mt-2">
             <ao-scheduled-actions
-                v-bind="setupStatus"
+                :status="setupStatus.status"
+                :completed="Number(setupStatus.completed)"
+                :processing="Number(setupStatus.processing)"
+                :pending="Number(setupStatus.pending)"
+                :failed="Number(setupStatus.failed)"
                 action="setup"
                 queue="setup-prices"
                 @action="show"
@@ -107,7 +112,7 @@
                         v-model="factor"
                         class="form-select fs-8"
                 >
-                    <option selected value="">{{ $t('select_factor')}}</option>
+                    <option selected value="undefined">{{ $t('select_factor')}}</option>
                     <option value="price_update">{{ $t('price_update') }}</option>
                     <option value="page_count">{{ $t('page_count') }}</option>
                     <option value="fixed_number">{{ $t('fixed_number') }}</option>
@@ -125,7 +130,7 @@
                     <input type="number"
                            v-model="value"
                            class="form-control fs-8"
-                           :disabled="factor === 'price_update' || factor === ''"
+                           :disabled="factor === 'price_update' || factor === 'undefined'"
                            id="update-value"
                     >
                 </div>

@@ -41,7 +41,7 @@ export const useAppStore = defineStore('appStore', {
                 const response = await axios.post<Post>('/wp-json/wp/v2/posts', newData, {
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-WP-Nonce': wpApiSettings.nonce, // Assuming wpApiSettings is localized
+                        'X-WP-Nonce': window.wpApiSettings.nonce,
                     },
                 });
                 this.data.push(response.data);

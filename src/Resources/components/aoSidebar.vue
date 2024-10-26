@@ -6,7 +6,7 @@
 
     const props = defineProps({
         show: Boolean,
-        data: {type: Object as () => BookType, required: true}
+        data: {type: Object as () => BookType | null, required: true}
     });
 
     const {t} = useI18n();

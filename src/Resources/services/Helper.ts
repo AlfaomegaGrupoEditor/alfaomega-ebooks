@@ -1,4 +1,5 @@
-import {BooksFilterType, OrderType} from '@/types';
+import {AccessType, BooksFilterType, OrderType, ProcessType, StatusType} from '@/types';
+import {State} from '@/services/processes/types';
 
 /**
  * Check if a variable is empty
@@ -17,31 +18,31 @@ const empty = (variable: any): boolean =>
  * @param pCategory
  * @returns BooksFilterType
  */
-const updateHistory = (pFilter: BooksFilterType | null = null, pCategory: string | null = null): BooksFilterType =>
+const updateHistory = (pFilter: BooksFilterType | null = null, pCategory: string | null | undefined = null): void =>
 {
     const urlParams = new URLSearchParams(window.location.search);
-    let activeFilters: BooksFilterType;
+    let activeFilters: { [key: string]: any } = {};
 
     if (pFilter === null) {
         pFilter = {
             category: pCategory === null ? (
                 urlParams.get('category') || null
             ) : pCategory,
-            accessType: urlParams.get('accessType') || null,
-            accessStatus: urlParams.get('accessStatus') || null,
+            accessType: urlParams.get('accessType') as AccessType || null,
+            accessStatus: urlParams.get('accessStatus') as StatusType || null,
             searchKey: urlParams.get('searchKey') || null,
             order: {
                 'field': urlParams.get('order_by') || 'title',
                 'direction': urlParams.get('order_direction') || 'asc'
             } as OrderType,
-            perPage: urlParams.get('perPage') || 8,
-            currentPage: pCategory === null ? (urlParams.get('currentPage') || 1) : 1
+            perPage: Number(urlParams.get('perPage')) || 8,
+            currentPage: pCategory === null ? Number((urlParams.get('currentPage')) || 1) : 1
         };
     }
 
-    activeFilters = Object.keys(pFilter).reduce((acc, key) => {
-        if (pFilter[key] !== null && key !== 'order') {
-            acc[key] = pFilter[key];
+    activeFilters = Object.keys(pFilter).reduce((acc: { [key: string]: any }, key) => {
+        if (pFilter[key as keyof BooksFilterType] !== null && key !== 'order') {
+            acc[key] = pFilter[key as keyof BooksFilterType];
         }
         return acc;
     }, {});
@@ -55,7 +56,6 @@ const updateHistory = (pFilter: BooksFilterType | null = null, pCategory: string
     const queryString = new URLSearchParams(activeFilters).toString();
 
     window.history.pushState(null, '', `?${queryString}`);
-    return activeFilters;
 };
 
 /**
@@ -76,7 +76,7 @@ const isNull = (variable: any): boolean =>
  * @param variable
  * @param defaultValue
  */
-const getValue = (variable: any, defaultValue = null): any =>
+const getValue = (variable: any, defaultValue:any = null): any =>
 {
     return isNull(variable) ? defaultValue : variable;
 };
@@ -87,7 +87,7 @@ const getValue = (variable: any, defaultValue = null): any =>
  * @param className
  * @param add
  */
-const setClass = (cssQuery, className: string, add = true): void =>
+const setClass = (cssQuery: string, className: string, add = true): void =>
 {
     setTimeout(() => {
         const element = document.querySelector(cssQuery);
@@ -102,7 +102,7 @@ const setClass = (cssQuery, className: string, add = true): void =>
  * Get the process name
  * @param process
  */
-const getProcess = (process: ProcessType): ProcessType =>
+const getProcess = (process: ProcessType): string =>
 {
     switch (process) {
         case 'import-new-ebooks':

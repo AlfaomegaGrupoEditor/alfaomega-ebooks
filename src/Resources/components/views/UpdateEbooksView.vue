@@ -27,7 +27,11 @@
     <div class="container">
         <div class="row mt-2">
             <ao-scheduled-actions
-                v-bind="updateStatus"
+                :status="updateStatus.status"
+                :completed="Number(updateStatus.completed)"
+                :processing="Number(updateStatus.processing)"
+                :pending="Number(updateStatus.pending)"
+                :failed="Number(updateStatus.failed)"
                 action="update"
                 queue="update-ebooks"
                 @action="show"

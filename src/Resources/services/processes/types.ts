@@ -7,7 +7,7 @@ type State = {
   setupPrices: AsyncProcessType;
   processData: {
     actions: ProcessItem[];
-    meta: MetaType
+    meta: MetaType | null;
   }
   queueStatus: AsyncProcessType;
 }

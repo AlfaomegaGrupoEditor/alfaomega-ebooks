@@ -1,3 +1,5 @@
+import {ColorVariant} from 'bootstrap-vue-next';
+
 type ColorVariantType = 'primary'
     | 'secondary'
     | 'success'
@@ -43,6 +45,7 @@ type BooksFilterType = {
 };
 
 type BooksQueryType = {
+    category?: string | null;
     filter: BooksFilterType;
     userId?: string | null;
 }
@@ -59,7 +62,7 @@ type BookType = {
     accessType: AccessType;
     status: StatusType;
     addedAt: string;
-    validUntil?: string | null;
+    validUntil?: string;
     url: string;
 }
 
@@ -70,14 +73,14 @@ type CatalogItemsType = {
 };
 
 type CatalogType = {
-    root: number[];
-    items: CatalogItemsType[];
+    root: string[];
+    tree: TreeType;
 };
 
 type ToastType = {
     title?: string | null;
     content: string;
-    variant: ColorVariantType;
+    variant: ColorVariant;
 }
 
 type RedeemStatusType = {
@@ -132,16 +135,17 @@ type ProcessStatusType = 'idle'
     | 'processing'
     | 'failed'
     | 'completed'
+    | 'complete'
     | 'pending'
     | 'excluded';
 
 type AsyncProcessType = {
     status: ProcessStatusType;
-    completed: Number,
-    processing: Number,
-    pending: Number,
-    failed: Number,
-    excluded?: Number
+    completed: number,
+    processing: number,
+    pending: number,
+    failed: number,
+    excluded?: number
 }
 
 type ProcessDataType = {
@@ -172,6 +176,7 @@ type MetaType = {
     total: number;
     current_page: number;
     pages: number;
+    per_page?: number;
 }
 
 type QueueType = 'import-new-ebooks'
@@ -183,6 +188,30 @@ type SetupPriceFactorType = 'page_count'
     | 'fixed_number'
     | 'percent'
     | 'price_update'
+    | 'undefined';
+
+type TreeNodeStateType = {
+    opened: boolean;
+    checked: boolean;
+}
+
+type TreeNodeType = {
+    id?: string;
+    text?: string;
+    title?: string;
+    state?: TreeNodeStateType
+    children?: string[];
+}
+
+type TreeType = {
+    [key: string]: TreeNodeType;
+}
+
+type CategorySelectedType = {
+    categories: string | null | undefined;
+    text: string | null | undefined;
+    id: string | null | undefined;
+}
 
 export {
     AccessCodeInfoType,
@@ -209,5 +238,10 @@ export {
     SizeVariantType,
     StatusType,
     ToastType,
-    SetupPriceFactorType
+    SetupPriceFactorType,
+    TreeNodeStateType,
+    TreeNodeType,
+    TreeType,
+    CategorySelectedType,
+    RedeemStatusType
 };
