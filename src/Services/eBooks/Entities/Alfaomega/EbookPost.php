@@ -93,6 +93,7 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
                 $details = apply_filters( 'woocommerce_short_description', $post->post_excerpt );
             }
         }
+
         $this->meta = [
             'id'            => $postId,
             'title'         => $post->post_title,
