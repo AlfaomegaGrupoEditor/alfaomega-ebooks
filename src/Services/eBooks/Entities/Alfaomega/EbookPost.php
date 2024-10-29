@@ -93,21 +93,23 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
                 $details = apply_filters( 'woocommerce_short_description', $post->post_excerpt );
             }
         }
+
         $this->meta = [
-            'id'          => $postId,
-            'title'       => $post->post_title,
-            'author'      => $post->post_author,
-            'description' => $post->post_content,
-            'isbn'        => get_post_meta($postId, 'alfaomega_ebook_isbn', true),
-            'pdf_id'      => get_post_meta($postId, 'alfaomega_ebook_id', true),
-            'ebook_url'   => get_post_meta($postId, 'alfaomega_ebook_url', true),
-            'date'        => $post->post_date,
-            'product_sku' => $product_sku,
-            'product_id'  => $product_id,
-            'cover'       => get_post_meta($postId, 'alfaomega_ebook_cover', true), //$thumbnail_url,
-            'details'     => $details,
-            'categories'  => $categories ?? [],
-            'page_count'  => get_post_meta($postId, 'alfaomega_ebook_page_count', true),
+            'id'            => $postId,
+            'title'         => $post->post_title,
+            'author'        => $post->post_author,
+            'description'   => $post->post_content,
+            'isbn'          => get_post_meta($postId, 'alfaomega_ebook_isbn', true),
+            'pdf_id'        => get_post_meta($postId, 'alfaomega_ebook_id', true),
+            'ebook_url'     => get_post_meta($postId, 'alfaomega_ebook_url', true),
+            'date'          => $post->post_date,
+            'product_sku'   => $product_sku,
+            'product_id'    => $product_id,
+            'cover'         => get_post_meta($postId, 'alfaomega_ebook_cover', true), //$thumbnail_url,
+            'details'       => $details,
+            'categories'    => $categories ?? [],
+            'page_count'    => get_post_meta($postId, 'alfaomega_ebook_page_count', true),
+            'content_table' => get_post_meta($postId, 'alfaomega_ebook_content_table', true),
         ];
 
         return $this->meta;
@@ -248,36 +250,48 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
                 'old'     => get_post_meta($postId, 'alfaomega_ebook_isbn', true),
                 'new'     => $data['isbn'],
                 'default' => '',
+                'required' => true,
             ],
             'alfaomega_ebook_id'     => [
                 'old'     => get_post_meta($postId, 'alfaomega_ebook_id', true),
                 'new'     => ! empty($data['adobe']) ? $data['adobe'] : ($data['pdf_id'] ?? ''),
                 'default' => '',
+                'required' => true,
             ],
             'alfaomega_ebook_url'    => [
                 'old'     => get_post_meta($postId, 'alfaomega_ebook_url', true),
                 'new'     => ! empty($data['html_ebook']) ? $data['html_ebook'] : ($data['ebook_url'] ?? ''),
                 'default' => '',
+                'required' => false,
             ],
             'alfaomega_ebook_product_sku' => [
                 'old'     => get_post_meta($postId, 'alfaomega_ebook_product_sku', true),
                 'new'     => ! empty($data['printed_isbn']) ?  $data['printed_isbn'] : 'UNKNOWN',
                 'default' => '',
+                'required' => false,
             ],
             'alfaomega_ebook_cover' => [
                 'old'     => get_post_meta($postId, 'alfaomega_ebook_cover', true),
                 'new'     => ! empty($data['cover']) ?  $data['cover'] : '',
                 'default' => '',
+                'required' => false,
             ],
             'alfaomega_ebook_page_count' => [
                 'old'     => get_post_meta($postId, 'alfaomega_ebook_page_count', true),
                 'new'     => ! empty($data['page_count']) ?  $data['page_count'] : 0,
                 'default' => 0,
+                'required' => true,
+            ],
+            'alfaomega_ebook_content_table' => [
+                'old'     => get_post_meta($postId, 'alfaomega_ebook_content_table', true),
+                'new'     => ! empty($data['content_table']) ?  $data['content_table'] : '',
+                'default' => '',
+                'required' => false,
             ],
         ];
 
         foreach ($fields as $field => $value) {
-            if (empty($value['new'])) {
+            if (empty($value['new']) && $value['required']) {
                 throw new Exception("Field value '$field' is required.");
             }
         }

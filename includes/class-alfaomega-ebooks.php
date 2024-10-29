@@ -276,6 +276,8 @@ class Alfaomega_Ebooks {
         $this->loader->add_action( 'woocommerce_order_status_completed', $plugin_public, 'on_order_complete' );
         $this->loader->add_shortcode('my_ao_ebooks', $plugin_public, 'my_ao_ebook_shortcode');
         $this->loader->add_filter('script_loader_tag', $plugin_public, 'alfaomega_add_type_attribute', 10, 3);
+
+        $this->loader->add_filter('woocommerce_product_tabs', $plugin_public, 'alfaomega_product_tabs');
     }
 
 	/**

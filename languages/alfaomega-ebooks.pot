@@ -11,7 +11,7 @@ msgstr ""
 "Livan Rodriguez "
 "<livan2r@gmail.com>\n"
 "POT-Creation-Date: "
-"2024-10-23 21:10-0400\n"
+"2024-10-29 15:09-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Livan "
 "Rodriguez <livan2r@gmail."
@@ -53,40 +53,40 @@ msgstr ""
 "SearchPathExcluded-0: "
 "src/Resources\n"
 
-#: admin/class-alfaomega-ebooks-admin.php:146
+#: admin/class-alfaomega-ebooks-admin.php:155
 msgid "Update meta"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:161
-#: admin/class-alfaomega-ebooks-admin.php:242
+#: admin/class-alfaomega-ebooks-admin.php:170
+#: admin/class-alfaomega-ebooks-admin.php:251
 msgid "Link eBook"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:176
+#: admin/class-alfaomega-ebooks-admin.php:185
 msgid ""
 "Update eBooks meta "
 "failed!"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:180
+#: admin/class-alfaomega-ebooks-admin.php:189
 #, php-format
 msgid ""
 "%u eBooks meta updated "
 "successfully"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:187
+#: admin/class-alfaomega-ebooks-admin.php:196
 #: src/Services/eBooks/Process/ImportEbook.php:172
 msgid "Product not found"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:190
+#: admin/class-alfaomega-ebooks-admin.php:199
 msgid ""
 "Showing the related "
 "eBook product"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:197
+#: admin/class-alfaomega-ebooks-admin.php:206
 msgid ""
 "Link eBook failed! "
 "Please check the product "
@@ -94,44 +94,44 @@ msgid ""
 "product price."
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:201
+#: admin/class-alfaomega-ebooks-admin.php:210
 #, php-format
 msgid ""
 "%u ebooks linked "
 "successfully"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:208
+#: admin/class-alfaomega-ebooks-admin.php:217
 msgid ""
 "Unlink eBook failed!"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:212
+#: admin/class-alfaomega-ebooks-admin.php:221
 msgid ""
 "Ebook unlinked "
 "successfully"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:248
+#: admin/class-alfaomega-ebooks-admin.php:257
 msgid "Unlink eBook"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:262
+#: admin/class-alfaomega-ebooks-admin.php:271
 msgid "Update"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:266
+#: admin/class-alfaomega-ebooks-admin.php:275
 msgid "Product"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:288
+#: admin/class-alfaomega-ebooks-admin.php:297
 msgid "eBook ISBN"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:321
-#: admin/class-alfaomega-ebooks-admin.php:353
-#: admin/class-alfaomega-ebooks-admin.php:365
-#: admin/class-alfaomega-ebooks-admin.php:366
+#: admin/class-alfaomega-ebooks-admin.php:330
+#: admin/class-alfaomega-ebooks-admin.php:362
+#: admin/class-alfaomega-ebooks-admin.php:374
+#: admin/class-alfaomega-ebooks-admin.php:375
 #: post_types/class-alfaomega-ebooks-access-post-type.php:213
 #: post_types/class-alfaomega-ebooks-post-type.php:197
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:251
@@ -139,32 +139,32 @@ msgstr ""
 msgid "eBook"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:412
+#: admin/class-alfaomega-ebooks-admin.php:421
 msgid "Filtrar por eBook"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:413
+#: admin/class-alfaomega-ebooks-admin.php:422
 msgid "Producto simple"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:414
+#: admin/class-alfaomega-ebooks-admin.php:423
 msgid "Todos los eBooks"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:415
+#: admin/class-alfaomega-ebooks-admin.php:424
 msgid ""
 "Vinculado correctamente"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:416
+#: admin/class-alfaomega-ebooks-admin.php:425
 msgid "Desvinculado"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:417
+#: admin/class-alfaomega-ebooks-admin.php:426
 msgid "Desactivado"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:628
+#: admin/class-alfaomega-ebooks-admin.php:637
 msgid "My eBooks"
 msgstr ""
 
@@ -173,8 +173,8 @@ msgid "Alfaomega Ebooks"
 msgstr ""
 
 #: admin/class-alfaomega-ebooks-wc-settings.php:42
-#: includes/class-alfaomega-ebooks.php:413
-#: includes/class-alfaomega-ebooks.php:414
+#: includes/class-alfaomega-ebooks.php:415
+#: includes/class-alfaomega-ebooks.php:416
 msgid "Settings"
 msgstr ""
 
@@ -431,7 +431,7 @@ msgstr ""
 
 #: includes/class-alfaomega-ebooks-service.php:555
 #: src/Services/eBooks/Entities/Alfaomega/AccessPost.php:168
-#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:193
+#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:195
 #: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:218
 msgid ""
 "Unable to create post."
@@ -586,52 +586,52 @@ msgid ""
 "left empty"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:333
+#: includes/class-alfaomega-ebooks.php:335
 #: post_types/class-alfaomega-ebooks-post-type.php:40
 msgid "AO eBooks"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:343
-#: includes/class-alfaomega-ebooks.php:344
+#: includes/class-alfaomega-ebooks.php:345
+#: includes/class-alfaomega-ebooks.php:346
 msgid "Dashboard"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:353
+#: includes/class-alfaomega-ebooks.php:355
 msgid ""
 "All Alfaomega eBooks"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:354
+#: includes/class-alfaomega-ebooks.php:356
 msgid "List"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:363
+#: includes/class-alfaomega-ebooks.php:365
 msgid "eBook Access"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:364
+#: includes/class-alfaomega-ebooks.php:366
 msgid "Access List"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:373
+#: includes/class-alfaomega-ebooks.php:375
 msgid "eBook Sample"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:374
+#: includes/class-alfaomega-ebooks.php:376
 msgid "Sample List"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:383
+#: includes/class-alfaomega-ebooks.php:385
 #: views/alfaomega_ebook_home_page.php:18
 #: views/alfaomega_ebook_import_page.php:67
 msgid "Import eBooks"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:384
+#: includes/class-alfaomega-ebooks.php:386
 msgid "Import"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:393
+#: includes/class-alfaomega-ebooks.php:395
 #: views/alfaomega_ebook_home_page.php:24
 #: views/alfaomega_ebook_home_page.php:30
 #: views/alfaomega_ebook_refresh_page.php:5
@@ -639,11 +639,11 @@ msgstr ""
 msgid "Refresh eBooks"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:394
+#: includes/class-alfaomega-ebooks.php:396
 msgid "Refresh"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:403
+#: includes/class-alfaomega-ebooks.php:405
 #: views/alfaomega_ebook_home_page.php:36
 #: views/alfaomega_ebook_home_page.php:42
 #: views/alfaomega_ebook_link_page.php:5
@@ -651,11 +651,11 @@ msgstr ""
 msgid "Link Products"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:404
+#: includes/class-alfaomega-ebooks.php:406
 msgid "Link"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:438
+#: includes/class-alfaomega-ebooks.php:440
 msgid "Settings Saved"
 msgstr ""
 
@@ -1190,7 +1190,7 @@ msgstr ""
 #: post_types/class-alfaomega-ebooks-access-post-type.php:85
 #: views/alfaomega_ebook_access_metabox.php:108
 #: views/alfaomega_ebook_sample_metabox.php:108
-#: website/class-alfaomega-ebooks-public.php:195
+#: website/class-alfaomega-ebooks-public.php:196
 msgid "Read"
 msgstr ""
 
@@ -1905,15 +1905,15 @@ msgstr ""
 msgid "Ebook not found."
 msgstr ""
 
-#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:175
+#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:177
 msgid ""
 "Printed ISBN is required."
 msgstr ""
 
-#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:433
-#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:462
-#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:493
-#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:531
+#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:447
+#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:476
+#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:507
+#: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:545
 msgid ""
 "AO_STORE_UUID is not "
 "defined!"
@@ -2790,10 +2790,15 @@ msgid ""
 "Unknown action requested."
 msgstr ""
 
-#: website/class-alfaomega-ebooks-public.php:179
+#: website/class-alfaomega-ebooks-public.php:180
 msgid "Read&nbsp;Online"
 msgstr ""
 
-#: website/class-alfaomega-ebooks-public.php:197
+#: website/class-alfaomega-ebooks-public.php:198
 msgid "Not available"
+msgstr ""
+
+#: website/class-alfaomega-ebooks-public.php:279
+#: website/class-alfaomega-ebooks-public.php:300
+msgid "Content table"
 msgstr ""

@@ -258,4 +258,47 @@ class Alfaomega_Ebooks_Public {
 
         return ob_get_clean();
     }
+
+    /**
+     * Add the content table tab to the product page
+     * @param $tabs
+     *
+     * @return array
+     * @throws \Exception
+     */
+    function alfaomega_product_tabs($tabs): array
+    {
+        global $product;
+        $sku = $product->get_sku();
+
+        $ebookPost = Service::make()->ebooks()
+            ->ebookPost()
+            ->search($sku, 'alfaomega_ebook_product_sku');
+        if (!empty($ebookPost)) {
+            $tabs['content_table'] = array(
+                'title'    => __( 'Content table', 'alfaomega-ebooks' ),
+                'priority' => 50,
+                'callback' => function() use ($ebookPost){
+                    $contentTable = 'https://alfaomega-content-tables.nyc3.cdn.digitaloceanspaces.com/' . $ebookPost['content_table'];
+                    $this->content_table_tab_content('content_table', $contentTable);
+                }
+            );
+        }
+
+        return $tabs;
+    }
+
+    /**
+     * Display the content table tab content
+     *
+     * @param string $key
+     * @param string $content
+     */
+    function content_table_tab_content($key, $content): void
+    {
+        if ($key === 'content_table') {
+            echo '<h3 class="fusion-woocommerce-tab-title">' . esc_html__('Content table', 'alfaomega-ebooks') . '</h3>';
+            echo '<embed src="' . esc_url($content) . '" type="application/pdf" width="100%" height="800px" />';
+        }
+    }
 }
