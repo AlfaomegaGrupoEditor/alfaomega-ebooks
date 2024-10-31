@@ -226,10 +226,25 @@ class Alfaomega_Ebooks_Public {
      * @return array The modified arguments.
      */
     public function dropdown_variation_attribute_options_html(string $html): string {
+        global $product;
+
         $printed = '<select id="pa_book-format" class="" name="attribute_pa_book-format" data-attribute_name="attribute_pa_book-format" data-show_option_none="yes"><option value="">Elige una opción</option><option value="impreso" >Impreso</option></select>';
         $printedSelected = '<select id="pa_book-format" class="" name="attribute_pa_book-format" data-attribute_name="attribute_pa_book-format" data-show_option_none="yes"><option value="">Elige una opción</option><option value="impreso" selected="selected">Impreso</option></select>';
+        if ($html === $printed) {
+            return $printedSelected;
+        }
 
-        return $html === $printed ? $printedSelected : $html;
+        $outOfStock = !wc_get_product($product->get_id())->is_in_stock();
+        if ($outOfStock) {
+            $html = str_replace("selected='selected'", '', $html);
+            $html = str_replace(
+                'value="digital"',
+                'selected="selected" value="digital"',
+                $html
+            );
+        }
+
+        return $html;
     }
 
     /**
@@ -300,5 +315,22 @@ class Alfaomega_Ebooks_Public {
             echo '<h3 class="fusion-woocommerce-tab-title">' . esc_html__('Content table', 'alfaomega-ebooks') . '</h3>';
             echo '<embed src="' . esc_url($content) . '" type="application/pdf" width="100%" height="800px" />';
         }
+    }
+
+    /**
+     * Deactivate the variation if it is out of stock
+     *
+     * @param bool $active
+     * @param WC_Product_Variation $variation
+     *
+     * @return bool
+     */
+    function deactivate_variation_if_out_of_stock($active, $variation): bool
+    {
+        // Check if the variation is out of stock
+        if (!$variation->is_in_stock() && $variation->get_attribute('pa_book-format') !== 'Digital') {
+            return false;
+        }
+        return $active;
     }
 }
