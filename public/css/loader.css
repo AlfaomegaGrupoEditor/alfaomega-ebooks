@@ -53,3 +53,12 @@ div.ao-container .message {
     color: #D4230F;
     font-family: Arial, sans-serif;
 }
+
+.variations td.label label{
+    font-weight: bold;
+}
+
+.variations td.label label:after {
+    font-weight: bold;
+    content: ' :';
+}
