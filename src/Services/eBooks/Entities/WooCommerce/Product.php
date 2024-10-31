@@ -250,7 +250,8 @@ class Product extends WooAbstractEntity implements ProductEntity
             }
         }
 
-        wc_delete_product_transients($data['id']);
+        $product->save();
+        //wc_delete_product_transients($data['id']);
         return $data['id'];
     }
 
