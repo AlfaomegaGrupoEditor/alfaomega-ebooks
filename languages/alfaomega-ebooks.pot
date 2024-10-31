@@ -11,7 +11,7 @@ msgstr ""
 "Livan Rodriguez "
 "<livan2r@gmail.com>\n"
 "POT-Creation-Date: "
-"2024-10-29 15:09-0400\n"
+"2024-10-31 08:00-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Livan "
 "Rodriguez <livan2r@gmail."
@@ -173,8 +173,8 @@ msgid "Alfaomega Ebooks"
 msgstr ""
 
 #: admin/class-alfaomega-ebooks-wc-settings.php:42
-#: includes/class-alfaomega-ebooks.php:415
-#: includes/class-alfaomega-ebooks.php:416
+#: includes/class-alfaomega-ebooks.php:425
+#: includes/class-alfaomega-ebooks.php:426
 msgid "Settings"
 msgstr ""
 
@@ -655,7 +655,15 @@ msgstr ""
 msgid "Link"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:440
+#: includes/class-alfaomega-ebooks.php:415
+msgid "Setup Prices"
+msgstr ""
+
+#: includes/class-alfaomega-ebooks.php:416
+msgid "Setup prices"
+msgstr ""
+
+#: includes/class-alfaomega-ebooks.php:450
 msgid "Settings Saved"
 msgstr ""
 

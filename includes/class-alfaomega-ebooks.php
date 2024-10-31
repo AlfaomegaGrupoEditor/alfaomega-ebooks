@@ -412,6 +412,16 @@ class Alfaomega_Ebooks {
 
         add_submenu_page(
             'alfaomega_ebooks_admin',
+            esc_html__('Setup Prices', 'alfaomega-ebooks'),
+            esc_html__('Setup prices', 'alfaomega-ebooks'),
+            'install_plugins',
+            'alfaomega_setup_prices',
+            [$this, 'setupPrices'],
+            null
+        );
+
+        add_submenu_page(
+            'alfaomega_ebooks_admin',
             esc_html__('Settings', 'alfaomega-ebooks'),
             esc_html__('Settings', 'alfaomega-ebooks'),
             'install_plugins',
@@ -485,7 +495,8 @@ class Alfaomega_Ebooks {
 
         settings_errors('alfaomega_ebook_options');
 
-        require(ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_import_page.php');
+        wp_redirect(admin_url('admin.php?page=alfaomega_ebooks_admin#/import_ebooks'));
+        exit;
     }
 
     /**
@@ -505,7 +516,8 @@ class Alfaomega_Ebooks {
 
         settings_errors('alfaomega_ebook_options');
 
-        require(ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_refresh_page.php');
+        wp_redirect(admin_url('admin.php?page=alfaomega_ebooks_admin#/update_ebooks'));
+        exit;
     }
 
     /**
@@ -525,7 +537,29 @@ class Alfaomega_Ebooks {
 
         settings_errors('alfaomega_ebook_options');
 
-        require(ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_link_page.php');
+        wp_redirect(admin_url('admin.php?page=alfaomega_ebooks_admin#/link_products'));
+        exit;
+    }
+
+    /**
+     * Renders the setup prices page of the plugin in the WordPress admin dashboard.
+     * This method checks if the current user has the 'install_plugins' capability. If not, it returns immediately.
+     * If the user has the necessary capability, it displays any settings errors and then includes the PHP file for the
+     * setup prices page view.
+     *
+     * @since    1.0.0
+     * @access   public
+     */
+    public function setupPrices(): void
+    {
+        if (! current_user_can('install_plugins')) {
+            return;
+        }
+
+        settings_errors('alfaomega_ebook_options');
+
+        wp_redirect(admin_url('admin.php?page=alfaomega_ebooks_admin#/setup_prices'));
+        exit;
     }
 
     /**

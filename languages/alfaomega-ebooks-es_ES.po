@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank WordPress Pot v1.0.0\n"
 "Report-Msgid-Bugs-To: Livan Rodriguez <livan2r@gmail.com>\n"
-"POT-Creation-Date: 2024-10-29 15:09-0400\n"
-"PO-Revision-Date: 2024-10-29 15:10-0400\n"
+"POT-Creation-Date: 2024-10-31 08:00-0400\n"
+"PO-Revision-Date: 2024-10-31 08:02-0400\n"
 "Last-Translator: Alfaomega México ADMIN\n"
 "Language-Team: Español\n"
 "Language: es_ES\n"
@@ -139,8 +139,8 @@ msgid "Alfaomega Ebooks"
 msgstr "Alfaomega Ebooks"
 
 #: admin/class-alfaomega-ebooks-wc-settings.php:42
-#: includes/class-alfaomega-ebooks.php:415
-#: includes/class-alfaomega-ebooks.php:416
+#: includes/class-alfaomega-ebooks.php:425
+#: includes/class-alfaomega-ebooks.php:426
 msgid "Settings"
 msgstr "Ajustes"
 
@@ -570,7 +570,15 @@ msgstr "Vincular Productos"
 msgid "Link"
 msgstr "Vincular productos"
 
-#: includes/class-alfaomega-ebooks.php:440
+#: includes/class-alfaomega-ebooks.php:415
+msgid "Setup Prices"
+msgstr "Configurar Precios"
+
+#: includes/class-alfaomega-ebooks.php:416
+msgid "Setup prices"
+msgstr "Configurar precios"
+
+#: includes/class-alfaomega-ebooks.php:450
 msgid "Settings Saved"
 msgstr "Configuraciones Salvadas"
 
