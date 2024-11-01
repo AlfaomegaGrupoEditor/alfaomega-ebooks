@@ -333,4 +333,40 @@ class Alfaomega_Ebooks_Public {
         }
         return $active;
     }
+
+    /**
+     * Enable in-stock variations only
+     *
+     * @param bool $purchasable
+     * @param WC_Product_Variation $variation
+     *
+     * @return bool
+     */
+    function enable_in_stock_only_variations($purchasable, $variation) {
+        if (!$variation->is_in_stock()) {
+            return false; // Disable out-of-stock variations
+        }
+        return $purchasable;
+    }
+
+    /**
+     * Enable in-stock variations only
+     *
+     * @param bool $is_in_stock
+     * @param WC_Product $product
+     *
+     * @return bool
+     */
+    function in_stock_if_any_variation_available($is_in_stock, $product) {
+        if ($product->is_type('variable')) {
+            foreach ($product->get_children() as $variation_id) {
+                $variation = wc_get_product($variation_id);
+                if ($variation->is_in_stock()) {
+                    return true; // If any variation is in stock, treat the product as in stock
+                }
+            }
+            return false; // No variations are in stock, mark as out of stock
+        }
+        return $is_in_stock;
+    }
 }
