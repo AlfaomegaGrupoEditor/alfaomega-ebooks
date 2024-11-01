@@ -273,8 +273,6 @@ class Alfaomega_Ebooks {
         $this->loader->add_filter('woocommerce_dropdown_variation_attribute_options_args', $plugin_public, 'product_get_attributes', 10, 2);
         $this->loader->add_filter('woocommerce_dropdown_variation_attribute_options_html', $plugin_public, 'dropdown_variation_attribute_options_html', 10, 2);
         $this->loader->add_filter('woocommerce_variation_is_active', $plugin_public,'deactivate_variation_if_out_of_stock', 10, 2);
-        $this->loader->add_filter('woocommerce_variation_is_purchasable', $plugin_public, 'enable_in_stock_only_variations', 10, 2);
-        $this->loader->add_filter('woocommerce_product_is_in_stock', $plugin_public, 'in_stock_if_any_variation_available', 10, 2);
 
         $this->loader->add_action( 'woocommerce_order_status_completed', $plugin_public, 'on_order_complete' );
         $this->loader->add_shortcode('my_ao_ebooks', $plugin_public, 'my_ao_ebook_shortcode');
