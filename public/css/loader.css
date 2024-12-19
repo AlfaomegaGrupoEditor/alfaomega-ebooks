@@ -1,0 +1,64 @@
+div.ao-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px;
+}
+
+div.ao-container .card {
+    background-color: white;
+    width: 350px;
+    padding: 20px;
+    border: none;
+    text-align: center;
+    margin-top: 40px;
+    font-size: .8rem;
+}
+
+div.ao-container .card img {
+    width: 130px;
+}
+
+div.ao-container .card h1 {
+    font-size: 1rem;
+    margin: 10px 0;
+    font-family: Arial, sans-serif;
+}
+
+div.ao-container .card h2 {
+    font-size: .9rem;
+    margin: 5px 0;
+    color: gray;
+    font-family: Arial, sans-serif;
+}
+
+div.ao-container .loader {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #D4230F;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+div.ao-container .message {
+    display: none;
+    margin-top: 20px;
+    color: #D4230F;
+    font-family: Arial, sans-serif;
+}
+
+.variations td.label label{
+    font-weight: bold;
+}
+
+.variations td.label label:after {
+    font-weight: bold;
+    content: ' :';
+}

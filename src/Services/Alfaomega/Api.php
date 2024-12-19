@@ -139,7 +139,7 @@ class Api
     public function getHeaders(): ?array
     {
         $auth = $this->getAuth();
-        if ($auth) {
+        if (!empty($auth->access_token)) {
             return [
                 'Authorization' => 'Bearer ' . $auth->access_token,
                 'Accept'        => 'application/json',
@@ -147,7 +147,7 @@ class Api
                 'Cache-Control' => 'no-cache',
             ];
         } else {
-            return null;
+            throw new \Exception(esc_html__('Authentication error', 'alfaomega-ebooks') . "- " . $auth);
         }
     }
 
@@ -175,7 +175,11 @@ class Api
             $uri = $this->getApiUrl($uri);
             $headers = $this->getHeaders();
             if ($headers) {
-                $args = ['headers' => $headers, 'timeout' => 60];
+                $args = [
+                    'headers'   => $headers,
+                    'timeout'   => 60,
+                    'sslverify' => false,
+                ];
                 switch ($method) {
                     case 'post':
                         $args['body'] = json_encode($data);

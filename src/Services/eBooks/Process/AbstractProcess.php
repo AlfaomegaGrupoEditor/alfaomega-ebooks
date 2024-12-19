@@ -24,6 +24,7 @@ abstract class AbstractProcess implements ProcessContract
     protected bool $updateProduct = true;
     protected ?EbookPostEntity $ebookEntity = null;
     protected int $chunkSize = 25;
+    protected string $entityId = 'id';
 
     /**
      * AbstractProcess constructor.
@@ -48,9 +49,14 @@ abstract class AbstractProcess implements ProcessContract
     public function single(array $eBook, bool $throwError=false, int $postId=null): int
     {
         try {
+            if (!empty($eBook['error'])) {
+                throw new \Exception($eBook['error']);
+            }
+
             $post = $this->getEbookEntity()
                 ->updateOrCreate($postId, $eBook);
             if (empty($post)) {
+                $this->getEbookEntity()->updateImported($eBook['isbn'], 'failed', errorCode: 'ebook_post_update_failed');
                 throw new \Exception('Error updating or creating the eBook post.');
             }
 
@@ -168,4 +174,30 @@ abstract class AbstractProcess implements ProcessContract
      * @return array|null
      */
     abstract protected function queueProcess(array $entities): ?array;
+
+    /**
+     * Get the payload for the given entity ID.
+     *
+     * This method takes an entity ID as input and returns the payload for that entity. The specific implementation of
+     * this method depends on the class that implements this interface.
+     *
+     * @param int|string $entityId The entity ID.
+     * @param array|null $data The initial payload data
+     *
+     * @return array|null The payload for the entity.
+     */
+    public function getPayload(int|string $entityId, array $data = null): ?array
+    {
+        return null;
+    }
+
+    /**
+     * Get the entity ID.
+     *
+     * @return string
+     */
+    public function getEntityId(): string
+    {
+        return $this->entityId;
+    }
 }

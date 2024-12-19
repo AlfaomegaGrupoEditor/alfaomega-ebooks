@@ -2,6 +2,7 @@
 
 namespace tests\features;
 
+use AlfaomegaEbooks\Http\RouteManager;
 use AlfaomegaEbooks\Services\eBooks\Service;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\WordpressTest;
@@ -101,4 +102,79 @@ class AlfaomegaEbookTest extends WordpressTest
             ],*/
         ];
     }
+
+    /**
+     * Test search ebooks by query
+     *
+     * @param string $query
+     * @param array $expected
+     *
+     * @return void
+     * @throws \Exception
+     */
+    #[DataProvider('searchProvider')]
+    public function testSearchEbooks(string $query = '', array $expected = []): void
+    {
+        $result = Service::make()
+            ->ebooks()
+            ->search($query);
+
+        $this->assertNotNull($result);
+        $this->assertCount($expected['count'], $result['items']);
+        $this->assertEquals($expected['count'], $result['total']);
+    }
+
+    /**
+     * Test search ebooks by isbn only
+     *
+     * @param string $isbn
+     * @param array $expected
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function testSearchEbookByIsbn(string $isbn = '9786076222515', array $expected = []): void
+    {
+        $result = Service::make()
+            ->ebooks()
+            ->ebookPost()
+            ->search($isbn);
+
+        $this->assertNotNull($result);
+    }
+    
+    /**
+     * Data provider for test_product_attributes
+     * @return array[]
+     */
+    public static function searchProvider(): array
+    {
+        return [
+            'python' => [
+                'query'    => 'python',
+                'expected' => ['count' => 0],
+            ],
+            'scada' => [
+                'query'    => 'scada',
+                'expected' => ['count' => 1],
+            ],
+            'practicas' => [
+                'query'    => 'practicas',
+                'expected' => ['count' => 2],
+            ],
+            '9786076224632' => [
+                'query'    => '9786076224632',
+                'expected' => ['count' => 1],
+            ],
+            '97860762' => [
+                'query'    => '97860762',
+                'expected' => ['count' => 10],
+            ],
+            'empty' => [
+                'query'    => '',
+                'expected' => ['count' => 16],
+            ],
+        ];
+    }
+    
 }

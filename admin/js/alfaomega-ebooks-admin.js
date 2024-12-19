@@ -104,6 +104,9 @@
 
 		// Initiate queue checking process
 		checkQueue();
+
+		// Do some nasty hacks to Carbon Fields while the plugin is not fixed
+		carbonFieldsHacks();
 	});
 
 	// Define interval variable
@@ -203,5 +206,13 @@
 
 			}, 6000);
 		}
+	}
+
+	/**
+	 * Do some nasty hacks to Carbon Fields while the plugin is not fixed
+	 */
+	function carbonFieldsHacks() {
+		// disable checkbox
+		$('div.cf-readonly-view .cf-checkbox__input').prop('disabled', true);
 	}
 })( jQuery );

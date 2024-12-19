@@ -1,6 +1,7 @@
 <?php
 
 use AlfaomegaEbooks\Http\RouteManager;
+use AlfaomegaEbooks\Services\eBooks\Emails\AlfaomegaEbooksSampleEmail;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -53,7 +54,15 @@ class Alfaomega_Ebooks_Admin {
 	 */
 	public function enqueue_styles() {
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/alfaomega-ebooks-admin.css', array(), $this->version, 'all' );
+		//wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/alfaomega-ebooks-admin.css', array(), $this->version, 'all' );
+
+        wp_enqueue_style(
+            $this->plugin_name,
+            ALFAOMEGA_EBOOKS_URL . 'public/css/bundle.css',
+            [],
+            $this->version,
+            'all'
+        );
 
 	}
 
@@ -64,8 +73,45 @@ class Alfaomega_Ebooks_Admin {
 	 */
 	public function enqueue_scripts() {
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/alfaomega-ebooks-admin.js', array( 'jquery' ), $this->version, false );
+		//wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/alfaomega-ebooks-admin.js', array( 'jquery' ), $this->version, false );
 
+        $plugin_name = $this->plugin_name;
+        if (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) {
+            // development
+            $plugin_name .= "-dev";
+            wp_enqueue_script(
+                'vite-client',
+                'http://localhost:3000/@vite/client',
+                [],
+                null,
+                true
+            );
+            wp_enqueue_script(
+                $plugin_name,
+                'http://localhost:3000/Resources/main.ts',
+                [],
+                null,
+                true
+            );
+        } else {
+            // production
+            wp_enqueue_script(
+                $plugin_name,
+                ALFAOMEGA_EBOOKS_URL . 'public/js/bundle.js',
+                [],
+                $this->version,
+                true
+            );
+        }
+
+        wp_localize_script($plugin_name, 'wpApiSettings', [
+            'root'   => esc_url_raw(site_url()), // Root URL for the API
+            //'root'   => esc_url_raw(rest_url()), // Root URL for the API
+            'nonce'  => wp_create_nonce('wp_rest'), // Create a nonce for secure API calls
+            'covers' => ALFAOMEGA_COVER_PATH,
+            'migration' => defined('AO_SHOW_MIGRATION_ALERT') && AO_SHOW_MIGRATION_ALERT && AO_OLD_STORE,
+            'oldStore' => defined('AO_OLD_STORE') ? AO_OLD_STORE : null
+        ]);
 	}
 
     /**
@@ -505,5 +551,143 @@ class Alfaomega_Ebooks_Admin {
      */
     function action_save_product_meta( $product ) {
         $product->update_meta_data( 'alfaomega_ebooks_ebook_isbn', $_POST['alfaomega_ebooks_ebook_isbn'] ?? '' );
+    }
+
+    /**
+     * Boot the Carbon Fields framework.
+     * This method initializes the Carbon Fields framework, which is used for creating custom fields
+     * and meta boxes in the WordPress admin area.
+     *
+     * @since 1.0.0
+     */
+    public function boot_carbon_fields_framework(): void
+    {
+        \Carbon_Fields\Carbon_Fields::boot();
+    }
+
+    /**
+     * To avoid the jQuery Migrate message in the console
+     * @param $scripts
+     *
+     * @return void
+     */
+    function remove_jquery_Migrate($scripts)
+    {
+        if ( /*! is_admin() &&*/ isset( $scripts->registered['jquery'] ) ) {
+            $scripts->registered['jquery']->deps = array_diff( $scripts->registered['jquery']->deps, array( 'jquery-migrate' ) );
+        }
+    }
+
+    /**
+     * Redirect to sample post type after generating a new sample
+     * @param $location
+     *
+     * @return void
+     */
+    function redirect_custom_post_location( $location ): string
+    {
+        if ( get_post_type() === ALFAOMEGA_EBOOKS_SAMPLE_POST_TYPE &&
+             (isset( $_POST['save'] ) || isset( $_POST['publish'] ))) {
+
+                return admin_url( "edit.php?post_type=" . get_post_type() );
+        }
+
+        return $location;
+    }
+
+    /**
+     * Add custom email class to WooCommerce
+     * @param $email_classes
+     *
+     * @return void
+     */
+    function add_sample_woocommerce_email_class($email_classes) {
+        $email_classes['Alfaomega_Ebooks_Sample_Email'] = new AlfaomegaEbooksSampleEmail();
+        return $email_classes;
+    }
+
+    /**
+     * Remove Avada options from custom post types
+     * @return void
+     */
+    function remove_avada_options_from_custom_post_type(): void
+    {
+        $postTypes = [
+            ALFAOMEGA_EBOOKS_POST_TYPE,
+            ALFAOMEGA_EBOOKS_ACCESS_POST_TYPE,
+            ALFAOMEGA_EBOOKS_SAMPLE_POST_TYPE,
+        ];
+
+        foreach ($postTypes as $postType) {
+            remove_meta_box('avada_fusion_page_options', $postType, 'normal');
+        }
+    }
+
+    /**
+     * Create a new page for My eBooks
+     * @return void
+     */
+    function create_my_ao_ebook_page(): void
+    {
+        // Check if the page already exists
+        $page_slug = 'my-ao-ebooks';
+        $page = get_page_by_path($page_slug);
+
+        if (!$page) {
+            $page_title = __('My eBooks', 'alfaomega-ebooks');
+            $page_content = '[my_ao_ebooks]';
+
+            // Create the page
+            $page_id = wp_insert_post([
+                'post_title'     => $page_title,
+                'post_name'      => $page_slug,
+                'post_content'   => $page_content,
+                'post_status'    => 'publish',
+                'post_type'      => 'page',
+                'post_author'    => 1,
+            ]);
+
+            // Set Avada Page Options (editable in Avada Builder)
+            if ($page_id) {
+                update_post_meta($page_id, '_fusion_builder_status', 'enabled'); // Enable Avada Builder
+            }
+        }
+    }
+
+    /**
+     * Add My eBooks page to the primary menu
+     * @return void
+     */
+    function add_my_ao_ebook_to_menu(): void
+    {
+        $menu_name = 'primary'; // Replace with your theme's primary menu slug
+        $page_slug = 'my-ao-ebooks';
+
+        // Get the page and menu objects
+        $page = get_page_by_path($page_slug);
+        $menu = wp_get_nav_menu_object($menu_name);
+
+        if ($page && $menu) {
+            // Add the page to the menu
+            wp_update_nav_menu_item($menu->term_id, 0, [
+                'menu-item-object-id' => $page->ID,
+                'menu-item-object'    => 'page',
+                'menu-item-type'      => 'post_type',
+                'menu-item-status'    => 'publish',
+            ]);
+        }
+    }
+
+    /**
+     * Register the shortcode for displaying the customer's purchased eBooks
+     * @return void
+     */
+    function my_ao_ebook_shortcode(): false|string
+    {
+        ob_start();
+
+        require ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_my_ebooks.php';
+
+        return ob_get_clean();
     }
 }

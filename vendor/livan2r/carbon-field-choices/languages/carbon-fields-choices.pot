@@ -1,0 +1,24 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=utf-8\n"
+"X-Generator: babel-plugin-makepot\n"
+
+#: src/main.js:181
+msgid "Error fetching options:"
+msgstr ""
+
+#: src/main.js:22
+msgid "No options."
+msgstr ""
+
+#: src/main.js:66
+msgid "Type to search"
+msgstr ""
+
+#: src/main.js:79
+msgid "Loading..."
+msgstr ""
+
+#: src/main.js:82
+msgid "No results found."
+msgstr ""

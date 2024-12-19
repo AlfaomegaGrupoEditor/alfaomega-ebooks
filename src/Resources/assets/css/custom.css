@@ -1,0 +1,155 @@
+table.variations td.label label,
+div.product_meta span.sku_wrapper {
+    font-weight: bold;
+}
+div.product_meta span.sku_wrapper span.sku{
+    font-weight: normal;
+}
+
+table.variations td.label label:after {
+    content: ': ';
+}
+
+.ff-body {
+    font-family: var(--bs-body-font-family) !important;
+}
+
+.fs-65 {
+    font-size: .6rem;
+}
+
+.fs-7 {
+    font-size: .7rem;
+}
+
+.fs-8 {
+    font-size: .8rem;
+}
+
+.fs-9 {
+    font-size: .9rem;
+}
+
+.ao-ebooks .form-select,
+.ao-ebooks input[type=text] {
+    font-size: 0.8rem;
+    height: 35px;
+}
+
+.ao-ebooks input[type=text] {
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: 5px;
+}
+.ao-ebooks .input-group input[type=text] {
+    padding-right: 20px;
+}
+
+div.ao-sidebar .offcanvas-title {
+    font-size: .8rem;
+    font-weight: bold;
+}
+
+.ao-ebooks .input-group-text {
+    background-color: #D82310;
+    color: white;
+    margin-left: -31px !important;
+    z-index: 1000;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.ao-ebooks .input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.node-wrapper.focused {
+    font-weight: bold;
+    background-color: transparent;
+    color: #D4230F
+}
+
+.node-wrapper.focused .node-text{
+    font-weight: bold;
+    color: #D4230F
+}
+
+.node-wrapper:hover {
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.node-input, .node-text,
+.node-wrapper {
+    font-size: 0.8rem;
+    font-family: var(--bs-body-font-family);
+    min-height: 24px;
+    line-height: 24px;
+}
+
+.offcanvas-backdrop {
+    background-color: transparent;
+}
+
+.ao-toast {
+    z-index: 9999999999;
+}
+
+.ao-ebooks .pagination {
+    --bs-pagination-font-size: 0.8rem;
+}
+
+.ao-book-skeleton .card-body {
+    display: none;
+}
+
+.ao-ebooks .card-img-top {
+    width: 160px;
+    height: 200px;
+}
+
+.b-tooltip {
+    font-size: 0.8rem;
+    border: 1px solid dimgray;
+    border-radius: 10px;
+}
+
+.b-tooltip .tooltip-inner {
+    background-color: dimgray;
+    color: white;
+}
+
+/* Custom Tooltip Arrow Color */
+.tooltip.bs-tooltip-top .tooltip-arrow::before {
+    border-top-color: dimgray; /* Replace with desired color */
+}
+
+.tooltip.bs-tooltip-bottom .tooltip-arrow::before {
+    border-bottom-color: dimgray; /* Replace with desired color */
+}
+
+.tooltip.bs-tooltip-left .tooltip-arrow::before {
+    border-left-color: dimgray; /* Replace with desired color */
+}
+
+.tooltip.bs-tooltip-right .tooltip-arrow::before {
+    border-right-color: dimgray; /* Replace with desired color */
+}
+.my-ebook-content {
+    margin-top: -50px;
+}
+
+table.wp-list-table .column-ebook_isbn{
+    width: 10%;
+}
+table.wp-list-table .column-date {
+    width: 10% !important;
+}
+
+.ebook_isbn span{
+    background-color: #1C6EA4;
+    color: #FFFFFF;
+    padding: 3px 5px;
+    border-radius: 5px;
+    white-space: nowrap;
+}

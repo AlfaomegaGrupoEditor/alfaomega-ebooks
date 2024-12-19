@@ -69,6 +69,8 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
                     'printed_isbn' => $sku,
                     'product_sku'  => $sku,
                     'product_id'   => !empty($sku) ? wc_get_product_id_by_sku($sku) : 0,
+                    'cover'        => $meta['alfaomega_ebook_cover'][0] ?? '',
+                    'page_count'   => $meta['alfaomega_ebook_page_count'][0] ?? 0,
                 ];
                 $isbn = empty($ebook['isbn']) ? $ebook['printed_isbn'] : $ebook['isbn'];
                 if (empty($isbn)) {
@@ -110,7 +112,7 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
                         if ($product->get_type() === 'simple' &&
                             $product->get_attribute('pa_ebook') !== 'Desactivado') {
                             $modified[] = array_merge($ebookPost, $ebook);
-                            continue; // product not linked, update needed
+                            continue; // product not linked, update not needed
                         }
                     }
 
@@ -119,7 +121,9 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
                         $ebook['description'] === $ebookPost['description'] &&
                         $ebook['adobe'] === $ebookPost['adobe'] &&
                         $ebook['html_ebook'] === $ebookPost['html_ebook'] &&
-                        $ebook['printed_isbn'] === $ebookPost['printed_isbn'] ) {
+                        $ebook['cover'] === $ebookPost['cover'] &&
+                        $ebook['printed_isbn'] === $ebookPost['printed_isbn'] &&
+                        $ebook['page_count'] === $ebookPost['page_count'] ) {
                         continue; // didn't change anything, no update needed
                     }
 
@@ -156,6 +160,8 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
     {
         $processed = [];
         foreach ($entities as $eBook) {
+            $eBook = $this->getPayload($eBook['isbn'], $eBook);
+
             $result = $this->single($eBook, postId: $eBook['id']);
             $processed[] = $result;
         }
@@ -174,7 +180,10 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
     {
         $onQueue = [];
         foreach ($entities as $ebook) {
-            $result = as_enqueue_async_action(
+            $ebook = $this->getPayload($ebook['isbn'], $ebook);
+
+            $result = as_schedule_single_action(
+                strtotime('+10 second'),
                 'alfaomega_ebooks_queue_refresh',
                 [$ebook, true, $ebook['id']]
             );
@@ -208,7 +217,8 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
     protected function chunk(): ?array
     {
         $onQueue = [];
-        $limit = 10000; // TODO: setup a limit if required
+        //$limit = intval($this->settings['alfaomega_ebooks_import_limit']) ?? 1000;
+        $limit = 10000;
         $countPerPage = $this->chunkSize;
 
         $page = 0;
@@ -229,9 +239,37 @@ class RefreshEbook extends AbstractProcess implements ProcessContract
             $ebooks = array_column($posts, 'ID');
             $onQueue = array_merge($onQueue, $this->batch($ebooks, true));
             $page++;
+
+            if (empty($onQueue)) {
+                throw new \Exception(esc_html__('Error adding tasks to the queue', 'alfaomega-ebooks'));
+            }
         } while (count($posts) === $this->chunkSize && count($onQueue) < $limit);
 
 
         return $onQueue;
+    }
+
+    /**
+     * Get the payload for the given entity ID.
+     *
+     * This method takes an entity ID as input and returns the payload for that entity. The specific implementation of
+     * this method depends on the class that implements this interface.
+     *
+     * @param int|string $entityId The entity ID.
+     * @param array|null $data The initial payload data
+     *
+     * @return array|null The payload for the entity.
+     */
+    public function getPayload(int|string $entityId, array $data = null): ?array
+    {
+        try {
+            if (empty($data['page_count'])) {
+                throw new \Exception(esc_html__('Page count is empty', 'alfaomega-ebooks'));
+            }
+        } catch (Exception $e) {
+            $data['error'] = $e->getMessage();
+            Service::make()->helper()->log($e->getMessage());
+        }
+        return $data;
     }
 }

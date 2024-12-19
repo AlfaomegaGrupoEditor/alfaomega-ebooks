@@ -70,21 +70,19 @@ class ImportEbook extends AbstractProcess implements ProcessContract
      */
     protected function chunk(): ?array
     {
-        $isbn = '';
         $onQueue = [];
-        if ($this->settings['alfaomega_ebooks_import_from_latest']) {
-            $latest = $this->getEbookEntity()->latest();
-            $isbn = $latest['isbn'] ?? '';
-        }
         $limit = intval($this->settings['alfaomega_ebooks_import_limit']) ?? 1000;
         $countPerPage = $this->chunkSize;
         do {
             $countPerPage = min($limit, $countPerPage);
             $ebooks = $this->getEbookEntity()
-                ->retrieve($isbn, $countPerPage);
+                ->getNewEbooks($countPerPage);
 
             $onQueue = array_merge($onQueue, $this->batch($ebooks, true));
-            $isbn = end($ebooks)['isbn'] ?? null;
+
+            if (empty($onQueue)) {
+                throw new \Exception(esc_html__('Error adding tasks to the queue', 'alfaomega-ebooks'));
+            }
         } while (count($ebooks) > 0 && count($onQueue) < $limit);
 
         return $onQueue;
@@ -103,11 +101,13 @@ class ImportEbook extends AbstractProcess implements ProcessContract
         $processed = [];
         foreach ($entities as $ebook) {
             if (empty($ebook['printed_isbn'])) {
+                $this->getEbookEntity()->updateImported([$ebook['isbn']], 'failed', errorCode: 'printed_isbn_not_found');
                 continue;
             }
 
             $productId = wc_get_product_id_by_sku($ebook['printed_isbn']);
             if (empty($productId)) {
+                $this->getEbookEntity()->updateImported([$ebook['isbn']], 'failed', errorCode: 'product_not_found');
                 continue;
             }
 
@@ -127,29 +127,56 @@ class ImportEbook extends AbstractProcess implements ProcessContract
      * @param array $entities
      *
      * @return array|null
+     * @throws \Exception
      */
     protected function queueProcess(array $entities): ?array
     {
         $onQueue = [];
         foreach ($entities as $ebook) {
-            if (empty($ebook['printed_isbn'])) {
-                continue;
-            }
+            $ebook = $this->getPayload($ebook['isbn'], $ebook);
 
-            $productId = wc_get_product_id_by_sku($ebook['printed_isbn']);
-            if (empty($productId)) {
-                continue;
-            }
-
-            $ebook['product_id'] = $productId;
-            $result = as_enqueue_async_action(
+            $result = as_schedule_single_action(
+                strtotime('+10 second'),
                 'alfaomega_ebooks_queue_import',
                 [$ebook, true]
             );
             if ($result !== 0) {
-                $onQueue[] = $productId;
+                $onQueue[] = $ebook['product_id'] ?? null;
             }
         }
         return $onQueue;
+    }
+
+    /**
+     * Get the payload for the given entity ID.
+     *
+     * This method takes an entity ID as input and returns the payload for that entity. The specific implementation of
+     * this method depends on the class that implements this interface.
+     *
+     * @param int|string $entityId The entity ID.
+     * @param array|null $data The initial payload data
+     *
+     * @return array|null The payload for the entity.
+     */
+    public function getPayload(int|string $entityId, array $data = null): ?array
+    {
+        try {
+            if (empty($data['printed_isbn'])) {
+                $this->getEbookEntity()->updateImported([$data['isbn']], 'failed', errorCode: 'printed_isbn_not_found');
+                throw new \Exception(esc_html__('Printed ISBN not found', 'alfaomega-ebooks'));
+            }
+
+            $productId = wc_get_product_id_by_sku($data['printed_isbn']);
+            if (empty($productId)) {
+                $this->getEbookEntity()->updateImported([$data['isbn']], 'failed', errorCode: 'product_not_found');
+                throw new \Exception(esc_html__('Product not found', 'alfaomega-ebooks'));
+            }
+
+            $data['product_id'] = $productId;
+        } catch (Exception $e) {
+            $data['error'] = $e->getMessage();
+            Service::make()->helper()->log($e->getMessage());
+        }
+        return $data;
     }
 }

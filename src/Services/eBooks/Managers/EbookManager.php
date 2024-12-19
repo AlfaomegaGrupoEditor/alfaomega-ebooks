@@ -5,10 +5,14 @@ namespace AlfaomegaEbooks\Services\eBooks\Managers;
 use AlfaomegaEbooks\Services\Alfaomega\Api;
 use AlfaomegaEbooks\Services\eBooks\Entities\Alfaomega\AccessPost;
 use AlfaomegaEbooks\Services\eBooks\Entities\Alfaomega\EbookPost;
+use AlfaomegaEbooks\Services\eBooks\Entities\Alfaomega\SamplePost;
 use AlfaomegaEbooks\Services\eBooks\Process\ImportEbook;
 use AlfaomegaEbooks\Services\eBooks\Process\RefreshEbook;
 use AlfaomegaEbooks\Services\eBooks\Service;
+use Carbon\Carbon;
 use Exception;
+use WC_Product_Query;
+use WP_Query;
 
 /**
  * The ebook manager.
@@ -44,6 +48,13 @@ class EbookManager extends AbstractManager
     protected AccessPost $accessPost;
 
     /**
+     * The SamplePost instance.
+     *
+     * @var SamplePost
+     */
+    protected SamplePost $samplePost;
+
+    /**
      * The EbookManager constructor.
      *
      * @param Api $api The API.
@@ -54,6 +65,7 @@ class EbookManager extends AbstractManager
 
         $this->ebookPost = EbookPost::make($api);
         $this->accessPost = AccessPost::make();
+        $this->samplePost = SamplePost::make();
         $this->importEbook = new ImportEbook($settings, $this->ebookPost);
         $this->refreshEbook = new RefreshEbook($settings, $this->ebookPost);
     }
@@ -99,6 +111,16 @@ class EbookManager extends AbstractManager
     }
 
     /**
+     * Get the SamplePost instance.
+     *
+     * @return SamplePost
+     */
+    public function samplePost(): SamplePost
+    {
+        return $this->samplePost;
+    }
+
+    /**
      * Downloads an eBook.
      * This method downloads an eBook by its ID and download ID. It first retrieves the eBook metadata.
      * If the eBook is found, it constructs the file path for the eBook download.
@@ -109,18 +131,40 @@ class EbookManager extends AbstractManager
      *
      * @param int $ebookId       The ID of the eBook to download.
      * @param string $downloadId The download ID of the eBook.
+     * @param bool $purchase     The request is from the purchase link.
      *
      * @return string Returns the file path of the downloaded eBook if the download is successful, or an empty string if the download is unsuccessful.
      * @throws \Exception
      */
-    public function download(int $ebookId, string $downloadId): string
+    public function download(int $ebookId, string $downloadId, bool $purchase = true): string
     {
+        if (!$purchase && !$this->validateAccess($ebookId, $downloadId, 'download')) {
+            return '';
+        }
+
         $eBook = $this->ebookPost->get($ebookId);
         if (empty($eBook)) {
             return '';
         }
 
-        $filePath = ALFAOMEGA_EBOOKS_PATH . "downloads/{$eBook['isbn']}_{$downloadId}.acsm";
+        // If the download is not from a purchase, retrieve the downloadId
+        // from the user downloads using the order_id and product_id
+        $accessPost = $this->accessPost->get($downloadId);
+        if (!$purchase && !empty($accessPost['orderId'])) {
+            // TODO: Not tested yet
+            $customerDownloads = Service::make()
+                ->wooCommerce()
+                ->getCustomerDownloads(get_current_user_id());
+            foreach ($customerDownloads as $download) {
+                if ($download->product_id == $eBook['product_id']) {
+                    $downloadId = $download->download_id;
+                    break;
+                }
+            }
+        }
+
+        $filename = md5("{$eBook['isbn']}_{$downloadId}") . '.acsm';
+        $filePath = ALFAOMEGA_EBOOKS_PATH . "downloads/$filename";
         if (file_exists($filePath)) {
             return $filePath;
         }
@@ -149,13 +193,16 @@ class EbookManager extends AbstractManager
      *
      * @param int $ebookId       The ID of the eBook to read.
      * @param string $downloadId The download ID of the eBook.
+     * @param bool $purchase     The request is from the purchase link.
      *
      * @return void
      * @throws \Exception
      */
-    public function read(int $ebookId, string $key): void
+    public function read(int $ebookId, string $key, bool $purchase = true): void
     {
-        $this->validate($ebookId, $key);
+        $valid = $purchase
+            ? $this->validate($ebookId, $key)
+            : $this->validateAccess($ebookId, $key, 'read');
 
         $eBook = $this->ebookPost->get($ebookId);
         if (empty($eBook)) {
@@ -211,6 +258,58 @@ class EbookManager extends AbstractManager
     }
 
     /**
+     * Validates access to an eBook checking the access post.
+     *
+     * @param int $ebookId
+     * @param int $accessId
+     * @param bool $purchase
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    public function validateAccess(int $ebookId, string $accessId = '', bool $purchase = true): bool
+    {
+        // user should be logged in
+        $userId = get_current_user_id();
+        if (empty($userId)) {
+            return false;
+        }
+
+        // ebook should exist
+        $bookPost = $this->ebookPost->get($ebookId);
+        if (empty($bookPost)) {
+            return false;
+        }
+
+        // access should exist
+        $accessPost = empty($accessId)
+            ? $this->accessPost->find($ebookId, $userId)
+            : $this->accessPost->get($accessId);
+        if (empty($accessPost)) {
+            return false;
+        }
+
+        if (!$accessPost['read']) {
+            return false;
+        }
+
+        // Check valid until and expire|activate the access if necessary
+        if (!empty($accessPost['validUntil'])
+            && Carbon::parse($accessPost['validUntil'])->isPast()) {
+            $this->accessPost->expire($accessPost['id']);
+
+            return false;
+        } elseif ($accessPost['status'] === 'created') {
+            $this->accessPost->activate($accessPost['id']);
+        }
+
+        $this->accessPost
+            ->touch($accessPost['id'], $purchase ? 'download' : 'read');
+
+        return true;
+    }
+
+    /**
      * Generates a URL for reading an eBook.
      * This method generates a URL for reading an eBook by its ID and download ID.
      * The URL is constructed using the site URL, the eBook ID, and the download ID.
@@ -258,18 +357,20 @@ class EbookManager extends AbstractManager
     }
 
     /**
-     * Retrieves the post metadata for an eBook.
-     * This method retrieves the post metadata for an eBook by its ID.
-     * It retrieves the post metadata for the eBook post type, including the title, author, ISBN, PDF ID, eBook URL, date, and tag ID.
+     * Retrieves the reader data for an eBook.
+     * @param int $ebookId
+     * @param string $key
+     * @param bool $purchase
      *
-     * @param int $postId The ID of the eBook to retrieve the post metadata for.
-     *
-     * @return array|null Returns an associative array containing the post metadata for the eBook if the post is found, or null if the post is not found.
+     * @return array|null
      * @throws \Exception
      */
-    public function getReaderData(int $ebookId, string $key): ?array
+    public function getReaderData(int $ebookId, string $key, bool $purchase = true): ?array
     {
-        if (!$this->validate($ebookId, $key)) {
+        $validate = $purchase
+            ? $this->validate($ebookId, $key)
+            : $this->validateAccess($ebookId, $key, 'read');
+        if (!$validate) {
             return null;
         };
 
@@ -328,5 +429,133 @@ class EbookManager extends AbstractManager
         }
 
         return $response['token'];
+    }
+
+    /**
+     * Searches for eBooks.
+     * This method searches for eBooks by a search query, limit, and page.
+     *
+     * @param string $searchQuery The search query to search for.
+     * @param int $limit          The limit of items to retrieve. Default is 50.
+     * @param int $page           The page of items to retrieve. Default is 1.
+     *
+     * @return array Returns an associative array containing the search results for the eBooks.
+     */
+    public function search(string $searchQuery = '', int $limit = -1, int $page = 1): array
+    {
+        $args = [
+            'post_type'      => 'product',
+            'posts_per_page' => $limit,
+            'paged'          => $page,
+            'paginate'       => true,
+            'orderby'        => 'post_title',
+            'order'          => 'asc',
+            'return'         => 'objects',
+            'status'         => 'publish',
+            'type'           => 'variable',
+            'visibility'     => 'catalog',
+            'tax_query'      => [
+                [
+                    'taxonomy' => 'pa_ebook',
+                    'field'    => 'slug',
+                    'terms'    => 'si',
+                ],
+            ],
+
+        ];
+
+        if (!empty($searchQuery)) {
+            $args['s'] = $searchQuery;
+            // FIXME: Doesn't work property with wc_get_products
+            $args['meta_query'] = [
+                [
+                    'key'     => 'alfaomega_ebooks_ebook_isbn',
+                    'value'   => $searchQuery,
+                    'compare' => 'LIKE',
+                ],
+            ];
+        } else {
+            $args['meta_query'] = [
+                [
+                    'key'     => 'alfaomega_ebooks_ebook_isbn',
+                    'value'   => '',
+                    'compare' => '!=',
+                ],
+            ];
+        }
+
+        $data = [];
+        $result = wc_get_products($args);
+        // A hack to search by ISBN if no results are found
+        if ($result->total === 0 && !empty($searchQuery)) {
+            unset($args['s']);
+            $query = new WP_Query($args);
+            $result = (object) [
+                'products'      => $query->get_posts(),
+                'total'         => $query->found_posts,
+                'max_num_pages' => $query->max_num_pages,
+            ];
+        }
+
+        foreach ($result->products as $product) {
+            if ($product instanceof \WP_Post) {
+                $product = wc_get_product($product);
+            }
+            $image_id = $product->get_image_id();
+            $image_url = wp_get_attachment_url($image_id);
+            $isbn = $product->get_meta('alfaomega_ebooks_ebook_isbn');
+            $data[] = [
+                'id'    => $product->get_id(),
+                'title' => $product->get_name() . " ($isbn)",
+                'isbn'  => $isbn,
+                'cover' => $image_url,
+            ];
+        }
+
+        return [
+            'items'   => $data,
+            'total'   => $result->total ?? 0,
+            'pages'   => $result->max_num_pages ?? 0,
+            'current' => $page,
+        ];
+    }
+
+    /**
+     * Updates the catalog import by processing chunks of 'alfaomega-ebook' posts.
+     * This method handles the update of imported eBooks in store identified by AO_STORE_UUID.
+     * Processes the posts in chunks and sends them to the API for updating the catalog status as completed.
+     *
+     * @return void
+     * @throws \Exception If AO_STORE_UUID is not defined or API response indicates a failure.
+     */
+    public function updateCatalogImport(): void
+    {
+        global $wpdb;
+
+        $chunkSize = 100;
+        $page = 0;
+        $clear = true;
+        do {
+            // Calculate the offset
+            $offset = $chunkSize * $page;
+
+            // Query to get a chunk of posts
+            $posts = $wpdb->get_results($wpdb->prepare("
+                SELECT p.ID, pm.meta_value AS isbn
+                FROM {$wpdb->prefix}posts p
+                INNER JOIN {$wpdb->prefix}postmeta pm ON p.ID = pm.post_id
+                WHERE p.post_type = 'alfaomega-ebook'
+                AND p.post_status = 'publish'
+                AND pm.meta_key = 'alfaomega_ebook_isbn'
+                LIMIT %d OFFSET %d
+            ", $chunkSize, $offset), OBJECT);
+
+            if (!empty($posts)) {
+                $isbns = array_map(function ($post) { return $post->isbn; }, $posts);
+                $this->ebookPost->updateImported($isbns, 'completed', $clear);
+                $page++;
+                $clear = false;
+            }
+        } while (! empty($posts));
     }
 }

@@ -70,6 +70,7 @@ class Alfaomega_Ebooks {
 
         $Alfaomega_Ebooks_Post_Type = new Alfaomega_Ebooks_Post_Type();
         $Alfaomega_Ebook_Access_Post_Type = new Alfaomega_Ebooks_Access_Post_Type();
+        $Alfaomega_Ebook_Sample_Post_Type = new Alfaomega_Ebooks_Sample_Post_Type();
         $Alfaomega_Ebooks_Settings = new Alfaomega_Ebooks_Settings();
         add_action( 'admin_menu', [$this, 'add_menu'] );
     }
@@ -102,13 +103,14 @@ class Alfaomega_Ebooks {
         /**
          * The class responsible for defining all actions that occur in the public-facing side of the site.
          */
-        require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-alfaomega-ebooks-public.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'website/class-alfaomega-ebooks-public.php';
 
         /**
          * The class responsible for defining the Custom Post Type alfaomega-ebook.
          */
         require_once plugin_dir_path(dirname(__FILE__)) . 'post_types/class-alfaomega-ebooks-post-type.php';
         require_once plugin_dir_path(dirname(__FILE__)) . 'post_types/class-alfaomega-ebooks-access-post-type.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'post_types/class-alfaomega-ebooks-sample-post-type.php';
 
         /**
          * The class responsible for defining the settings page.
@@ -206,6 +208,9 @@ class Alfaomega_Ebooks {
         $linkProduct = Service::make()->wooCommerce()->linkEbook()->setUpdateProduct();;
         $this->loader->add_action('alfaomega_ebooks_queue_link', $linkProduct, 'single',20, 3);
 
+        $updatePrice = Service::make()->wooCommerce()->updatePrice()->setUpdateProduct();;
+        $this->loader->add_action('alfaomega_ebooks_queue_setup_price', $updatePrice, 'single',20, 3);
+
         // product custom fields
         $this->loader->add_action( 'woocommerce_product_options_general_product_data', $plugin_admin, 'woocommerce_product_custom_fields' );
         $this->loader->add_action( 'woocommerce_process_product_meta', $plugin_admin, 'woocommerce_product_custom_fields_save' );
@@ -214,6 +219,9 @@ class Alfaomega_Ebooks {
         $this->loader->add_filter( 'manage_edit-product_sortable_columns', $plugin_admin, 'woocommerce_product_column_sortable' );
         $this->loader->add_filter( 'manage_edit-product_columns', $plugin_admin, 'woocommerce_product_column_ebook', 9999 );
         $this->loader->add_action( 'woocommerce_admin_process_product_object', $plugin_admin, 'action_save_product_meta' );
+        $this->loader->add_filter( 'redirect_post_location', $plugin_admin, 'redirect_custom_post_location' );
+        $this->loader->add_filter( 'woocommerce_email_classes', $plugin_admin, 'add_sample_woocommerce_email_class' );
+        $this->loader->add_action('add_meta_boxes', $plugin_admin, 'remove_avada_options_from_custom_post_type', 100);
 
         //Action Scheduler High Volume
         $actionSchedulerSetup = Service::make()->actionSchedulerSetup();
@@ -231,6 +239,15 @@ class Alfaomega_Ebooks {
         // ebook product filter
         $this->loader->add_action( 'restrict_manage_posts', $plugin_admin, 'ebooks_product_filters' );
         $this->loader->add_action( 'pre_get_posts', $plugin_admin, 'apply_ebooks_product_filters' );
+
+        // Carbon Fields
+        $this->loader->add_action( 'after_setup_theme', $plugin_admin, 'boot_carbon_fields_framework' );
+        $this->loader->add_action( 'wp_default_scripts', $plugin_admin, 'remove_jquery_Migrate' );
+
+        // my_ao_ebooks
+        $this->loader->add_action('after_setup_theme', $plugin_admin, 'create_my_ao_ebook_page');
+        // $this->loader->add_action('wp_update_nav_menu', $plugin_admin, 'add_my_ebook_to_menu');
+        $this->loader->add_shortcode('my_ao_ebooks', $plugin_admin, 'my_ao_ebook_shortcode');
     }
 
 	/**
@@ -255,8 +272,13 @@ class Alfaomega_Ebooks {
 
         $this->loader->add_filter('woocommerce_dropdown_variation_attribute_options_args', $plugin_public, 'product_get_attributes', 10, 2);
         $this->loader->add_filter('woocommerce_dropdown_variation_attribute_options_html', $plugin_public, 'dropdown_variation_attribute_options_html', 10, 2);
+        $this->loader->add_filter('woocommerce_variation_is_active', $plugin_public,'deactivate_variation_if_out_of_stock', 10, 2);
 
         $this->loader->add_action( 'woocommerce_order_status_completed', $plugin_public, 'on_order_complete' );
+        $this->loader->add_shortcode('my_ao_ebooks', $plugin_public, 'my_ao_ebook_shortcode');
+        $this->loader->add_filter('script_loader_tag', $plugin_public, 'alfaomega_add_type_attribute', 10, 3);
+
+        $this->loader->add_filter('woocommerce_product_tabs', $plugin_public, 'alfaomega_product_tabs');
     }
 
 	/**
@@ -321,8 +343,8 @@ class Alfaomega_Ebooks {
 
         add_submenu_page(
             'alfaomega_ebooks_admin',
-            esc_html__('Home', 'alfaomega-ebooks'),
-            esc_html__('Home', 'alfaomega-ebooks'),
+            esc_html__('Dashboard', 'alfaomega-ebooks'),
+            esc_html__('Dashboard', 'alfaomega-ebooks'),
             'install_plugins',
             'alfaomega_ebooks_admin',
             null,
@@ -345,6 +367,16 @@ class Alfaomega_Ebooks {
             esc_html__('Access List', 'alfaomega-ebooks'),
             'install_plugins',
             'edit.php?post_type=alfaomega-access',
+            null,
+            null
+        );
+
+        add_submenu_page(
+            'alfaomega_ebooks_admin',
+            esc_html__('eBook Sample', 'alfaomega-ebooks'),
+            esc_html__('Sample List', 'alfaomega-ebooks'),
+            'install_plugins',
+            'edit.php?post_type=alfaomega-sample',
             null,
             null
         );
@@ -376,6 +408,16 @@ class Alfaomega_Ebooks {
             'install_plugins',
             'alfaomega_ebooks_link',
             [$this, 'renderLink'],
+            null
+        );
+
+        add_submenu_page(
+            'alfaomega_ebooks_admin',
+            esc_html__('Setup Prices', 'alfaomega-ebooks'),
+            esc_html__('Setup prices', 'alfaomega-ebooks'),
+            'install_plugins',
+            'alfaomega_setup_prices',
+            [$this, 'setupPrices'],
             null
         );
 
@@ -433,7 +475,8 @@ class Alfaomega_Ebooks {
 
         settings_errors('alfaomega_ebook_options');
 
-        require(ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_home_page.php');
+        //require(ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_home_page.php');
+        require(ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_dashboard.php');
     }
 
     /**
@@ -453,7 +496,8 @@ class Alfaomega_Ebooks {
 
         settings_errors('alfaomega_ebook_options');
 
-        require(ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_import_page.php');
+        wp_redirect(admin_url('admin.php?page=alfaomega_ebooks_admin#/import_ebooks'));
+        exit;
     }
 
     /**
@@ -473,7 +517,8 @@ class Alfaomega_Ebooks {
 
         settings_errors('alfaomega_ebook_options');
 
-        require(ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_refresh_page.php');
+        wp_redirect(admin_url('admin.php?page=alfaomega_ebooks_admin#/update_ebooks'));
+        exit;
     }
 
     /**
@@ -493,7 +538,29 @@ class Alfaomega_Ebooks {
 
         settings_errors('alfaomega_ebook_options');
 
-        require(ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_link_page.php');
+        wp_redirect(admin_url('admin.php?page=alfaomega_ebooks_admin#/link_products'));
+        exit;
+    }
+
+    /**
+     * Renders the setup prices page of the plugin in the WordPress admin dashboard.
+     * This method checks if the current user has the 'install_plugins' capability. If not, it returns immediately.
+     * If the user has the necessary capability, it displays any settings errors and then includes the PHP file for the
+     * setup prices page view.
+     *
+     * @since    1.0.0
+     * @access   public
+     */
+    public function setupPrices(): void
+    {
+        if (! current_user_can('install_plugins')) {
+            return;
+        }
+
+        settings_errors('alfaomega_ebook_options');
+
+        wp_redirect(admin_url('admin.php?page=alfaomega_ebooks_admin#/setup_prices'));
+        exit;
     }
 
     /**

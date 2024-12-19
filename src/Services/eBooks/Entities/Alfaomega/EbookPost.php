@@ -76,31 +76,40 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
         }
 
         $thumbnail_url = '';
+        $details = null;
+        // try to get from get_post_meta($postId, 'alfaomega_ebook_cover', true) first
         $product_sku = get_post_meta($postId, 'alfaomega_ebook_product_sku', true);
         if (!empty($product_sku)) {
             $product_id = wc_get_product_id_by_sku($product_sku);
             if (!empty($product_id)) {
-                $thumbnail_url = get_the_post_thumbnail_url($product_id, 'full');
+                //$thumbnail_url = get_the_post_thumbnail_url($product_id, 'full');
                 $categories = get_the_terms($product_id, 'product_cat');
                 if (is_wp_error($categories) || empty($categories)) {
                     $categories = null;
                 } else {
                     $categories = wp_list_pluck($categories, 'term_id');
                 }
+                $post = get_post($product_id);
+                $details = apply_filters( 'woocommerce_short_description', $post->post_excerpt );
             }
         }
+
         $this->meta = [
-            'id'          => $postId,
-            'title'       => $post->post_title,
-            'author'      => $post->post_author,
-            'description' => $post->post_content,
-            'isbn'        => get_post_meta($postId, 'alfaomega_ebook_isbn', true),
-            'pdf_id'      => get_post_meta($postId, 'alfaomega_ebook_id', true),
-            'ebook_url'   => get_post_meta($postId, 'alfaomega_ebook_url', true),
-            'date'        => $post->post_date,
-            'product_sku' => $product_sku,
-            'cover'       => $thumbnail_url,
-            'categories'  => $categories ?? [],
+            'id'            => $postId,
+            'title'         => $post->post_title,
+            'author'        => $post->post_author,
+            'description'   => $post->post_content,
+            'isbn'          => get_post_meta($postId, 'alfaomega_ebook_isbn', true),
+            'pdf_id'        => get_post_meta($postId, 'alfaomega_ebook_id', true),
+            'ebook_url'     => get_post_meta($postId, 'alfaomega_ebook_url', true),
+            'date'          => $post->post_date,
+            'product_sku'   => $product_sku,
+            'product_id'    => $product_id,
+            'cover'         => get_post_meta($postId, 'alfaomega_ebook_cover', true), //$thumbnail_url,
+            'details'       => $details,
+            'categories'    => $categories ?? [],
+            'page_count'    => get_post_meta($postId, 'alfaomega_ebook_page_count', true),
+            'content_table' => get_post_meta($postId, 'alfaomega_ebook_content_table', true),
         ];
 
         return $this->meta;
@@ -127,6 +136,8 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
             throw new Exception($response['response']['message']);
         }
         $content = json_decode($response['body'], true);
+        Service::make()->helper()->log($response['body']);
+
         if ($content['status'] !== 'success') {
             throw new Exception($content['message']);
         }
@@ -184,7 +195,11 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
             throw new Exception(esc_html__('Unable to create post.', 'alfaomega-ebook'));
         }
 
-        return $this->save($postId, $data);
+        $ebook = $this->save($postId, $data);
+        $this->updateAccess($postId, $ebook);
+
+        $this->updateImported([$data['isbn']], 'completed');
+        return $ebook;
     }
 
     /**
@@ -235,26 +250,48 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
                 'old'     => get_post_meta($postId, 'alfaomega_ebook_isbn', true),
                 'new'     => $data['isbn'],
                 'default' => '',
+                'required' => true,
             ],
             'alfaomega_ebook_id'     => [
                 'old'     => get_post_meta($postId, 'alfaomega_ebook_id', true),
                 'new'     => ! empty($data['adobe']) ? $data['adobe'] : ($data['pdf_id'] ?? ''),
                 'default' => '',
+                'required' => true,
             ],
             'alfaomega_ebook_url'    => [
                 'old'     => get_post_meta($postId, 'alfaomega_ebook_url', true),
                 'new'     => ! empty($data['html_ebook']) ? $data['html_ebook'] : ($data['ebook_url'] ?? ''),
                 'default' => '',
+                'required' => false,
             ],
             'alfaomega_ebook_product_sku' => [
                 'old'     => get_post_meta($postId, 'alfaomega_ebook_product_sku', true),
                 'new'     => ! empty($data['printed_isbn']) ?  $data['printed_isbn'] : 'UNKNOWN',
                 'default' => '',
+                'required' => false,
+            ],
+            'alfaomega_ebook_cover' => [
+                'old'     => get_post_meta($postId, 'alfaomega_ebook_cover', true),
+                'new'     => ! empty($data['cover']) ?  $data['cover'] : '',
+                'default' => '',
+                'required' => false,
+            ],
+            'alfaomega_ebook_page_count' => [
+                'old'     => get_post_meta($postId, 'alfaomega_ebook_page_count', true),
+                'new'     => ! empty($data['page_count']) ?  $data['page_count'] : 0,
+                'default' => 0,
+                'required' => true,
+            ],
+            'alfaomega_ebook_content_table' => [
+                'old'     => get_post_meta($postId, 'alfaomega_ebook_content_table', true),
+                'new'     => ! empty($data['content_table']) ?  $data['content_table'] : '',
+                'default' => '',
+                'required' => false,
             ],
         ];
 
         foreach ($fields as $field => $value) {
-            if (empty($value['new'])) {
+            if (empty($value['new']) && $value['required']) {
                 throw new Exception("Field value '$field' is required.");
             }
         }
@@ -300,5 +337,245 @@ class EbookPost extends AlfaomegaPostAbstract implements EbookPostEntity
         }
 
         return json_decode($response['body'], true)['data'];
+    }
+
+    /**
+     * Return the count of ebooks in the catalog.
+     * @return array
+     * @throws \Exception
+     */
+    public function catalogStats(): array
+    {
+        $response = $this->api->get('/book/catalog/stats');
+        if ($response['response']['code'] !== 200) {
+            throw new Exception($response['response']['message']);
+        }
+
+        $content = json_decode($response['body'], true);
+        if ($content['status'] !== 'success') {
+            throw new Exception($content['message']);
+        }
+
+        return $content['data'];
+    }
+
+    /**
+     * Update all the access to this ebook
+     *
+     * @param int $postId
+     * @param array $ebook
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function updateAccess(int $postId, array $ebook): void
+    {
+        // get all the access to this ebook
+        $accesses = get_posts([
+            'post_type'   => 'alfaomega-access',
+            'post_parent' => $postId,
+            'numberposts' => -1,
+        ]);
+        $service = Service::make()->ebooks()->accessPost();
+        foreach ($accesses as $access) {
+            $data = $service->get($access->ID);
+            $data = array_merge($data, [
+                'isbn'        => $ebook['isbn'],
+                'cover'       => $ebook['cover'],
+                'title'       => $ebook['title'],
+                'description' => $ebook['description'],
+                'categories'  => $ebook['categories'],
+            ]);
+            $service->save($access->ID, $data);
+        }
+    }
+
+    /**
+     * Get the information of the eBooks.
+     *
+     * @return array The information of the eBooks.
+     * @throws \Exception
+     */
+    public function getInfo(): array
+    {
+        global $wpdb;
+
+        // Prepare the SQL query
+        $dataQuery = "SELECT COUNT(p.ID) AS total_posts
+            FROM {$wpdb->prefix}posts AS p
+            WHERE p.post_type = 'alfaomega-ebook'
+            AND p.post_status = 'publish'";
+
+        // Execute the query
+        $results = $wpdb->get_results($dataQuery, 'ARRAY_A');
+        $formattedResults = [];
+        foreach ($results as $row) {
+            $formattedResults['total_posts'] = intval($row['total_posts']);
+        }
+
+        try {
+            $stats = $this->catalogStats();
+        } catch (Exception $e) {
+            $stats = null;
+        }
+
+        return [
+            'catalog' => empty($stats) ? 0 : $stats['size'],
+            'imported' => $formattedResults['total_posts'] ?? 0,
+        ];
+    }
+
+    /**
+     * Updates the status of imported books in the store.
+     * This method sends a POST request to the API to update the status of imported books
+     * based on their ISBNs and other provided parameters.
+     *
+     * @param array|null $isbns      List of ISBNs to update.
+     * @param string $status         The new status for the books.
+     * @param bool $clear            Whether to clear the existing data before updating.
+     * @param string|null $errorCode Error code to report if the update fails.
+     *
+     * @return array Returns an associative array containing the updated data from the API response.
+     * @throws \Exception Throws an exception if AO_STORE_UUID is not defined or if the API response indicates failure.
+     */
+    public function updateImported(array $isbns=null,
+                                   string $status = 'on-queue',
+                                   bool $clear = false,
+                                   string $errorCode = null
+    ): array {
+        if (! defined('AO_STORE_UUID')){
+            throw new Exception(esc_html__('AO_STORE_UUID is not defined!', 'alfaomega-ebooks'));
+        }
+
+        $storeUuid = AO_STORE_UUID;
+        $response = $this->api->post("/book/imported/$storeUuid", [
+            'isbns'      => $isbns,
+            'status'     => $status,
+            'clear'      => $clear,
+            'error_code' => $errorCode,
+        ]);
+        $content = json_decode($response['body'], true);
+        if ($content['status'] !== 'success') {
+            throw new Exception($content['message']);
+        }
+
+        return $content['data'];
+    }
+
+    /**
+     * Retrieve information of the new ebooks
+     *
+     * @param int $count
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function getNewEbooks(int $count = 100): array
+    {
+        if (! defined('AO_STORE_UUID')){
+            throw new Exception(esc_html__('AO_STORE_UUID is not defined!', 'alfaomega-ebooks'));
+        }
+        $storeUuid = AO_STORE_UUID;
+
+        $response = $this->api->get("/book/import-new/$storeUuid?items={$count}");
+        if ($response['response']['code'] !== 200) {
+            throw new Exception($response['response']['message']);
+        }
+        $content = json_decode($response['body'], true);
+
+        if ($content['status'] !== 'success') {
+            throw new Exception($content['message']);
+        }
+
+        return $content['data'];
+    }
+
+    /**
+     * Retrieves a list of imported books based on their status.
+     * This method fetches the imported book list from an external API based on the provided status, page, and per page parameters.
+     *
+     * @param string $status The import status to filter by (default is 'failed').
+     * @param int $page      The page number to retrieve (default is 1).
+     * @param int $perPage   The number of items per page (default is 10).
+     *
+     * @return array Returns an associative array containing the status, data, and meta information of the imported books.
+     * @throws \Exception If AO_STORE_UUID is not defined, the API response code is not 200, or the content status is not 'success'.
+     */
+    public function getImportList(string $status = 'failed', int $page = 1, int $perPage = 10): array
+    {
+        if (! defined('AO_STORE_UUID')){
+            throw new Exception(esc_html__('AO_STORE_UUID is not defined!', 'alfaomega-ebooks'));
+        }
+        $storeUuid = AO_STORE_UUID;
+
+        $response = $this->api->get("/book/imported/$storeUuid/$status?per_page={$perPage}&page={$page}");
+        if ($response['response']['code'] !== 200) {
+            throw new Exception($response['response']['message']);
+        }
+        $content = json_decode($response['body'], true);
+
+        if ($content['status'] !== 'success') {
+            throw new Exception($content['message']);
+        }
+
+        return [
+            'status' => $content['status'],
+            'data' => $content['data'] ?? [],
+            'meta' => [
+                'total'        => $content['meta']['pagination']['total'] ?? 0,
+                'current_page' => $content['meta']['pagination']['current_page'] ?? 0,
+                'pages'        => $content['meta']['pagination']['total_pages'] ?? 0,
+            ],
+        ];
+    }
+
+    /**
+     * Updates the catalog import by processing chunks of 'alfaomega-ebook' posts.
+     * This method handles the update of imported eBooks in store identified by AO_STORE_UUID.
+     * Processes the posts in chunks and sends them to the API for updating the catalog status as completed.
+     *
+     * @return void
+     * @throws \Exception If AO_STORE_UUID is not defined or API response indicates a failure.
+     */
+    protected function updateCatalogImport(): void
+    {
+        global $wpdb;
+
+        if (! defined('AO_STORE_UUID')){
+            throw new Exception(esc_html__('AO_STORE_UUID is not defined!', 'alfaomega-ebooks'));
+        }
+        $storeUuid = AO_STORE_UUID;
+        $chunkSize = 100;
+        $page = 0;
+
+        do {
+            // Calculate the offset
+            $offset = $chunkSize * $page;
+
+            // Query to get a chunk of posts
+            $posts = $wpdb->get_results($wpdb->prepare("
+                SELECT p.ID, pm.meta_value AS isbn
+                FROM {$wpdb->prefix}posts p
+                INNER JOIN {$wpdb->prefix}postmeta pm ON p.ID = pm.post_id
+                WHERE p.post_type = 'alfaomega-ebook'
+                AND p.post_status = 'publish'
+                AND pm.meta_key = 'alfaomega_ebook_isbn'
+                LIMIT %d OFFSET %d
+            ", $chunkSize, $offset), OBJECT);
+
+            if (!empty($posts)) {
+                $isbns = [];
+                $response = $this->api->post("/book/imported/$storeUuid", [
+                    'isbns'  => $isbns,
+                    'status' => 'completed',
+                ]);
+                $content = json_decode($response['body'], true);
+                if ($content['status'] !== 'success') {
+                    throw new Exception($content['message']);
+                }
+
+                $page++;
+            }
+        } while (! empty($posts));
     }
 }

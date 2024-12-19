@@ -1,3 +1,6 @@
 /downloads/*.acsm
 .env
 .phpunit.result.cache
+/packages/
+/src/node_modules/
+/downloads/

@@ -58,4 +58,33 @@ interface EbookPostEntity extends AlfaomegaPostInterface
      * @throws \Exception
      */
     public function index(array $isbns): ?array;
+
+    /**
+     * Updates the status of imported books in the store.
+     * This method sends a POST request to the API to update the status of imported books
+     * based on their ISBNs and other provided parameters.
+     *
+     * @param array|null $isbns      List of ISBNs to update.
+     * @param string $status         The new status for the books.
+     * @param bool $clear            Whether to clear the existing data before updating.
+     * @param string|null $errorCode Error code to report if the update fails.
+     *
+     * @return array Returns an associative array containing the updated data from the API response.
+     * @throws \Exception Throws an exception if AO_STORE_UUID is not defined or if the API response indicates failure.
+     */
+    public function updateImported(array $isbns=null,
+                                   string $status = 'on-queue',
+                                   bool $clear = false,
+                                   string $errorCode = null
+    ): array;
+
+    /**
+     * Retrieve information of the new ebooks
+     *
+     * @param int $count
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function getNewEbooks(int $count = 100): array;
 }
