@@ -68,6 +68,7 @@
             theme-name = "store"
             class = "bibliotecas"
             library-scr = "<?php echo $data['libraryBaseUrl']; ?>"
+            ao-ebooks-scr = "<?php echo get_permalink(get_page_by_path('my-ao-ebooks')->ID); ?>"
             mode = "local"
             teacher = "enabled"
             evaluations = "inactive"
