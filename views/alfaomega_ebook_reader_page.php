@@ -27,7 +27,7 @@
                 'Online eBook not available, please check order status or contact support.',
                 'alfaomega-ebooks'),
             'error_details' => json_decode($error),
-            'referer'       => $_SERVER['HTTP_REFERER'],
+            'referer'       => $_SERVER['HTTP_REFERER'] ?? home_url('my-ao-ebooks'),
         ];
         $_SESSION['alfaomega_ebooks_msg'] = $message;
 
@@ -40,7 +40,7 @@
             $redirectUrl = get_permalink($myEbooksPage->ID);
         }
         if (empty($redirectUrl)) {
-            $redirectUrl = $redirectUrl = home_url();;
+            $redirectUrl = $redirectUrl = home_url();
         }
     ?>
     <script type="text/javascript">
