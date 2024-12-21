@@ -64,4 +64,14 @@ interface ProductEntity
      * @return array|null Returns an associative array containing the updated product data if the product type is updated, or null if the product type is not updated.
      */
     public function updateType(array $product, string $type = 'variable'): ?array;
+
+    /**
+     * Manages the inventory of a product in WooCommerce.
+     * @param array $product
+     * @param bool $on
+     * @param int $inventory
+     *
+     * @return array|null
+     */
+    public function manageStock(array $product, bool $on = false, int $inventory=0): ?array;
 }

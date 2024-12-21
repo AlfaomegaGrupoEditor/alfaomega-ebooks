@@ -148,7 +148,6 @@ class Product extends WooAbstractEntity implements ProductEntity
             if ($type === 'variable') {
                 $product = (array) $this->client->put("products/{$product['id']}", [
                     'type' => $type,
-                    'manage_stock' => false,
                 ]);
             } else {
                 if (!empty($product['regular_price'])) {
@@ -166,6 +165,28 @@ class Product extends WooAbstractEntity implements ProductEntity
             }
 
             return $product;
+        }
+
+        return $product;
+    }
+
+    /**
+     * Manages the inventory of a product in WooCommerce.
+     * @param array $product
+     * @param bool $on
+     * @param int $inventory
+     *
+     * @return array|null
+     */
+    public function manageStock(array $product, bool $on = false, int $inventory=0): ?array
+    {
+        $product = (array) $this->client->put("products/{$product['id']}", [
+            'manage_stock'   => $on,
+            'stock_quantity' => $inventory,
+        ]);
+
+        if (empty($product)) {
+            return null;
         }
 
         return $product;

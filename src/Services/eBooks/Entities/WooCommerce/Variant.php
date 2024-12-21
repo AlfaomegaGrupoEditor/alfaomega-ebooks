@@ -96,6 +96,46 @@ class Variant extends WooAbstractEntity
     }
 
     /**
+     * Get the stock quantity for a product.
+     *
+     * This method is used to get the stock quantity for a product.
+     * It takes the stock quantity of the product as a parameter.
+     * It returns an array with the stock quantity for the 'impreso' and 'impreso_digital' formats.
+     *
+     * @param int $stock The stock quantity of the product.
+     * @return array The stock quantity for the 'impreso' and 'impreso_digital' formats.
+     */
+    public function getStockQuantity(int $stock): array
+    {
+        $infiniteStock = defined('AO_STORE_INFINITE_STOCK') && AO_STORE_INFINITE_STOCK;
+        if ($infiniteStock) {
+            return [
+                'impreso' => $stock,
+                'impreso_digital' => $stock,
+            ];
+        }
+
+        $stockQuantity = [
+            'impreso' => 0,
+            'impreso_digital' => 0,
+        ];
+
+        if ($stock > 0) {
+            $splitStock = $stock / 2;
+            if ($stock % 2 === 0) {
+                $stockQuantity['impreso'] = $splitStock;
+                $stockQuantity['impreso_digital'] = $splitStock;
+            } else {
+                $stockQuantity['impreso'] = ceil($splitStock);
+                $stockQuantity['impreso_digital'] = floor($splitStock);
+            }
+        }
+
+        return $stockQuantity;
+    }
+
+
+    /**
      * Get data for a specific variant format.
      *
      * This method is used to get the data for a specific variant format.
@@ -112,6 +152,7 @@ class Variant extends WooAbstractEntity
     {
         $uploads = wp_get_upload_dir();
         $ebooksDir = $uploads['baseurl'] . '/woocommerce_uploads/alfaomega_ebooks/';
+        $stockQuantity = $this->getStockQuantity($product['stock_quantity'] ?? 0);
 
         return match ($format) {
             'impreso' => [
@@ -122,8 +163,8 @@ class Variant extends WooAbstractEntity
                 'virtual'         => false,
                 'downloadable'    => false,
                 'manage_stock'    => true,
-                'stock_quantity'  => $product['stock_quantity'],
-                'stock_status'    => $product['stock_status'],
+                'stock_quantity'  => $stockQuantity['impreso'],
+                'stock_status'    => $stockQuantity['impreso'] === 0 ? 'outofstock' : 'instock',
                 'weight'          => $product['weight'],
                 'dimensions'      => $product['dimensions'],
                 'shipping_class'  => $product['shipping_class'],
@@ -166,8 +207,8 @@ class Variant extends WooAbstractEntity
                 'download_limit'  => -1,
                 'download_expiry' => 30,
                 'manage_stock'    => true,
-                'stock_quantity'  => $product['stock_quantity'],
-                'stock_status'    => $product['stock_status'],
+                'stock_quantity'  => $stockQuantity['impreso_digital'],
+                'stock_status'    => $stockQuantity['impreso_digital'] === 0 ? 'outofstock' : 'instock',
                 'weight'          => $product['weight'],
                 'dimensions'      => $product['dimensions'],
                 'shipping_class'  => $product['shipping_class'],
