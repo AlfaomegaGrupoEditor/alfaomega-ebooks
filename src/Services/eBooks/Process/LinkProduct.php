@@ -85,6 +85,11 @@ class LinkProduct extends AbstractProcess implements ProcessContract
                 if (empty($product)) {
                     throw new Exception("Product variants failed");
                 }
+
+                $product = $this->entity->manageStock($product);
+                if (empty($product)) {
+                    throw new Exception("Manage stock failed");
+                }
             }
 
             update_post_meta(
