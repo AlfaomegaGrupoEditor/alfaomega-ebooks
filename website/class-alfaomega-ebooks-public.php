@@ -289,7 +289,7 @@ class Alfaomega_Ebooks_Public {
         $ebookPost = Service::make()->ebooks()
             ->ebookPost()
             ->search($sku, 'alfaomega_ebook_product_sku');
-        if (!empty($ebookPost)) {
+        if (!empty($ebookPost) && !empty($ebookPost['content_table'])) {
             $tabs['content_table'] = array(
                 'title'    => __( 'Content table', 'alfaomega-ebooks' ),
                 'priority' => 50,
