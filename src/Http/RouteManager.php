@@ -239,7 +239,7 @@ class RouteManager
 
         [$class, $endpoint] = $this->quickActions[$action];
         $controller = new $class;
-        $redirectUrl = $controller->{$endpoint}($_GET['post'], $_SERVER['HTTP_REFERER']);
+        $redirectUrl = $controller->{$endpoint}($_GET['post'], $_SERVER['HTTP_REFERER'] ?? admin_url('edit.php?post_type=product'));
 
         wp_redirect($redirectUrl);
     }

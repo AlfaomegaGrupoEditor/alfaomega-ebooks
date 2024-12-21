@@ -149,7 +149,7 @@ class EbookManager extends AbstractManager
 
         // If the download is not from a purchase, retrieve the downloadId
         // from the user downloads using the order_id and product_id
-        $accessPost = $this->accessPost->get($downloadId);
+        $accessPost = $this->accessPost->get(intval($downloadId));
         if (!$purchase && !empty($accessPost['orderId'])) {
             // TODO: Not tested yet
             $customerDownloads = Service::make()
