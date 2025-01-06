@@ -333,4 +333,10 @@ class Alfaomega_Ebooks_Public {
         }
         return $active;
     }
+
+    function alfaomega_product_variation_price_format($price, $from, $to): string
+    {
+        Global $product;
+        return wc_price( $product->get_price() );
+    }
 }
