@@ -334,6 +334,15 @@ class Alfaomega_Ebooks_Public {
         return $active;
     }
 
+    /**
+     * Format the price of the product variation
+     *
+     * @param string $price
+     * @param float $from
+     * @param float $to
+     *
+     * @return string
+     */
     function alfaomega_product_variation_price_format($price, $from, $to): string
     {
         Global $product;
