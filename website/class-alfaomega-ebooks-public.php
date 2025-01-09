@@ -334,16 +334,29 @@ class Alfaomega_Ebooks_Public {
         return $active;
     }
 
+    /**
+     * Format the price of the product variation
+     *
+     * @param string $price
+     * @param float $from
+     * @param float $to
+     *
+     * @return string
+     */
     function alfaomega_product_variation_price_format($price, $from, $to): string
     {
         Global $product;
 
-        $variations = $product->get_available_variations();
-        foreach ($variations as $variation) {
-            if ($variation['attributes']['attribute_pa_book-format'] === 'impreso') {
-                return wc_price($variation['display_price']);
+        if ( is_product() && has_term( 'variable', 'product_type' ) ) {
+            $variations = $product->get_available_variations();
+            foreach ($variations as $variation) {
+                if ($variation['attributes']['attribute_pa_book-format'] === 'impreso') {
+                    return wc_price($variation['display_price']);
+                }
             }
+            return wc_price($product->get_price());
         }
-        return wc_price($product->get_price());
+
+        return $price;
     }
 }
