@@ -60,6 +60,82 @@
         <?php endforeach; ?>
     </table>
 
+    <table>
+        <tr>
+            <td>
+                <h3 style="font-size: 14px;">Instrucciones para acceder a tu libro:</h3>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-left: 30px; padding-right: 30px;">
+                <table cellpadding="3" cellspacing="0" style="border-collapse: collapse; border: 1px solid #808080;">
+                    <tbody>
+                        <tr style="border: 1px solid #808080;">
+                            <td  width="50%" style="background-color: #A4C2F4; font-weight: bold; border: 1px solid #808080;">
+                                <span>Para leer en l&iacute;nea tu libro sigue los siguientes pasos</span>
+                            </td>
+                            <td  width="50%" style="background-color: #FCE5CD; font-weight: bold; border: 1px solid #808080;">
+                                <span class="c14 c20">Para descargar tu libro a cualquier dispositivo (PC, M&oacute;vil, Tablet, etc)</span>
+                            </td>
+                        </tr>
+                        <tr style="border: 1px solid #808080; vertical-align: top">
+                            <td width="50%" style="border: 1px solid #808080;">
+                                <span>
+                                    <ol>
+                                        <li>Accede a <a href="https://www.alfaomega.com.mx">https://www.alfaomega.com.mx</a> </li>
+                                        <li>Inicia sesi&oacute;n, si ya posees una cuenta.</a> </li>
+                                        <li>Accede a la opci&oacute;n "Mis eBooks", en <a href="https://www.alfaomega.com.mx/my-ao-ebooks"> https://www.alfaomega.com.mx/my-ao-ebooks</a></li>
+                                        <li>Clic en el libro deseado (El acceso se agrega autom&aacute;ticamnete al acretitarse el pago). Si recibistes una muestra copia y aplica el c&oacute;digo recibido.</li>
+                                    </ol>
+                                </span>
+                                <div style="margin-top: 20px">
+                                    <strong>Nota:</strong>
+                                    Para facilitar el acceso a la lectura offline, en la sessi&oacute;n "Mis eBooks" esta disponible el acceso a la descarga del PDF.
+                                    Haz clic en "Descarga" y sigue las instrucciones <b>Para descargar tu libro a cualquiera de tus dispositivos</b>.
+                                </div>
+                            </td>
+                            <td width="50%" style="border: 1px solid #808080;">
+                                <span>
+                                    <ol>
+                                        <li>Haz clic en Descargar y selecciona un lugar para guardar el eBook. El archivo se guardar&aacute; en formato ACSM.</li>
+                                        <li>Localiza el archivo ACSM guardado.</li>
+                                        <li>Haz clic con el bot&oacute;n derecho en el archivo ACSM y selecciona Abrir con > <a href="https://helpx.adobe.com/es/digital-editions/kb/install-digital-editions-windows-7.html" target="_blank">Adobe Digital Editions.</a></li>
+                                        <li>Haz clic en el icono Biblioteca para ver tu colecci&oacute;n de eBooks.</li>
+                                        <li>Haz clic en la flecha hacia abajo y selecciona A&ntilde;adir elemento a la biblioteca.</li>
+                                        <li>Busca el eBook protegido por DRM y selecci&oacute;nalo. A continuaci&oacute;n, aparecer&aacute; en la vista de la Biblioteca ADE, donde podr&aacute;s seleccionarlo.</li>
+                                        <li>Haz doble clic en la imagen del eBook para abrirlo y comenzar a leerlo.</li>
+                                    </ol>
+                                    <p><b>Nota 1:</b> Adobe Digital Editions tambi&eacute;n se puede utilizar para abrir y leer eBooks sin protecci&oacute;n DRM en tus ordenadores y dispositivos m&oacute;viles autorizados.</p>
+                                    <p><b>Nota 2:</b> Debes autorizar al lector de eBooks con un <a href="http://crear-cuentas.com/adobe-id/" target="_blank">adobe id.</a></p>
+                                    <p><b>Nota 3:</b> En dispositivos Android o iOS puedes usar otros lectores como Adliko, Universal Book Reader, FBReader, AlReader, Moon+ Reader, Bluefire.</p>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+
+        <!-- [footer starts here] -->
+        <tr>
+            <!--<td><a href="{{var store_url}}ayuda/paso-a-paso-compras2.html" target="_blank"><strong>Ver instructivo paso a paso</strong></a></td>-->
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                Ante cualquier duda ponte en contacto con nuestro
+                <a href="mailto:libroweb@alfaomega.com.mx"><strong>servicio de atenci&oacute;n al
+                                                                            cliente</strong></a>,
+                siempre ser&aacute; un placer atenderte de forma personal. <br/><br/> Te esperamos en <a
+                    target="_blank" href="http://www.alfaomega.com.mx/">Alfaomega Grupo Editor</a>.
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+    </table>
     <p></p>
     <p></p>
     <p></p>
