@@ -455,6 +455,8 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             }
 
             $result->title = strtoupper($result->title);
+            $result->read = (bool) $result->read;
+            $result->download = (bool) $result->download;
 
             // Add the post URL
             $ebookPost = Service::make()->ebooks()
