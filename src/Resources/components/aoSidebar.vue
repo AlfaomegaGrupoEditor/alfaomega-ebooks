@@ -38,6 +38,7 @@
 
     watch(() => props.show, (newVal) => {
         show.value = newVal;
+        console.log(book.value);
     });
 
     watch(() => props.data, (newVal) => {

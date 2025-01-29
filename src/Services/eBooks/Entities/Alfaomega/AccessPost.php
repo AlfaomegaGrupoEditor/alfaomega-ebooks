@@ -143,8 +143,8 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             'order_id'    => $data['access']['order_id'] ?? '',
             'sample_id'   => $data['access']['sample_id'] ?? '',
             'status'      => $data['access']['status'] ?? 'created',
-            'read'        => $data['access']['read'] ?? 1,
-            'download'    => $data['access']['download'] ?? 1,
+            'read'        => $data['access']['read'] ?? 0,
+            'download'    => $data['access']['download'] ?? 0,
             'due_date'    => $data['access']['due_date'] ?? '',
             'download_at' => $data['access']['download_at'] ?? '',
             'read_at'     => $data['access']['read_at'] ?? '',
@@ -228,12 +228,12 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             'alfaomega_access_read'  => [
                 'old'     => get_post_meta($postId, 'alfaomega_access_read', true),
                 'new'     => $data['read'],
-                'default' => 1,
+                'default' => 0,
             ],
             'alfaomega_access_download'  => [
                 'old'     => get_post_meta($postId, 'alfaomega_access_download', true),
                 'new'     => $data['download'],
-                'default' => 1,
+                'default' => 0,
             ],
             'alfaomega_access_due_date'  => [
                 'old'     => get_post_meta($postId, 'alfaomega_access_due_date', true),
@@ -455,6 +455,8 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             }
 
             $result->title = strtoupper($result->title);
+            $result->read = (bool) $result->read;
+            $result->download = (bool) $result->download;
 
             // Add the post URL
             $ebookPost = Service::make()->ebooks()
