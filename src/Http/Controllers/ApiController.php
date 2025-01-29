@@ -115,16 +115,24 @@ class ApiController
      */
     public function redeemCode(array $data = []): array
     {
-        Service::make()
-            ->ebooks()
-            ->samplePost()
-            ->redeem($data['code']);
+        try {
+            Service::make()
+                ->ebooks()
+                ->samplePost()
+                ->redeem($data['code']);
 
-        return [
-            'status'  => 'success',
-            'data'    => null,
-            'message' => esc_html__('Code redeemed successfully, the associated books were added to your personal library. Enjoy the reading!', 'alfaomega-ebooks'),
-        ];
+            return [
+                'status'  => 'success',
+                'data'    => null,
+                'message' => esc_html__('Code redeemed successfully, the associated books were added to your personal library. Enjoy the reading!', 'alfaomega-ebooks'),
+            ];
+        } catch (\Exception $e) {
+            return [
+                'status'  => 'fail',
+                'data'    => null,
+                'message' => $e->getMessage(),
+            ];
+        }
     }
 
     /**

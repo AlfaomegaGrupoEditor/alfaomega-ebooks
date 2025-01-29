@@ -123,7 +123,7 @@ if( !class_exists('Alfaomega_Ebooks_Access_Post_Type') ){
                         : esc_html__('No', 'alfaomega-ebooks');
                     break;
                 case 'alfaomega_access_download':
-                    $download = get_post_meta( $post_id, 'alfaomega_access_read', true );
+                    $download = get_post_meta( $post_id, 'alfaomega_access_download', true );
                     echo $download == 1
                         ? esc_html__('Yes', 'alfaomega-ebooks')
                         : esc_html__('No', 'alfaomega-ebooks');
