@@ -131,6 +131,7 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             throw new Exception(esc_html__('Ebook not found.', 'alfaomega-ebook'));
         }
 
+        $type = $data['access']['type'] ?? 'purchase';
         $access = [
             'user_id'     => $data['user_id'],
             'ebook_id'    => $data['ebook_id'],
@@ -139,12 +140,12 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             'title'       => $ebook['title'],
             'description' => $ebook['description'],
             'categories'  => $ebook['categories'],
-            'type'        => $data['access']['type'] ?? 'purchase',
+            'type'        => $type,
             'order_id'    => $data['access']['order_id'] ?? '',
             'sample_id'   => $data['access']['sample_id'] ?? '',
             'status'      => $data['access']['status'] ?? 'created',
-            'read'        => $data['access']['read'] ?? 0,
-            'download'    => $data['access']['download'] ?? 0,
+            'read'        => $data['access']['read'] ?? ( $type === 'purchase' ? 1 : 0),
+            'download'    => $data['access']['download'] ?? ( $type === 'purchase' ? 1 : 0),
             'due_date'    => $data['access']['due_date'] ?? '',
             'download_at' => $data['access']['download_at'] ?? '',
             'read_at'     => $data['access']['read_at'] ?? '',
