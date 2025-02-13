@@ -174,7 +174,9 @@ class EbookManager extends AbstractManager
         $filename = md5("{$eBook['isbn']}_{$downloadId}") . '.acsm';
         $filePath = ALFAOMEGA_EBOOKS_PATH . "downloads/$filename";
         if (file_exists($filePath)) {
-            $this->accessPost->updateDownloadId($accessPost['id'], $filename);
+            if (!empty($accessPost['id'])) {
+                $this->accessPost->updateDownloadId($accessPost['id'], $filename);
+            }
             return $filePath;
         }
 
