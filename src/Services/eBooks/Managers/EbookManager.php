@@ -182,7 +182,7 @@ class EbookManager extends AbstractManager
 
         $content = $this->getContent($eBook['isbn'], $downloadId);
         if (empty($content)) {
-            return '';
+            throw new Exception("Error getting the Adobe XML for {$eBook['isbn']} with transaction id $downloadId");
         }
 
         $success = file_put_contents($filePath, $content);
