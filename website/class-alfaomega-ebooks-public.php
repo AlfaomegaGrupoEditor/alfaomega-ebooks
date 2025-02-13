@@ -199,6 +199,19 @@ class Alfaomega_Ebooks_Public {
         }
     }
 
+    public function modify_download_file_column(array $download): void {
+        try {
+            $filePathArray = explode('/', trim($download['file']['file'], '/'));
+            $downloadId = $download['download_id'];
+            $eBookId = intval(end($filePathArray));
+            $service = new Alfaomega_Ebooks_Service();
+            $downloadUrl = $service->downloadEbookUrl($eBookId, $downloadId);
+            echo '<a href="' . $downloadUrl . '" class="woocommerce-MyAccount-downloads-file button alt">PDF</a>';
+        } catch (Exception $exception) {
+            esc_html_e( 'Not available', 'alfaomega-ebooks' );
+        }
+    }
+
     /**
      * Modify the product attributes when the eBook is not enabled.
      *
