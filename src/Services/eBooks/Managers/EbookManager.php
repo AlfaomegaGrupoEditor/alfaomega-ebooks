@@ -150,6 +150,13 @@ class EbookManager extends AbstractManager
         // If the download is not from a purchase, retrieve the downloadId
         // from the user downloads using the order_id and product_id
         $accessPost = $this->accessPost->get(intval($downloadId));
+        if (!empty($accessPost['download_id'])) {
+            $filePath = ALFAOMEGA_EBOOKS_PATH . "downloads/" . $accessPost['download_id'];
+            if (file_exists($filePath)) {
+                return $filePath;
+            }
+        }
+
         if (!$purchase && !empty($accessPost['orderId'])) {
             // TODO: Not tested yet
             $customerDownloads = Service::make()
@@ -166,6 +173,7 @@ class EbookManager extends AbstractManager
         $filename = md5("{$eBook['isbn']}_{$downloadId}") . '.acsm';
         $filePath = ALFAOMEGA_EBOOKS_PATH . "downloads/$filename";
         if (file_exists($filePath)) {
+            $this->accessPost->updateDownloadId($accessPost['id'], $filename);
             return $filePath;
         }
 
@@ -176,7 +184,7 @@ class EbookManager extends AbstractManager
 
         $success = file_put_contents($filePath, $content);
         if (! $success) {
-            return '';
+            throw new Exception("Error writing file $filePath for eBook download");
         }
 
         return $filePath;
