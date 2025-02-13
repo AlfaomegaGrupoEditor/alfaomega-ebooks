@@ -191,8 +191,9 @@ class Alfaomega_Ebooks_Public {
             $filePathArray = explode('/', trim($download['file']['file'], '/'));
             $downloadId = $download['download_id'];
             $eBookId = intval(end($filePathArray));
-            $service = new Alfaomega_Ebooks_Service();
-            $readerUrl = $service->readEbookUrl($eBookId, $downloadId);
+            //$service = new Alfaomega_Ebooks_Service(); // @fixme deprecated
+            //$readerUrl = $service->readEbookUrl($eBookId, $downloadId);
+            $readerUrl = site_url("alfaomega-ebooks/read/{$eBookId}?key={$downloadId}");
             echo '<a href="' . $readerUrl . '" class="woocommerce-MyAccount-downloads-file button alt">' . esc_html__( 'Read', 'alfaomega-ebooks' ) . '</a>';
         } catch (Exception $exception) {
             esc_html_e( 'Not available', 'alfaomega-ebooks' );
@@ -202,10 +203,12 @@ class Alfaomega_Ebooks_Public {
     public function modify_download_file_column(array $download): void {
         try {
             $filePathArray = explode('/', trim($download['file']['file'], '/'));
-            $downloadId = $download['download_id'];
             $eBookId = intval(end($filePathArray));
-            $service = new Alfaomega_Ebooks_Service();
-            $downloadUrl = $service->downloadEbookUrl($eBookId, $downloadId);
+            $accessPost = Service::make()
+                ->ebooks()
+                ->accessPost();
+            $userAccess = $accessPost->find($eBookId, get_current_user_id(), true);
+            $downloadUrl = site_url("alfaomega-ebooks/download/{$eBookId}?access={$userAccess['id']}");
             echo '<a href="' . $downloadUrl . '" class="woocommerce-MyAccount-downloads-file button alt">PDF</a>';
         } catch (Exception $exception) {
             esc_html_e( 'Not available', 'alfaomega-ebooks' );
