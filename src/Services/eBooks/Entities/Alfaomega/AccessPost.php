@@ -80,23 +80,35 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
      * @return array|null An associative array containing the post metadata or null if the post doesn't exist.
      * @throws \Exception
      */
-    public function find(int $eBookId, int $userId): ?array
+    public function find(int $eBookId, int $userId, bool $onlyPurchase = false): ?array
     {
         global $wpdb;
 
-        $query = $wpdb->prepare("
-                SELECT p.ID
-                FROM {$wpdb->posts} p
-                LEFT JOIN {$wpdb->postmeta} pm_status ON (p.ID = pm_status.post_id AND pm_status.meta_key = 'alfaomega_access_status')
-                WHERE p.post_type = 'alfaomega-access'
-                  AND p.post_status = 'publish'
-                  AND p.post_author = %d
-                  AND p.post_parent = %d
-                  AND pm_status.meta_value IN ('active', 'created')
-                LIMIT 1
-            ", $userId, $eBookId);
+        $query = "
+            SELECT p.ID
+            FROM {$wpdb->posts} p
+            LEFT JOIN {$wpdb->postmeta} pm_status ON (p.ID = pm_status.post_id AND pm_status.meta_key = 'alfaomega_access_status')
+            WHERE p.post_type = 'alfaomega-access'
+              AND p.post_status = 'publish'
+              AND p.post_author = %d
+              AND p.post_parent = %d
+              AND pm_status.meta_value IN ('active', 'created')";
 
-        $postId = $wpdb->get_var($query);
+        if ($onlyPurchase) {
+            $query .= " AND EXISTS (
+                SELECT 1
+                FROM {$wpdb->postmeta} pm_type
+                WHERE pm_type.post_id = p.ID
+                  AND pm_type.meta_key = 'alfaomega_access_type'
+                  AND pm_type.meta_value = 'purchase'
+            )";
+        }
+
+        $query .= " LIMIT 1";
+
+        $preparedQuery = $wpdb->prepare($query, $userId, $eBookId);
+        $postId = $wpdb->get_var($preparedQuery);
+
         if (empty($postId)) {
             return null;
         }
