@@ -60,6 +60,7 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             'status'      => get_post_meta($postId, 'alfaomega_access_status', true),
             'read'        => get_post_meta($postId, 'alfaomega_access_read', true),
             'download'    => get_post_meta($postId, 'alfaomega_access_download', true),
+            'download_id' => get_post_meta($postId, 'alfaomega_access_download_id', true),
             'due_date'    => get_post_meta($postId, 'alfaomega_access_due_date', true),
             'download_at' => get_post_meta($postId, 'alfaomega_access_download_at', true),
             'read_at'     => get_post_meta($postId, 'alfaomega_access_read_at', true),
@@ -131,6 +132,7 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             throw new Exception(esc_html__('Ebook not found.', 'alfaomega-ebook'));
         }
 
+        $type = $data['access']['type'] ?? 'purchase';
         $access = [
             'user_id'     => $data['user_id'],
             'ebook_id'    => $data['ebook_id'],
@@ -139,12 +141,13 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
             'title'       => $ebook['title'],
             'description' => $ebook['description'],
             'categories'  => $ebook['categories'],
-            'type'        => $data['access']['type'] ?? 'purchase',
+            'type'        => $type,
             'order_id'    => $data['access']['order_id'] ?? '',
             'sample_id'   => $data['access']['sample_id'] ?? '',
             'status'      => $data['access']['status'] ?? 'created',
-            'read'        => $data['access']['read'] ?? 0,
-            'download'    => $data['access']['download'] ?? 0,
+            'read'        => $data['access']['read'] ?? ( $type === 'purchase' ? 1 : 0),
+            'download'    => $data['access']['download'] ?? ( $type === 'purchase' ? 1 : 0),
+            'download_id' => $data['access']['download_id'] ?? '',
             'due_date'    => $data['access']['due_date'] ?? '',
             'download_at' => $data['access']['download_at'] ?? '',
             'read_at'     => $data['access']['read_at'] ?? '',
@@ -235,6 +238,11 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                 'new'     => $data['download'],
                 'default' => 0,
             ],
+            'alfaomega_access_download_id'  => [
+                'old'     => get_post_meta($postId, 'alfaomega_access_download_id', true),
+                'new'     => $data['download_id'],
+                'default' => '',
+            ],
             'alfaomega_access_due_date'  => [
                 'old'     => get_post_meta($postId, 'alfaomega_access_due_date', true),
                 'new'     => $data['due_date'],
@@ -315,9 +323,9 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         $accessType === 'read'
             ? update_post_meta(
                 $postId,
-                'alfaomega_access_at',
+                'alfaomega_access_read_at',
                 Carbon::now()->toDateTimeString(),
-                get_post_meta($postId, 'alfaomega_access_at', true)
+                get_post_meta($postId, 'alfaomega_access_read_at', true)
             )
             : update_post_meta(
                 $postId,
@@ -325,6 +333,22 @@ class AccessPost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                 Carbon::now()->toDateTimeString(),
                 get_post_meta($postId, 'alfaomega_access_download_at', true)
             );
+    }
+
+    /**
+     * Update the download ID of an eBook access post.
+     * This method updates the download ID of an eBook access post.
+     *
+     * @param int $postId The ID of the post to update.
+     * @param string $downloadId The new download ID.
+     *
+     * @return void
+     */
+    public function updateDownloadId(int $postId, string $downloadId): void
+    {
+        update_post_meta($postId, 'alfaomega_access_download_id', $downloadId,
+            get_post_meta($postId, 'alfaomega_access_download_id', true)
+        );
     }
 
     /**

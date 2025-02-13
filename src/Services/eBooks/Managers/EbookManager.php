@@ -150,13 +150,21 @@ class EbookManager extends AbstractManager
         // If the download is not from a purchase, retrieve the downloadId
         // from the user downloads using the order_id and product_id
         $accessPost = $this->accessPost->get(intval($downloadId));
-        if (!$purchase && !empty($accessPost['orderId'])) {
-            // TODO: Not tested yet
-            $customerDownloads = Service::make()
-                ->wooCommerce()
+        if (!empty($accessPost['download_id'])) {
+            $filePath = ALFAOMEGA_EBOOKS_PATH . "downloads/" . $accessPost['download_id'];
+            if (file_exists($filePath)) {
+                return $filePath;
+            }
+        }
+
+        if ($purchase && !empty($accessPost['order_id'])) {
+            $customerDownloads = Service::make()->wooCommerce()
                 ->getCustomerDownloads(get_current_user_id());
+
             foreach ($customerDownloads as $download) {
-                if ($download->product_id == $eBook['product_id']) {
+                $filePath = explode('/', $download->file->file);
+                $ebookId = end($filePath);
+                if ($ebookId == $eBook['id']) {
                     $downloadId = $download->download_id;
                     break;
                 }
@@ -166,6 +174,9 @@ class EbookManager extends AbstractManager
         $filename = md5("{$eBook['isbn']}_{$downloadId}") . '.acsm';
         $filePath = ALFAOMEGA_EBOOKS_PATH . "downloads/$filename";
         if (file_exists($filePath)) {
+            if (!empty($accessPost['id'])) {
+                $this->accessPost->updateDownloadId($accessPost['id'], $filename);
+            }
             return $filePath;
         }
 
@@ -176,7 +187,7 @@ class EbookManager extends AbstractManager
 
         $success = file_put_contents($filePath, $content);
         if (! $success) {
-            return '';
+            throw new Exception("Error writing file $filePath for eBook download");
         }
 
         return $filePath;
