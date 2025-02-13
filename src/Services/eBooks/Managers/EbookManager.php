@@ -157,13 +157,14 @@ class EbookManager extends AbstractManager
             }
         }
 
-        if (!$purchase && !empty($accessPost['orderId'])) {
-            // TODO: Not tested yet
-            $customerDownloads = Service::make()
-                ->wooCommerce()
+        if ($purchase && !empty($accessPost['order_id'])) {
+            $customerDownloads = Service::make()->wooCommerce()
                 ->getCustomerDownloads(get_current_user_id());
+
             foreach ($customerDownloads as $download) {
-                if ($download->product_id == $eBook['product_id']) {
+                $filePath = explode('/', $download->file->file);
+                $ebookId = end($filePath);
+                if ($ebookId == $eBook['id']) {
                     $downloadId = $download->download_id;
                     break;
                 }
