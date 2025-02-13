@@ -151,12 +151,12 @@ class Alfaomega_Ebooks_Public {
      * @param WC_Customer_Download $download The download object.
      * @return string The file path for the download.
      */
-    public function download_product_filepath($file_path, $email_address, $order, $product, $download): string {
+    public function download_product_filepath($file_path, $email_address, $order, $product, $download): string|bool {
         $downloadId = $download->data['download_id'];
         $filePathArray = explode('/', trim($file_path, '/'));
         $eBookId = intval(end($filePathArray));
         if (empty($downloadId) || empty($eBookId)) {
-            return $file_path;
+            return wp_safe_redirect('/my-ao-ebooks');
         }
 
         try {
@@ -164,7 +164,7 @@ class Alfaomega_Ebooks_Public {
                 ->download($eBookId, $downloadId);
 
         } catch (Exception $exception) {
-            return $file_path;
+            return wp_safe_redirect('/my-ao-ebooks');
         }
     }
 
