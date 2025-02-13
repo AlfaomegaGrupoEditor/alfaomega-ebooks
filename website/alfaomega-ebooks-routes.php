@@ -53,7 +53,7 @@ switch (get_query_var('param_1')) {
             $ebookId = intval(get_query_var('param_2'));
             $purchase = isset($_GET['key']);
             $accessKey = $purchase ?  $_GET['key'] : ($_GET['access'] ?? '');
-            $filePath = Service::make()->ebooks()->download($ebookId, $accessKey, $accessKey);
+            $filePath = Service::make()->ebooks()->download($ebookId, $accessKey, $purchase);
             if (empty($filePath)) {
                 $_SESSION['alfaomega_ebooks_msg'] = [
                     'type' => 'error',
