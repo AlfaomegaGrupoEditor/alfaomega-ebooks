@@ -269,6 +269,7 @@ class Alfaomega_Ebooks {
         $this->loader->add_filter('woocommerce_download_product_filepath', $plugin_public, 'download_product_filepath', 10, 5);
         $this->loader->add_filter('woocommerce_account_downloads_columns', $plugin_public, 'download_product_columns');
         $this->loader->add_action( 'woocommerce_account_downloads_column_read-online', $plugin_public, 'add_read_online_column' );
+        $this->loader->add_action( 'woocommerce_account_downloads_column_download-file', $plugin_public, 'modify_download_file_column' );
 
         $this->loader->add_filter('woocommerce_dropdown_variation_attribute_options_args', $plugin_public, 'product_get_attributes', 10, 2);
         $this->loader->add_filter('woocommerce_dropdown_variation_attribute_options_html', $plugin_public, 'dropdown_variation_attribute_options_html', 10, 2);

@@ -1188,6 +1188,21 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
         }
 
         /**
+         * Generates a URL to download an eBook.
+         * This method generates a URL for reading an eBook by its ID and download ID.
+         * The URL is constructed using the site URL, the eBook ID, and the download ID.
+         *
+         * @param int $ebookId       The ID of the eBook to generate a URL for.
+         * @param string $downloadId The download ID of the eBook.
+         *
+         * @return string Returns the URL for reading the eBook.
+         */
+        public function downloadEbookUrl(int $ebookId, string $downloadId): string
+        {
+            return site_url("alfaomega-ebooks/download/{$ebookId}?key={$downloadId}");
+        }
+
+        /**
          * Retrieves the download file content for an eBook from Alfaomega.
          * This method sends a GET or POST request to the Alfaomega API to retrieve the download file content for an eBook.
          * The eBook is identified by its ISBN and transaction ID, which are passed as parameters.
