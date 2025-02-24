@@ -69,11 +69,11 @@ class Variant extends WooAbstractEntity
         $formatOptions = ['impreso', 'digital', 'impreso-digital'];
         foreach ($formatOptions as $format) {
             $data = $this->getData($product, $format, $prices, $ebook['id'], $ebook['isbn']);
+            Service::make()->log("creating: $format");
             $variation = empty($variationIds[$format])
                 ? $this->client->post("products/{$product['id']}/variations", $data)
                 : $this->client->put("products/{$product['id']}/variations/{$variationIds[$format]}", $data);
 
-            Service::make()->log($variation);
             if (empty($variation)) {
                 throw new Exception("Variation creation failed");
             }
