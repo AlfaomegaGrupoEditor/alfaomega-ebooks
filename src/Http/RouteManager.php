@@ -7,6 +7,7 @@ use AlfaomegaEbooks\Http\Controllers\EbooksMassActionsController;
 use AlfaomegaEbooks\Http\Controllers\EbooksQuickActionsController;
 use AlfaomegaEbooks\Http\Controllers\QueueController;
 use AlfaomegaEbooks\Http\Controllers\WebhooksController;
+use AlfaomegaEbooks\Services\eBooks\Service;
 
 /**
  * Class RouteManger
@@ -239,7 +240,7 @@ class RouteManager
 
         [$class, $endpoint] = $this->quickActions[$action];
         $controller = new $class;
-        WP_DEBUG && error_log("$class -> $endpoint", 3, WP_CONTENT_DIR . '/plugins/alfaomega-ebooks/debug.log');
+        Service::make()->log("$class -> $endpoint");
         $redirectUrl = $controller->{$endpoint}($_GET['post'], $_SERVER['HTTP_REFERER'] ?? admin_url('edit.php?post_type=product'));
 
         wp_redirect($redirectUrl);

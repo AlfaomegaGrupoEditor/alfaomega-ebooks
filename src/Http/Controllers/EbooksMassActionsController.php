@@ -38,7 +38,7 @@ class EbooksMassActionsController
 
             $redirectUrl = add_query_arg('updated-meta', $eBooks, $redirectUrl);
         } catch (Exception $exception) {
-            WP_DEBUG && error_log($exception->getMessage());
+            Service::make()->log($exception->getMessage());
             $redirectUrl = add_query_arg('updated-meta', 'fail', $redirectUrl);
         }
 
@@ -75,7 +75,7 @@ class EbooksMassActionsController
             }
             $redirectUrl = add_query_arg('link-product', $products, $redirectUrl);
         } catch (Exception $exception) {
-            WP_DEBUG && error_log($exception->getMessage());
+            Service::make()->log($exception->getMessage());
             $redirectUrl = add_query_arg('link-product', 'fail', $redirectUrl);
         }
         
@@ -113,7 +113,7 @@ class EbooksMassActionsController
 
             $redirectUrl = add_query_arg('link-ebook', $links, $redirectUrl);
         } catch (Exception $exception) {
-            WP_DEBUG && error_log($exception->getMessage());
+            Service::make()->log($exception->getMessage());
             $redirectUrl = add_query_arg('link-ebook', 'fail', $redirectUrl);
         }
 

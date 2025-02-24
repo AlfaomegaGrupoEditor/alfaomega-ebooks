@@ -147,4 +147,15 @@ class Service
     {
         return $this->actionSchedulerSetup;
     }
+
+    /**
+     * Log a message to the debug log.
+     *
+     * @param string $message The message to log.
+     */
+    public function log(string $message): void
+    {
+        $message = sprintf('[%s] %s', date('Y-m-d H:i:s'), $message) . PHP_EOL;
+        WP_DEBUG && error_log($message, 3, WP_CONTENT_DIR . '/plugins/alfaomega-ebooks/debug.log');
+    }
 }
