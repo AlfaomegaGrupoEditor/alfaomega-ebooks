@@ -100,7 +100,7 @@ class EbooksQuickActionsController
 
             $links = count($result);
             if ($links === 0) {
-                throw new Exception("Can't find the related ebook, please add the eBook ISBN to the product.");
+                throw new Exception("No product linked, please check the logs.");
             }
 
             $redirectUrl = add_query_arg('link-ebook', $links, $redirectUrl);
