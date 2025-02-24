@@ -100,7 +100,7 @@ class LinkProduct extends AbstractProcess implements ProcessContract
 
             return $product['id'];
         } catch (\Exception $e) {
-            Service::make()->log($e->getMessage());
+            Service::make()->log($e->getMessage(), $e->getTraceAsString());
             if (!empty($originalProduct)) {
                 $this->entity->updateType($originalProduct, 'simple');
             }
