@@ -100,6 +100,7 @@ class LinkProduct extends AbstractProcess implements ProcessContract
 
             return $product['id'];
         } catch (\Exception $e) {
+            WP_DEBUG && error_log($e->getMessage());
             if (!empty($originalProduct)) {
                 $this->entity->updateType($originalProduct, 'simple');
             }
