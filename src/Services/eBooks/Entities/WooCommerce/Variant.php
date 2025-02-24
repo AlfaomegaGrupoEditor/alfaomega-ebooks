@@ -76,6 +76,12 @@ class Variant extends WooAbstractEntity
             } catch (Exception $e) {
                 $variation = null;
                 Service::make()->log("creating variation for format $format failed");
+                Service::make()->log(empty($variationIds[$format])
+                    ? "POST products/{$product['id']}/variations"
+                    : "PUT products/{$product['id']}/variations/{$variationIds[$format]}"
+                );
+                Service::make()->log($data);
+
                 Service::make()->log($e->getMessage(), $e->getTraceAsString());
             }
 
