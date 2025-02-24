@@ -151,10 +151,13 @@ class Service
     /**
      * Log a message to the debug log.
      *
-     * @param string $message The message to log.
+     * @param Mixed $message The message to log.
      */
-    public function log(string $message, string $trace = ''): void
+    public function log(Mixed $message, string $trace = ''): void
     {
+        if (!is_string($message)) {
+            $message = json_encode($message, JSON_PRETTY_PRINT);
+        }
         $message = sprintf('[%s] %s', date('Y-m-d H:i:s'), $message) . PHP_EOL;
         WP_DEBUG && error_log($message, 3, WP_CONTENT_DIR . '/plugins/alfaomega-ebooks/debug.log');
         if (!empty($trace)) {
@@ -162,11 +165,9 @@ class Service
         }
     }
 
-    public function removeQueryArgs(): void
+    public function removeQueryArgs(string $query): string
     {
         $args = ['find-product', 'link-ebook', 'unlink-ebook', 'updated-meta'];
-        foreach ($args as $arg) {
-            remove_query_arg($arg);
-        }
+        return remove_query_arg($args, $query);
     }
 }
