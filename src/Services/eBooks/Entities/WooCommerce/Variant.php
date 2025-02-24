@@ -73,7 +73,7 @@ class Variant extends WooAbstractEntity
                 ? $this->client->post("products/{$product['id']}/variations", $data)
                 : $this->client->put("products/{$product['id']}/variations/{$variationIds[$format]}", $data);
 
-            Service::make()->log($data);
+            Service::make()->log($variation);
             if (empty($variation)) {
                 throw new Exception("Variation creation failed");
             }
