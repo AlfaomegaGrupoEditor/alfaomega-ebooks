@@ -62,6 +62,7 @@ class EbooksQuickActionsController
     public function quickFindProduct(int $postId, string $redirectUrl): string
     {
         try {
+            Service::make()->removeQueryArgs();
             $product = Service::make()
                 ->wooCommerce()
                 ->linkEbook()
@@ -93,6 +94,7 @@ class EbooksQuickActionsController
     public function quickLinkEbook(int $postId, string $redirectUrl): string
     {
         try {
+            Service::make()->removeQueryArgs();
             $result = Service::make()
                 ->wooCommerce()
                 ->linkEbook()
@@ -121,6 +123,7 @@ class EbooksQuickActionsController
     public function quickUnlinkEbook(int $postId, string $redirectUrl): string
     {
         try {
+            Service::make()->removeQueryArgs();
             $unlinked = Service::make()
                 ->wooCommerce()
                 ->linkEbook()

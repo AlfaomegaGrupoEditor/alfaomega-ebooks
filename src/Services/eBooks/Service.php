@@ -161,4 +161,12 @@ class Service
             WP_DEBUG && error_log($trace . PHP_EOL, 3, WP_CONTENT_DIR . '/plugins/alfaomega-ebooks/debug.log');
         }
     }
+
+    public function removeQueryArgs(): void
+    {
+        $args = ['find-product', 'link-ebook', 'unlink-ebook', 'updated-meta'];
+        foreach ($args as $arg) {
+            remove_query_arg($arg);
+        }
+    }
 }
