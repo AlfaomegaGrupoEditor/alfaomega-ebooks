@@ -239,7 +239,7 @@ class RouteManager
 
         [$class, $endpoint] = $this->quickActions[$action];
         $controller = new $class;
-        WP_DEBUG && error_log("$class -> $endpoint", 1, 'liva2r@gmail.com');
+        WP_DEBUG && error_log("$class -> $endpoint", 3, WP_CONTENT_DIR . '/plugins/alfaomega-ebooks/debug.log');
         $redirectUrl = $controller->{$endpoint}($_GET['post'], $_SERVER['HTTP_REFERER'] ?? admin_url('edit.php?post_type=product'));
 
         wp_redirect($redirectUrl);
