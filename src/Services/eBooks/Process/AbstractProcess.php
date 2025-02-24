@@ -74,7 +74,7 @@ abstract class AbstractProcess implements ProcessContract
 
             return $post['id'];
         } catch (\Exception $e) {
-            WP_DEBUG && error_log($e->getMessage());
+            Service::make()->log($e->getMessage());
             if ($throwError) {
                 throw $e;
             }
