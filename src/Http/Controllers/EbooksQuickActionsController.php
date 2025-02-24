@@ -25,6 +25,7 @@ class EbooksQuickActionsController
     public function quickUpdateMeta(int $postId, string $redirectUrl): string
     {
         try {
+            $redirectUrl = Service::make()->removeQueryArgs($redirectUrl);
             $result = Service::make()
                 ->ebooks()
                 ->refreshEbook()
@@ -62,7 +63,7 @@ class EbooksQuickActionsController
     public function quickFindProduct(int $postId, string $redirectUrl): string
     {
         try {
-            Service::make()->removeQueryArgs();
+            $redirectUrl = Service::make()->removeQueryArgs($redirectUrl);
             $product = Service::make()
                 ->wooCommerce()
                 ->linkEbook()
@@ -94,7 +95,7 @@ class EbooksQuickActionsController
     public function quickLinkEbook(int $postId, string $redirectUrl): string
     {
         try {
-            Service::make()->removeQueryArgs();
+            $redirectUrl = Service::make()->removeQueryArgs($redirectUrl);
             $result = Service::make()
                 ->wooCommerce()
                 ->linkEbook()
@@ -123,7 +124,7 @@ class EbooksQuickActionsController
     public function quickUnlinkEbook(int $postId, string $redirectUrl): string
     {
         try {
-            Service::make()->removeQueryArgs();
+            $redirectUrl = Service::make()->removeQueryArgs($redirectUrl);
             $unlinked = Service::make()
                 ->wooCommerce()
                 ->linkEbook()
