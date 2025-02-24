@@ -34,6 +34,7 @@ class EbooksController
                     'message' => $message,
                 ], 200);
         } catch (\Exception $exception) {
+            WP_DEBUG && error_log($exception->getMessage());
             return new WP_REST_Response([
                 'status'  => 'fail',
                 'message' => $exception->getMessage()
@@ -73,6 +74,7 @@ class EbooksController
                 'message' => $message,
             ], 200);
         } catch (\Exception $exception) {
+            WP_DEBUG && error_log($exception->getMessage());
             return new WP_REST_Response([
                 'status'  => 'fail',
                 'message' => $exception->getMessage()
@@ -112,6 +114,7 @@ class EbooksController
                 'message' => $message,
             ], 200);
         } catch (\Exception $exception) {
+            WP_DEBUG && error_log($exception->getMessage());
             return new WP_REST_Response([
                 'status'  => 'fail',
                 'message' => $exception->getMessage()
@@ -142,6 +145,7 @@ class EbooksController
                 'message' => 'Good job!',
             ], 200);
         } catch (\Exception $exception) {
+            WP_DEBUG && error_log($exception->getMessage());
             return new WP_REST_Response([
                 'status'  => 'fail',
                 'message' => $exception->getMessage()
