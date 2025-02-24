@@ -37,7 +37,7 @@ class EbooksQuickActionsController
 
             $redirectUrl = add_query_arg('updated-meta', $eBooks, $redirectUrl);
         } catch (Exception $exception) {
-            WP_DEBUG && error_log($exception->getMessage());
+            Service::make()->log($exception->getMessage());
             $redirectUrl = add_query_arg('updated-meta', 'fail', $redirectUrl);
         }
 
@@ -76,7 +76,7 @@ class EbooksQuickActionsController
             $redirectUrl = add_query_arg('post', $product->get_id(), $redirectUrl);
             $redirectUrl = add_query_arg('action', 'edit', $redirectUrl);
         } catch (Exception $exception) {
-            WP_DEBUG && error_log($exception->getMessage());
+            Service::make()->log($exception->getMessage());
             $redirectUrl = add_query_arg('find-product', 'fail', $redirectUrl);
         }
 
@@ -105,7 +105,7 @@ class EbooksQuickActionsController
 
             $redirectUrl = add_query_arg('link-ebook', $links, $redirectUrl);
         } catch (Exception $exception) {
-            WP_DEBUG && error_log($exception->getMessage());
+            Service::make()->log($exception->getMessage());
             $redirectUrl = add_query_arg('link-ebook', 'fail', $redirectUrl);
         }
         return $redirectUrl;
@@ -132,7 +132,7 @@ class EbooksQuickActionsController
 
             $redirectUrl = add_query_arg('unlink-ebook', $unlinked, $redirectUrl);
         } catch (Exception $exception) {
-            WP_DEBUG && error_log($exception->getMessage());
+            Service::make()->log($exception->getMessage());
             $redirectUrl = add_query_arg('unlink-ebook', 'fail', $redirectUrl);
         }
         return $redirectUrl;
