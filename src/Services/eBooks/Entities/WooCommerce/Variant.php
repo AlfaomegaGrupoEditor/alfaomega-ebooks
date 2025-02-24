@@ -66,6 +66,7 @@ class Variant extends WooAbstractEntity
             }
         }
 
+        Service::make()->log($variationIds);
         $formatOptions = ['impreso', 'digital', 'impreso-digital'];
         foreach ($formatOptions as $format) {
             $data = $this->getData($product, $format, $prices, $ebook['id'], $ebook['isbn']);
