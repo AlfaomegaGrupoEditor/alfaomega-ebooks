@@ -99,7 +99,7 @@
                                     <ol>
                                         <li>Haz clic en Descargar y selecciona un lugar para guardar el eBook. El archivo se guardar&aacute; en formato ACSM.</li>
                                         <li>Localiza el archivo ACSM guardado.</li>
-                                        <li>Haz clic con el bot&oacute;n derecho en el archivo ACSM y selecciona Abrir con > <a href="https://helpx.adobe.com/es/digital-editions/kb/install-digital-editions-windows-7.html" target="_blank">Adobe Digital Editions.</a></li>
+                                        <li>Haz clic con el bot&oacute;n derecho en el archivo ACSM y selecciona Abrir con > <a href="https://www.adobe.com/mx/solutions/ebook/digital-editions/download.html" target="_blank">Adobe Digital Editions.</a></li>
                                         <li>Haz clic en el icono Biblioteca para ver tu colecci&oacute;n de eBooks.</li>
                                         <li>Haz clic en la flecha hacia abajo y selecciona A&ntilde;adir elemento a la biblioteca.</li>
                                         <li>Busca el eBook protegido por DRM y selecci&oacute;nalo. A continuaci&oacute;n, aparecer&aacute; en la vista de la Biblioteca ADE, donde podr&aacute;s seleccionarlo.</li>
