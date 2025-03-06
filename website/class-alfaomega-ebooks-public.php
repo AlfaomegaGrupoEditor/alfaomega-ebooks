@@ -250,15 +250,15 @@ class Alfaomega_Ebooks_Public {
             return $printedSelected;
         }
 
-        $outOfStock = !wc_get_product($product->get_id())->is_in_stock();
-        if ($outOfStock) {
+        /*$outOfStock = !wc_get_product($product->get_id())->is_in_stock();
+        if ($outOfStock) {*/
             $html = str_replace("selected='selected'", '', $html);
             $html = str_replace(
-                'value="digital"',
-                'selected="selected" value="digital"',
+                'value="impreso"',
+                'selected="selected" value="impreso"',
                 $html
             );
-        }
+        /*}*/
 
         return $html;
     }
