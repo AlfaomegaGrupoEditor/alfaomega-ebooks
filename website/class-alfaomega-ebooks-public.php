@@ -359,10 +359,8 @@ class Alfaomega_Ebooks_Public {
      *
      * @return string
      */
-    function alfaomega_product_variation_price_format($price, $from, $to): string
+    function alfaomega_product_variation_price_format($price, $product): string
     {
-        Global $product;
-
         if ( is_product() && has_term( 'variable', 'product_type' ) ) {
             $variations = $product->get_available_variations();
             foreach ($variations as $variation) {
@@ -374,10 +372,5 @@ class Alfaomega_Ebooks_Public {
         }
 
         return $price;
-    }
-
-    public function alfaomega_show_variation_price($condition, $that, $variation)
-    {
-        return true;
     }
 }
