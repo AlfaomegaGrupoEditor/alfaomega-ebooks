@@ -375,4 +375,9 @@ class Alfaomega_Ebooks_Public {
 
         return $price;
     }
+
+    public function alfaomega_show_variation_price($condition, $that, $variation)
+    {
+        return true;
+    }
 }
