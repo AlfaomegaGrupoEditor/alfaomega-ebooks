@@ -365,15 +365,12 @@ class Alfaomega_Ebooks_Public {
 
         if ( is_product() && has_term( 'variable', 'product_type' ) ) {
             $variations = $product->get_available_variations();
-            $prices = [];
             foreach ($variations as $variation) {
-                $prices[] = $variation['display_price'];
                 if ($variation['attributes']['attribute_pa_book-format'] === 'impreso') {
                     return wc_price($variation['display_price']);
                 }
             }
-            sort($prices);
-            return wc_price(count($prices) === 3 ? $prices[1] : $product->get_price());
+            return wc_price($product->get_price());
         }
 
         return $price;
