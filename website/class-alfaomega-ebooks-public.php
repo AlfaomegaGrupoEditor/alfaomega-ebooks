@@ -353,22 +353,20 @@ class Alfaomega_Ebooks_Public {
     /**
      * Format the price of the product variation
      *
-     * @param string $price
-     * @param float $from
-     * @param float $to
+     * @param $price
+     * @param $product
      *
      * @return string
      */
     function alfaomega_product_variation_price_format($price, $product): string
     {
-        if ( is_product() && has_term( 'variable', 'product_type' ) ) {
+        if ( $product->is_type( 'variable' ) ) {
             $variations = $product->get_available_variations();
             foreach ($variations as $variation) {
                 if ($variation['attributes']['attribute_pa_book-format'] === 'impreso') {
-                    return wc_price($variation['display_price']);
+                    return '<span class="woocommerce-Price-amount amount">' . wc_price($variation['display_price']) . '</span>';
                 }
             }
-            return wc_price($product->get_price());
         }
 
         return $price;
