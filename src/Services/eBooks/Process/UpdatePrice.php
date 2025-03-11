@@ -306,8 +306,8 @@ class UpdatePrice extends LinkProduct implements ProcessContract
 
             [$regularPrice, $salesPrice] = $this->getPrintedPrice($product) ?? [0, 0];
             if (empty($regularPrice)) {
-                $regularPrice = $product->get_regular_price();
-                $salesPrice = $product->get_sale_price();
+                $regularPrice = str_replace(',', '', $product->get_regular_price());
+                $salesPrice = str_replace(',', '', $product->get_sale_price());
             }
 
             if (empty($regularPrice)) {
@@ -382,8 +382,8 @@ class UpdatePrice extends LinkProduct implements ProcessContract
             $childProduct = wc_get_product($childId);
             if ($childProduct->get_attribute('pa_book-format') === 'Impreso') {
                 return [
-                    $childProduct->get_regular_price() ?? 0,
-                    $childProduct->get_sale_price() ?? '',
+                    $childProduct->get_regular_price() ? str_replace(',', '', $childProduct->get_regular_price()) : 0,
+                    $childProduct->get_sale_price() ? str_replace(',', '',$childProduct->get_sale_price()) : '',
                 ];
             }
         }
