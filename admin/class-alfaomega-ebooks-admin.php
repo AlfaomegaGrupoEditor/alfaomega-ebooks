@@ -704,7 +704,7 @@ class Alfaomega_Ebooks_Admin {
     {
         foreach ($downloads as &$download) {
             try {
-                $filePathArray = explode('/', trim($download['download_url'], '/'));
+                $filePathArray = explode('/', trim($download['file']['file'], '/'));
                 $eBookId = intval(end($filePathArray));
                 $accessPost = Service::make()->ebooks()->accessPost();
                 $userAccess = $accessPost->find($eBookId, $order->get_customer_id(), true);
