@@ -697,11 +697,10 @@ class Alfaomega_Ebooks_Admin {
      *
      * @param array $downloads
      * @param WC_Order $order
-     * @param WC_Email $email
      *
      * @return array
      */
-    function alfaomega_product_download_link_email($downloads, $order, $email): array
+    function alfaomega_product_download_link_email(array $downloads, WC_Order $order): array
     {
         foreach ($downloads as &$download) {
             try {
