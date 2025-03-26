@@ -282,6 +282,7 @@ class Alfaomega_Ebooks {
         $this->loader->add_filter('woocommerce_product_tabs', $plugin_public, 'alfaomega_product_tabs');
         $this->loader->add_filter('woocommerce_variable_price_html', $plugin_public, 'alfaomega_product_variation_price_format', 10, 2);
         $this->loader->add_filter('woocommerce_get_price_html', $plugin_public, 'alfaomega_product_variation_price_format', 10, 2);
+        $this->loader->add_filter('woocommerce_email_downloads', $plugin_public,'alfaomega_product_download_link_email', 10, 3);
 
     }
 

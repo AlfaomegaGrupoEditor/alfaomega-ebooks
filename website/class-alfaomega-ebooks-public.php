@@ -371,4 +371,29 @@ class Alfaomega_Ebooks_Public {
 
         return $price;
     }
+
+    /**
+     * Add a custom parameter to the download link in the email
+     *
+     * @param array $downloads
+     * @param WC_Order $order
+     * @param WC_Email $email
+     *
+     * @return array
+     */
+    function alfaomega_product_download_link_email($downloads, $order, $email): array
+    {
+        foreach ($downloads as &$download) {
+            try {
+                $filePathArray = explode('/', trim($download['download_url'], '/'));
+                $eBookId = intval(end($filePathArray));
+                $accessPost = Service::make()->ebooks()->accessPost();
+                $userAccess = $accessPost->find($eBookId, $order->get_customer_id(), true);
+                $download['download_url'] = site_url("alfaomega-ebooks/download/{$eBookId}?access={$userAccess['id']}");
+            } catch (Exception $exception) {
+                Service::make()->log($exception->getMessage());
+            }
+        }
+        return $downloads;
+    }
 }
