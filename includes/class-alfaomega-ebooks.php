@@ -248,6 +248,9 @@ class Alfaomega_Ebooks {
         $this->loader->add_action('after_setup_theme', $plugin_admin, 'create_my_ao_ebook_page');
         // $this->loader->add_action('wp_update_nav_menu', $plugin_admin, 'add_my_ebook_to_menu');
         $this->loader->add_shortcode('my_ao_ebooks', $plugin_admin, 'my_ao_ebook_shortcode');
+
+        // Modify the WooCommerce product download link sent in the email
+        $this->loader->add_filter('woocommerce_email_downloads', $plugin_admin,'alfaomega_product_download_link_email', 10, 3);
     }
 
 	/**
@@ -282,7 +285,6 @@ class Alfaomega_Ebooks {
         $this->loader->add_filter('woocommerce_product_tabs', $plugin_public, 'alfaomega_product_tabs');
         $this->loader->add_filter('woocommerce_variable_price_html', $plugin_public, 'alfaomega_product_variation_price_format', 10, 2);
         $this->loader->add_filter('woocommerce_get_price_html', $plugin_public, 'alfaomega_product_variation_price_format', 10, 2);
-        $this->loader->add_filter('woocommerce_email_downloads', $plugin_public,'alfaomega_product_download_link_email', 10, 3);
 
     }
 

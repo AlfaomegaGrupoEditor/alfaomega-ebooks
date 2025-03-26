@@ -2,6 +2,7 @@
 
 use AlfaomegaEbooks\Http\RouteManager;
 use AlfaomegaEbooks\Services\eBooks\Emails\AlfaomegaEbooksSampleEmail;
+use AlfaomegaEbooks\Services\eBooks\Service;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -689,5 +690,30 @@ class Alfaomega_Ebooks_Admin {
         require ALFAOMEGA_EBOOKS_PATH . 'views/alfaomega_ebook_my_ebooks.php';
 
         return ob_get_clean();
+    }
+
+    /**
+     * Add a custom parameter to the download link in the email
+     *
+     * @param array $downloads
+     * @param WC_Order $order
+     * @param WC_Email $email
+     *
+     * @return array
+     */
+    function alfaomega_product_download_link_email($downloads, $order, $email): array
+    {
+        foreach ($downloads as &$download) {
+            try {
+                $filePathArray = explode('/', trim($download['download_url'], '/'));
+                $eBookId = intval(end($filePathArray));
+                $accessPost = Service::make()->ebooks()->accessPost();
+                $userAccess = $accessPost->find($eBookId, $order->get_customer_id(), true);
+                $download['download_url'] = site_url("alfaomega-ebooks/download/{$eBookId}?access={$userAccess['id']}");
+            } catch (Exception $exception) {
+                Service::make()->log($exception->getMessage());
+            }
+        }
+        return $downloads;
     }
 }
