@@ -82,9 +82,9 @@
                             <td width="50%" style="border: 1px solid #808080;">
                                 <span>
                                     <ol>
-                                        <li>Accede a <a href="https://www.alfaomega.com.mx">https://www.alfaomega.com.mx</a> </li>
+                                        <li>Accede a <a href="<?php echo esc_url( home_url() ); ?>"><?php echo esc_url( home_url() ); ?></a> </li>
                                         <li>Inicia sesi&oacute;n, si ya posees una cuenta.</a> </li>
-                                        <li>Accede a la opci&oacute;n "Mis eBooks", en <a href="https://www.alfaomega.com.mx/my-ao-ebooks"> https://www.alfaomega.com.mx/my-ao-ebooks</a></li>
+                                        <li>Accede a la opci&oacute;n "Mis eBooks", en <a href="<?php echo esc_url( home_url() ); ?>/my-ao-ebooks"> <?php echo esc_url( home_url() ); ?>/my-ao-ebooks</a></li>
                                         <li>Clic en el libro deseado (El acceso se agrega autom&aacute;ticamnete al acretitarse el pago). Si recibistes una muestra copia y aplica el c&oacute;digo recibido.</li>
                                     </ol>
                                 </span>
