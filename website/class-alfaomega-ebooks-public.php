@@ -364,7 +364,7 @@ class Alfaomega_Ebooks_Public {
             $variations = $product->get_available_variations();
             foreach ($variations as $variation) {
                 if ($variation['attributes']['attribute_pa_book-format'] === 'impreso') {
-                    if (!empty($variation['display_price'] !== $variation['display_regular_price'])) {
+                    if ($variation['display_price'] !== $variation['display_regular_price']) {
                         return '<p class="price">
                                     <del aria-hidden="true">' . wc_price($variation['display_regular_price']) . '</del> 
                                     <span class="screen-reader-text"> El precio original era: $'. $variation['display_regular_price'] . '</span>
