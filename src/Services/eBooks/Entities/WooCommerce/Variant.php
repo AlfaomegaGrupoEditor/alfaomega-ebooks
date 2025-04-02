@@ -147,7 +147,6 @@ class Variant extends WooAbstractEntity
         return $stockQuantity;
     }
 
-
     /**
      * Get data for a specific variant format.
      *
@@ -187,7 +186,7 @@ class Variant extends WooAbstractEntity
                 ]],
             ],
             'digital' => [
-                'description'     => 'Libro digital para lectura en línea y descarga del PDF con DRM',
+                'description'     => 'Libro digital para lectura en línea y descarga con DRM',
                 'sku'             => $ebookIsbn . ' (digital)',
                 'regular_price'   => number_format($prices['regular_price'] * ($this->settings['alfaomega_ebooks_price'] / 100), 0, '', ''),
                 'status'          => 'publish',
@@ -207,7 +206,7 @@ class Variant extends WooAbstractEntity
                 ],
             ],
             'impreso-digital' => [
-                'description'     => 'Libro impreso y libro digital para lectura en línea y descarga del PDF con DRM',
+                'description'     => 'Libro impreso y libro digital para lectura en línea y descarga con DRM',
                 'sku'             => $product['sku'] . ' (impreso), ' . $ebookIsbn . ' (digital)',
                 'regular_price'   => number_format($prices['regular_price'] * ($this->settings['alfaomega_ebooks_printed_digital_price'] / 100), 0, '', ''),
                 'status'          => 'publish',
