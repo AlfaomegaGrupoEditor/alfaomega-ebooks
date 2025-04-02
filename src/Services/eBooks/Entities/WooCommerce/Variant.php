@@ -147,7 +147,6 @@ class Variant extends WooAbstractEntity
         return $stockQuantity;
     }
 
-
     /**
      * Get data for a specific variant format.
      *
