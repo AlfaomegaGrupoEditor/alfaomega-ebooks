@@ -1191,7 +1191,7 @@ msgstr "Acceso para leeer en línea el eBook"
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:270
 msgid "download the PDF with DRM"
-msgstr "Descarga del PDF con DRM."
+msgstr "Descarga con DRM."
 
 #: post_types/class-alfaomega-ebooks-access-post-type.php:399
 msgid "Created"
@@ -1269,7 +1269,7 @@ msgstr "Archivo PDF"
 
 #: post_types/class-alfaomega-ebooks-post-type.php:215
 msgid "Download the PDF with DRM"
-msgstr "Descarga del PDF con DRM."
+msgstr "Descarga con DRM."
 
 #: post_types/class-alfaomega-ebooks-post-type.php:220
 msgid "HTML eBook"
@@ -2440,7 +2440,7 @@ msgstr "Lectura en línea."
 
 #: views/emails/html-sample-email.php:51
 msgid "Pdf download with DRM."
-msgstr "Descarga del PDF con DRM."
+msgstr "Descarga con DRM."
 
 #: views/emails/html-sample-email.php:70
 msgid "We hope you enjoy your reading experience."

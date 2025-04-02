@@ -1013,7 +1013,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                     ]],
                 ],
                 'digital' => [
-                    'description'     => 'Libro digital para lectura en línea y descarga del PDF con DRM',
+                    'description'     => 'Libro digital para lectura en línea y descarga con DRM',
                     'sku'             => $product['id'] . '_digital',
                     'regular_price'   => number_format($prices['regular_price']
                                                        * ($this->settings['alfaomega_ebooks_price'] / 100), 0),
@@ -1034,7 +1034,7 @@ if( ! class_exists( 'Alfaomega_Ebooks_Service' )){
                     ],
                 ],
                 'impreso-digital' => [
-                    'description'     => 'Libro impreso y libro digital para lectura en línea y descarga del PDF con DRM',
+                    'description'     => 'Libro impreso y libro digital para lectura en línea y descarga con DRM',
                     'sku'             => $product['id'] . '_printed_digital',
                     'regular_price'   => number_format($prices['regular_price'] * ($this->settings['alfaomega_ebooks_printed_digital_price'] / 100), 0),
                     'status'          => 'publish',
