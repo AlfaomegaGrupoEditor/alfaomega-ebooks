@@ -209,7 +209,7 @@ class Alfaomega_Ebooks_Public {
                 ->accessPost();
             $userAccess = $accessPost->find($eBookId, get_current_user_id(), true);
             $downloadUrl = site_url("alfaomega-ebooks/download/{$eBookId}?access={$userAccess['id']}");
-            echo '<a href="' . $downloadUrl . '" class="woocommerce-MyAccount-downloads-file button alt">PDF</a>';
+            echo '<a href="' . $downloadUrl . '" class="woocommerce-MyAccount-downloads-file button alt">eBook</a>';
         } catch (Exception $exception) {
             esc_html_e( 'Not available', 'alfaomega-ebooks' );
         }
