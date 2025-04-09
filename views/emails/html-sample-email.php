@@ -82,10 +82,22 @@
                             <td width="50%" style="border: 1px solid #808080;">
                                 <span>
                                     <ol>
-                                        <li>Accede a <a href="<?php echo esc_url( home_url() ); ?>"><?php echo esc_url( home_url() ); ?></a> </li>
+                                        <li>Accede a
+                                            <a href="<?php echo esc_url(home_url()); ?>"><?php echo esc_url(home_url()); ?></a>
+                                        </li>
                                         <li>Inicia sesi&oacute;n, si ya posees una cuenta.</a> </li>
-                                        <li>Accede a la opci&oacute;n "Mis eBooks", en <a href="<?php echo esc_url( home_url() ); ?>/my-ao-ebooks"> <?php echo esc_url( home_url() ); ?>/my-ao-ebooks</a></li>
-                                        <li>Clic en el libro deseado (El acceso se agrega autom&aacute;ticamnete al acretitarse el pago). Si recibistes una muestra copia y aplica el c&oacute;digo recibido.</li>
+                                        <li>Accede a la opci&oacute;n "Mis eBooks", en
+                                            <a href="<?php echo esc_url(home_url()); ?>/my-ao-ebooks"> <?php echo esc_url(home_url()); ?>
+                                                /my-ao-ebooks
+                                            </a>
+                                        </li>
+                                        <li>El c&oacute;digo recibido colocarlo en la casilla "Agregar muestras" y dar
+                                            clic en "Aplicar"
+                                        </li>
+                                        <li>Despu&eacute;s de aplicar el c&oacute;digo se debe de mostrar la imagen de
+                                            su libro, le da clic a la imagen y le da la opci&oacute;n de leer en l&iacute;nea
+                                            o descargarlo.
+                                        </li>
                                     </ol>
                                 </span>
                                 <div style="margin-top: 20px">
