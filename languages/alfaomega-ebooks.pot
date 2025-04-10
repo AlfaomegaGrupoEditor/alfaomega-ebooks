@@ -11,7 +11,7 @@ msgstr ""
 "Livan Rodriguez "
 "<livan2r@gmail.com>\n"
 "POT-Creation-Date: "
-"2024-10-31 08:00-0400\n"
+"2025-04-10 08:53-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Livan "
 "Rodriguez <livan2r@gmail."
@@ -53,40 +53,40 @@ msgstr ""
 "SearchPathExcluded-0: "
 "src/Resources\n"
 
-#: admin/class-alfaomega-ebooks-admin.php:155
+#: admin/class-alfaomega-ebooks-admin.php:156
 msgid "Update meta"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:170
-#: admin/class-alfaomega-ebooks-admin.php:251
+#: admin/class-alfaomega-ebooks-admin.php:171
+#: admin/class-alfaomega-ebooks-admin.php:252
 msgid "Link eBook"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:185
+#: admin/class-alfaomega-ebooks-admin.php:186
 msgid ""
 "Update eBooks meta "
 "failed!"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:189
+#: admin/class-alfaomega-ebooks-admin.php:190
 #, php-format
 msgid ""
 "%u eBooks meta updated "
 "successfully"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:196
+#: admin/class-alfaomega-ebooks-admin.php:197
 #: src/Services/eBooks/Process/ImportEbook.php:172
 msgid "Product not found"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:199
+#: admin/class-alfaomega-ebooks-admin.php:200
 msgid ""
 "Showing the related "
 "eBook product"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:206
+#: admin/class-alfaomega-ebooks-admin.php:207
 msgid ""
 "Link eBook failed! "
 "Please check the product "
@@ -94,44 +94,44 @@ msgid ""
 "product price."
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:210
+#: admin/class-alfaomega-ebooks-admin.php:211
 #, php-format
 msgid ""
 "%u ebooks linked "
 "successfully"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:217
+#: admin/class-alfaomega-ebooks-admin.php:218
 msgid ""
 "Unlink eBook failed!"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:221
+#: admin/class-alfaomega-ebooks-admin.php:222
 msgid ""
 "Ebook unlinked "
 "successfully"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:257
+#: admin/class-alfaomega-ebooks-admin.php:258
 msgid "Unlink eBook"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:271
+#: admin/class-alfaomega-ebooks-admin.php:272
 msgid "Update"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:275
+#: admin/class-alfaomega-ebooks-admin.php:276
 msgid "Product"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:297
+#: admin/class-alfaomega-ebooks-admin.php:298
 msgid "eBook ISBN"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:330
-#: admin/class-alfaomega-ebooks-admin.php:362
-#: admin/class-alfaomega-ebooks-admin.php:374
+#: admin/class-alfaomega-ebooks-admin.php:331
+#: admin/class-alfaomega-ebooks-admin.php:363
 #: admin/class-alfaomega-ebooks-admin.php:375
+#: admin/class-alfaomega-ebooks-admin.php:376
 #: post_types/class-alfaomega-ebooks-access-post-type.php:213
 #: post_types/class-alfaomega-ebooks-post-type.php:197
 #: post_types/class-alfaomega-ebooks-sample-post-type.php:251
@@ -139,32 +139,32 @@ msgstr ""
 msgid "eBook"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:421
+#: admin/class-alfaomega-ebooks-admin.php:422
 msgid "Filtrar por eBook"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:422
+#: admin/class-alfaomega-ebooks-admin.php:423
 msgid "Producto simple"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:423
+#: admin/class-alfaomega-ebooks-admin.php:424
 msgid "Todos los eBooks"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:424
+#: admin/class-alfaomega-ebooks-admin.php:425
 msgid ""
 "Vinculado correctamente"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:425
+#: admin/class-alfaomega-ebooks-admin.php:426
 msgid "Desvinculado"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:426
+#: admin/class-alfaomega-ebooks-admin.php:427
 msgid "Desactivado"
 msgstr ""
 
-#: admin/class-alfaomega-ebooks-admin.php:637
+#: admin/class-alfaomega-ebooks-admin.php:638
 msgid "My eBooks"
 msgstr ""
 
@@ -173,8 +173,8 @@ msgid "Alfaomega Ebooks"
 msgstr ""
 
 #: admin/class-alfaomega-ebooks-wc-settings.php:42
-#: includes/class-alfaomega-ebooks.php:425
-#: includes/class-alfaomega-ebooks.php:426
+#: includes/class-alfaomega-ebooks.php:433
+#: includes/class-alfaomega-ebooks.php:434
 msgid "Settings"
 msgstr ""
 
@@ -371,16 +371,16 @@ msgid ""
 msgstr ""
 
 #: includes/class-alfaomega-ebooks-controller.php:167
-#: src/Http/Controllers/ApiController.php:492
-#: src/Http/Controllers/ApiController.php:574
+#: src/Http/Controllers/ApiController.php:500
+#: src/Http/Controllers/ApiController.php:582
 #: src/Http/Controllers/EbooksController.php:29
 msgid ""
 "No new eBooks to import"
 msgstr ""
 
 #: includes/class-alfaomega-ebooks-controller.php:192
-#: src/Http/Controllers/ApiController.php:513
-#: src/Http/Controllers/EbooksController.php:67
+#: src/Http/Controllers/ApiController.php:521
+#: src/Http/Controllers/EbooksController.php:68
 #, php-format
 msgid ""
 "Scheduled to refresh %s "
@@ -388,8 +388,8 @@ msgid ""
 msgstr ""
 
 #: includes/class-alfaomega-ebooks-controller.php:193
-#: src/Http/Controllers/ApiController.php:514
-#: src/Http/Controllers/EbooksController.php:68
+#: src/Http/Controllers/ApiController.php:522
+#: src/Http/Controllers/EbooksController.php:69
 msgid ""
 "No eBooks found to "
 "refresh"
@@ -403,8 +403,8 @@ msgid ""
 msgstr ""
 
 #: includes/class-alfaomega-ebooks-controller.php:221
-#: src/Http/Controllers/ApiController.php:536
-#: src/Http/Controllers/EbooksController.php:107
+#: src/Http/Controllers/ApiController.php:544
+#: src/Http/Controllers/EbooksController.php:109
 msgid ""
 "No products found to link"
 msgstr ""
@@ -430,7 +430,7 @@ msgid ""
 msgstr ""
 
 #: includes/class-alfaomega-ebooks-service.php:555
-#: src/Services/eBooks/Entities/Alfaomega/AccessPost.php:168
+#: src/Services/eBooks/Entities/Alfaomega/AccessPost.php:183
 #: src/Services/eBooks/Entities/Alfaomega/EbookPost.php:195
 #: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:218
 msgid ""
@@ -438,7 +438,7 @@ msgid ""
 msgstr ""
 
 #: includes/class-alfaomega-ebooks-service.php:1123
-#: src/Services/eBooks/Managers/EbookManager.php:209
+#: src/Services/eBooks/Managers/EbookManager.php:220
 msgid ""
 "Online eBook not "
 "available, please check "
@@ -446,15 +446,15 @@ msgid ""
 msgstr ""
 
 #: includes/class-alfaomega-ebooks-service.php:1148
-#: src/Services/eBooks/Managers/EbookManager.php:234
+#: src/Services/eBooks/Managers/EbookManager.php:245
 msgid ""
 "User not logged in yet"
 msgstr ""
 
 #: includes/class-alfaomega-ebooks-service.php:1156
 #: includes/class-alfaomega-ebooks-service.php:1169
-#: src/Services/eBooks/Managers/EbookManager.php:241
-#: src/Services/eBooks/Managers/EbookManager.php:254
+#: src/Services/eBooks/Managers/EbookManager.php:252
+#: src/Services/eBooks/Managers/EbookManager.php:265
 msgid ""
 "eBook download not "
 "available, please check "
@@ -586,52 +586,52 @@ msgid ""
 "left empty"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:335
+#: includes/class-alfaomega-ebooks.php:343
 #: post_types/class-alfaomega-ebooks-post-type.php:40
 msgid "AO eBooks"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:345
-#: includes/class-alfaomega-ebooks.php:346
+#: includes/class-alfaomega-ebooks.php:353
+#: includes/class-alfaomega-ebooks.php:354
 msgid "Dashboard"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:355
+#: includes/class-alfaomega-ebooks.php:363
 msgid ""
 "All Alfaomega eBooks"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:356
+#: includes/class-alfaomega-ebooks.php:364
 msgid "List"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:365
+#: includes/class-alfaomega-ebooks.php:373
 msgid "eBook Access"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:366
+#: includes/class-alfaomega-ebooks.php:374
 msgid "Access List"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:375
+#: includes/class-alfaomega-ebooks.php:383
 msgid "eBook Sample"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:376
+#: includes/class-alfaomega-ebooks.php:384
 msgid "Sample List"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:385
+#: includes/class-alfaomega-ebooks.php:393
 #: views/alfaomega_ebook_home_page.php:18
 #: views/alfaomega_ebook_import_page.php:67
 msgid "Import eBooks"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:386
+#: includes/class-alfaomega-ebooks.php:394
 msgid "Import"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:395
+#: includes/class-alfaomega-ebooks.php:403
 #: views/alfaomega_ebook_home_page.php:24
 #: views/alfaomega_ebook_home_page.php:30
 #: views/alfaomega_ebook_refresh_page.php:5
@@ -639,11 +639,11 @@ msgstr ""
 msgid "Refresh eBooks"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:396
+#: includes/class-alfaomega-ebooks.php:404
 msgid "Refresh"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:405
+#: includes/class-alfaomega-ebooks.php:413
 #: views/alfaomega_ebook_home_page.php:36
 #: views/alfaomega_ebook_home_page.php:42
 #: views/alfaomega_ebook_link_page.php:5
@@ -651,19 +651,19 @@ msgstr ""
 msgid "Link Products"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:406
+#: includes/class-alfaomega-ebooks.php:414
 msgid "Link"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:415
+#: includes/class-alfaomega-ebooks.php:423
 msgid "Setup Prices"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:416
+#: includes/class-alfaomega-ebooks.php:424
 msgid "Setup prices"
 msgstr ""
 
-#: includes/class-alfaomega-ebooks.php:450
+#: includes/class-alfaomega-ebooks.php:458
 msgid "Settings Saved"
 msgstr ""
 
@@ -1198,7 +1198,7 @@ msgstr ""
 #: post_types/class-alfaomega-ebooks-access-post-type.php:85
 #: views/alfaomega_ebook_access_metabox.php:108
 #: views/alfaomega_ebook_sample_metabox.php:108
-#: website/class-alfaomega-ebooks-public.php:196
+#: website/class-alfaomega-ebooks-public.php:197
 msgid "Read"
 msgstr ""
 
@@ -1750,21 +1750,21 @@ msgstr ""
 #: src/Http/Controllers/ApiController.php:23
 #: src/Http/Controllers/ApiController.php:71
 #: src/Http/Controllers/ApiController.php:98
-#: src/Http/Controllers/ApiController.php:146
-#: src/Http/Controllers/ApiController.php:165
-#: src/Http/Controllers/ApiController.php:185
-#: src/Http/Controllers/ApiController.php:205
-#: src/Http/Controllers/ApiController.php:245
-#: src/Http/Controllers/ApiController.php:285
-#: src/Http/Controllers/ApiController.php:340
-#: src/Http/Controllers/ApiController.php:384
-#: src/Http/Controllers/ApiController.php:428
-#: src/Http/Controllers/ApiController.php:463
+#: src/Http/Controllers/ApiController.php:154
+#: src/Http/Controllers/ApiController.php:173
+#: src/Http/Controllers/ApiController.php:193
+#: src/Http/Controllers/ApiController.php:213
+#: src/Http/Controllers/ApiController.php:253
+#: src/Http/Controllers/ApiController.php:293
+#: src/Http/Controllers/ApiController.php:348
+#: src/Http/Controllers/ApiController.php:392
+#: src/Http/Controllers/ApiController.php:436
+#: src/Http/Controllers/ApiController.php:471
 #: src/Http/Controllers/WebhooksController.php:27
 msgid "God Job!"
 msgstr ""
 
-#: src/Http/Controllers/ApiController.php:126
+#: src/Http/Controllers/ApiController.php:127
 msgid ""
 "Code redeemed "
 "successfully, the "
@@ -1774,50 +1774,50 @@ msgid ""
 "reading!"
 msgstr ""
 
-#: src/Http/Controllers/ApiController.php:220
-#: src/Http/Controllers/ApiController.php:260
-#: src/Http/Controllers/ApiController.php:300
-#: src/Http/Controllers/ApiController.php:355
-#: src/Http/Controllers/ApiController.php:399
-#: src/Http/Controllers/ApiController.php:443
+#: src/Http/Controllers/ApiController.php:228
+#: src/Http/Controllers/ApiController.php:268
+#: src/Http/Controllers/ApiController.php:308
+#: src/Http/Controllers/ApiController.php:363
+#: src/Http/Controllers/ApiController.php:407
+#: src/Http/Controllers/ApiController.php:451
 msgid ""
 "The process is required."
 msgstr ""
 
-#: src/Http/Controllers/ApiController.php:224
-#: src/Http/Controllers/ApiController.php:235
-#: src/Http/Controllers/ApiController.php:264
-#: src/Http/Controllers/ApiController.php:275
-#: src/Http/Controllers/ApiController.php:304
-#: src/Http/Controllers/ApiController.php:315
-#: src/Http/Controllers/ApiController.php:359
-#: src/Http/Controllers/ApiController.php:370
-#: src/Http/Controllers/ApiController.php:403
-#: src/Http/Controllers/ApiController.php:414
-#: src/Http/Controllers/ApiController.php:447
+#: src/Http/Controllers/ApiController.php:232
+#: src/Http/Controllers/ApiController.php:243
+#: src/Http/Controllers/ApiController.php:272
+#: src/Http/Controllers/ApiController.php:283
+#: src/Http/Controllers/ApiController.php:312
+#: src/Http/Controllers/ApiController.php:323
+#: src/Http/Controllers/ApiController.php:367
+#: src/Http/Controllers/ApiController.php:378
+#: src/Http/Controllers/ApiController.php:411
+#: src/Http/Controllers/ApiController.php:422
+#: src/Http/Controllers/ApiController.php:455
 msgid ""
 "The process is invalid."
 msgstr ""
 
-#: src/Http/Controllers/ApiController.php:319
+#: src/Http/Controllers/ApiController.php:327
 msgid ""
 "The status is required."
 msgstr ""
 
-#: src/Http/Controllers/ApiController.php:323
+#: src/Http/Controllers/ApiController.php:331
 msgid ""
 "The status is invalid."
 msgstr ""
 
-#: src/Http/Controllers/ApiController.php:374
-#: src/Http/Controllers/ApiController.php:418
-#: src/Http/Controllers/ApiController.php:453
+#: src/Http/Controllers/ApiController.php:382
+#: src/Http/Controllers/ApiController.php:426
+#: src/Http/Controllers/ApiController.php:461
 msgid ""
 "The ids are required."
 msgstr ""
 
-#: src/Http/Controllers/ApiController.php:491
-#: src/Http/Controllers/ApiController.php:573
+#: src/Http/Controllers/ApiController.php:499
+#: src/Http/Controllers/ApiController.php:581
 #: src/Http/Controllers/EbooksController.php:28
 #, php-format
 msgid ""
@@ -1825,20 +1825,20 @@ msgid ""
 "new ebooks successfully!"
 msgstr ""
 
-#: src/Http/Controllers/ApiController.php:535
-#: src/Http/Controllers/EbooksController.php:106
+#: src/Http/Controllers/ApiController.php:543
+#: src/Http/Controllers/EbooksController.php:108
 #, php-format
 msgid ""
 "Scheduled to link %s "
 "products successfully!"
 msgstr ""
 
-#: src/Http/Controllers/ApiController.php:555
+#: src/Http/Controllers/ApiController.php:563
 msgid ""
 "The factor is not valid."
 msgstr ""
 
-#: src/Http/Controllers/ApiController.php:559
+#: src/Http/Controllers/ApiController.php:567
 msgid ""
 "The factor value is "
 "invalid."
@@ -1849,18 +1849,18 @@ msgid ""
 "Queue ID is required"
 msgstr ""
 
-#: src/Http/RouteManager.php:263
+#: src/Http/RouteManager.php:265
 msgid ""
 "Please log in to access "
 "ebooks."
 msgstr ""
 
-#: src/Http/RouteManager.php:271
-#: src/Http/RouteManager.php:315
+#: src/Http/RouteManager.php:273
+#: src/Http/RouteManager.php:317
 msgid "Not found"
 msgstr ""
 
-#: src/Http/RouteManager.php:307
+#: src/Http/RouteManager.php:309
 msgid "Unauthorized"
 msgstr ""
 
@@ -1904,12 +1904,12 @@ msgid ""
 "confidence."
 msgstr ""
 
-#: src/Services/eBooks/Entities/Alfaomega/AccessPost.php:124
+#: src/Services/eBooks/Entities/Alfaomega/AccessPost.php:137
 #: src/Services/eBooks/Entities/Alfaomega/SamplePost.php:189
 msgid "Post not found."
 msgstr ""
 
-#: src/Services/eBooks/Entities/Alfaomega/AccessPost.php:131
+#: src/Services/eBooks/Entities/Alfaomega/AccessPost.php:144
 msgid "Ebook not found."
 msgstr ""
 
@@ -2769,7 +2769,7 @@ msgid ""
 "Pdf download with DRM."
 msgstr ""
 
-#: views/emails/html-sample-email.php:70
+#: views/emails/html-sample-email.php:158
 msgid ""
 "We hope you enjoy your "
 "reading experience."
@@ -2802,11 +2802,12 @@ msgstr ""
 msgid "Read&nbsp;Online"
 msgstr ""
 
-#: website/class-alfaomega-ebooks-public.php:198
+#: website/class-alfaomega-ebooks-public.php:199
+#: website/class-alfaomega-ebooks-public.php:214
 msgid "Not available"
 msgstr ""
 
-#: website/class-alfaomega-ebooks-public.php:279
-#: website/class-alfaomega-ebooks-public.php:300
+#: website/class-alfaomega-ebooks-public.php:310
+#: website/class-alfaomega-ebooks-public.php:331
 msgid "Content table"
 msgstr ""
