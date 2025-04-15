@@ -165,6 +165,7 @@ class Variant extends WooAbstractEntity
         $uploads = wp_get_upload_dir();
         $ebooksDir = $uploads['baseurl'] . '/woocommerce_uploads/alfaomega_ebooks/';
         $stockQuantity = $this->getStockQuantity($product['stock_quantity'] ?? 0);
+        $infiniteStock = defined('AO_STORE_INFINITE_STOCK') && AO_STORE_INFINITE_STOCK;
 
         return match ($format) {
             'impreso' => [
@@ -174,9 +175,9 @@ class Variant extends WooAbstractEntity
                 'status'          => 'publish',
                 'virtual'         => false,
                 'downloadable'    => false,
-                'manage_stock'    => true,
+                'manage_stock'    => !$infiniteStock,
                 'stock_quantity'  => $stockQuantity['impreso'],
-                'stock_status'    => $stockQuantity['impreso'] === 0 ? 'outofstock' : 'instock',
+                'stock_status'    => $stockQuantity['impreso'] === 0 && !$infiniteStock ? 'outofstock' : 'instock',
                 'weight'          => $product['weight'],
                 'dimensions'      => $product['dimensions'],
                 'shipping_class'  => $product['shipping_class'],
@@ -217,9 +218,9 @@ class Variant extends WooAbstractEntity
                 ],
                 'download_limit'  => -1,
                 'download_expiry' => 30,
-                'manage_stock'    => true,
+                'manage_stock'    => !$infiniteStock,
                 'stock_quantity'  => $stockQuantity['impreso_digital'],
-                'stock_status'    => $stockQuantity['impreso_digital'] === 0 ? 'outofstock' : 'instock',
+                'stock_status'    => $stockQuantity['impreso_digital'] === 0 && !$infiniteStock ? 'outofstock' : 'instock',
                 'weight'          => $product['weight'],
                 'dimensions'      => $product['dimensions'],
                 'shipping_class'  => $product['shipping_class'],
