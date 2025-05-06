@@ -195,12 +195,12 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
         }
 
         $result = [];
+        $accessCodes = [];
+        $description = $data['description'];
         $current_user = wp_get_current_user();
 
         foreach (range(1, $data['count']) as $i) {
-            if (empty($data['code'])) {
-                $data['code'] = $this->generateCode();
-            }
+            $data['code'] = $this->generateCode();
 
             $newPost = [
                 'post_title'  => $data['code'],
@@ -209,23 +209,23 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
                 'post_type'   => 'alfaomega-sample',
             ];
 
-            if (!empty($postId)) {
-                $newPost['ID'] = $postId;
-            }
-
             $postId = wp_insert_post($newPost);
             if (empty($postId)) {
                 throw new Exception(esc_html__('Unable to create post.', 'alfaomega-ebook'));
             }
 
+            if ($data['count'] > 1) $data['description'] = $description . " " . $i . "/" . $data['count'];
             $result[] = $this->save($postId, $data);
 
             // send email to destination and promoter after creating the post
             if (!empty($data['destination']) || !empty($data['promoter'])) {
-                $data['status'] = $this->email($postId) ? 'sent' : 'failed';
+                $data['status'] = 'sent';
+                $accessCodes[] = $data['code'];
                 $this->save($postId, $data);
             }
         }
+
+        $this->email($postId, $accessCodes);
 
         return count($result) === 1 ? $result[0] : $result;
     }
@@ -488,16 +488,17 @@ class SamplePost extends AlfaomegaPostAbstract implements AlfaomegaPostInterface
      * Send to code to recipients.
      *
      * @param int $postId The ID of the post.
+     * @param array $accessCodes
      *
      * @return bool
      * @throws \Exception
      */
-    public function email(int $postId): bool
+    public function email(int $postId, array $accessCodes = []): bool
     {
         $mailer = WC()->mailer();
         $mails = $mailer->get_emails();
         $email = $mails['Alfaomega_Ebooks_Sample_Email'];
-        return $email->trigger($this->get($postId));
+        return $email->trigger($this->get($postId), $accessCodes);
     }
 
     /**
