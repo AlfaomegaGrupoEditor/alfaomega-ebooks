@@ -28,17 +28,21 @@ class AlfaomegaEbooksSampleEmail extends WC_Email {
 
     /**
      * Send the email to the recipient.
-     * @param array $sample
      *
-     * @return void
-     * @throws \Exception
+     * @param array $sample
+     * @param array $accessCodes
+     *
+     * @return bool
      */
-    public function trigger(array $sample): bool {
+    public function trigger(array $sample, array $accessCodes = []): bool {
         if ( ! $sample ) {
             return false;
         }
 
         $this->object = $sample;
+        if (!empty($accessCodes)) {
+            $this->object['code'] = $accessCodes;
+        }
         $recipient = $this->object['destination'] ?? $this->object['promoter'];
         $this->recipient = $recipient;
 
