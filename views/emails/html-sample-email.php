@@ -20,7 +20,16 @@
     </p>
 
     <p>
-        <?php _e( 'Access code:', 'alfaomega-ebooks') ?> <strong> <?php echo $sample['code'] ?> </strong>
+        <?php _e( 'Access code:', 'alfaomega-ebooks') ?>
+            <?php if(is_string($sample['code'])): ?>
+                <strong> <?php echo $sample['code'] ?> </strong>
+            <?php else: ?>
+                <ul>
+                    <?php foreach($sample['code'] as $code): ?>
+                        <li><strong> <?php echo $code ?> </strong></li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif ?>
         <br/>
         <?php if(!empty($sample['due_date'])): ?>
             (<?php _e( 'Valid until:', 'alfaomega-ebooks') ?>
