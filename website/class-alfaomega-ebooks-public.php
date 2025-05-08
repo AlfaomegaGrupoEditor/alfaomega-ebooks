@@ -244,8 +244,8 @@ class Alfaomega_Ebooks_Public {
     public function dropdown_variation_attribute_options_html(string $html): string {
         global $product;
 
-        $printed = '<select id="pa_book-format" class="" name="attribute_pa_book-format" data-attribute_name="attribute_pa_book-format" data-show_option_none="yes"><option value="">Elige una opción</option><option value="impreso" >Impreso</option></select>';
-        $printedSelected = '<select id="pa_book-format" class="" name="attribute_pa_book-format" data-attribute_name="attribute_pa_book-format" data-show_option_none="yes"><option value="">Elige una opción</option><option value="impreso" selected="selected">Impreso</option></select>';
+        $printed = '<select id="pa_book-format" style="color: black;" name="attribute_pa_book-format" data-attribute_name="attribute_pa_book-format" data-show_option_none="yes"><option value="">Elige una opción</option><option value="impreso" >Impreso</option></select>';
+        $printedSelected = '<select id="pa_book-format" style="color: black;" name="attribute_pa_book-format" data-attribute_name="attribute_pa_book-format" data-show_option_none="yes"><option value="">Elige una opción</option><option value="impreso" selected="selected">Impreso</option></select>';
         if ($html === $printed) {
             return $printedSelected;
         }
@@ -258,9 +258,10 @@ class Alfaomega_Ebooks_Public {
                 'selected="selected" value="impreso"',
                 $html
             );
+
         /*}*/
 
-        return $html;
+        return str_replace('id="pa_book-format"', 'id="pa_book-format" style="color: black;"', $html);
     }
 
     /**
