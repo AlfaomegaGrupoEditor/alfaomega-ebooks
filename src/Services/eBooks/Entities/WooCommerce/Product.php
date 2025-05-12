@@ -271,6 +271,12 @@ class Product extends WooAbstractEntity implements ProductEntity
             if ($newPrice['sales']) {
                 update_post_meta($variation_id, '_sale_price', $newPrice['sales']);
             }
+
+            $variation = wc_get_product($variation_id);
+            if ($variation->get_attribute('pa_book-format') === 'Impreso + Digital' && $variation->get_virtual()) {
+                $variation->set_virtual(false);
+                $variation->save();
+            }
         }
 
         $product->save();

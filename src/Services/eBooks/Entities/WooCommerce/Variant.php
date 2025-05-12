@@ -211,7 +211,7 @@ class Variant extends WooAbstractEntity
                 'sku'             => $product['sku'] . ' (impreso), ' . $ebookIsbn . ' (digital)',
                 'regular_price'   => number_format($prices['regular_price'] * ($this->settings['alfaomega_ebooks_printed_digital_price'] / 100), 0, '', ''),
                 'status'          => 'publish',
-                'virtual'         => true,
+                'virtual'         => false,
                 'downloadable'    => true,
                 'downloads'       => [
                     [ 'name' => 'PDF', 'file' => $ebooksDir . $ebookId ]
