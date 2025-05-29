@@ -50,7 +50,7 @@ class Order extends WooAbstractEntity
             $customer_id = get_current_user_id();
         }
 
-        if (empty($customer_id) || $order->get_status() !== 'completed') {
+        if (empty($customer_id) || !in_array($order->get_status(), ['completed', 'processing'])) {
             return [];
         }
 
