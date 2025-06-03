@@ -181,7 +181,7 @@ if( !class_exists('Alfaomega_Ebooks_Post_Type') ){
         {
             global $pagenow;
 
-            if ($pagenow === 'post.php') {
+            if ($pagenow === 'post.php' && !empty($_GET['post'])) {
                 $ebookPost = Service::make()
                     ->ebooks()
                     ->ebookPost()

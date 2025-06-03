@@ -279,6 +279,39 @@ class Alfaomega_Ebooks_Public {
     }
 
     /**
+     * Handle the permission for downloadable files.
+     *
+     * @param \WC_Customer_Download $download
+     * @param \WC_Product $product
+     * @param \WC_Order $order
+     * @param int $qty
+     * @param \WC_Order_Item $item
+     *
+     * @return \WC_Customer_Download
+     * @throws \Exception
+     */
+    public function on_downloadable_file_permission(WC_Customer_Download $download,
+                                                    WC_Product $product,
+                                                    WC_Order $order,
+                                                    int $qty,
+                                                    WC_Order_Item  $item
+    ): WC_Customer_Download {
+        if (! empty($order->get_id())) {
+            $this->on_order_complete($order->get_id());
+        } else {
+            Service::make()->log('eBook activation failed: ' . json_encode([
+                    'download' => $download,
+                    '$product' => $product,
+                    'order'    => $order,
+                    'qty'      => $qty,
+                    'item'     => $item
+                ], JSON_PRETTY_PRINT));
+        }
+
+        return $download;
+    }
+
+    /**
      * Register the shortcode for displaying the customer's purchased eBooks
      * @return void
      */
