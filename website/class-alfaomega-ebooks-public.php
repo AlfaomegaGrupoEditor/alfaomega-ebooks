@@ -279,23 +279,30 @@ class Alfaomega_Ebooks_Public {
     }
 
     /**
-     * Handles the permission for downloadable files.
+     * Handle the permission for downloadable files.
      *
-     * @param WC_Customer_Download $download The customer download object.
+     * @param WC_Customer_Download $download The download object.
+     * @param WC_Product $product            The product object.
+     * @param WC_Order $order                The order object.
      *
+     * @return void
      * @throws \Exception
      */
-    public function on_downloadable_file_permission($download_id, $product_id, $order): void
-    {
-        if (!empty($order->id)) {
-            $this->on_order_complete($order->id);
+    public function on_downloadable_file_permission(WC_Customer_Download $download,
+                                                    WC_Product $product,
+                                                    WC_Order $order
+    ): WC_Customer_Download {
+        if (! empty($order->get_id())) {
+            $this->on_order_complete($order->get_id());
         } else {
             Service::make()->log('eBook activation failed: ' . json_encode([
-                'download_id' => $download_id,
-                'product_id'  => $product_id,
-                'order'       => $order
-            ], JSON_PRETTY_PRINT));
+                    'download' => $download,
+                    '$product' => $product,
+                    'order'    => $order,
+                ], JSON_PRETTY_PRINT));
         }
+
+        return $download;
     }
 
     /**
