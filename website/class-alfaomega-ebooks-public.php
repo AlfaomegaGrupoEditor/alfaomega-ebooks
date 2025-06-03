@@ -279,6 +279,26 @@ class Alfaomega_Ebooks_Public {
     }
 
     /**
+     * Handles the permission for downloadable files.
+     *
+     * @param WC_Customer_Download $download The customer download object.
+     *
+     * @throws \Exception
+     */
+    public function on_downloadable_file_permission($download_id, $product_id, $order): void
+    {
+        if (!empty($order->id)) {
+            $this->on_order_complete($order->id);
+        } else {
+            Service::make()->log('eBook activation failed: ' . json_encode([
+                'download_id' => $download_id,
+                'product_id'  => $product_id,
+                'order'       => $order
+            ], JSON_PRETTY_PRINT));
+        }
+    }
+
+    /**
      * Register the shortcode for displaying the customer's purchased eBooks
      * @return void
      */

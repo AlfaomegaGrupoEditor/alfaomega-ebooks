@@ -4,6 +4,7 @@ namespace AlfaomegaEbooks\Services\eBooks\Entities\WooCommerce;
 
 use AlfaomegaEbooks\Services\eBooks\Service;
 use Exception;
+use WC_Customer_Download;
 use WC_Order;
 
 /**
