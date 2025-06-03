@@ -281,16 +281,20 @@ class Alfaomega_Ebooks_Public {
     /**
      * Handle the permission for downloadable files.
      *
-     * @param WC_Customer_Download $download The download object.
-     * @param WC_Product $product            The product object.
-     * @param WC_Order $order                The order object.
+     * @param \WC_Customer_Download $download
+     * @param \WC_Product $product
+     * @param \WC_Order $order
+     * @param int $qty
+     * @param \WC_Order_Item $item
      *
-     * @return void
+     * @return \WC_Customer_Download
      * @throws \Exception
      */
     public function on_downloadable_file_permission(WC_Customer_Download $download,
                                                     WC_Product $product,
-                                                    WC_Order $order
+                                                    WC_Order $order,
+                                                    int $qty,
+                                                    WC_Order_Item  $item
     ): WC_Customer_Download {
         if (! empty($order->get_id())) {
             $this->on_order_complete($order->get_id());
@@ -299,6 +303,8 @@ class Alfaomega_Ebooks_Public {
                     'download' => $download,
                     '$product' => $product,
                     'order'    => $order,
+                    'qty'      => $qty,
+                    'item'     => $item
                 ], JSON_PRETTY_PRINT));
         }
 
