@@ -260,22 +260,42 @@ class Product extends WooAbstractEntity implements ProductEntity
             throw new Exception('Product has no variations');
         }
 
+        $uploads = wp_get_upload_dir();
+        $ebooksDir = $uploads['baseurl'] . '/woocommerce_uploads/alfaomega_ebooks/';
         foreach ($variations as $variation_id) {
             $newPrice = $this->getVariationPrice($variation_id, $data);
             if (empty($newPrice)) {
                 throw new Exception('Product variation not valid');
             }
 
+            // update prices
             update_post_meta($variation_id, '_price', $newPrice['regular']);
             update_post_meta($variation_id, '_regular_price', $newPrice['regular']);
             if ($newPrice['sales']) {
                 update_post_meta($variation_id, '_sale_price', $newPrice['sales']);
             }
 
+            // update stock management
             $variation = wc_get_product($variation_id);
-            if ($variation->get_attribute('pa_book-format') === 'Impreso + Digital' && $variation->get_virtual()) {
+            $format = $variation->get_attribute('pa_book-format');
+            if ($format === 'Impreso + Digital' && $variation->get_virtual()) {
                 $variation->set_virtual(false);
                 $variation->save();
+            }
+
+            // update download name
+            if (in_array($format, ['Impreso + Digital', 'Digital'])) {
+                try {
+                    $downloadable_files = get_post_meta($variation_id, '_downloadable_files', true);
+                    if (is_array($downloadable_files)) {
+                        foreach ($downloadable_files as $key => $file) {
+                            $downloadable_files[$key]['name'] = 'eBook';
+                        }
+                        update_post_meta($variation_id, '_downloadable_files', $downloadable_files);
+                    }
+                } catch (\Exception $e) {
+                    Service::make()->log($e->getMessage());
+                }
             }
         }
 
