@@ -122,4 +122,14 @@ function run_alfaomega_ebooks() {
     }
 }
 
+function order_contains_downloadable_product($order) {
+    foreach ($order->get_items() as $item) {
+        $product = $item->get_product();
+        if ($product && $product->is_downloadable()) {
+            return true;
+        }
+    }
+    return false;
+}
+
 run_alfaomega_ebooks();
