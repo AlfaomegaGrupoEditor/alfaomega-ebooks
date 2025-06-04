@@ -194,7 +194,7 @@ class Variant extends WooAbstractEntity
                 'virtual'         => true,
                 'downloadable'    => true,
                 'downloads'       => [
-                    [ 'name' => 'PDF', 'file' => $ebooksDir . $ebookId ]
+                    [ 'name' => 'eBook', 'file' => $ebooksDir . $ebookId ]
                 ],
                 'download_limit'  => -1,
                 'download_expiry' => 30,
@@ -214,7 +214,7 @@ class Variant extends WooAbstractEntity
                 'virtual'         => false,
                 'downloadable'    => true,
                 'downloads'       => [
-                    [ 'name' => 'PDF', 'file' => $ebooksDir . $ebookId ]
+                    [ 'name' => 'eBook', 'file' => $ebooksDir . $ebookId ]
                 ],
                 'download_limit'  => -1,
                 'download_expiry' => 30,
